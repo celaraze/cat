@@ -18,3 +18,4 @@ yarn-error.log
 /.vscode
 /vendor
 composer.lock
+package-lock.json
