@@ -1,0 +1,69 @@
+<?php
+
+namespace App\Services;
+
+use App\Models\FlowHasNode;
+
+class FlowHasNodeService
+{
+    public FlowHasNode $flow_has_node;
+
+    public function __construct(FlowHasNode $flow_has_node = null)
+    {
+        if ($flow_has_node) {
+            $this->flow_has_node = $flow_has_node;
+        } else {
+            $this->flow_has_node = new FlowHasNode();
+        }
+    }
+
+    /**
+     * 是否有父节点.
+     *
+     * @return bool
+     */
+    public function isExistParentNode(): bool
+    {
+        return !$this->flow_has_node->parentNode()->count();
+    }
+
+    /**
+     * 是否是第一个节点.
+     *
+     * @return bool
+     */
+    public function isFirstNode(): bool
+    {
+        return !$this->flow_has_node->getAttribute('parent_node_id');
+    }
+
+    /**
+     * 是否是最后一个节点.
+     *
+     * @return bool
+     */
+    public function isLastNode(): bool
+    {
+        return !FlowHasNode::query()
+            ->where('parent_node_id', $this->flow_has_node->getKey())
+            ->count();
+    }
+
+    /**
+     * 创建节点.
+     *
+     * @param array $data
+     * @return FlowHasNode
+     */
+    public function create(array $data): FlowHasNode
+    {
+        $this->flow_has_node->setAttribute('name', $data['name']);
+        $this->flow_has_node->setAttribute('flow_id', $data['flow_id']);
+        $this->flow_has_node->setAttribute('user_id', $data['user_id'] ?? 0);
+        $this->flow_has_node->setAttribute('role_id', $data['role_id'] ?? 0);
+        $this->flow_has_node->setAttribute('parent_node_id', $data['parent_node_id']);
+        $this->flow_has_node->save();
+        return $this->flow_has_node;
+    }
+}
+
