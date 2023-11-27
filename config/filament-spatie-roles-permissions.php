@@ -8,12 +8,12 @@ return [
 
     'preload_permissions' => true,
 
-    'navigation_section_group' => '基础数据', // Default uses language constant
+    'navigation_section_group' => 'filament-spatie-roles-permissions::filament-spatie.section.roles_and_permissions', // Default uses language constant
 
     'team_model' => \App\Models\Team::class,
 
     /*
-     * Set to false to remove from navigation
+     * Set as false to remove from navigation.
      */
     'should_register_on_navigation' => [
         'permissions' => false,
@@ -22,7 +22,7 @@ return [
 
     'guard_names' => [
         'web' => 'web',
-//        'api' => 'api',
+        #'api' => 'api',
     ],
 
     'toggleable_guard_names' => [
@@ -38,11 +38,13 @@ return [
 
     'model_filter_key' => 'return \'%\'.$key;', // Eg: 'return \'%\'.$key.'\%\';'
 
+    'user_name_column' => 'name',
+
     'generator' => [
 
         'guard_names' => [
             'web',
-//            'api',
+            # 'api',
         ],
 
         'permission_affixes' => [
@@ -51,19 +53,19 @@ return [
              * Permissions Aligned with Policies.
              * DO NOT change the keys unless the genericPolicy.stub is published and altered accordingly
              */
-            'viewAnyPermission' => '查看任意',
-            'viewPermission' => '查看',
-            'createPermission' => '创建',
-            'updatePermission' => '更新',
-            'deletePermission' => '删除',
-            'restorePermission' => '恢复',
-            'forceDeletePermission' => '强制删除',
+            'viewAnyPermission' => 'view-any',
+            'viewPermission' => 'view',
+            'createPermission' => 'create',
+            'updatePermission' => 'update',
+            'deletePermission' => 'delete',
+            'restorePermission' => 'restore',
+            'forceDeletePermission' => 'force-delete',
 
             /*
              * Additional Resource Permissions
              */
-//            'replicate' => '复制',
-//            'reorder' => '排序',
+            'replicate',
+            'reorder',
         ],
 
         /*
