@@ -2,7 +2,7 @@
 
 return [
     'root' => 'Root',
-    
+
     /*
         |--------------------------------------------------------------------------
         | Buttons
@@ -21,7 +21,7 @@ return [
     'components.tree.buttons.deselect_all.label' => 'Deselect All',
     'components.tree.buttons.expand_all.label' => 'Expand All',
     'components.tree.buttons.collapse_all.label' => 'Collapse All',
-    
+
     /*
         |--------------------------------------------------------------------------
         | Message

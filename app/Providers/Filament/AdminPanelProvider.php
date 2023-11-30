@@ -34,9 +34,11 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
+//            ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets')
             ->pages([
                 Pages\Dashboard::class,
             ])
+            ->databaseNotifications()
             ->navigationGroups([
                 '信息资产',
                 '工作流',
@@ -55,7 +57,9 @@ class AdminPanelProvider extends PanelProvider
                 SubstituteBindings::class,
                 DisableBladeIconComponents::class,
                 DispatchServingFilamentEvent::class,
-                SetTheme::class
+                SetTheme::class,
+                // todo 这个组件是 https://github.com/Shipu/web-installer, 目前安装有问题，暂时停用
+                // RedirectIfNotInstalled::class,
             ])
             ->authMiddleware([
                 Authenticate::class,

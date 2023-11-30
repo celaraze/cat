@@ -24,7 +24,7 @@ class FlowHasNodeService
      */
     public function isExistParentNode(): bool
     {
-        return !$this->flow_has_node->parentNode()->count();
+        return $this->flow_has_node->parentNode()->count();
     }
 
     /**
@@ -35,6 +35,16 @@ class FlowHasNodeService
     public function isFirstNode(): bool
     {
         return !$this->flow_has_node->getAttribute('parent_node_id');
+    }
+
+    /**
+     * 是否有子节点.
+     *
+     * @return bool
+     */
+    public function isExistChildNode(): bool
+    {
+        return $this->flow_has_node->childNode()->count();
     }
 
     /**

@@ -16,9 +16,9 @@ class InformationBrandTableSeeder extends Seeder
     {
 
 
-        \DB::table('information_brands')->delete();
+        \DB::table('brands')->delete();
 
-        \DB::table('information_brands')->insert(array(
+        \DB::table('brands')->insert(array(
             0 =>
                 array(
                     'id' => 1,

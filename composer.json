@@ -1,16 +1,17 @@
 {
-    "name": "celaraze/wissets",
+    "name": "celaraze/cat",
     "type": "project",
-    "description": "一个开源的、开放的资产管理平台。资产管理、归属/使用者追溯、盘点以及可靠的移动端应用支持。",
+    "description": "一个开源的、开放的一站式 IT 运维管理平台。资产管理、工单、盘点以及可靠的移动端应用支持。",
     "keywords": [
         "laravel",
-        "wissets",
-        "chemex"
+        "cat",
+        "chemex",
+        "asset",
+        "it"
     ],
     "license": "GPL-3.0-or-later",
     "require": {
         "php": "^8.1",
-        "ext-xlswriter": "*",
         "althinect/filament-spatie-roles-permissions": "^2.0",
         "awcodes/shout": "^2.0",
         "filament/actions": "^3.0-stable",
@@ -25,7 +26,7 @@
         "laravel/framework": "^10.10",
         "laravel/sanctum": "^3.2",
         "laravel/tinker": "^2.8",
-        "leandrocfe/filament-apex-charts": "^3.0",
+        "leandrocfe/filament-apex-charts": "3.0.1",
         "psr/simple-cache": "^2.0",
         "pxlrbt/filament-excel": "^2.1",
         "solution-forest/filament-tree": "^2.0",

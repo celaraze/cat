@@ -5,7 +5,7 @@ namespace Database\Factories;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Information\DeviceHasPart>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\DeviceHasPart>
  */
 class DeviceHasPartFactory extends Factory
 {

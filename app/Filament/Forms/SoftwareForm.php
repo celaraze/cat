@@ -2,10 +2,10 @@
 
 namespace App\Filament\Forms;
 
-use App\Models\Information\Software;
+use App\Models\Software;
 use App\Services\AssetNumberRuleService;
-use App\Services\Information\BrandService;
-use App\Services\Information\SoftwareCategoryService;
+use App\Services\BrandService;
+use App\Services\SoftwareCategoryService;
 use Filament\Forms\Components\Actions\Action;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Select;

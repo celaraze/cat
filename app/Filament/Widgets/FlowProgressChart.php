@@ -39,6 +39,7 @@ class FlowProgressChart extends ApexChartWidget
             'chart' => [
                 'type' => 'heatmap',
                 'height' => 80,
+                'width' => '90%',
                 'toolbar' => [
                     'show' => false
                 ]

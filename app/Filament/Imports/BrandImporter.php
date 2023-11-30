@@ -2,37 +2,44 @@
 
 namespace App\Filament\Imports;
 
-use App\Services\Information\BrandService;
-use Exception;
-use Illuminate\Support\Facades\DB;
+use App\Models\Brand;
+use Filament\Actions\Imports\ImportColumn;
+use Filament\Actions\Imports\Importer;
+use Filament\Actions\Imports\Models\Import;
 
 class BrandImporter extends Importer
 {
+    protected static ?string $model = Brand::class;
 
-    /**
-     * 导入.
-     *
-     * @throws Exception
-     */
-    public function import(): void
+
+    public static function getColumns(): array
     {
-        try {
-            DB::beginTransaction();
-            $headers = $this->data[0];
-            unset($this->data[0]);
-            $this->data = array_values($this->data);
-            foreach ($this->data as $value) {
-                $brand_service = new BrandService();
-                $name = $value[array_search('名称', $headers)];
-                $data = [
-                    'name' => $name,
-                ];
-                $brand_service->create($data);
-            }
-            DB::commit();
-        } catch (Exception $exception) {
-            DB::rollBack();
-            throw $exception;
+        return [
+            ImportColumn::make('name')
+                ->label('名称')
+                ->requiredMapping()
+                ->example('示例品牌'),
+        ];
+    }
+
+    public static function getCompletedNotificationBody(Import $import): string
+    {
+        $body = '你的品牌导入已完成并有 ' . number_format($import->successful_rows) . ' 行记录被导入。';
+
+        if ($failedRowsCount = $import->getFailedRowsCount()) {
+            $body .= ' ' . number_format($failedRowsCount) . '行导入失败。';
         }
+
+        return $body;
+    }
+
+    public function resolveRecord(): ?Brand
+    {
+        // return Device::firstOrNew([
+        //     // Update existing records, matching them by `$this->data['column_name']`
+        //     'email' => $this->data['email'],
+        // ]);
+
+        return new Brand();
     }
 }

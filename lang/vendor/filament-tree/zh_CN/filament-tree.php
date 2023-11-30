@@ -2,7 +2,7 @@
 
 return [
     'root' => '根',
-    
+
     /*
         |--------------------------------------------------------------------------
         | Buttons
@@ -20,7 +20,7 @@ return [
     'components.tree.buttons.select_all.label' => '选择全部',
     'components.tree.buttons.deselect_all.label' => '取消全选',
     'components.tree.buttons.expand_all.label' => '全部展开',
-    'components.tree.buttons.collapse_all.label' => '全部折叠',    
+    'components.tree.buttons.collapse_all.label' => '全部折叠',
     /*
         |--------------------------------------------------------------------------
         | Message

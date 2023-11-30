@@ -2,9 +2,9 @@
 
 namespace App\Utils;
 
-use App\Models\Information\Device;
-use App\Models\Information\Part;
-use App\Models\Information\Software;
+use App\Models\Device;
+use App\Models\Part;
+use App\Models\Software;
 
 class AssetUtil
 {

@@ -15,8 +15,8 @@
             'filament-forms-tree-component py-2 px-5 bg-white border border-gray-300 rounded-xl shadow-sm',
             'dark:bg-gray-500/10' => config('forms.dark_mode'),
         ]) }}
-        wire:ignore 
-        x-data="{
+         wire:ignore
+         x-data="{
 
             areAllCheckboxesChecked: false,
 

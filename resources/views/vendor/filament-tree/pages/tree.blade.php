@@ -4,7 +4,7 @@
     ];
 @endphp
 <x-filament::page class="filament-tree-page">
-    <x-filament::grid 
+    <x-filament::grid
         :default="$columns['default']"
         class="gap-4"
     >

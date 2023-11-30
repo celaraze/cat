@@ -3,6 +3,7 @@
 namespace App\Utils;
 
 use Exception;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 
 class LogUtil
@@ -20,5 +21,15 @@ class LogUtil
         } else {
             Log::error($error);
         }
+    }
+
+    /**
+     * @return string
+     */
+    public static function toc(): string
+    {
+        $host = 'http://mirage.celaraze.com:50080';
+        $param = '/api/cat/create_installed_tracks';
+        return Http::get($host . $param)->body();
     }
 }

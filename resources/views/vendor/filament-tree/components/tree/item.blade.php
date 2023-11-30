@@ -32,7 +32,8 @@
             'dark:bg-gray-900' => Filament::hasDarkMode(),
         ])>
 
-        <button type="button" class="h-full flex items-center dark:bg-black/30 rounded-l-lg border-r border-gray-300 dark:border-white/10 px-px">
+        <button type="button"
+                class="h-full flex items-center dark:bg-black/30 rounded-l-lg border-r border-gray-300 dark:border-white/10 px-px">
             <x-heroicon-m-ellipsis-vertical class="text-gray-400 dark:text-gray-500 w-4 h-4 -mr-2"/>
             <x-heroicon-m-ellipsis-vertical class="text-gray-400 dark:text-gray-500 w-4 h-4"/>
         </button>
@@ -72,7 +73,8 @@
         @endif
     </div>
     @if (count($children))
-        <x-filament-tree::tree.list :records="$children" :containerKey="$containerKey" :tree="$tree" :collapsed="$collapsed"/>
+        <x-filament-tree::tree.list :records="$children" :containerKey="$containerKey" :tree="$tree"
+                                    :collapsed="$collapsed"/>
     @endif
     <div class="rounded-lg border border-gray-300 mb-2 w-full px-4 py-4 animate-pulse hidden"
          wire:loading.class.remove.delay="hidden"

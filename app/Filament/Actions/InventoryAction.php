@@ -3,11 +3,11 @@
 namespace App\Filament\Actions;
 
 use App\Filament\Resources\InventoryResource;
-use App\Models\Information\Device;
-use App\Models\Information\Part;
-use App\Models\Information\Software;
+use App\Models\Device;
 use App\Models\Inventory;
 use App\Models\InventoryHasTrack;
+use App\Models\Part;
+use App\Models\Software;
 use App\Services\InventoryService;
 use App\Utils\LogUtil;
 use App\Utils\NotificationUtil;

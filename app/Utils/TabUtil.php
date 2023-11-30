@@ -16,10 +16,10 @@ class TabUtil
         return [
             'devices' => Tab::make('设备')
                 ->icon('heroicon-o-cube')
-                ->url('/information/devices?from'),
+                ->url('/devices?from'),
             'device-categories' => Tab::make('分类')
                 ->icon('heroicon-m-square-3-stack-3d')
-                ->url('/information/device-categories'),
+                ->url('/device-categories'),
         ];
     }
 
@@ -33,10 +33,10 @@ class TabUtil
         return [
             'parts' => Tab::make('配件')
                 ->icon('heroicon-o-cube')
-                ->url('/information/parts'),
+                ->url('/parts'),
             'part-categories' => Tab::make('分类')
                 ->icon('heroicon-m-square-3-stack-3d')
-                ->url('/information/part-categories'),
+                ->url('/part-categories'),
         ];
     }
 
@@ -50,10 +50,10 @@ class TabUtil
         return [
             'software' => Tab::make('软件')
                 ->icon('heroicon-o-cube')
-                ->url('/information/software'),
+                ->url('/software'),
             'software-categories' => Tab::make('分类')
                 ->icon('heroicon-m-square-3-stack-3d')
-                ->url('/information/software-categories'),
+                ->url('/software-categories'),
         ];
     }
 }

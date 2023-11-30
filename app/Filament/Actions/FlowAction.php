@@ -28,28 +28,59 @@ class FlowAction
      * @param Model $flow
      * @return Action
      */
-    public static function createNode(Model $flow): Action
+    public static function createHasNode(Model $flow): Action
     {
-        return Action::make('追加节点')->form(FlowForm::createNode())
+        /* @var $flow Flow */
+        return Action::make('追加节点')
+            ->icon('heroicon-s-user-plus')
+            ->form(FlowForm::createNode())
             ->action(function (array $data, FlowHasNode $node) use ($flow): void {
-                $flow_has_node_service = new FlowHasNodeService($node);
-                $is_last_node = $flow_has_node_service->isLastNode();
-                if (!$is_last_node) {
-                    NotificationUtil::make(false, '该节点不是最终节点，请在最终节点后追加');
-                } elseif (empty($data['user_id']) && empty($data['role_id'])) {
-                    NotificationUtil::make(false, '流程审批类型不能为空，必须选择用户或者角色');
+                if ($flow->activeForms()) {
+                    NotificationUtil::make(false, '创建失败，仍有此流程的表单没有结束');
                 } else {
-                    $data = [
-                        'name' => $data['name'],
-                        'flow_id' => $flow->getKey(),
-                        'user_id' => $data['user_id'] ?? 0,
-                        'role_id' => $data['role_id'] ?? 0,
-                        'parent_node_id' => $node->getKey()
-                    ];
-                    $flow_has_node_service->create($data);
-                    NotificationUtil::make(true, '节点追加成功');
+                    $flow_has_node_service = new FlowHasNodeService($node);
+                    $is_last_node = $flow_has_node_service->isLastNode();
+                    if (!$is_last_node) {
+                        NotificationUtil::make(false, '该节点不是最终节点，请在最终节点后追加');
+                    } elseif (empty($data['user_id']) && empty($data['role_id'])) {
+                        NotificationUtil::make(false, '流程审批类型不能为空，必须选择用户或者角色');
+                    } else {
+                        $data = [
+                            'name' => $data['name'],
+                            'flow_id' => $flow->getKey(),
+                            'user_id' => $data['user_id'] ?? 0,
+                            'role_id' => $data['role_id'] ?? 0,
+                            'parent_node_id' => $node->getKey()
+                        ];
+                        $flow_has_node_service = new FlowHasNodeService();
+                        $flow_has_node_service->create($data);
+                        NotificationUtil::make(true, '节点追加成功');
+                    }
                 }
-            })->icon('heroicon-s-user-plus');
+            });
+    }
+
+    /**
+     * 删除节点.
+     *
+     * @param Flow $flow
+     * @return Action
+     */
+    public static function deleteHasNode(Model $flow): Action
+    {
+        /* @var $flow Flow */
+        return Action::make('删除')
+            ->color('danger')
+            ->icon('heroicon-s-trash')
+            ->requiresConfirmation()
+            ->action(function (FlowHasNode $node) use ($flow) {
+                if ($flow->activeForms()) {
+                    NotificationUtil::make(false, '删除失败，仍有此流程的表单没有结束');
+                } else {
+                    $node->delete();
+                    NotificationUtil::make(true, '成功删除节点');
+                }
+            });
     }
 
     /**
@@ -60,10 +91,10 @@ class FlowAction
      */
     public static function deleteHasNodeWithAll(Model $flow): Action
     {
+        /* @var $flow Flow */
         return Action::make('清空节点')
             ->requiresConfirmation()
             ->action(function () use ($flow) {
-                /* @var $flow Flow */
                 if ($flow->activeForms()) {
                     NotificationUtil::make(false, '删除失败，仍有此流程的表单没有结束');
                 } else {
