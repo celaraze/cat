@@ -15,8 +15,6 @@ class SoftwareCategory extends Model
 
     /**
      * 模型到服务.
-     *
-     * @return SoftwareCategoryService
      */
     public function service(): SoftwareCategoryService
     {

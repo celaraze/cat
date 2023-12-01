@@ -12,6 +12,7 @@ use App\Filament\Resources\SoftwareResource\Pages\View;
 use App\Filament\Resources\SoftwareResource\RelationManagers\HasSoftwareRelationManager;
 use App\Http\Middleware\FilamentLockTab;
 use App\Models\Software;
+use App\Services\SoftwareService;
 use Filament\Forms\Form;
 use Filament\Infolists\Components\Grid;
 use Filament\Infolists\Components\Group;
@@ -82,7 +83,9 @@ class SoftwareResource extends Resource
             ->actions([
                 Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
-                SoftwareAction::createFlowHasFormForDeletingSoftware(),
+                SoftwareAction::createFlowHasFormForDeletingSoftware()
+                    ->visible(SoftwareService::isSetDeleteFlow()),
+                SoftwareAction::deleteSoftware(),
             ])
             ->bulkActions([
 
@@ -99,8 +102,11 @@ class SoftwareResource extends Resource
                 Tables\Actions\ActionGroup::make([
                     SoftwareAction::setAssetNumberRule(),
                     SoftwareAction::resetAssetNumberRule(),
-                    SoftwareAction::setSoftwareDeleteFlowId(),
+                    SoftwareAction::setSoftwareDeleteFlowId()
                 ])
+                    ->label('高级')
+                    ->icon('heroicon-m-cog-8-tooth')
+                    ->button(),
             ]);
     }
 
@@ -127,7 +133,7 @@ class SoftwareResource extends Resource
                                         TextEntry::make('name')
                                             ->label('名称'),
                                         TextEntry::make('category.name')
-                                            ->label('分类')
+                                            ->label('分类'),
                                     ]),
                                     Group::make([
                                         TextEntry::make('sn')
@@ -136,18 +142,18 @@ class SoftwareResource extends Resource
                                             ->label('品牌'),
                                         TextEntry::make('specification')
                                             ->label('规格'),
-                                    ])
-                                ])
-                        ])
-                    ])
+                                    ]),
+                                ]),
+                        ]),
+                    ]),
             ])->columnSpan(['lg' => 2]),
             Group::make()->schema([
                 Section::make()
                     ->schema([
                         ImageEntry::make('image')
                             ->disk('public')
-                            ->label('照片')
-                    ])
+                            ->label('照片'),
+                    ]),
             ])->columnSpan(['lg' => 1]),
         ])->columns(3);
     }
@@ -155,7 +161,7 @@ class SoftwareResource extends Resource
     public static function getRelations(): array
     {
         return [
-            HasSoftwareRelationManager::make()
+            HasSoftwareRelationManager::make(),
         ];
     }
 

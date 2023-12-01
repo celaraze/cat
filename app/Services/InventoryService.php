@@ -28,7 +28,7 @@ class InventoryService
             DB::beginTransaction();
             $model = $data['class_name'];
             $model_ids = $data['model_ids'];
-            if (!count($model_ids)) {
+            if (! count($model_ids)) {
                 $model_ids = $model::query()->pluck('id')->toArray();
             }
             $this->inventory->setAttribute('name', $data['name']);
@@ -47,7 +47,7 @@ class InventoryService
             DB::commit();
         } catch (Exception $exception) {
             DB::rollBack();
-            throw  $exception;
+            throw $exception;
         }
     }
 

@@ -13,8 +13,6 @@ class AssetNumberRule extends Model
 
     /**
      * 模型到服务.
-     *
-     * @return AssetNumberRuleService
      */
     public function service(): AssetNumberRuleService
     {

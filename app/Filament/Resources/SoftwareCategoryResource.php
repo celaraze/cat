@@ -44,7 +44,7 @@ class SoftwareCategoryResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('name')
-                    ->label('名称')
+                    ->label('名称'),
             ])
             ->filters([
                 Tables\Filters\TrashedFilter::make(),
@@ -71,7 +71,7 @@ class SoftwareCategoryResource extends Resource
                     ->label('导入'),
                 ExportAction::make()
                     ->label('导出'),
-                SoftwareAction::createSoftwareCategory()
+                SoftwareAction::createSoftwareCategory(),
             ]);
     }
 

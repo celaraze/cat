@@ -18,8 +18,6 @@ class Device extends Model
 
     /**
      * 一对一，设备属于一个分类.
-     *
-     * @return BelongsTo
      */
     public function category(): BelongsTo
     {
@@ -28,8 +26,6 @@ class Device extends Model
 
     /**
      * 一对一，设备属于一个品牌.
-     *
-     * @return BelongsTo
      */
     public function brand(): BelongsTo
     {
@@ -38,8 +34,6 @@ class Device extends Model
 
     /**
      * 远程一对一，设备有一个管理者.
-     *
-     * @return HasManyThrough
      */
     public function users(): HasManyThrough
     {
@@ -55,8 +49,6 @@ class Device extends Model
 
     /**
      * 远程一对多，设备有很多个配件.
-     *
-     * @return HasManyThrough
      */
     public function parts(): HasManyThrough
     {
@@ -72,8 +64,6 @@ class Device extends Model
 
     /**
      * 远程一对多，设备有很多个配件.
-     *
-     * @return HasManyThrough
      */
     public function software(): HasManyThrough
     {
@@ -89,8 +79,6 @@ class Device extends Model
 
     /**
      * 一对多，设备有很多配件管理记录.
-     *
-     * @return HasMany
      */
     public function hasParts(): HasMany
     {
@@ -99,8 +87,6 @@ class Device extends Model
 
     /**
      * 一对多，设备有很多软件管理记录.
-     *
-     * @return HasMany
      */
     public function hasSoftware(): HasMany
     {
@@ -109,8 +95,6 @@ class Device extends Model
 
     /**
      * 一对多，设备有很多用户管理记录.
-     *
-     * @return HasMany
      */
     public function hasUsers(): HasMany
     {
@@ -119,8 +103,6 @@ class Device extends Model
 
     /**
      * 模型到服务.
-     *
-     * @return DeviceService
      */
     public function service(): DeviceService
     {

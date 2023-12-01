@@ -10,24 +10,19 @@ class FlowProgressChart extends ApexChartWidget
 {
     /**
      * Chart Id
-     *
-     * @var string
      */
     protected static string $chartId = 'flowProgressChart';
 
     /**
      * Widget Title
-     *
-     * @var string|null
      */
     protected static ?string $heading = '流程路径';
+
     protected static ?string $pollingInterval = null;
 
     /**
      * Chart options (series, labels, types, size, animations...)
      * https://apexcharts.com/docs/options
-     *
-     * @return array
      */
     protected function getOptions(): array
     {
@@ -35,14 +30,15 @@ class FlowProgressChart extends ApexChartWidget
         $flow_has_form_service = new FlowHasFormService();
         $flow_has_form_service->setFlowHasFormByFormId($form_id);
         $nodes = $flow_has_form_service->sortNodes();
+
         return [
             'chart' => [
                 'type' => 'heatmap',
                 'height' => 80,
                 'width' => '90%',
                 'toolbar' => [
-                    'show' => false
-                ]
+                    'show' => false,
+                ],
             ],
             'series' => [
                 ['data' => $nodes['id']],
@@ -67,8 +63,8 @@ class FlowProgressChart extends ApexChartWidget
             ],
             'colors' => ['#3B82F6'],
             'tooltip' => [
-                'enabled' => false
-            ]
+                'enabled' => false,
+            ],
         ];
     }
 }

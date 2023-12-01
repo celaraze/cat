@@ -34,9 +34,10 @@ class View extends ViewRecord
                             return true;
                         }
                     }
+
                     return false;
                 }),
-            CommonAction::back($this->getResource())
+            CommonAction::back($this->getResource()),
         ];
     }
 }

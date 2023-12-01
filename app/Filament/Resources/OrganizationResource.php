@@ -66,9 +66,9 @@ class OrganizationResource extends Resource
                                         TextEntry::make('name')
                                             ->label('名称'),
                                     ]),
-                                ])
-                        ])
-                    ])
+                                ]),
+                        ]),
+                    ]),
             ])->columnSpan(['lg' => 3]),
         ])->columns(3);
     }
@@ -76,7 +76,7 @@ class OrganizationResource extends Resource
     public static function getRelations(): array
     {
         return [
-            HasUserRelationManager::make()
+            HasUserRelationManager::make(),
         ];
     }
 

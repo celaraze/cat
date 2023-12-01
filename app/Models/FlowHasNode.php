@@ -16,8 +16,6 @@ class FlowHasNode extends Model
 
     /**
      * 一对一，节点有一个工作流.
-     *
-     * @return BelongsTo
      */
     public function flow(): BelongsTo
     {
@@ -26,8 +24,6 @@ class FlowHasNode extends Model
 
     /**
      * 一对一，节点属于一个父节点.
-     *
-     * @return BelongsTo
      */
     public function parentNode(): BelongsTo
     {
@@ -36,8 +32,6 @@ class FlowHasNode extends Model
 
     /**
      * 一对一，节点有一个子节点.
-     *
-     * @return HasOne
      */
     public function childNode(): HasOne
     {
@@ -46,20 +40,19 @@ class FlowHasNode extends Model
 
     /**
      * 查询访问器，节点审批类型.
-     *
-     * @return Attribute
      */
     protected function type(): Attribute
     {
         return Attribute::make(
             get: function () {
                 if ($this->getAttribute('user_id')) {
-                    $name = '用户：' . User::query()->where('id', $this->getAttribute('user_id'))->value('name');
-                } elseif (!$this->getAttribute('user_id') && !$this->getAttribute('role_id')) {
+                    $name = '用户：'.User::query()->where('id', $this->getAttribute('user_id'))->value('name');
+                } elseif (! $this->getAttribute('user_id') && ! $this->getAttribute('role_id')) {
                     $name = '申请人';
                 } else {
-                    $name = '角色：' . Role::query()->where('id', $this->getAttribute('role_id'))->value('name');
+                    $name = '角色：'.Role::query()->where('id', $this->getAttribute('role_id'))->value('name');
                 }
+
                 return $name;
             }
         );

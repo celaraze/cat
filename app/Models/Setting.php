@@ -12,8 +12,6 @@ class Setting extends Model
 
     /**
      * 模型到服务.
-     *
-     * @return SettingService
      */
     public function service(): SettingService
     {

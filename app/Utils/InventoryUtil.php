@@ -6,9 +6,6 @@ class InventoryUtil
 {
     /**
      * 盘点字段映射.
-     *
-     * @param int $check
-     * @return string
      */
     public static function mapper(int $check): string
     {
@@ -17,6 +14,7 @@ class InventoryUtil
             1 => '在库',
             2 => '标记缺失',
         ];
+
         return $data[$check] ?? '无';
     }
 }

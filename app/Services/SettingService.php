@@ -19,10 +19,6 @@ class SettingService
 
     /**
      * 写入配置.
-     *
-     * @param string $key
-     * @param string $value
-     * @return void
      */
     public function set(string $key, string $value): void
     {

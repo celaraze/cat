@@ -21,8 +21,6 @@ class DeviceHasSoftwareService
     /**
      * 删除软件管理记录.
      *
-     * @param array $data
-     * @return void
      * @throws Exception
      */
     public function delete(array $data): void
@@ -36,14 +34,13 @@ class DeviceHasSoftwareService
 
     /**
      * 判断是否已经删除的记录.
-     *
-     * @return bool
      */
     public function isDeleted(): bool
     {
         if ($this->device_has_software->getAttribute('deleted_at')) {
             return true;
         }
+
         return false;
     }
 }

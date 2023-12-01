@@ -18,8 +18,6 @@ class OrganizationAction
 {
     /**
      * 编辑组织按钮.
-     *
-     * @return \SolutionForest\FilamentTree\Actions\Action
      */
     public static function updateOrganization(): \SolutionForest\FilamentTree\Actions\Action
     {
@@ -45,8 +43,6 @@ class OrganizationAction
 
     /**
      * 创建组织按钮.
-     *
-     * @return Action
      */
     public static function createOrganization(): Action
     {
@@ -68,8 +64,6 @@ class OrganizationAction
 
     /**
      * 删除组织按钮.
-     *
-     * @return \SolutionForest\FilamentTree\Actions\Action
      */
     public static function deleteOrganization(): \SolutionForest\FilamentTree\Actions\Action
     {
@@ -91,9 +85,6 @@ class OrganizationAction
 
     /**
      * 新增组织用户记录.
-     *
-     * @param Model|null $out_organization
-     * @return \Filament\Tables\Actions\Action
      */
     public static function createHasUser(Model $out_organization = null): \Filament\Tables\Actions\Action
     {
@@ -105,7 +96,7 @@ class OrganizationAction
                     ->label('成员')
                     ->options(UserService::pluckOptions('id', UserService::existHasUserIds()))
                     ->multiple()
-                    ->searchable()
+                    ->searchable(),
             ])
             ->action(function (array $data, Organization $organization) use ($out_organization) {
                 try {
@@ -124,8 +115,6 @@ class OrganizationAction
 
     /**
      * 删除组织用户记录.
-     *
-     * @return \Filament\Tables\Actions\Action
      */
     public static function deleteHasUser(): \Filament\Tables\Actions\Action
     {

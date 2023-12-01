@@ -8,9 +8,6 @@ class CommonAction
 {
     /**
      * 返回列表页面.
-     *
-     * @param string $resource
-     * @return Action
      */
     public static function back(string $resource): Action
     {

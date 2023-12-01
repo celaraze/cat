@@ -27,8 +27,6 @@ class DeviceService
 
     /**
      * 选单.
-     *
-     * @return Collection
      */
     public static function pluckOptions(): Collection
     {
@@ -36,9 +34,20 @@ class DeviceService
     }
 
     /**
-     * 判断设备分配记录是否存在.
+     * 判断是否配置报废流程.
      *
      * @return bool
+     */
+    public static function isSetDeleteFlow(): bool
+    {
+        return Setting::query()
+            ->where('custom_key', 'device_delete_flow_id')
+            ->count();
+
+    }
+
+    /**
+     * 判断设备分配记录是否存在.
      */
     public function isExistHasUser(): bool
     {
@@ -47,9 +56,6 @@ class DeviceService
 
     /**
      * 创建设备-用户记录.
-     *
-     * @param array $data
-     * @return Model
      */
     public function createHasUser(array $data): Model
     {
@@ -59,8 +65,6 @@ class DeviceService
     /**
      * 新增设备.
      *
-     * @param array $data
-     * @return void
      * @throws Exception
      */
     public function create(array $data): void
@@ -74,12 +78,12 @@ class DeviceService
                 ->first();
             if ($asset_number_rule) {
                 $asset_number_rule = new AssetNumberRule($asset_number_rule->toArray());
-            }
-            // 如果绑定了自动生成规则并且启用
-            if ($asset_number_rule->getAttribute('is_auto')) {
-                $asset_number_rule_service = new AssetNumberRuleService($asset_number_rule);
-                $asset_number = $asset_number_rule_service->generate();
-                $asset_number_rule_service->addAutoIncrementCount();
+                // 如果绑定了自动生成规则并且启用
+                if ($asset_number_rule->getAttribute('is_auto')) {
+                    $asset_number_rule_service = new AssetNumberRuleService($asset_number_rule);
+                    $asset_number = $asset_number_rule_service->generate();
+                    $asset_number_rule_service->addAutoIncrementCount();
+                }
             }
             AssetNumberTrackService::create($asset_number);
             $this->device->setAttribute('asset_number', $asset_number);
@@ -102,8 +106,6 @@ class DeviceService
     /**
      * 创建设备-配件记录.
      *
-     * @param array $data
-     * @return Model
      * @throws Exception
      */
     public function createHasPart(array $data): Model
@@ -111,14 +113,13 @@ class DeviceService
         if ($this->device->hasParts()->where('part_id', $data['part_id'])->count()) {
             throw new Exception('配件已经附加到此设备');
         }
+
         return $this->device->hasParts()->create($data);
     }
 
     /**
      * 创建设备-软件记录.
      *
-     * @param array $data
-     * @return Model
      * @throws Exception
      */
     public function createHasSoftware(array $data): Model
@@ -126,18 +127,17 @@ class DeviceService
         if ($this->device->hasSoftware()->where('software_id', $data['software_id'])->count()) {
             throw new Exception('软件已经附加到此设备');
         }
+
         return $this->device->hasSoftware()->create($data);
     }
 
     /**
      * 删除设备-用户记录.
-     *
-     * @param array $data
-     * @return int
      */
     public function deleteHasUser(array $data): int
     {
         $this->device->hasUsers()->first()->update(['delete_comment' => $data['delete_comment']]);
+
         return $this->device->hasUsers()->delete();
     }
 
@@ -176,10 +176,12 @@ class DeviceService
         if (!$flow_id) {
             throw new Exception('还未配置设备报废流程');
         }
-        $flow = Flow::query()->where('id', $flow_id)->first();
+        $flow = Flow::query()
+            ->where('id', $flow_id)->first();
         if (!$flow) {
             throw new Exception('未找到已配置的设备报废流程');
         }
+
         return $flow;
     }
 }

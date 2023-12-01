@@ -19,9 +19,6 @@ class VendorHasContactService
 
     /**
      * 创建供应商联系人.
-     *
-     * @param array $data
-     * @return VendorHasContact
      */
     public function create(array $data): VendorHasContact
     {
@@ -30,6 +27,7 @@ class VendorHasContactService
         $this->vendor_has_contact->setAttribute('phone_number', $data['phone_number']);
         $this->vendor_has_contact->setAttribute('email', $data['email']);
         $this->vendor_has_contact->save();
+
         return $this->vendor_has_contact;
     }
 }

@@ -17,8 +17,6 @@ class FlowHasForm extends Model
 
     /**
      * 一对一，表单有一个工作流.
-     *
-     * @return BelongsTo
      */
     public function flow(): BelongsTo
     {
@@ -27,8 +25,6 @@ class FlowHasForm extends Model
 
     /**
      * 一对一，表单有一个申请人.
-     *
-     * @return BelongsTo
      */
     public function applicantUser(): BelongsTo
     {
@@ -37,8 +33,6 @@ class FlowHasForm extends Model
 
     /**
      * 一对一，表单有一个审批人.
-     *
-     * @return BelongsTo
      */
     public function approveUser(): BelongsTo
     {
@@ -47,8 +41,6 @@ class FlowHasForm extends Model
 
     /**
      * 一对多，表单所有历史记录.
-     *
-     * @return HasMany
      */
     public function forms(): HasMany
     {
@@ -57,8 +49,6 @@ class FlowHasForm extends Model
 
     /**
      * 一对一，表单有一个流程节点.
-     *
-     * @return HasOne
      */
     public function node(): HasOne
     {
@@ -67,8 +57,6 @@ class FlowHasForm extends Model
 
     /**
      * 查询访问器，节点审批类型.
-     *
-     * @return Attribute
      */
     // TODO 这个可以从表格字段重写中完成
     protected function type(): Attribute
@@ -76,12 +64,13 @@ class FlowHasForm extends Model
         return Attribute::make(
             get: function () {
                 if ($this->getAttribute('current_approve_user_id')) {
-                    $name = '用户：' . User::query()->where('id', $this->getAttribute('current_approve_user_id'))->value('name');
-                } elseif (!$this->getAttribute('current_approve_user_id') && !$this->getAttribute('current_approve_role_id')) {
+                    $name = '用户：'.User::query()->where('id', $this->getAttribute('current_approve_user_id'))->value('name');
+                } elseif (! $this->getAttribute('current_approve_user_id') && ! $this->getAttribute('current_approve_role_id')) {
                     $name = '申请人';
                 } else {
-                    $name = '角色：' . Role::query()->where('id', $this->getAttribute('current_approve_role_id'))->value('name');
+                    $name = '角色：'.Role::query()->where('id', $this->getAttribute('current_approve_role_id'))->value('name');
                 }
+
                 return $name;
             }
         );
@@ -89,14 +78,13 @@ class FlowHasForm extends Model
 
     /**
      * 查询访问器，状态文本.
-     *
-     * @return Attribute
      */
     protected function formStatusText(): Attribute
     {
         return Attribute::make(
             get: function () {
                 $status = $this->getAttribute('status');
+
                 return match ($status) {
                     0 => '待提交',
                     1, 2 => '审批中',
@@ -109,14 +97,13 @@ class FlowHasForm extends Model
 
     /**
      * 查询访问器，状态文本.
-     *
-     * @return Attribute
      */
     protected function nodeStatusText(): Attribute
     {
         return Attribute::make(
             get: function () {
                 $status = $this->getAttribute('status');
+
                 return match ($status) {
                     0 => '草稿',
                     1 => '同意',

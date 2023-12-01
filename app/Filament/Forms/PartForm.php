@@ -17,8 +17,6 @@ class PartForm
 {
     /**
      * 创建或者编辑设备的表单。
-     *
-     * @return array
      */
     public static function createOrEditPart(): array
     {
@@ -28,7 +26,7 @@ class PartForm
                 ->maxLength(255)
                 ->label('资产编号')
                 ->required(function () {
-                    return !AssetNumberRuleService::isAuto(Part::class);
+                    return ! AssetNumberRuleService::isAuto(Part::class);
                 })
                 ->readOnly(function () {
                     return AssetNumberRuleService::isAuto(Part::class);
@@ -76,7 +74,7 @@ class PartForm
                 ->directory('parts')
                 ->getUploadedFileNameForStorageUsing(
                     function (TemporaryUploadedFile $file) {
-                        return Uuid::uuid4() . '.' . $file->getClientOriginalExtension();
+                        return Uuid::uuid4().'.'.$file->getClientOriginalExtension();
                     }
                 ),
             //endregion

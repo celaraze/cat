@@ -60,12 +60,14 @@ class InventoryResource extends Resource
                         $array_filter = array_filter($checks, function ($value) {
                             return $value != 0;
                         });
+
                         return count($array_filter);
                     }),
                 Tables\Columns\TextColumn::make('hasTracks.asset_number')
                     ->label('资产总数')
                     ->formatStateUsing(function (string $state) {
                         $asset_numbers = explode(',', $state);
+
                         return count($asset_numbers);
                     }),
             ])
@@ -83,7 +85,7 @@ class InventoryResource extends Resource
                 ]),
             ])
             ->headerActions([
-                InventoryAction::createInventory()
+                InventoryAction::createInventory(),
             ]);
     }
 
@@ -106,17 +108,17 @@ class InventoryResource extends Resource
                                                 return AssetUtil::mapper($state);
                                             })
                                             ->label('资产'),
-                                    ])
-                                ])
-                        ])
-                    ])
+                                    ]),
+                                ]),
+                        ]),
+                    ]),
             ])->columnSpan(['lg' => 2]),
             Group::make()->schema([
                 Section::make()
                     ->schema([
                         TextEntry::make('user.name')
-                            ->label('创建人')
-                    ])
+                            ->label('创建人'),
+                    ]),
             ])->columnSpan(['lg' => 1]),
         ])->columns(3);
     }
@@ -124,7 +126,7 @@ class InventoryResource extends Resource
     public static function getRelations(): array
     {
         return [
-            RelationManagers\HasTrackRelationManager::make()
+            RelationManagers\HasTrackRelationManager::make(),
         ];
     }
 

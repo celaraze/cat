@@ -65,13 +65,15 @@ class HasUserRelationManager extends RelationManager
                     ->visible(function () {
                         /* @var Device $device */
                         $device = $this->getOwnerRecord();
-                        return !$device->service()->isExistHasUser();
+
+                        return ! $device->service()->isExistHasUser();
                     }),
                 // 解除管理者
                 DeviceAction::deleteDeviceHasUser($this->getOwnerRecord())
                     ->visible(function () {
                         /* @var Device $device */
                         $device = $this->getOwnerRecord();
+
                         return $device->service()->isExistHasUser();
                     }),
             ])
@@ -84,7 +86,7 @@ class HasUserRelationManager extends RelationManager
             ->emptyStateActions([
 
             ])
-            ->modifyQueryUsing(fn(Builder $query) => $query->orderByDesc('created_at')
+            ->modifyQueryUsing(fn (Builder $query) => $query->orderByDesc('created_at')
                 ->withoutGlobalScopes([
                     SoftDeletingScope::class,
                 ]));

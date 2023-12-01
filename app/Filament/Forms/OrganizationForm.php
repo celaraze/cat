@@ -8,8 +8,6 @@ class OrganizationForm
 {
     /**
      * 创建和编辑组织表单.
-     *
-     * @return array
      */
     public static function createOrganization(): array
     {

@@ -13,8 +13,6 @@ class BrandAction
 {
     /**
      * 创建品牌.
-     *
-     * @return Action
      */
     public static function createBrand(): Action
     {

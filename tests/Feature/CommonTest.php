@@ -12,6 +12,6 @@ class CommonTest extends TestCase
     public function test_example(): void
     {
         $test = '12312313';
-        dd($test == !null);
+        dd($test == ! null);
     }
 }

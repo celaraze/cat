@@ -10,9 +10,6 @@ class AssetUtil
 {
     /**
      * 类和名称映射关系.
-     *
-     * @param string $class_name
-     * @return string
      */
     public static function mapper(string $class_name): string
     {
@@ -21,6 +18,7 @@ class AssetUtil
             Part::class => '配件',
             Software::class => '软件',
         ];
+
         return $data[$class_name] ?? '无';
     }
 }

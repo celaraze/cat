@@ -49,7 +49,7 @@ class HasPartRelationManager extends RelationManager
                 Tables\Columns\TextColumn::make('updated_at')
                     ->label('操作时间'),
                 Tables\Columns\TextColumn::make('user.name')
-                    ->label('操作人')
+                    ->label('操作人'),
             ])
             ->filters([
                 Tables\Filters\TrashedFilter::make(),
@@ -57,8 +57,8 @@ class HasPartRelationManager extends RelationManager
             ->actions([
                 DeviceAction::deleteDeviceHasPart()
                     ->visible(function (DeviceHasPart $device_has_part) {
-                        return !$device_has_part->service()->isDeleted();
-                    })
+                        return ! $device_has_part->service()->isDeleted();
+                    }),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -71,7 +71,7 @@ class HasPartRelationManager extends RelationManager
             ->emptyStateActions([
 
             ])
-            ->modifyQueryUsing(fn(Builder $query) => $query->orderByDesc('created_at')
+            ->modifyQueryUsing(fn (Builder $query) => $query->orderByDesc('created_at')
                 ->withoutGlobalScopes([
                     SoftDeletingScope::class,
                 ]));

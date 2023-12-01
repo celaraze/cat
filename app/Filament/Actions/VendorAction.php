@@ -13,9 +13,6 @@ class VendorAction
 {
     /**
      * 创建联系人按钮.
-     *
-     * @param string $vendor_id
-     * @return Action
      */
     public static function createVendorHasContact(string $vendor_id): Action
     {
@@ -31,7 +28,7 @@ class VendorAction
                     ->label('电话'),
                 TextInput::make('email')
                     ->maxLength(255)
-                    ->label('邮箱')
+                    ->label('邮箱'),
             ])
             ->action(function (array $data) use ($vendor_id) {
                 try {

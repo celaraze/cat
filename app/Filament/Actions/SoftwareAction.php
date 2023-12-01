@@ -24,8 +24,6 @@ class SoftwareAction
 {
     /**
      * 创建配件.
-     *
-     * @return Action
      */
     public static function createSoftware(): Action
     {
@@ -47,8 +45,6 @@ class SoftwareAction
 
     /**
      * 创建软件分类按钮.
-     *
-     * @return Action
      */
     public static function createSoftwareCategory(): Action
     {
@@ -74,9 +70,6 @@ class SoftwareAction
 
     /**
      * 创建软件-设备按钮.
-     *
-     * @param Model|null $out_software
-     * @return Action
      */
     public static function createDeviceHasSoftware(Model $out_software = null): Action
     {
@@ -85,7 +78,7 @@ class SoftwareAction
                 Select::make('device_id')
                     ->options(DeviceService::pluckOptions())
                     ->searchable()
-                    ->label('设备')
+                    ->label('设备'),
             ])
             ->action(function (array $data, Software $software) use ($out_software) {
                 try {
@@ -108,8 +101,6 @@ class SoftwareAction
 
     /**
      * 软件脱离设备按钮.
-     *
-     * @return Action
      */
     public static function deleteDeviceHasSoftware(): Action
     {
@@ -120,7 +111,7 @@ class SoftwareAction
                 try {
                     $data = [
                         'user_id' => auth()->id(),
-                        'status' => '脱离'
+                        'status' => '脱离',
                     ];
                     $device_has_software->service()->delete($data);
                     NotificationUtil::make(true, '软件已脱离设备');
@@ -133,8 +124,6 @@ class SoftwareAction
 
     /**
      * 绑定软件报废流程.
-     *
-     * @return Action
      */
     public static function setSoftwareDeleteFlowId(): Action
     {
@@ -143,7 +132,7 @@ class SoftwareAction
                 Select::make('flow_id')
                     ->options(FlowService::pluckOptions())
                     ->required()
-                    ->label('流程')
+                    ->label('流程'),
             ])
             ->action(function (array $data) {
                 try {
@@ -159,12 +148,10 @@ class SoftwareAction
 
     /**
      * 设置资产编号生成配置.
-     *
-     * @return Action
      */
     public static function setAssetNumberRule(): Action
     {
-        return Action::make('资产编号配置')
+        return Action::make('配置资产编号自动生成规则')
             ->form([
                 Select::make('asset_number_rule_id')
                     ->label('规则')
@@ -173,39 +160,34 @@ class SoftwareAction
                     ->default(AssetNumberRuleService::getAutoRule(Software::class)?->getAttribute('id')),
                 Checkbox::make('is_auto')
                     ->label('自动生成')
-                    ->default(AssetNumberRuleService::getAutoRule(Software::class)?->getAttribute('is_auto'))
+                    ->default(AssetNumberRuleService::getAutoRule(Software::class)?->getAttribute('is_auto')),
             ])
             ->action(function (array $data) {
                 $data['class_name'] = Software::class;
                 AssetNumberRuleService::setAutoRule($data);
-                NotificationUtil::make(true, '已选择规则');
+                NotificationUtil::make(true, '已配置资产编号自动生成规则');
             });
     }
 
     /**
      * 重置资产编号生成配置.
-     *
-     * @return Action
      */
     public static function resetAssetNumberRule(): Action
     {
-        return Action::make('重置资产编号配置')
+        return Action::make('清除资产编号自动生成规则')
             ->requiresConfirmation()
             ->action(function () {
                 AssetNumberRuleService::resetAutoRule(Software::class);
-                NotificationUtil::make(true, '已清除所有规则绑定关系');
+                NotificationUtil::make(true, '已清除编号自动生成规则');
             });
     }
 
-
     /**
      * 发起软件报废流程表单.
-     *
-     * @return Action
      */
     public static function createFlowHasFormForDeletingSoftware(): Action
     {
-        return Action::make('报废（流程）')
+        return Action::make('流程报废')
             ->form([
                 TextInput::make('comment')
                     ->label('说明')
@@ -217,11 +199,30 @@ class SoftwareAction
                     $flow_service = new FlowService($software_delete_flow);
                     $asset_number = $software->getAttribute('asset_number');
                     $flow_service->createHasForm(
-                        '配件报废单',
+                        '软件报废单',
                         $asset_number . ' 报废处理',
                         $asset_number
                     );
                     NotificationUtil::make(true, '已创建表单');
+                } catch (Exception $exception) {
+                    LogUtil::error($exception);
+                    NotificationUtil::make(false, $exception);
+                }
+            });
+    }
+
+    /**
+     * 强制报废按钮.
+     */
+    public static function deleteSoftware(): Action
+    {
+        return Action::make('强制报废')
+            ->requiresConfirmation()
+            ->icon('heroicon-m-archive-box-x-mark')
+            ->action(function (array $data, Software $software) {
+                try {
+                    $software->service()->delete();
+                    NotificationUtil::make(true, '已报废');
                 } catch (Exception $exception) {
                     LogUtil::error($exception);
                     NotificationUtil::make(false, $exception);

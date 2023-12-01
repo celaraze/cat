@@ -27,8 +27,6 @@ class SoftwareService
 
     /**
      * 选单.
-     *
-     * @return Collection
      */
     public static function pluckOptions(): Collection
     {
@@ -36,10 +34,21 @@ class SoftwareService
     }
 
     /**
+     * 判断是否配置报废流程.
+     *
+     * @return bool
+     */
+    public static function isSetDeleteFlow(): bool
+    {
+        return Setting::query()
+            ->where('custom_key', 'software_delete_flow_id')
+            ->count();
+
+    }
+
+    /**
      * 创建设备-配件关联.
      *
-     * @param array $data
-     * @return Model
      * @throws Exception
      */
     public function createHasSoftware(array $data): Model
@@ -47,14 +56,13 @@ class SoftwareService
         if ($this->software->hasSoftware()->where('device_id', $data['device_id'])->count()) {
             throw new Exception('软件已经附加到此设备');
         }
+
         return $this->software->hasSoftware()->create($data);
     }
 
     /**
      * 新增软件.
      *
-     * @param array $data
-     * @return void
      * @throws Exception
      */
     public function create(array $data): void
@@ -68,12 +76,12 @@ class SoftwareService
                 ->first();
             if ($asset_number_rule) {
                 $asset_number_rule = new AssetNumberRule($asset_number_rule->toArray());
-            }
-            // 如果绑定了自动生成规则并且启用
-            if ($asset_number_rule->getAttribute('is_auto')) {
-                $asset_number_rule_service = new AssetNumberRuleService($asset_number_rule);
-                $asset_number = $asset_number_rule_service->generate();
-                $asset_number_rule_service->addAutoIncrementCount();
+                // 如果绑定了自动生成规则并且启用
+                if ($asset_number_rule->getAttribute('is_auto')) {
+                    $asset_number_rule_service = new AssetNumberRuleService($asset_number_rule);
+                    $asset_number = $asset_number_rule_service->generate();
+                    $asset_number_rule_service->addAutoIncrementCount();
+                }
             }
             AssetNumberTrackService::create($asset_number);
             $this->software->setAttribute('asset_number', $asset_number);
@@ -129,6 +137,7 @@ class SoftwareService
         if (!$flow) {
             throw new Exception('未找到已配置的软件报废流程');
         }
+
         return $flow;
     }
 }

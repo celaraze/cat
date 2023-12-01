@@ -14,8 +14,6 @@ class OrganizationHasUser extends Model
 
     /**
      * 一对一，组织用户记录有一个用户.
-     *
-     * @return BelongsTo
      */
     public function user(): BelongsTo
     {
@@ -24,8 +22,6 @@ class OrganizationHasUser extends Model
 
     /**
      * 模型到服务.
-     *
-     * @return OrganizationHasUserService
      */
     public function service(): OrganizationHasUserService
     {

@@ -16,8 +16,6 @@ class DeviceHasSoftware extends Model
 
     /**
      * 一对一，软件记录有一个创建人.
-     *
-     * @return BelongsTo
      */
     public function user(): BelongsTo
     {
@@ -26,8 +24,6 @@ class DeviceHasSoftware extends Model
 
     /**
      * 一对一，软件记录有一个软件.
-     *
-     * @return BelongsTo
      */
     public function software(): BelongsTo
     {
@@ -36,8 +32,6 @@ class DeviceHasSoftware extends Model
 
     /**
      * 一对一，软件记录有一个设备.
-     *
-     * @return BelongsTo
      */
     public function device(): BelongsTo
     {
@@ -46,8 +40,6 @@ class DeviceHasSoftware extends Model
 
     /**
      * 模型到服务.
-     *
-     * @return DeviceHasSoftwareService
      */
     public function service(): DeviceHasSoftwareService
     {

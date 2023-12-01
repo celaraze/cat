@@ -60,7 +60,7 @@ class HasSoftwareRelationManager extends RelationManager
             ->actions([
                 SoftwareAction::deleteDeviceHasSoftware()
                     ->visible(function (DeviceHasSoftware $device_has_software) {
-                        return !$device_has_software->service()->isDeleted();
+                        return ! $device_has_software->service()->isDeleted();
                     }),
             ])
             ->bulkActions([
@@ -69,7 +69,7 @@ class HasSoftwareRelationManager extends RelationManager
             ->emptyStateActions([
 
             ])
-            ->modifyQueryUsing(fn(Builder $query) => $query->orderByDesc('created_at')
+            ->modifyQueryUsing(fn (Builder $query) => $query->orderByDesc('created_at')
                 ->withoutGlobalScopes([
                     SoftDeletingScope::class,
                 ]));

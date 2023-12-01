@@ -19,9 +19,6 @@ class InventoryHasTrackService
 
     /**
      * 盘点操作.
-     *
-     * @param array $data
-     * @return InventoryHasTrack
      */
     public function check(array $data): InventoryHasTrack
     {
@@ -29,13 +26,12 @@ class InventoryHasTrackService
         $this->inventory_has_track->setAttribute('user_id', auth()->id());
         $this->inventory_has_track->setAttribute('comment', $data['comment'] ?? '无');
         $this->inventory_has_track->save();
+
         return $this->inventory_has_track;
     }
 
     /**
      * 获取是否已经盘点过.
-     *
-     * @return mixed
      */
     public function isChecked(): mixed
     {

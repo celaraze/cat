@@ -22,8 +22,6 @@ class BrandService
 
     /**
      * 选单.
-     *
-     * @return Collection
      */
     public static function pluckOptions(): Collection
     {
@@ -32,9 +30,6 @@ class BrandService
 
     /**
      * 通过名称获取模型.
-     *
-     * @param string $brand_name
-     * @return Model|Builder|null
      */
     public static function getModelByName(string $brand_name): Model|Builder|null
     {
@@ -43,14 +38,12 @@ class BrandService
 
     /**
      * 创建信息资产品牌.
-     *
-     * @param array $data
-     * @return Brand
      */
     public function create(array $data): Brand
     {
         $this->brand->setAttribute('name', $data['name']);
         $this->brand->save();
+
         return $this->brand;
     }
 }

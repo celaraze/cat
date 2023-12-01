@@ -32,12 +32,12 @@ class Tree extends BasePage
                 ->icon('heroicon-m-users')
                 ->link()
                 ->action(function (Organization $organization) {
-                    $this->redirect('organizations/' . $organization->getKey());
+                    $this->redirect('organizations/'.$organization->getKey());
                 }),
             EditAction::make()
                 ->link(),
             DeleteAction::make()
-                ->link()
+                ->link(),
         ];
     }
 }

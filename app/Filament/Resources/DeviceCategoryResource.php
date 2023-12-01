@@ -25,6 +25,7 @@ class DeviceCategoryResource extends Resource
     protected static ?string $model = DeviceCategory::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+
     protected static string|array $routeMiddleware = FilamentLockTab::class;
 
     protected static ?string $modelLabel = '设备分类';
@@ -34,7 +35,7 @@ class DeviceCategoryResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('name')
-                    ->label('名称')
+                    ->label('名称'),
             ])
             ->filters([
                 Tables\Filters\TrashedFilter::make(),

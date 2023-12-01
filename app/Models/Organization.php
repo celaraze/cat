@@ -17,8 +17,6 @@ class Organization extends Model
 
     /**
      * 模型到服务.
-     *
-     * @return OrganizationService
      */
     public function service(): OrganizationService
     {
@@ -27,8 +25,6 @@ class Organization extends Model
 
     /**
      * 一对多，组织有很多用户记录.
-     *
-     * @return HasMany
      */
     public function hasUsers(): HasMany
     {

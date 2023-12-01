@@ -29,7 +29,7 @@ class Edit extends EditRecord
                             $this->halt();
                         }
                     }
-                })
+                }),
         ];
     }
 }
