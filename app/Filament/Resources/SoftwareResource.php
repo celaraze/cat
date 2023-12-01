@@ -12,10 +12,6 @@ use App\Filament\Resources\SoftwareResource\Pages\View;
 use App\Filament\Resources\SoftwareResource\RelationManagers\HasSoftwareRelationManager;
 use App\Http\Middleware\FilamentLockTab;
 use App\Models\Software;
-use App\Services\AssetNumberRuleService;
-use App\Utils\NotificationUtil;
-use Filament\Forms\Components\Checkbox;
-use Filament\Forms\Components\Select;
 use Filament\Forms\Form;
 use Filament\Infolists\Components\Grid;
 use Filament\Infolists\Components\Group;
@@ -86,14 +82,12 @@ class SoftwareResource extends Resource
             ->actions([
                 Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
+                SoftwareAction::createFlowHasFormForDeletingSoftware(),
             ])
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                    Tables\Actions\ForceDeleteBulkAction::make(),
-                    Tables\Actions\RestoreBulkAction::make(),
-                ]),
-            ])->headerActions([
+
+            ])
+            ->headerActions([
                 ImportAction::make()
                     ->importer(SoftwareImporter::class)
                     ->icon('heroicon-o-arrow-up-tray')
@@ -103,27 +97,9 @@ class SoftwareResource extends Resource
                     ->label('导出'),
                 SoftwareAction::createSoftware(),
                 Tables\Actions\ActionGroup::make([
-                    Tables\Actions\Action::make('资产编号配置')
-                        ->form([
-                            Select::make('asset_number_rule_id')
-                                ->label('规则')
-                                ->options(AssetNumberRuleService::pluckOptions())
-                                ->required()
-                                ->default(AssetNumberRuleService::getAutoRule(Software::class)?->getAttribute('id')),
-                            Checkbox::make('is_auto')
-                                ->label('自动生成')
-                                ->default(AssetNumberRuleService::getAutoRule(Software::class)?->getAttribute('is_auto'))
-                        ])
-                        ->action(function (array $data) {
-                            $data['class_name'] = Software::class;
-                            AssetNumberRuleService::setAutoRule($data);
-                            NotificationUtil::make(true, '已选择规则');
-                        }),
-                    Tables\Actions\Action::make('重置资产编号配置')
-                        ->action(function () {
-                            AssetNumberRuleService::resetAutoRule(Software::class);
-                            NotificationUtil::make(true, '已清除所有规则绑定关系');
-                        })
+                    SoftwareAction::setAssetNumberRule(),
+                    SoftwareAction::resetAssetNumberRule(),
+                    SoftwareAction::setSoftwareDeleteFlowId(),
                 ])
             ]);
     }

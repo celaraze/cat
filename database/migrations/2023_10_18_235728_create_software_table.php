@@ -29,8 +29,9 @@ return new class extends Migration {
                 ->comment('授权数量')
                 ->default(0);
             $table->string('image')
-                ->comment('照片')
-                ->default('无');
+                ->default('无')
+                ->nullable()
+                ->comment('照片');
             $table->integer('brand_id')
                 ->comment('品牌ID');
             $table->softDeletes();

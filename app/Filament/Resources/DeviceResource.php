@@ -14,11 +14,8 @@ use App\Filament\Resources\DeviceResource\RelationManagers\HasSoftwareRelationMa
 use App\Filament\Resources\DeviceResource\RelationManagers\HasUserRelationManager;
 use App\Http\Middleware\FilamentLockTab;
 use App\Models\Device;
-use App\Services\AssetNumberRuleService;
 use App\Services\DeviceCategoryService;
-use App\Utils\NotificationUtil;
 use Exception;
-use Filament\Forms\Components\Checkbox;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Form;
 use Filament\Infolists\Components\Grid;
@@ -101,24 +98,14 @@ class DeviceResource extends Resource
                         ->visible(function (Device $device) {
                             return $device->hasUsers()->count();
                         }),
+                    DeviceAction::createFlowHasFormForDeletingDevice(),
                 ]),
             ])
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
+
             ])
             ->emptyStateActions([
 
-            ])
-            ->bulkActions([
-                Tables\Actions\BulkAction::make('123')
-                    ->form([
-                        Select::make('user_id'),
-                    ])
-                    ->action(function (array $data, Collection $records) {
-                        dd($data, $records);
-                    })
             ])
             ->headerActions([
                 ImportAction::make()
@@ -130,27 +117,9 @@ class DeviceResource extends Resource
                     ->label('导出'),
                 DeviceAction::createDevice(),
                 Tables\Actions\ActionGroup::make([
-                    Tables\Actions\Action::make('资产编号配置')
-                        ->form([
-                            Select::make('asset_number_rule_id')
-                                ->label('规则')
-                                ->options(AssetNumberRuleService::pluckOptions())
-                                ->required()
-                                ->default(AssetNumberRuleService::getAutoRule(Device::class)?->getAttribute('id')),
-                            Checkbox::make('is_auto')
-                                ->label('自动生成')
-                                ->default(AssetNumberRuleService::getAutoRule(Device::class)?->getAttribute('is_auto'))
-                        ])
-                        ->action(function (array $data) {
-                            $data['class_name'] = Device::class;
-                            AssetNumberRuleService::setAutoRule($data);
-                            NotificationUtil::make(true, '已选择规则');
-                        }),
-                    Tables\Actions\Action::make('重置资产编号配置')
-                        ->action(function () {
-                            AssetNumberRuleService::resetAutoRule(Device::class);
-                            NotificationUtil::make(true, '已清除所有规则绑定关系');
-                        })
+                    DeviceAction::setAssetNumberRule(),
+                    DeviceAction::resetAssetNumberRule(),
+                    DeviceAction::setDeviceDeleteFlowId()
                 ]),
             ]);
     }

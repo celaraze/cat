@@ -49,7 +49,7 @@ class FlowService
      */
     public function createHasForm(string $form_name, string $comment, string $payload = null): FlowHasForm
     {
-        $node_counts = $this->flow->nodes->where('parent_node_id', '!=', 0)->count();
+        $node_counts = $this->flow->nodes()->where('parent_node_id', '!=', 0)->count();
         if (!$node_counts) {
             throw new Exception('表单所属流程至少需要一个除申请人外的节点');
         }

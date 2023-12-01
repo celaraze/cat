@@ -12,10 +12,7 @@ use App\Filament\Resources\PartResource\Pages\View;
 use App\Filament\Resources\PartResource\RelationManagers\HasPartRelationManager;
 use App\Http\Middleware\FilamentLockTab;
 use App\Models\Part;
-use App\Services\AssetNumberRuleService;
-use App\Utils\NotificationUtil;
-use Filament\Forms\Components\Checkbox;
-use Filament\Forms\Components\Select;
+use App\Services\PartCategoryService;
 use Filament\Forms\Form;
 use Filament\Infolists\Components\Grid;
 use Filament\Infolists\Components\Group;
@@ -69,16 +66,18 @@ class PartResource extends Resource
                     ->label('规格'),
             ])
             ->filters([
-                //
+                Tables\Filters\SelectFilter::make('category_id')
+                    ->multiple()
+                    ->options(PartCategoryService::pluckOptions())
+                    ->label('分类'),
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
+                PartAction::createFlowHasFormForDeletingPart(),
             ])
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
+
             ])
             ->headerActions([
                 ImportAction::make()
@@ -90,27 +89,9 @@ class PartResource extends Resource
                     ->label('导出'),
                 PartAction::createPart(),
                 Tables\Actions\ActionGroup::make([
-                    Tables\Actions\Action::make('资产编号配置')
-                        ->form([
-                            Select::make('asset_number_rule_id')
-                                ->label('规则')
-                                ->options(AssetNumberRuleService::pluckOptions())
-                                ->required()
-                                ->default(AssetNumberRuleService::getAutoRule(Part::class)?->getAttribute('id')),
-                            Checkbox::make('is_auto')
-                                ->label('自动生成')
-                                ->default(AssetNumberRuleService::getAutoRule(Part::class)?->getAttribute('is_auto'))
-                        ])
-                        ->action(function (array $data) {
-                            $data['class_name'] = Part::class;
-                            AssetNumberRuleService::setAutoRule($data);
-                            NotificationUtil::make(true, '已选择规则');
-                        }),
-                    Tables\Actions\Action::make('重置资产编号配置')
-                        ->action(function () {
-                            AssetNumberRuleService::resetAutoRule(Part::class);
-                            NotificationUtil::make(true, '已清除所有规则绑定关系');
-                        })
+                    PartAction::setAssetNumberRule(),
+                    PartAction::resetAssetNumberRule(),
+                    PartAction::setPartDeleteFlowId(),
                 ])
             ]);
     }

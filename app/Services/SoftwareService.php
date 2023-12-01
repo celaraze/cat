@@ -3,8 +3,11 @@
 namespace App\Services;
 
 use App\Models\AssetNumberRule;
+use App\Models\Flow;
+use App\Models\Setting;
 use App\Models\Software;
 use Exception;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
@@ -88,5 +91,43 @@ class SoftwareService
             DB::rollBack();
             throw $exception;
         }
+    }
+
+    /**
+     * 软件报废.
+     *
+     * @throws Exception
+     */
+    public function delete(): void
+    {
+        try {
+            DB::beginTransaction();
+            $this->software->hasSoftware()->delete();
+            $this->software->delete();
+            DB::commit();
+        } catch (Exception $exception) {
+            DB::rollBack();
+            throw $exception;
+        }
+    }
+
+    /**
+     * 获取已配置的软件报废流程.
+     *
+     * @throws Exception
+     */
+    public function getDeleteFlow(): Builder|Model
+    {
+        $flow_id = Setting::query()
+            ->where('custom_key', 'software_delete_flow_id')
+            ->value('custom_value');
+        if (!$flow_id) {
+            throw new Exception('还未配置软件报废流程');
+        }
+        $flow = Flow::query()->where('id', $flow_id)->first();
+        if (!$flow) {
+            throw new Exception('未找到已配置的软件报废流程');
+        }
+        return $flow;
     }
 }

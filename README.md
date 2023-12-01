@@ -3,7 +3,8 @@
 </p>
 
 <p align="center">
-    <a href="https://pd.qq.com/s/sknbyfnh">用户交流频道</a>
+<a href="http://qm.qq.com/cgi-bin/qm/qr?_wv=1027&k=oSXcaCdY4u5iIEQj43J2GsDk_PygRR2G&authKey=atvXMk1ZoXRwuuNzMLY7852APIHfnBp3cA4fu7oFui7MWRSCrg2EafCAI%2B9akAPa&noverify=0&group_code=1016567640"><img src="https://img.shields.io/badge/QQ-CAT 用户交流群-brown" /></a>
+    <a href="https://pd.qq.com/s/sknbyfnh"><img src="https://img.shields.io/badge/QQ-CAT 用户交流频道-orange" /></a>
 </p>
 
 <p align="center">
@@ -13,6 +14,8 @@
     <img src="https://img.shields.io/badge/License-GPL3.0-blue" />
 </p>
 
+***这不是正式版本，目前仍处于开发阶段，请酌情用于生产环境。***
+
 来一杯咖啡与茶，为 IT 运维从业者减轻管理负担，提升管理效率，从繁重无序的工作中解压出来，利用剩余时间多喝一杯休息一下。
 
 这是一个专为 IT 运维从业者打造的一站式解决方案平台，包含资产管理、工单、工作流、仓储等功能模块。
@@ -21,8 +24,6 @@
 资产管理系统的，请访问：[https://github.com/celaraze/chemex.git](https://github.com/celaraze/chemex.git) 。
 
 ❤ 感谢各位支持。`CAT` 提倡与各位使用者、开发者一起创建健康生态，让本项目变的更好，欢迎提供 PR 贡献。
-
-发布日期定于 `2023 年 12 月 10 日`。
 
 ## 安装
 
@@ -37,6 +38,11 @@ CAT 以滚动更新形式发布，具体版本号以发布日期标定。
 | 每日 | 安全更新，紧急漏洞修复。 |
 | 每周 | BUG 修复。      |
 | 每月 | 新功能、新特性迭代。   |
+
+| 分支   | 说明                                                 |
+|------|----------------------------------------------------|
+| main | 正式版本分支，稳定且可被用于生产环境。                                |
+| dev  | 开发版本分支，领先于 main 分支的特性、功能和修复项，未经完善测试，不稳定，不应被用于生产环境。 |
 
 ### 先决条件
 
@@ -78,11 +84,13 @@ ext-xml：扩展。
 
 7. 执行 `composer install` 安装后端依赖。
 
-8. 执行 `npm run build` 安装前端依赖。
+8. 执行 `npm intall` 安装前端依赖。
 
-9. 执行 `php artisan cat:install` 根据提示创建管理员账户。
+9. 执行 `npm run build` 编译前端依赖。
 
-10. 此时可以通过访问 `http://127.0.0.1:8000` 来访问系统。
+10. 执行 `php artisan cat:install` 根据提示创建管理员账户。
+
+11. 此时可以通过访问 `http://127.0.0.1:8000` 来访问系统。
 
 ### 生产环境最佳实践
 
@@ -97,6 +105,26 @@ ext-xml：扩展。
 ## 漏洞上报
 
 请直接邮件作者 [celaraze@qq.com](mailto:celaraze@qq.com)，勿在 Issues 中及其它公开社区提交与安全相关的问题以免被恶意利用。
+
+## 捐赠
+
+### 捐赠清单
+
+| 捐赠人 | 金额 | 时间 | 寄语 |
+|-----|----|----|----|
+|     |    |    |    |
+
+### 这不是开源软件吗，我为什么要捐赠？
+
+没错，本软件是开源的，但也是作者的成果，软件并不是一天形成，日积月累的时间和精力开销也摧残着作者。捐赠是完全自愿的，金额自愿，也是对作者成果的认可。最后，适当的捐赠会激励作者持续维护，保持生态健康。
+
+### 捐赠后有什么体现吗？
+
+捐赠本身是无偿的，是对作者的支持和认可的一种体现。但同时，会将您的名字登记在此用于展示，如果您愿意，也可以加上您的网站地址。另外，也可以添加作者常用联系方式交流或留言，作者会在闲暇之余回复。
+
+### 捐赠渠道
+
+通过支付宝转账至 `celaraze@qq.com`，备注可填写您的寄语或者网站地址。
 
 ## 开源协议 & 约束条款
 

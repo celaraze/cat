@@ -4,7 +4,10 @@ namespace App\Services;
 
 use App\Models\AssetNumberRule;
 use App\Models\Device;
+use App\Models\Flow;
+use App\Models\Setting;
 use Exception;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
@@ -57,11 +60,10 @@ class DeviceService
      * 新增设备.
      *
      * @param array $data
-     * @param bool $is_auto_asset_number
      * @return void
      * @throws Exception
      */
-    public function create(array $data, bool $is_auto_asset_number = false): void
+    public function create(array $data): void
     {
         // 开始事务
         DB::beginTransaction();
@@ -73,7 +75,7 @@ class DeviceService
             $asset_number_rule = new AssetNumberRule($asset_number_rule);
             $asset_number = $data['asset_number'];
             // 如果绑定了自动生成规则并且启用
-            if ($is_auto_asset_number && $asset_number_rule->getAttribute('is_auto')) {
+            if ($asset_number_rule->getAttribute('is_auto')) {
                 $asset_number_rule_service = new AssetNumberRuleService($asset_number_rule);
                 $asset_number = $asset_number_rule_service->generate();
                 $asset_number_rule_service->addAutoIncrementCount();
@@ -136,5 +138,47 @@ class DeviceService
     {
         $this->device->hasUsers()->first()->update(['delete_comment' => $data['delete_comment']]);
         return $this->device->hasUsers()->delete();
+    }
+
+    /**
+     * 报废设备.
+     *
+     * @throws Exception
+     */
+    public function delete(): void
+    {
+        try {
+            DB::beginTransaction();
+            $this->device->hasUsers()->delete();
+            $this->device->hasParts()->delete();
+            // 设备报废会携带所含配件全部报废
+            $this->device->parts()->delete();
+            $this->device->hasSoftware()->delete();
+            $this->device->delete();
+            DB::commit();
+        } catch (Exception $exception) {
+            DB::rollBack();
+            throw $exception;
+        }
+    }
+
+    /**
+     * 获取已配置的设备报废流程.
+     *
+     * @throws Exception
+     */
+    public function getDeleteFlow(): Builder|Model
+    {
+        $flow_id = Setting::query()
+            ->where('custom_key', 'device_delete_flow_id')
+            ->value('custom_value');
+        if (!$flow_id) {
+            throw new Exception('还未配置设备报废流程');
+        }
+        $flow = Flow::query()->where('id', $flow_id)->first();
+        if (!$flow) {
+            throw new Exception('未找到已配置的设备报废流程');
+        }
+        return $flow;
     }
 }

@@ -2,8 +2,13 @@
 
 namespace App\Services;
 
+use App\Models\Device;
+use App\Models\Flow;
 use App\Models\FlowHasForm;
 use App\Models\FlowHasNode;
+use App\Models\Part;
+use App\Models\Setting;
+use App\Models\Software;
 use Exception;
 use Illuminate\Support\Facades\DB;
 
@@ -96,7 +101,7 @@ class FlowHasFormService
             $new_form->setAttribute('current_approve_role_id', $next_node->getAttribute('role_id'));
             $new_form->setAttribute('node_id', $next_node->getKey());
         }
-        # PATCH 表单退回到最初的申请人关卡时，当前审批人和审核角色都只能从节点信息读到0，需要做处理将当前审批人改为申请人
+        // PATCH 表单退回到最初的申请人关卡时，当前审批人和审核角色都只能从节点信息读到0，需要做处理将当前审批人改为申请人
         if (!$new_form->getAttribute('current_approve_user_id') && !$new_form->getAttribute('current_approve_role_id')) {
             $new_form->setAttribute('current_approve_user_id', $new_form->getAttribute('applicant_user_id'));
         }
@@ -104,8 +109,58 @@ class FlowHasFormService
         $new_form->setAttribute('approve_comment', $approve_comment);
         // 如果表单流程结束，将经历的节点信息快照方式保存
         if ($status == 3 || $status == 4) {
-            $flow_progress = $this->flow_has_form->flow->service()->sortNodes();
+            /* @var $flow Flow */
+            $flow = $this->flow_has_form->flow()->first();
+
+            $flow_progress = $flow->service()->sortNodes();
             $new_form->setAttribute('flow_progress', json_encode($flow_progress));
+
+            // 表单完成钩子
+            if ($status == 4) {
+                // 报废流程
+                // 设备
+                $device_delete_flow_id = Setting::query()
+                    ->where('custom_key', 'device_delete_flow_id')
+                    ->value('custom_value');
+                if ($device_delete_flow_id == $flow->getKey()) {
+                    /* @var $device Device */
+                    $device = Device::query()
+                        ->where('asset_number', $this->flow_has_form->getAttribute('payload'))
+                        ->first();
+                    if (!$device) {
+                        throw new Exception('未找到报废流程中所指的设备资产');
+                    }
+                    $device->service()->delete();
+                }
+                // 配件
+                $part_delete_flow_id = Setting::query()
+                    ->where('custom_key', 'part_delete_flow_id')
+                    ->value('custom_value');
+                if ($part_delete_flow_id == $flow->getKey()) {
+                    /* @var $part Part */
+                    $part = Part::query()
+                        ->where('asset_number', $this->flow_has_form->getAttribute('payload'))
+                        ->first();
+                    if (!$part) {
+                        throw new Exception('未找到报废流程中所指的配件资产');
+                    }
+                    $part->service()->delete();
+                }
+                // 软件
+                $software_delete_flow_id = Setting::query()
+                    ->where('custom_key', 'software_delete_flow_id')
+                    ->value('custom_value');
+                if ($software_delete_flow_id == $flow->getKey()) {
+                    /* @var $software Software */
+                    $software = Software::query()
+                        ->where('asset_number', $this->flow_has_form->getAttribute('payload'))
+                        ->first();
+                    if (!$software) {
+                        throw new Exception('未找到报废流程中所指的软件资产');
+                    }
+                    $software->service()->delete();
+                }
+            }
         }
         $new_form->save();
         // 数据库事务提交

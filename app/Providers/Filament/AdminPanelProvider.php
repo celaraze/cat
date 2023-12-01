@@ -58,8 +58,6 @@ class AdminPanelProvider extends PanelProvider
                 DisableBladeIconComponents::class,
                 DispatchServingFilamentEvent::class,
                 SetTheme::class,
-                // todo 这个组件是 https://github.com/Shipu/web-installer, 目前安装有问题，暂时停用
-                // RedirectIfNotInstalled::class,
             ])
             ->authMiddleware([
                 Authenticate::class,
@@ -69,6 +67,9 @@ class AdminPanelProvider extends PanelProvider
                 FilamentSpatieRolesPermissionsPlugin::make(),
                 ThemesPlugin::make(),
             ])
-            ->topNavigation(false);
+//            ->brandName('CAT')
+            ->brandLogo(asset('images/logo.png'))
+            ->favicon(asset('images/logo.png'))
+            ->topNavigation();
     }
 }

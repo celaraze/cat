@@ -29,6 +29,7 @@ return new class extends Migration {
                 ->comment('规格');
             $table->string('image')
                 ->default('无')
+                ->nullable()
                 ->comment('照片');
             $table->integer('brand_id')
                 ->comment('品牌ID');

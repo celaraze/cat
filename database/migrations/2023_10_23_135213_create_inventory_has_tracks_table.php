@@ -13,7 +13,7 @@ return new class extends Migration {
         Schema::create('inventory_has_tracks', function (Blueprint $table) {
             $table->id();
             $table->integer('inventory_id');
-            $table->integer('asset_number');
+            $table->string('asset_number');
             $table->integer('check')->default(0);
             $table->integer('user_id');
             $table->string('comment')->default('无');
