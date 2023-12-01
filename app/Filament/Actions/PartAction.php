@@ -24,8 +24,6 @@ class PartAction
 {
     /**
      * 创建设备分类按钮.
-     *
-     * @return Action
      */
     public static function createPartCategory(): Action
     {
@@ -51,8 +49,6 @@ class PartAction
 
     /**
      * 创建配件.
-     *
-     * @return Action
      */
     public static function createPart(): Action
     {
@@ -74,9 +70,6 @@ class PartAction
 
     /**
      * 创建配件-设备按钮.
-     *
-     * @param Model|null $out_part
-     * @return Action
      */
     public static function createDeviceHasPart(Model $out_part = null): Action
     {
@@ -85,7 +78,7 @@ class PartAction
                 Select::make('device_id')
                     ->options(DeviceService::pluckOptions())
                     ->searchable()
-                    ->label('设备')
+                    ->label('设备'),
             ])
             ->action(function (array $data, Part $part) use ($out_part) {
                 try {
@@ -108,8 +101,6 @@ class PartAction
 
     /**
      * 配件脱离设备按钮.
-     *
-     * @return Action
      */
     public static function deleteDeviceHasPart(): Action
     {
@@ -120,7 +111,7 @@ class PartAction
                 try {
                     $data = [
                         'user_id' => auth()->id(),
-                        'status' => '脱离'
+                        'status' => '脱离',
                     ];
                     $device_has_part->service()->delete($data);
                     NotificationUtil::make(true, '配件已脱离设备');
@@ -133,8 +124,6 @@ class PartAction
 
     /**
      * 绑定配件报废流程.
-     *
-     * @return Action
      */
     public static function setPartDeleteFlowId(): Action
     {
@@ -143,7 +132,7 @@ class PartAction
                 Select::make('flow_id')
                     ->options(FlowService::pluckOptions())
                     ->required()
-                    ->label('流程')
+                    ->label('流程'),
             ])
             ->action(function (array $data) {
                 try {
@@ -159,12 +148,10 @@ class PartAction
 
     /**
      * 设置资产编号生成配置.
-     *
-     * @return Action
      */
     public static function setAssetNumberRule(): Action
     {
-        return Action::make('资产编号配置')
+        return Action::make('配置资产编号自动生成规则')
             ->form([
                 Select::make('asset_number_rule_id')
                     ->label('规则')
@@ -173,38 +160,34 @@ class PartAction
                     ->default(AssetNumberRuleService::getAutoRule(Part::class)?->getAttribute('id')),
                 Checkbox::make('is_auto')
                     ->label('自动生成')
-                    ->default(AssetNumberRuleService::getAutoRule(Part::class)?->getAttribute('is_auto'))
+                    ->default(AssetNumberRuleService::getAutoRule(Part::class)?->getAttribute('is_auto')),
             ])
             ->action(function (array $data) {
                 $data['class_name'] = Part::class;
                 AssetNumberRuleService::setAutoRule($data);
-                NotificationUtil::make(true, '已选择规则');
+                NotificationUtil::make(true, '已配置资产编号自动生成规则');
             });
     }
 
     /**
      * 重置资产编号生成配置.
-     *
-     * @return Action
      */
     public static function resetAssetNumberRule(): Action
     {
-        return Action::make('重置资产编号配置')
+        return Action::make('清除资产编号自动生成规则')
             ->requiresConfirmation()
             ->action(function () {
                 AssetNumberRuleService::resetAutoRule(Part::class);
-                NotificationUtil::make(true, '已清除所有规则绑定关系');
+                NotificationUtil::make(true, '已清除编号自动生成规则');
             });
     }
 
     /**
      * 发起配件报废流程表单.
-     *
-     * @return Action
      */
     public static function createFlowHasFormForDeletingPart(): Action
     {
-        return Action::make('报废（流程）')
+        return Action::make('流程报废')
             ->form([
                 TextInput::make('comment')
                     ->label('说明')
@@ -221,6 +204,25 @@ class PartAction
                         $asset_number
                     );
                     NotificationUtil::make(true, '已创建表单');
+                } catch (Exception $exception) {
+                    LogUtil::error($exception);
+                    NotificationUtil::make(false, $exception);
+                }
+            });
+    }
+
+    /**
+     * 强制报废按钮.
+     */
+    public static function deletePart(): Action
+    {
+        return Action::make('强制报废')
+            ->requiresConfirmation()
+            ->icon('heroicon-m-archive-box-x-mark')
+            ->action(function (array $data, Part $part) {
+                try {
+                    $part->service()->delete();
+                    NotificationUtil::make(true, '已报废');
                 } catch (Exception $exception) {
                     LogUtil::error($exception);
                     NotificationUtil::make(false, $exception);

@@ -42,7 +42,7 @@ class AssetNumberRuleResource extends Resource
                     ->badge()
                     ->color('success'),
                 Tables\Columns\TextColumn::make('auto_increment_length')
-                    ->label('自增长度')
+                    ->label('自增长度'),
             ])
             ->filters([
                 Tables\Filters\TrashedFilter::make(),

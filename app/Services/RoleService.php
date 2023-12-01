@@ -20,8 +20,6 @@ class RoleService
 
     /**
      * 选单.
-     *
-     * @return Collection
      */
     public static function pluckOptions(): Collection
     {

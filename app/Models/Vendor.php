@@ -13,8 +13,6 @@ class Vendor extends Model
 
     /**
      * 一对多，厂商有多个联系人.
-     *
-     * @return HasMany
      */
     public function contacts(): HasMany
     {

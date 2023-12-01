@@ -9,6 +9,7 @@ class Tab extends \Filament\Resources\Pages\ListRecords\Tab
     public function url($url): Tab|static
     {
         $this->url = $url;
+
         return $this;
     }
 }

@@ -39,7 +39,7 @@ class FlowResource extends Resource
                 Tables\Columns\TextColumn::make('name')
                     ->label('名称'),
                 Tables\Columns\TextColumn::make('tag')
-                    ->label('唯一标识')
+                    ->label('唯一标识'),
             ])
             ->filters([
                 Tables\Filters\TrashedFilter::make(),
@@ -54,14 +54,14 @@ class FlowResource extends Resource
 
             ])
             ->headerActions([
-                FlowAction::createFlow()
+                FlowAction::createFlow(),
             ]);
     }
 
     public static function getRelations(): array
     {
         return [
-            HasNodeRelationManager::make()
+            HasNodeRelationManager::make(),
         ];
     }
 

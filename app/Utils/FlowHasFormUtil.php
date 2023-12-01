@@ -6,9 +6,6 @@ class FlowHasFormUtil
 {
     /**
      * 返回节点状态字段所对应的图标.
-     *
-     * @param $state
-     * @return string
      */
     public static function nodeStatusIcons($state): string
     {
@@ -23,9 +20,6 @@ class FlowHasFormUtil
 
     /**
      * 返回节点状态字段（文本）所对应的图标.
-     *
-     * @param $state
-     * @return string
      */
     public static function nodeStatusTextIcons($state): string
     {
@@ -40,9 +34,6 @@ class FlowHasFormUtil
 
     /**
      * 返回表单状态字段（文本）所对应的图标.
-     *
-     * @param $state
-     * @return string
      */
     public static function formStatusTextIcons($state): string
     {
@@ -56,9 +47,6 @@ class FlowHasFormUtil
 
     /**
      * 返回表单状态字段（文本）所对应的颜色.
-     *
-     * @param $state
-     * @return string
      */
     public static function formStatusTextColors($state): string
     {
@@ -72,9 +60,6 @@ class FlowHasFormUtil
 
     /**
      * 返回节点状态字段所对应的颜色.
-     *
-     * @param $state
-     * @return string
      */
     public static function nodeStatusColors($state): string
     {
@@ -88,9 +73,6 @@ class FlowHasFormUtil
 
     /**
      * 返回节点状态字段（文本）所对应的颜色.
-     *
-     * @param $state
-     * @return string
      */
     public static function nodeStatusTextColors($state): string
     {

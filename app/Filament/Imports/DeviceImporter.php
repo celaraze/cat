@@ -11,7 +11,6 @@ class DeviceImporter extends Importer
 {
     protected static ?string $model = Device::class;
 
-
     public static function getColumns(): array
     {
         return [
@@ -53,10 +52,10 @@ class DeviceImporter extends Importer
 
     public static function getCompletedNotificationBody(Import $import): string
     {
-        $body = '你的设备导入已完成并有 ' . number_format($import->successful_rows) . ' 行记录被导入。';
+        $body = '你的设备导入已完成并有 '.number_format($import->successful_rows).' 行记录被导入。';
 
         if ($failedRowsCount = $import->getFailedRowsCount()) {
-            $body .= ' ' . number_format($failedRowsCount) . '行导入失败。';
+            $body .= ' '.number_format($failedRowsCount).'行导入失败。';
         }
 
         return $body;

@@ -19,8 +19,6 @@ class OrganizationHasUserService
 
     /**
      * 删除组织用户记录.
-     *
-     * @return void
      */
     public function delete(): void
     {

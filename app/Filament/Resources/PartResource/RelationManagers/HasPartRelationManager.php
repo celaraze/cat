@@ -60,7 +60,7 @@ class HasPartRelationManager extends RelationManager
             ->actions([
                 PartAction::deleteDeviceHasPart()
                     ->visible(function (DeviceHasPart $device_has_part) {
-                        return !$device_has_part->service()->isDeleted();
+                        return ! $device_has_part->service()->isDeleted();
                     }),
             ])
             ->bulkActions([
@@ -69,7 +69,7 @@ class HasPartRelationManager extends RelationManager
             ->emptyStateActions([
 
             ])
-            ->modifyQueryUsing(fn(Builder $query) => $query->orderByDesc('created_at')
+            ->modifyQueryUsing(fn (Builder $query) => $query->orderByDesc('created_at')
                 ->withoutGlobalScopes([
                     SoftDeletingScope::class,
                 ]));

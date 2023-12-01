@@ -31,8 +31,6 @@ class FlowService
 
     /**
      * 选单.
-     *
-     * @return Collection
      */
     public static function pluckOptions(): Collection
     {
@@ -41,16 +39,13 @@ class FlowService
 
     /**
      * 创建流程表单.
-     * @param string $form_name
-     * @param string $comment
-     * @param string|null $payload
-     * @return FlowHasForm
+     *
      * @throws Exception
      */
     public function createHasForm(string $form_name, string $comment, string $payload = null): FlowHasForm
     {
         $node_counts = $this->flow->nodes()->where('parent_node_id', '!=', 0)->count();
-        if (!$node_counts) {
+        if (! $node_counts) {
             throw new Exception('表单所属流程至少需要一个除申请人外的节点');
         }
         $first_node = $this->flow->nodes->where('parent_node_id', 0)->first();
@@ -68,13 +63,12 @@ class FlowService
             $flow_has_form->setAttribute('payload', $payload);
         }
         $flow_has_form->save();
+
         return $flow_has_form;
     }
 
     /**
      * 流程节点排序.
-     *
-     * @return array
      */
     public function sortNodes(): array
     {
@@ -91,6 +85,7 @@ class FlowService
                 break;
             }
         }
+
         return $array;
     }
 }

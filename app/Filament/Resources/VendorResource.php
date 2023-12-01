@@ -38,7 +38,7 @@ class VendorResource extends Resource
                 TextInput::make('public_phone_number')
                     ->label('对公电话'),
                 TextInput::make('referrer')
-                    ->label('引荐人')
+                    ->label('引荐人'),
             ]);
     }
 
@@ -60,11 +60,11 @@ class VendorResource extends Resource
                 Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
-//                Tables\Actions\BulkActionGroup::make([
-//                    Tables\Actions\DeleteBulkAction::make(),
-//                    Tables\Actions\ForceDeleteBulkAction::make(),
-//                    Tables\Actions\RestoreBulkAction::make(),
-//                ]),
+                //                Tables\Actions\BulkActionGroup::make([
+                //                    Tables\Actions\DeleteBulkAction::make(),
+                //                    Tables\Actions\ForceDeleteBulkAction::make(),
+                //                    Tables\Actions\RestoreBulkAction::make(),
+                //                ]),
             ])
             ->emptyStateActions([
 

@@ -23,20 +23,17 @@ class OrganizationService
 
     /**
      * 编辑组织.
-     *
-     * @param array $data
-     * @return Organization
      */
     public function update(array $data): Organization
     {
         $this->organization->update($data);
+
         return $this->organization;
     }
 
     /**
      * 删除组织.
      *
-     * @return void
      * @throws Exception
      */
     public function delete(): void
@@ -78,8 +75,6 @@ class OrganizationService
     /**
      * 新增组织用户记录.
      *
-     * @param array $data
-     * @return Model
      * @throws Exception
      */
     public function createHasUser(array $data): Model
@@ -91,19 +86,18 @@ class OrganizationService
         if ($organization_has_user) {
             throw new Exception('成员记录已存在');
         }
+
         return $this->organization->hasUsers()->create($data);
     }
 
     /**
      * 创建组织.
-     *
-     * @param array $data
-     * @return Organization
      */
     public function create(array $data): Organization
     {
         $this->organization->setAttribute('name', $data['name']);
         $this->organization->save();
+
         return $this->organization;
     }
 }

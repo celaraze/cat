@@ -31,16 +31,16 @@ class Edit extends EditRecord
         $validator = Validator::make($data, [
             'email' => [
                 'required',
-                Rule::unique('users')->ignore($this->getRecord()->getAttribute('id'))
+                Rule::unique('users')->ignore($this->getRecord()->getAttribute('id')),
             ],
             'password' => [
                 'required',
-                'confirmed'
+                'confirmed',
             ],
             'password_verify' => [
                 'required',
-                'same:password'
-            ]
+                'same:password',
+            ],
         ]);
         if ($validator->fails()) {
             Notification::make()
@@ -53,6 +53,7 @@ class Edit extends EditRecord
         }
 
         unset($data['password_verify']);
+
         return $data;
     }
 }

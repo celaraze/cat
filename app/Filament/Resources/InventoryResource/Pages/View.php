@@ -15,7 +15,7 @@ class View extends ViewRecord
     {
         return [
             InventoryAction::deleteInventory(),
-            CommonAction::back($this->getResource())
+            CommonAction::back($this->getResource()),
         ];
     }
 }

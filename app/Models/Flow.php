@@ -14,8 +14,6 @@ class Flow extends Model
 
     /**
      * 一对多，一个工作流有多个节点.
-     *
-     * @return HasMany
      */
     public function nodes(): HasMany
     {
@@ -24,8 +22,6 @@ class Flow extends Model
 
     /**
      * 流程有活动的表单数量.
-     *
-     * @return int
      */
     public function activeForms(): int
     {
@@ -34,8 +30,6 @@ class Flow extends Model
 
     /**
      * 一对多，一个工作流有多个表单.
-     *
-     * @return HasMany
      */
     public function forms(): HasMany
     {
@@ -44,8 +38,6 @@ class Flow extends Model
 
     /**
      * 模型到服务.
-     *
-     * @return FlowService
      */
     public function service(): FlowService
     {

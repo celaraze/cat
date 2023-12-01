@@ -24,9 +24,6 @@ class FlowAction
 {
     /**
      * 创建流程节点按钮.
-     *
-     * @param Model $flow
-     * @return Action
      */
     public static function createHasNode(Model $flow): Action
     {
@@ -40,7 +37,7 @@ class FlowAction
                 } else {
                     $flow_has_node_service = new FlowHasNodeService($node);
                     $is_last_node = $flow_has_node_service->isLastNode();
-                    if (!$is_last_node) {
+                    if (! $is_last_node) {
                         NotificationUtil::make(false, '该节点不是最终节点，请在最终节点后追加');
                     } elseif (empty($data['user_id']) && empty($data['role_id'])) {
                         NotificationUtil::make(false, '流程审批类型不能为空，必须选择用户或者角色');
@@ -50,7 +47,7 @@ class FlowAction
                             'flow_id' => $flow->getKey(),
                             'user_id' => $data['user_id'] ?? 0,
                             'role_id' => $data['role_id'] ?? 0,
-                            'parent_node_id' => $node->getKey()
+                            'parent_node_id' => $node->getKey(),
                         ];
                         $flow_has_node_service = new FlowHasNodeService();
                         $flow_has_node_service->create($data);
@@ -63,8 +60,7 @@ class FlowAction
     /**
      * 删除节点.
      *
-     * @param Flow $flow
-     * @return Action
+     * @param  Flow  $flow
      */
     public static function deleteHasNode(Model $flow): Action
     {
@@ -85,9 +81,6 @@ class FlowAction
 
     /**
      * 删除流程所有节点.
-     *
-     * @param Model $flow
-     * @return Action
      */
     public static function deleteHasNodeWithAll(Model $flow): Action
     {
@@ -106,8 +99,6 @@ class FlowAction
 
     /**
      * 创建表单按钮.
-     *
-     * @return Action
      */
     public static function createHasForm(): Action
     {
@@ -140,8 +131,6 @@ class FlowAction
 
     /**
      * 创建流程按钮.
-     *
-     * @return Action
      */
     public static function createFlow(): Action
     {
@@ -169,15 +158,13 @@ class FlowAction
                     // 回滚事务
                     DB::rollBack();
                     LogUtil::error($exception);
-                    NotificationUtil::make(false, '流程创建失败：' . $exception->getMessage());
+                    NotificationUtil::make(false, '流程创建失败：'.$exception->getMessage());
                 }
             });
     }
 
     /**
      * 流程表单审批按钮.
-     *
-     * @return \Filament\Actions\Action
      */
     public static function approve(): \Filament\Actions\Action
     {
@@ -188,12 +175,12 @@ class FlowAction
                     ->options([
                         1 => '同意，表单进入下一个审核。',
                         2 => '退回，表单回到上一个审核。',
-                        3 => '驳回，表单直接结束流程。'
+                        3 => '驳回，表单直接结束流程。',
                     ])
                     ->required(),
                 TextInput::make('approve_comment')
                     ->label('审批意见')
-                    ->required()
+                    ->required(),
             ])
             ->action(function (array $data, FlowHasForm $flow_has_form) {
                 try {

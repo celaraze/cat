@@ -14,7 +14,7 @@ class ImportAction
     public static function make(Importer $importer): Action
     {
         return Action::make('导入')->form(
-            [FileUpload::make('file'),]
+            [FileUpload::make('file')]
         )->action(function (array $data) use ($importer) {
             try {
                 $importer->setPath(public_path('storage'));

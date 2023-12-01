@@ -52,13 +52,13 @@ class ImportResource extends Resource
                 Tables\Columns\TextColumn::make('successful_rows')
                     ->label('成功行'),
                 Tables\Columns\TextColumn::make('user_id')
-                    ->label('执行用户')
+                    ->label('执行用户'),
             ])
             ->filters([
                 //
             ])
             ->actions([
-//                Tables\Actions\ViewAction::make(),
+                //                Tables\Actions\ViewAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -97,10 +97,10 @@ class ImportResource extends Resource
                                             ->label('已处理行'),
                                         TextEntry::make('successful_rows')
                                             ->label('成功行'),
-                                    ])
-                                ])
-                        ])
-                    ])
+                                    ]),
+                                ]),
+                        ]),
+                    ]),
             ])->columnSpan(['lg' => 3]),
         ])->columns(3);
     }
@@ -108,7 +108,7 @@ class ImportResource extends Resource
     public static function getRelations(): array
     {
         return [
-            FailedImportRowRelationManager::make()
+            FailedImportRowRelationManager::make(),
         ];
     }
 

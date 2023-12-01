@@ -16,6 +16,7 @@ use App\Services\SoftwareService;
 use App\Services\UserService;
 use App\Utils\LogUtil;
 use App\Utils\NotificationUtil;
+use Awcodes\Shout\Components\Shout;
 use Exception;
 use Filament\Forms\Components\Checkbox;
 use Filament\Forms\Components\Select;
@@ -27,9 +28,6 @@ class DeviceAction
 {
     /**
      * 分配管理者按钮.
-     *
-     * @param Model|null $out_device
-     * @return Action
      */
     public static function createDeviceHasUser(Model $out_device = null): Action
     {
@@ -70,9 +68,6 @@ class DeviceAction
 
     /**
      * 解除管理者按钮.
-     *
-     * @param Model|null $out_device
-     * @return Action
      */
     public static function deleteDeviceHasUser(Model $out_device = null): Action
     {
@@ -101,8 +96,6 @@ class DeviceAction
 
     /**
      * 创建设备.
-     *
-     * @return Action
      */
     public static function createDevice(): Action
     {
@@ -123,8 +116,6 @@ class DeviceAction
 
     /**
      * 创建设备分类.
-     *
-     * @return Action
      */
     public static function createDeviceCategory(): Action
     {
@@ -150,9 +141,6 @@ class DeviceAction
 
     /**
      * 创建设备配件按钮.
-     *
-     * @param Model|null $out_device
-     * @return Action
      */
     public static function createDeviceHasPart(Model $out_device = null): Action
     {
@@ -174,7 +162,7 @@ class DeviceAction
                     $data = [
                         'part_id' => $data['part_id'],
                         'user_id' => auth()->id(),
-                        'status' => '附加'
+                        'status' => '附加',
                     ];
                     $device->service()->createHasPart($data);
                     NotificationUtil::make(true, '设备已附加配件');
@@ -188,9 +176,6 @@ class DeviceAction
 
     /**
      * 创建设备配件按钮.
-     *
-     * @param Model|null $out_device
-     * @return Action
      */
     public static function createDeviceHasSoftware(Model $out_device = null): Action
     {
@@ -212,7 +197,7 @@ class DeviceAction
                     $data = [
                         'software_id' => $data['software_id'],
                         'user_id' => auth()->id(),
-                        'status' => '附加'
+                        'status' => '附加',
                     ];
                     $device->service()->createHasSoftware($data);
                     NotificationUtil::make(true, '设备已附加软件');
@@ -226,8 +211,6 @@ class DeviceAction
 
     /**
      * 配件脱离设备按钮.
-     *
-     * @return Action
      */
     public static function deleteDeviceHasPart(): Action
     {
@@ -238,7 +221,7 @@ class DeviceAction
                 try {
                     $data = [
                         'user_id' => auth()->id(),
-                        'status' => '脱离'
+                        'status' => '脱离',
                     ];
                     $device_has_part->service()->delete($data);
                     NotificationUtil::make(true, '已脱离设备');
@@ -251,8 +234,6 @@ class DeviceAction
 
     /**
      * 软件脱离设备按钮.
-     *
-     * @return Action
      */
     public static function deleteDeviceHasSoftware(): Action
     {
@@ -263,7 +244,7 @@ class DeviceAction
                 try {
                     $data = [
                         'user_id' => auth()->id(),
-                        'status' => '脱离'
+                        'status' => '脱离',
                     ];
                     $device_has_software->service()->delete($data);
                     NotificationUtil::make(true, '已脱离设备');
@@ -276,8 +257,6 @@ class DeviceAction
 
     /**
      * 绑定设备报废流程.
-     *
-     * @return Action
      */
     public static function setDeviceDeleteFlowId(): Action
     {
@@ -286,7 +265,7 @@ class DeviceAction
                 Select::make('flow_id')
                     ->options(FlowService::pluckOptions())
                     ->required()
-                    ->label('流程')
+                    ->label('流程'),
             ])
             ->action(function (array $data) {
                 try {
@@ -302,12 +281,10 @@ class DeviceAction
 
     /**
      * 设置资产编号生成配置.
-     *
-     * @return Action
      */
     public static function setAssetNumberRule(): Action
     {
-        return Action::make('资产编号配置')
+        return Action::make('配置资产编号自动生成规则')
             ->form([
                 Select::make('asset_number_rule_id')
                     ->label('规则')
@@ -316,40 +293,39 @@ class DeviceAction
                     ->default(AssetNumberRuleService::getAutoRule(Device::class)?->getAttribute('id')),
                 Checkbox::make('is_auto')
                     ->label('自动生成')
-                    ->default(AssetNumberRuleService::getAutoRule(Device::class)?->getAttribute('is_auto'))
+                    ->default(AssetNumberRuleService::getAutoRule(Device::class)?->getAttribute('is_auto')),
             ])
             ->action(function (array $data) {
                 $data['class_name'] = Device::class;
                 AssetNumberRuleService::setAutoRule($data);
-                NotificationUtil::make(true, '已选择规则');
+                NotificationUtil::make(true, '已配置资产编号自动生成规则');
             });
     }
 
     /**
      * 重置资产编号生成配置.
-     *
-     * @return Action
      */
     public static function resetAssetNumberRule(): Action
     {
-        return Action::make('重置资产编号配置')
+        return Action::make('清除资产编号自动生成规则')
             ->requiresConfirmation()
             ->action(function () {
                 AssetNumberRuleService::resetAutoRule(Device::class);
-                NotificationUtil::make(true, '已清除所有规则绑定关系');
+                NotificationUtil::make(true, '已清除编号自动生成规则');
             });
     }
 
     /**
      * 发起设备报废流程表单.
-     *
-     * @return Action
      */
     public static function createFlowHasFormForDeletingDevice(): Action
     {
         return Action::make('流程报废')
             ->icon('heroicon-m-archive-box-x-mark')
             ->form([
+                Shout::make('')
+                    ->color('danger')
+                    ->content('此操作将同时报废所含配件（不包含软件）'),
                 TextInput::make('comment')
                     ->label('说明')
                     ->required(),
@@ -374,14 +350,17 @@ class DeviceAction
 
     /**
      * 强制报废按钮.
-     *
-     * @return Action
      */
     public static function deleteDevice(): Action
     {
         return Action::make('强制报废')
             ->requiresConfirmation()
             ->icon('heroicon-m-archive-box-x-mark')
+            ->form([
+                Shout::make('hint')
+                    ->color('danger')
+                    ->content('此操作将同时报废所含配件（不包含软件）')
+            ])
             ->action(function (array $data, Device $device) {
                 try {
                     $device->service()->delete();

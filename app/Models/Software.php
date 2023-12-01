@@ -17,8 +17,6 @@ class Software extends Model
 
     /**
      * 一对一，软件属于一个分类.
-     *
-     * @return BelongsTo
      */
     public function category(): BelongsTo
     {
@@ -27,8 +25,6 @@ class Software extends Model
 
     /**
      * 一对一，软件属于一个品牌.
-     *
-     * @return BelongsTo
      */
     public function brand(): BelongsTo
     {
@@ -37,8 +33,6 @@ class Software extends Model
 
     /**
      * 一对多，软件有很多软件管理记录.
-     *
-     * @return HasMany
      */
     public function hasSoftware(): HasMany
     {
@@ -47,8 +41,6 @@ class Software extends Model
 
     /**
      * 模型到服务.
-     *
-     * @return SoftwareService
      */
     public function service(): SoftwareService
     {

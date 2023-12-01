@@ -13,6 +13,7 @@ use App\Filament\Resources\PartResource\RelationManagers\HasPartRelationManager;
 use App\Http\Middleware\FilamentLockTab;
 use App\Models\Part;
 use App\Services\PartCategoryService;
+use App\Services\PartService;
 use Filament\Forms\Form;
 use Filament\Infolists\Components\Grid;
 use Filament\Infolists\Components\Group;
@@ -74,7 +75,9 @@ class PartResource extends Resource
             ->actions([
                 Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
-                PartAction::createFlowHasFormForDeletingPart(),
+                PartAction::createFlowHasFormForDeletingPart()
+                    ->visible(PartService::isSetDeleteFlow()),
+                PartAction::deletePart(),
             ])
             ->bulkActions([
 
@@ -93,6 +96,9 @@ class PartResource extends Resource
                     PartAction::resetAssetNumberRule(),
                     PartAction::setPartDeleteFlowId(),
                 ])
+                    ->label('高级')
+                    ->icon('heroicon-m-cog-8-tooth')
+                    ->button(),
             ]);
     }
 
@@ -117,7 +123,7 @@ class PartResource extends Resource
                                             ->badge()
                                             ->color('primary'),
                                         TextEntry::make('category.name')
-                                            ->label('分类')
+                                            ->label('分类'),
                                     ]),
                                     Group::make([
                                         TextEntry::make('sn')
@@ -126,18 +132,18 @@ class PartResource extends Resource
                                             ->label('品牌'),
                                         TextEntry::make('specification')
                                             ->label('规格'),
-                                    ])
-                                ])
-                        ])
-                    ])
+                                    ]),
+                                ]),
+                        ]),
+                    ]),
             ])->columnSpan(['lg' => 2]),
             Group::make()->schema([
                 Section::make()
                     ->schema([
                         ImageEntry::make('image')
                             ->disk('public')
-                            ->label('照片')
-                    ])
+                            ->label('照片'),
+                    ]),
             ])->columnSpan(['lg' => 1]),
         ])->columns(3);
     }
@@ -145,7 +151,7 @@ class PartResource extends Resource
     public static function getRelations(): array
     {
         return [
-            HasPartRelationManager::make()
+            HasPartRelationManager::make(),
         ];
     }
 

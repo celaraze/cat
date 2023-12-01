@@ -22,7 +22,7 @@ return [
 
     'guard_names' => [
         'web' => 'web',
-        #'api' => 'api',
+        //'api' => 'api',
     ],
 
     'toggleable_guard_names' => [
@@ -44,7 +44,7 @@ return [
 
         'guard_names' => [
             'web',
-            # 'api',
+            // 'api',
         ],
 
         'permission_affixes' => [

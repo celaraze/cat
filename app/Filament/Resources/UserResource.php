@@ -45,7 +45,7 @@ class UserResource extends Resource
                     ->required(),
                 Forms\Components\Select::make('roles')->multiple()
                     ->relationship('roles', 'name')
-                    ->preload()
+                    ->preload(),
             ]);
     }
 

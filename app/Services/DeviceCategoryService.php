@@ -22,8 +22,6 @@ class DeviceCategoryService
 
     /**
      * 选单.
-     *
-     * @return Collection
      */
     public static function pluckOptions(): Collection
     {
@@ -33,9 +31,6 @@ class DeviceCategoryService
 
     /**
      * 通过名称获取模型.
-     *
-     * @param string $category_name
-     * @return Model|Builder|null
      */
     public static function getModelByName(string $category_name): Model|Builder|null
     {
@@ -44,14 +39,12 @@ class DeviceCategoryService
 
     /**
      * 创建设备分类.
-     *
-     * @param array $data
-     * @return DeviceCategory
      */
     public function create(array $data): DeviceCategory
     {
         $this->device_category->setAttribute('name', $data['name']);
         $this->device_category->save();
+
         return $this->device_category;
     }
 }

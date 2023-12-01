@@ -52,24 +52,24 @@ class HasSoftwareRelationManager extends RelationManager
                 Tables\Columns\TextColumn::make('updated_at')
                     ->label('操作时间'),
                 Tables\Columns\TextColumn::make('user.name')
-                    ->label('操作人')
+                    ->label('操作人'),
             ])
             ->filters([
                 Tables\Filters\TrashedFilter::make(),
             ])
             ->headerActions([
-                DeviceAction::createDeviceHasSoftware($this->getOwnerRecord())
+                DeviceAction::createDeviceHasSoftware($this->getOwnerRecord()),
             ])
             ->actions([
                 DeviceAction::deleteDeviceHasSoftware()
                     ->visible(function (DeviceHasSoftware $device_has_software) {
-                        return !$device_has_software->service()->isDeleted();
-                    })
+                        return ! $device_has_software->service()->isDeleted();
+                    }),
             ])
             ->bulkActions([
 
             ])
-            ->modifyQueryUsing(fn(Builder $query) => $query->orderByDesc('created_at')
+            ->modifyQueryUsing(fn (Builder $query) => $query->orderByDesc('created_at')
                 ->withoutGlobalScopes([
                     SoftDeletingScope::class,
                 ]));

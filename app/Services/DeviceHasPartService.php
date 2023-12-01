@@ -20,22 +20,19 @@ class DeviceHasPartService
 
     /**
      * 判断是否已经删除的记录.
-     *
-     * @return bool
      */
     public function isDeleted(): bool
     {
         if ($this->device_has_part->getAttribute('deleted_at')) {
             return true;
         }
+
         return false;
     }
 
     /**
      * 删除配件管理记录.
      *
-     * @param array $data
-     * @return void
      * @throws Exception
      */
     public function delete(array $data): void

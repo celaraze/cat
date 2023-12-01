@@ -15,8 +15,6 @@ class Inventory extends Model
 
     /**
      * 模型到服务.
-     *
-     * @return InventoryService
      */
     public function service(): InventoryService
     {
@@ -25,8 +23,6 @@ class Inventory extends Model
 
     /**
      * 一对多，一个盘点任务有很多追踪记录.
-     *
-     * @return HasMany
      */
     public function hasTracks(): HasMany
     {
@@ -35,8 +31,6 @@ class Inventory extends Model
 
     /**
      * 一对一，盘点有一个创建人.
-     *
-     * @return BelongsTo
      */
     public function user(): BelongsTo
     {

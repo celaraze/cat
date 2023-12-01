@@ -31,7 +31,6 @@ class BrandResource extends Resource
 
     protected static ?string $navigationGroup = '信息资产';
 
-
     protected static string|array $routeMiddleware = FilamentLockTab::class;
 
     public static function form(Form $form): Form
@@ -40,7 +39,7 @@ class BrandResource extends Resource
             ->schema([
                 Forms\Components\TextInput::make('name')
                     ->label('名称')
-                    ->required()
+                    ->required(),
             ]);
     }
 
@@ -49,7 +48,7 @@ class BrandResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('name')
-                    ->label('名称')
+                    ->label('名称'),
             ])
             ->filters([
                 Tables\Filters\TrashedFilter::make(),

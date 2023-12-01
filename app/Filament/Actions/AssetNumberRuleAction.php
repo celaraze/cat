@@ -2,7 +2,6 @@
 
 namespace App\Filament\Actions;
 
-
 use App\Filament\Forms\SettingForm;
 use App\Services\AssetNumberRuleService;
 use App\Utils\NotificationUtil;
@@ -14,8 +13,6 @@ class AssetNumberRuleAction
 {
     /**
      * 创建资产编号规则。
-     *
-     * @return Action
      */
     public static function createAssetNumberRule(): Action
     {
