@@ -26,6 +26,7 @@ class Index extends ListRecords
                 // 这里要判断两个类型的数据，一个是单独给我审批的，另一个是给我拥有的角色审批的
                 ->modifyQueryUsing(function (Builder $query) {
                     $role_ids = auth()->user()->roles()->pluck('id');
+
                     return $query->where(function ($query) use ($role_ids) {
                         $query->whereIn('current_approve_role_id', $role_ids)
                             ->orWhere('current_approve_user_id', auth()->id());
@@ -34,6 +35,7 @@ class Index extends ListRecords
                 ->icon('heroicon-o-document-check'),
 
         ];
+
         // TODO 这里差权限控制，只有拥有权限的人才能看到全部表单
         return $tabs;
     }

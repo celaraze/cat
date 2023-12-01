@@ -50,7 +50,7 @@ class HasTrackRelationManager extends RelationManager
             ->actions([
                 InventoryAction::check()
                     ->visible(function (InventoryHasTrack $inventory_has_track) {
-                        return !$inventory_has_track->service()->isChecked();
+                        return ! $inventory_has_track->service()->isChecked();
                     }),
             ])
             ->bulkActions([

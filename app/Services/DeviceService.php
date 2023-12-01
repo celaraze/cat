@@ -18,7 +18,7 @@ class DeviceService
 
     public function __construct(Model $device = null)
     {
-        if (!$device) {
+        if (! $device) {
             $this->device = new Device();
         } else {
             $this->device = $device;
@@ -27,8 +27,6 @@ class DeviceService
 
     /**
      * 选单.
-     *
-     * @return Collection
      */
     public static function pluckOptions(): Collection
     {
@@ -37,8 +35,6 @@ class DeviceService
 
     /**
      * 判断设备分配记录是否存在.
-     *
-     * @return bool
      */
     public function isExistHasUser(): bool
     {
@@ -47,9 +43,6 @@ class DeviceService
 
     /**
      * 创建设备-用户记录.
-     *
-     * @param array $data
-     * @return Model
      */
     public function createHasUser(array $data): Model
     {
@@ -59,8 +52,6 @@ class DeviceService
     /**
      * 新增设备.
      *
-     * @param array $data
-     * @return void
      * @throws Exception
      */
     public function create(array $data): void
@@ -102,8 +93,6 @@ class DeviceService
     /**
      * 创建设备-配件记录.
      *
-     * @param array $data
-     * @return Model
      * @throws Exception
      */
     public function createHasPart(array $data): Model
@@ -111,14 +100,13 @@ class DeviceService
         if ($this->device->hasParts()->where('part_id', $data['part_id'])->count()) {
             throw new Exception('配件已经附加到此设备');
         }
+
         return $this->device->hasParts()->create($data);
     }
 
     /**
      * 创建设备-软件记录.
      *
-     * @param array $data
-     * @return Model
      * @throws Exception
      */
     public function createHasSoftware(array $data): Model
@@ -126,18 +114,17 @@ class DeviceService
         if ($this->device->hasSoftware()->where('software_id', $data['software_id'])->count()) {
             throw new Exception('软件已经附加到此设备');
         }
+
         return $this->device->hasSoftware()->create($data);
     }
 
     /**
      * 删除设备-用户记录.
-     *
-     * @param array $data
-     * @return int
      */
     public function deleteHasUser(array $data): int
     {
         $this->device->hasUsers()->first()->update(['delete_comment' => $data['delete_comment']]);
+
         return $this->device->hasUsers()->delete();
     }
 
@@ -173,13 +160,14 @@ class DeviceService
         $flow_id = Setting::query()
             ->where('custom_key', 'device_delete_flow_id')
             ->value('custom_value');
-        if (!$flow_id) {
+        if (! $flow_id) {
             throw new Exception('还未配置设备报废流程');
         }
         $flow = Flow::query()->where('id', $flow_id)->first();
-        if (!$flow) {
+        if (! $flow) {
             throw new Exception('未找到已配置的设备报废流程');
         }
+
         return $flow;
     }
 }

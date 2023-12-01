@@ -63,11 +63,11 @@ class HasContactRelationManager extends RelationManager
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
             ])
-            ->bulkActions([
+                ->bulkActions([
 
-            ])
-            ->emptyStateActions([
+                ])
+                ->emptyStateActions([
 
-            ]);
+                ]);
     }
 }

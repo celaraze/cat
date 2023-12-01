@@ -92,7 +92,7 @@ class PartResource extends Resource
                     PartAction::setAssetNumberRule(),
                     PartAction::resetAssetNumberRule(),
                     PartAction::setPartDeleteFlowId(),
-                ])
+                ]),
             ]);
     }
 
@@ -117,7 +117,7 @@ class PartResource extends Resource
                                             ->badge()
                                             ->color('primary'),
                                         TextEntry::make('category.name')
-                                            ->label('分类')
+                                            ->label('分类'),
                                     ]),
                                     Group::make([
                                         TextEntry::make('sn')
@@ -126,18 +126,18 @@ class PartResource extends Resource
                                             ->label('品牌'),
                                         TextEntry::make('specification')
                                             ->label('规格'),
-                                    ])
-                                ])
-                        ])
-                    ])
+                                    ]),
+                                ]),
+                        ]),
+                    ]),
             ])->columnSpan(['lg' => 2]),
             Group::make()->schema([
                 Section::make()
                     ->schema([
                         ImageEntry::make('image')
                             ->disk('public')
-                            ->label('照片')
-                    ])
+                            ->label('照片'),
+                    ]),
             ])->columnSpan(['lg' => 1]),
         ])->columns(3);
     }
@@ -145,7 +145,7 @@ class PartResource extends Resource
     public static function getRelations(): array
     {
         return [
-            HasPartRelationManager::make()
+            HasPartRelationManager::make(),
         ];
     }
 

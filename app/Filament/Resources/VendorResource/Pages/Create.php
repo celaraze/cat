@@ -11,8 +11,6 @@ class Create extends CreateRecord
 
     /**
      * 保存后跳转至列表.
-     *
-     * @return string
      */
     protected function getRedirectUrl(): string
     {

@@ -12,8 +12,6 @@ class FlowForm
 {
     /**
      * 创建或编辑流程的表单.
-     *
-     * @return array
      */
     public static function createFlow(): array
     {
@@ -21,14 +19,12 @@ class FlowForm
             TextInput::make('name')
                 ->label('名称')
                 ->required()
-                ->unique()
+                ->unique(),
         ];
     }
 
     /**
      * 创建流程节点的表单.
-     *
-     * @return array
      */
     public static function createNode(): array
     {
@@ -45,11 +41,11 @@ class FlowForm
             Select::make('user_id')
                 ->label('用户')
                 ->options(UserService::pluckOptions())
-                ->hidden(fn(callable $get) => $get('type') != 'user'),
+                ->hidden(fn (callable $get) => $get('type') != 'user'),
             Select::make('role_id')
                 ->label('角色')
                 ->options(RoleService::pluckOptions())
-                ->hidden(fn(callable $get) => $get('type') != 'role'),
+                ->hidden(fn (callable $get) => $get('type') != 'role'),
         ];
     }
 }

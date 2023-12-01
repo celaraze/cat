@@ -23,9 +23,6 @@ class AssetNumberRuleService
 
     /**
      * 获取资产是否启用自动生成编号.
-     *
-     * @param string $class_name
-     * @return mixed
      */
     public static function isAuto(string $class_name): mixed
     {
@@ -36,9 +33,6 @@ class AssetNumberRuleService
 
     /**
      * 获取资产对应的资产编号自动生成规则.
-     *
-     * @param string $class_name
-     * @return Model|Builder|null
      */
     public static function getAutoRule(string $class_name): Model|null|Builder
     {
@@ -49,9 +43,6 @@ class AssetNumberRuleService
 
     /**
      * 绑定资产编号自动生成规则.
-     *
-     * @param array $data
-     * @return void
      */
     public static function setAutoRule(array $data): void
     {
@@ -65,9 +56,6 @@ class AssetNumberRuleService
 
     /**
      * 解除资产编号自动生成规则.
-     *
-     * @param string $class_name
-     * @return void
      */
     public static function resetAutoRule(string $class_name): void
     {
@@ -77,8 +65,6 @@ class AssetNumberRuleService
 
     /**
      * 选单.
-     *
-     * @return Collection
      */
     public static function pluckOptions(): Collection
     {
@@ -87,9 +73,6 @@ class AssetNumberRuleService
 
     /**
      * 新增资产编号生成规则.
-     *
-     * @param array $data
-     * @return AssetNumberRule
      */
     public function create(array $data): AssetNumberRule
     {
@@ -97,13 +80,12 @@ class AssetNumberRuleService
         $this->assetNumberRule->setAttribute('formula', $data['formula']);
         $this->assetNumberRule->setAttribute('auto_increment_length', $data['auto_increment_length']);
         $this->assetNumberRule->save();
+
         return $this->assetNumberRule;
     }
 
     /**
      * 按照规则自动生成资产编号.
-     *
-     * @return string
      */
     public function generate(): string
     {
@@ -111,21 +93,21 @@ class AssetNumberRuleService
         foreach ($this->formula() as $key => $value) {
             $formula = str_replace($key, $value, $formula);
         }
+
         return $formula;
     }
 
     /**
      * 资产编号生成规则定义.
-     *
-     * @return array
      */
     protected function formula(): array
     {
         $auto_increment_length = $this->assetNumberRule->getAttribute('auto_increment_length');
         $auto_increment_count = $this->assetNumberRule->getAttribute('auto_increment_count') + 1;
         for ($i = strlen($auto_increment_count); $i < $auto_increment_length; $i++) {
-            $auto_increment_count = '0' . $auto_increment_count;
+            $auto_increment_count = '0'.$auto_increment_count;
         }
+
         return [
             '{year}' => Carbon::now()->year,
             '{month}' => Carbon::now()->month,
@@ -136,13 +118,11 @@ class AssetNumberRuleService
 
     /**
      * 规则自增计数+1.
-     *
-     * @return void
      */
     public function addAutoIncrementCount(): void
     {
         $this->assetNumberRule->update([
-            'auto_increment_count' => $this->assetNumberRule->getAttribute('auto_increment_count') + 1
+            'auto_increment_count' => $this->assetNumberRule->getAttribute('auto_increment_count') + 1,
         ]);
     }
 }

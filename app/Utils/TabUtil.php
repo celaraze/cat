@@ -8,8 +8,6 @@ class TabUtil
 {
     /**
      * 设备页顶部标签.
-     *
-     * @return array
      */
     public static function deviceTabs(): array
     {
@@ -25,8 +23,6 @@ class TabUtil
 
     /**
      * 配件页顶部标签.
-     *
-     * @return array
      */
     public static function partTabs(): array
     {
@@ -42,8 +38,6 @@ class TabUtil
 
     /**
      * 软件页顶部标签.
-     *
-     * @return array
      */
     public static function softwareTabs(): array
     {

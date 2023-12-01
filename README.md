@@ -81,6 +81,8 @@ ext-mysqli：扩展。
 
 ext-xml：扩展。
 
+ext-opcache：扩展，很重要，可以大幅提升站点性能。
+
 以上扩展安装过程注意版本必须与 PHP 版本一致。
 
 ### 快速开始
@@ -111,11 +113,11 @@ ext-xml：扩展。
 
 ### 生产环境最佳实践
 
-请参考 Laravel 官方建议之部署指南：[Laravel 部署](https://learnku.com/docs/laravel/10.x/deployment/14840)。
+1. 请参考 Laravel 官方建议之部署指南：[Laravel 部署](https://learnku.com/docs/laravel/10.x/deployment/14840)。
 
-站点主目录应该为 `your_path/cat/public` 作为入口。
+2. 站点主目录应该为 `your_path/cat/public` 作为入口。
 
-针对 Nginx 的配置，请务必遵循一下伪静态规则：
+3. 针对 Nginx 的配置，请务必遵循一下伪静态规则：
 
 ```nginx
     ···

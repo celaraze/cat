@@ -100,7 +100,7 @@ class SoftwareResource extends Resource
                     SoftwareAction::setAssetNumberRule(),
                     SoftwareAction::resetAssetNumberRule(),
                     SoftwareAction::setSoftwareDeleteFlowId(),
-                ])
+                ]),
             ]);
     }
 
@@ -127,7 +127,7 @@ class SoftwareResource extends Resource
                                         TextEntry::make('name')
                                             ->label('名称'),
                                         TextEntry::make('category.name')
-                                            ->label('分类')
+                                            ->label('分类'),
                                     ]),
                                     Group::make([
                                         TextEntry::make('sn')
@@ -136,18 +136,18 @@ class SoftwareResource extends Resource
                                             ->label('品牌'),
                                         TextEntry::make('specification')
                                             ->label('规格'),
-                                    ])
-                                ])
-                        ])
-                    ])
+                                    ]),
+                                ]),
+                        ]),
+                    ]),
             ])->columnSpan(['lg' => 2]),
             Group::make()->schema([
                 Section::make()
                     ->schema([
                         ImageEntry::make('image')
                             ->disk('public')
-                            ->label('照片')
-                    ])
+                            ->label('照片'),
+                    ]),
             ])->columnSpan(['lg' => 1]),
         ])->columns(3);
     }
@@ -155,7 +155,7 @@ class SoftwareResource extends Resource
     public static function getRelations(): array
     {
         return [
-            HasSoftwareRelationManager::make()
+            HasSoftwareRelationManager::make(),
         ];
     }
 

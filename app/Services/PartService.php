@@ -27,8 +27,6 @@ class PartService
 
     /**
      * 选单.
-     *
-     * @return Collection
      */
     public static function pluckOptions(): Collection
     {
@@ -38,8 +36,6 @@ class PartService
     /**
      * 创建设备-配件关联.
      *
-     * @param array $data
-     * @return Model
      * @throws Exception
      */
     public function createHasPart(array $data): Model
@@ -47,14 +43,13 @@ class PartService
         if ($this->part->hasParts()->where('device_id', $data['device_id'])->count()) {
             throw new Exception('配件已经附加到此设备');
         }
+
         return $this->part->hasParts()->create($data);
     }
 
     /**
      * 新增配件.
      *
-     * @param array $data
-     * @return void
      * @throws Exception
      */
     public function create(array $data): void
@@ -120,13 +115,14 @@ class PartService
         $flow_id = Setting::query()
             ->where('custom_key', 'part_delete_flow_id')
             ->value('custom_value');
-        if (!$flow_id) {
+        if (! $flow_id) {
             throw new Exception('还未配置配件报废流程');
         }
         $flow = Flow::query()->where('id', $flow_id)->first();
-        if (!$flow) {
+        if (! $flow) {
             throw new Exception('未找到已配置的配件报废流程');
         }
+
         return $flow;
     }
 }

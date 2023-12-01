@@ -19,8 +19,6 @@ class FlowHasNodeService
 
     /**
      * 是否有父节点.
-     *
-     * @return bool
      */
     public function isExistParentNode(): bool
     {
@@ -29,18 +27,14 @@ class FlowHasNodeService
 
     /**
      * 是否是第一个节点.
-     *
-     * @return bool
      */
     public function isFirstNode(): bool
     {
-        return !$this->flow_has_node->getAttribute('parent_node_id');
+        return ! $this->flow_has_node->getAttribute('parent_node_id');
     }
 
     /**
      * 是否有子节点.
-     *
-     * @return bool
      */
     public function isExistChildNode(): bool
     {
@@ -49,21 +43,16 @@ class FlowHasNodeService
 
     /**
      * 是否是最后一个节点.
-     *
-     * @return bool
      */
     public function isLastNode(): bool
     {
-        return !FlowHasNode::query()
+        return ! FlowHasNode::query()
             ->where('parent_node_id', $this->flow_has_node->getKey())
             ->count();
     }
 
     /**
      * 创建节点.
-     *
-     * @param array $data
-     * @return FlowHasNode
      */
     public function create(array $data): FlowHasNode
     {
@@ -73,7 +62,7 @@ class FlowHasNodeService
         $this->flow_has_node->setAttribute('role_id', $data['role_id'] ?? 0);
         $this->flow_has_node->setAttribute('parent_node_id', $data['parent_node_id']);
         $this->flow_has_node->save();
+
         return $this->flow_has_node;
     }
 }
-

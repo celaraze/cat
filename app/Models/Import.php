@@ -13,8 +13,6 @@ class Import extends Model
 
     /**
      * 一对多，导入有多个失败导入行.
-     *
-     * @return HasMany
      */
     public function failedImportRows(): HasMany
     {
@@ -23,8 +21,6 @@ class Import extends Model
 
     /**
      * 一对一，导入有一个执行用户.
-     *
-     * @return BelongsTo
      */
     public function user(): BelongsTo
     {

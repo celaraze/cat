@@ -26,7 +26,6 @@ class FlowHasFormResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
-
     protected static ?string $modelLabel = '表单';
 
     protected static ?int $navigationSort = 1;
@@ -70,7 +69,7 @@ class FlowHasFormResource extends Resource
                     })
                     ->color(function ($state) {
                         return FlowHasFormUtil::formStatusTextColors($state);
-                    })
+                    }),
             ])
             ->filters([
                 Tables\Filters\TrashedFilter::make(),
@@ -85,7 +84,7 @@ class FlowHasFormResource extends Resource
 
             ])
             ->headerActions([
-                FlowAction::createHasForm()
+                FlowAction::createHasForm(),
             ]);
     }
 
@@ -135,7 +134,7 @@ class FlowHasFormResource extends Resource
                         ->label('表单名称'),
                     TextEntry::make('uuid')
                         ->label('唯一编码'),
-                ])
+                ]),
             ])->columnSpan(['lg' => 2]),
             Group::make()->schema([
                 Section::make()->schema([
@@ -146,17 +145,17 @@ class FlowHasFormResource extends Resource
                         ->color(function (string $state) {
                             return FlowHasFormUtil::formStatusTextColors($state);
                         })
-                        ->label('')
+                        ->label(''),
                 ]),
                 Section::make()->schema([
                     TextEntry::make('type')
-                        ->label('当前审核人')
-                ])
+                        ->label('当前审核人'),
+                ]),
             ])->columnSpan(['lg' => 1]),
             Group::make()->schema([
                 ViewEntry::make('progress')
-                    ->view('filament.infolists.entries.flow-progress')
-            ])->columnSpan(['lg' => 3])
+                    ->view('filament.infolists.entries.flow-progress'),
+            ])->columnSpan(['lg' => 3]),
         ])->columns(3);
     }
 }

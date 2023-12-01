@@ -27,8 +27,6 @@ class SoftwareService
 
     /**
      * 选单.
-     *
-     * @return Collection
      */
     public static function pluckOptions(): Collection
     {
@@ -38,8 +36,6 @@ class SoftwareService
     /**
      * 创建设备-配件关联.
      *
-     * @param array $data
-     * @return Model
      * @throws Exception
      */
     public function createHasSoftware(array $data): Model
@@ -47,14 +43,13 @@ class SoftwareService
         if ($this->software->hasSoftware()->where('device_id', $data['device_id'])->count()) {
             throw new Exception('软件已经附加到此设备');
         }
+
         return $this->software->hasSoftware()->create($data);
     }
 
     /**
      * 新增软件.
      *
-     * @param array $data
-     * @return void
      * @throws Exception
      */
     public function create(array $data): void
@@ -122,13 +117,14 @@ class SoftwareService
         $flow_id = Setting::query()
             ->where('custom_key', 'software_delete_flow_id')
             ->value('custom_value');
-        if (!$flow_id) {
+        if (! $flow_id) {
             throw new Exception('还未配置软件报废流程');
         }
         $flow = Flow::query()->where('id', $flow_id)->first();
-        if (!$flow) {
+        if (! $flow) {
             throw new Exception('未找到已配置的软件报废流程');
         }
+
         return $flow;
     }
 }

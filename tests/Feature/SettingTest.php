@@ -26,7 +26,7 @@ class SettingTest extends TestCase
     {
         $setting = Setting::factory()->create([
             'custom_key' => 'test_key',
-            'custom_value' => 'test_value'
+            'custom_value' => 'test_value',
         ]);
         $this->assertTrue($setting->getAttribute('custom_key') == 'test_key');
     }

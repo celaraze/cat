@@ -29,13 +29,12 @@ class Create extends CreateRecord
             $this->halt();
         }
         unset($data['password_verify']);
+
         return $data;
     }
 
     /**
      * 保存后跳转至列表.
-     *
-     * @return string
      */
     protected function getRedirectUrl(): string
     {

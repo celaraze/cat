@@ -14,8 +14,6 @@ class InventoryHasTrack extends Model
 
     /**
      * 模型到服务.
-     *
-     * @return InventoryHasTrackService
      */
     public function service(): InventoryHasTrackService
     {
@@ -24,8 +22,6 @@ class InventoryHasTrack extends Model
 
     /**
      * 一对一，盘点追踪记录有一个盘点任务.
-     *
-     * @return BelongsTo
      */
     public function inventory(): BelongsTo
     {

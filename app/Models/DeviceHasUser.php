@@ -15,8 +15,6 @@ class DeviceHasUser extends Model
 
     /**
      * 一对一，用户管理记录有一个用户.
-     *
-     * @return BelongsTo
      */
     public function user(): BelongsTo
     {

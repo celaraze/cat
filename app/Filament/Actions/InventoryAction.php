@@ -21,8 +21,6 @@ class InventoryAction
 {
     /**
      * 创建盘点.
-     *
-     * @return Action
      */
     public static function createInventory(): Action
     {
@@ -32,8 +30,7 @@ class InventoryAction
             ->form([
                 TextInput::make('name')
                     ->label('任务名称')
-                    ->required()
-                ,
+                    ->required(),
                 Select::make('class_name')
                     ->options([
                         Device::class => '设备',
@@ -49,10 +46,11 @@ class InventoryAction
                     ->label('资产编号')
                     ->options(function (callable $get) {
                         $model = $get('class_name');
-                        if (!$model) {
+                        if (! $model) {
                             return [];
                         }
                         $model = new $model;
+
                         return $model->service()->pluckOptions();
                     })
                     ->hint('留空为选择全部该类资产'),
@@ -71,8 +69,6 @@ class InventoryAction
 
     /**
      * 删除盘点.
-     *
-     * @return \Filament\Actions\Action
      */
     public static function deleteInventory(): \Filament\Actions\Action
     {
@@ -94,8 +90,6 @@ class InventoryAction
 
     /**
      * 盘点.
-     *
-     * @return Action
      */
     public static function check(): Action
     {
@@ -110,7 +104,7 @@ class InventoryAction
                     ->label('操作')
                     ->required(),
                 TextInput::make('comment')
-                    ->label('备忘')
+                    ->label('备忘'),
             ])
             ->action(function (array $data, InventoryHasTrack $inventory_has_track) {
                 try {

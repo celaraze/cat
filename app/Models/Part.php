@@ -17,8 +17,6 @@ class Part extends Model
 
     /**
      * 一对一，配件属于一个分类.
-     *
-     * @return BelongsTo
      */
     public function category(): BelongsTo
     {
@@ -27,8 +25,6 @@ class Part extends Model
 
     /**
      * 一对一，配件有一个品牌.
-     *
-     * @return BelongsTo
      */
     public function brand(): BelongsTo
     {
@@ -37,8 +33,6 @@ class Part extends Model
 
     /**
      * 模型到服务.
-     *
-     * @return PartService
      */
     public function service(): PartService
     {
@@ -47,8 +41,6 @@ class Part extends Model
 
     /**
      * 一对多，配件有很多配件管理记录.
-     *
-     * @return HasMany
      */
     public function hasParts(): HasMany
     {

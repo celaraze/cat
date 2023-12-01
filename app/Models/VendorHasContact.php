@@ -13,8 +13,6 @@ class VendorHasContact extends Model
 
     /**
      * 一对一，厂商联系人有一个厂商.
-     *
-     * @return BelongsTo
      */
     public function vendor(): BelongsTo
     {

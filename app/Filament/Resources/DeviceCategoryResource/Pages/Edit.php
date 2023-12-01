@@ -21,8 +21,6 @@ class Edit extends EditRecord
 
     /**
      * 保存后返回上一个页面.
-     *
-     * @return string
      */
     protected function getRedirectUrl(): string
     {

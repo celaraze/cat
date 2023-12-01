@@ -17,8 +17,6 @@ class DeviceForm
 {
     /**
      * 创建或者编辑设备的表单。
-     *
-     * @return array
      */
     public static function createOrEditDevice(): array
     {
@@ -28,7 +26,7 @@ class DeviceForm
                 ->maxLength(255)
                 ->label('资产编号')
                 ->required(function () {
-                    return !AssetNumberRuleService::isAuto(Device::class);
+                    return ! AssetNumberRuleService::isAuto(Device::class);
                 })
                 ->readOnly(function () {
                     return AssetNumberRuleService::isAuto(Device::class);
@@ -82,7 +80,7 @@ class DeviceForm
                 ->directory('devices')
                 ->getUploadedFileNameForStorageUsing(
                     function (TemporaryUploadedFile $file) {
-                        return Uuid::uuid4() . '.' . $file->getClientOriginalExtension();
+                        return Uuid::uuid4().'.'.$file->getClientOriginalExtension();
                     }
                 ),
             //endregion

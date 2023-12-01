@@ -16,7 +16,6 @@ use App\Http\Middleware\FilamentLockTab;
 use App\Models\Device;
 use App\Services\DeviceCategoryService;
 use Exception;
-use Filament\Forms\Components\Select;
 use Filament\Forms\Form;
 use Filament\Infolists\Components\Grid;
 use Filament\Infolists\Components\Group;
@@ -29,7 +28,6 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Actions\ImportAction;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use pxlrbt\FilamentExcel\Actions\Tables\ExportAction;
 
@@ -91,7 +89,7 @@ class DeviceResource extends Resource
                     // 分配管理者
                     DeviceAction::createDeviceHasUser()
                         ->visible(function (Device $device) {
-                            return !$device->hasUsers()->count();
+                            return ! $device->hasUsers()->count();
                         }),
                     // 解除管理者
                     DeviceAction::deleteDeviceHasUser()
@@ -119,7 +117,7 @@ class DeviceResource extends Resource
                 Tables\Actions\ActionGroup::make([
                     DeviceAction::setAssetNumberRule(),
                     DeviceAction::resetAssetNumberRule(),
-                    DeviceAction::setDeviceDeleteFlowId()
+                    DeviceAction::setDeviceDeleteFlowId(),
                 ]),
             ]);
     }
@@ -147,7 +145,7 @@ class DeviceResource extends Resource
                                         TextEntry::make('name')
                                             ->label('名称'),
                                         TextEntry::make('category.name')
-                                            ->label('分类')
+                                            ->label('分类'),
                                     ]),
                                     Group::make([
                                         TextEntry::make('sn')
@@ -156,18 +154,18 @@ class DeviceResource extends Resource
                                             ->label('品牌'),
                                         TextEntry::make('specification')
                                             ->label('规格'),
-                                    ])
-                                ])
-                        ])
-                    ])
+                                    ]),
+                                ]),
+                        ]),
+                    ]),
             ])->columnSpan(['lg' => 2]),
             Group::make()->schema([
                 Section::make()
                     ->schema([
                         ImageEntry::make('image')
                             ->disk('public')
-                            ->label('照片')
-                    ])
+                            ->label('照片'),
+                    ]),
             ])->columnSpan(['lg' => 1]),
         ])->columns(3);
     }
