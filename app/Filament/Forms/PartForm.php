@@ -47,7 +47,6 @@ class PartForm
                 ->options(PartCategoryService::pluckOptions())
                 ->label('分类')
                 ->searchable()
-                ->preload()
                 ->required(),
             //endregion
 
@@ -56,7 +55,6 @@ class PartForm
                 ->options(BrandService::pluckOptions())
                 ->label('品牌')
                 ->searchable()
-                ->preload()
                 ->required(),
             //endregion
 

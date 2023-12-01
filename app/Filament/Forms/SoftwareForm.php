@@ -53,7 +53,6 @@ class SoftwareForm
                 ->options(SoftwareCategoryService::pluckOptions())
                 ->label('分类')
                 ->searchable()
-                ->preload()
                 ->required(),
             //endregion
 
@@ -62,7 +61,6 @@ class SoftwareForm
                 ->options(BrandService::pluckOptions())
                 ->label('品牌')
                 ->searchable()
-                ->preload()
                 ->required(),
             //endregion
 
