@@ -102,7 +102,7 @@ class SoftwareResource extends Resource
                 Tables\Actions\ActionGroup::make([
                     SoftwareAction::setAssetNumberRule(),
                     SoftwareAction::resetAssetNumberRule(),
-                    SoftwareAction::setSoftwareDeleteFlowId()
+                    SoftwareAction::setSoftwareDeleteFlowId(),
                 ])
                     ->label('高级')
                     ->icon('heroicon-m-cog-8-tooth')
