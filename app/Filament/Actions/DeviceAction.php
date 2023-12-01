@@ -107,7 +107,6 @@ class DeviceAction
     public static function createDevice(): Action
     {
         return Action::make('新增')
-            ->slideOver()
             ->icon('heroicon-m-plus')
             ->form(DeviceForm::createOrEditDevice())
             ->action(function (array $data) {

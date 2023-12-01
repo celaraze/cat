@@ -110,7 +110,28 @@ ext-xml：扩展。
 
 ### 生产环境最佳实践
 
-请参考 `Laravel` 官方建议之部署指南：[Laravel 部署](https://learnku.com/docs/laravel/10.x/deployment/14840)。
+请参考 Laravel 官方建议之部署指南：[Laravel 部署](https://learnku.com/docs/laravel/10.x/deployment/14840)。
+
+站点主目录应该为 `your_path/cat/public` 作为入口。
+
+针对 Nginx 的配置，请务必遵循一下伪静态规则：
+
+```nginx
+    ···
+    
+    location / {
+        try_files $uri $uri/ /index.php?$query_string;
+    }
+
+    location ~* \.(jpg|jpeg|gif|png|webp|svg|woff|woff2|ttf|css|js|ico|xml)$ {
+        try_files $uri /index.php?$query_string;
+        access_log off;
+        log_not_found off;
+        expires 14d;
+    }
+    
+    ···
+```
 
 ## 问题反馈
 

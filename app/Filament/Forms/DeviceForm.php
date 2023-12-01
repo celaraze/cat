@@ -47,7 +47,6 @@ class DeviceForm
                 ->options(DeviceCategoryService::pluckOptions())
                 ->label('分类')
                 ->searchable()
-                ->preload()
                 ->required(),
             //endregion
 
@@ -62,7 +61,6 @@ class DeviceForm
                 ->options(BrandService::pluckOptions())
                 ->label('品牌')
                 ->searchable()
-                ->preload()
                 ->required(),
             //endregion
 
