@@ -41,11 +41,7 @@
 
 ❤ 感谢各位支持。CAT 提倡与各位使用者、开发者一起创建健康生态，让本项目变的更好，欢迎提供 PR 贡献。
 
-## 安装
-
-> CAT 是个标准的 Laravel应用程序，也适用于所有的 LNMP/WNMP/DNMP 环境。
-
-### 发行策略
+## 发行策略
 
 CAT 以滚动更新形式发布，具体版本号以发布日期标定。
 
@@ -60,6 +56,10 @@ CAT 以滚动更新形式发布，具体版本号以发布日期标定。
 | main | 正式版本分支，稳定且可被用于生产环境。                                |
 | test | 测试版本分支，领先于 main 分支的特性、功能和修复项，仅做验证测试，不稳定，不应被用于生产环境。 |
 | dev  | 开发版本分支，极不稳定，不应被用于生产环境。                             |
+
+## 安装
+
+> CAT 是个标准的 Laravel应用程序，也适用于所有的 LNMP/WNMP/DNMP 环境。
 
 ### 先决条件
 
@@ -111,6 +111,22 @@ ext-opcache：扩展，很重要，可以大幅提升站点性能。
 
 11. 此时可以通过访问 `http://127.0.0.1:8000` 来访问系统。
 
+### ESXi OVF
+
+提供了适用于 ESXi 的 OVF 模板，导入虚拟机即可开箱即用。
+
+OVF：[cat-OVF.zip](https://pan.baidu.com/s/1U6ttPaRNWX4c19ryzYNzsw?pwd=4rp7)
+
+基于 Rocky Linux 制作，Linux root 密码为 `cat`，内置宝塔面板，使用 Nginx、PHP 8.1、MySQL 8 以及 Redis 7。
+ 
+宝塔面板登陆地址：`http://your_ip:8888/admin` 。
+
+宝塔面板用户密码：`catadmin / catadmin`。
+
+CAT 用户密码：`admin@test.com / admin`。
+
+出于安全考虑，请在部署后第一时间修改操作系统和宝塔面板密码，同时解除宝塔面板预先绑定的手机账户。
+
 ### 生产环境最佳实践
 
 1. 请参考 Laravel 官方建议之部署指南：[Laravel 部署](https://learnku.com/docs/laravel/10.x/deployment/14840)。
@@ -135,6 +151,18 @@ ext-opcache：扩展，很重要，可以大幅提升站点性能。
     
     ···
 ```
+
+## 更新
+
+无论使用何种部署方式，更新原理相同。
+
+1. 执行 `cd` 命令进入 CAT 部署所在的根目录。
+
+2. 执行 `git reset --hard` 将本地修改全部初始化，如果您定义过自定义内容，请提前保存。
+
+3. 执行 `git checkout main && git pull --force` 拉取最新代码。
+
+4. 执行 `php artisan cat:update` 进行更新操作。
 
 ## 问题反馈
 

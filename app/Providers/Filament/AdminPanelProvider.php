@@ -65,7 +65,7 @@ class AdminPanelProvider extends PanelProvider
             ->breadcrumbs()
             ->plugins([
                 FilamentSpatieRolesPermissionsPlugin::make(),
-//                ThemesPlugin::make(),
+                //                ThemesPlugin::make(),
             ])
             ->brandLogo(asset('images/logo.png'))
             ->favicon(asset('images/logo.png'))

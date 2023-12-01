@@ -100,6 +100,7 @@ class DeviceAction
     public static function createDevice(): Action
     {
         return Action::make('新增')
+            ->slideOver()
             ->icon('heroicon-m-plus')
             ->form(DeviceForm::createOrEditDevice())
             ->action(function (array $data) {
@@ -337,7 +338,7 @@ class DeviceAction
                     $asset_number = $device->getAttribute('asset_number');
                     $flow_service->createHasForm(
                         '设备报废单',
-                        $asset_number . ' 报废处理',
+                        $asset_number.' 报废处理',
                         $asset_number
                     );
                     NotificationUtil::make(true, '已创建表单');
@@ -359,7 +360,7 @@ class DeviceAction
             ->form([
                 Shout::make('hint')
                     ->color('danger')
-                    ->content('此操作将同时报废所含配件（不包含软件）')
+                    ->content('此操作将同时报废所含配件（不包含软件）'),
             ])
             ->action(function (array $data, Device $device) {
                 try {

@@ -90,7 +90,7 @@ class DeviceResource extends Resource
                     // 分配管理者
                     DeviceAction::createDeviceHasUser()
                         ->visible(function (Device $device) {
-                            return !$device->hasUsers()->count();
+                            return ! $device->hasUsers()->count();
                         }),
                     // 解除管理者
                     DeviceAction::deleteDeviceHasUser()
@@ -100,7 +100,7 @@ class DeviceResource extends Resource
                     DeviceAction::createFlowHasFormForDeletingDevice()
                         ->visible(DeviceService::isSetDeleteFlow()),
                     DeviceAction::deleteDevice(),
-                ])
+                ]),
             ])
             ->bulkActions([
 

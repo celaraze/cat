@@ -200,7 +200,7 @@ class SoftwareAction
                     $asset_number = $software->getAttribute('asset_number');
                     $flow_service->createHasForm(
                         '软件报废单',
-                        $asset_number . ' 报废处理',
+                        $asset_number.' 报废处理',
                         $asset_number
                     );
                     NotificationUtil::make(true, '已创建表单');
