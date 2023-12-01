@@ -4,7 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 
-class InformationDeviceCategoryTableSeeder extends Seeder
+class BrandTableSeeder extends Seeder
 {
 
     /**
@@ -16,13 +16,13 @@ class InformationDeviceCategoryTableSeeder extends Seeder
     {
 
 
-        \DB::table('information_device_categories')->delete();
+        \DB::table('brands')->delete();
 
-        \DB::table('information_device_categories')->insert(array(
+        \DB::table('brands')->insert(array(
             0 =>
                 array(
                     'id' => 1,
-                    'name' => '台式机',
+                    'name' => '微软 Microsoft',
                     'deleted_at' => NULL,
                     'created_at' => NULL,
                     'updated_at' => NULL,
@@ -30,7 +30,7 @@ class InformationDeviceCategoryTableSeeder extends Seeder
             1 =>
                 array(
                     'id' => 2,
-                    'name' => '笔记本',
+                    'name' => '英特尔 Intel',
                     'deleted_at' => NULL,
                     'created_at' => NULL,
                     'updated_at' => NULL,
@@ -38,7 +38,7 @@ class InformationDeviceCategoryTableSeeder extends Seeder
             2 =>
                 array(
                     'id' => 3,
-                    'name' => '服务器',
+                    'name' => 'AMD',
                     'deleted_at' => NULL,
                     'created_at' => NULL,
                     'updated_at' => NULL,
@@ -46,7 +46,7 @@ class InformationDeviceCategoryTableSeeder extends Seeder
             3 =>
                 array(
                     'id' => 4,
-                    'name' => '交换机',
+                    'name' => '苹果 Apple',
                     'deleted_at' => NULL,
                     'created_at' => NULL,
                     'updated_at' => NULL,
@@ -54,7 +54,7 @@ class InformationDeviceCategoryTableSeeder extends Seeder
             4 =>
                 array(
                     'id' => 5,
-                    'name' => '显示器',
+                    'name' => '英伟达 Nvidia',
                     'deleted_at' => NULL,
                     'created_at' => NULL,
                     'updated_at' => NULL,
@@ -62,7 +62,7 @@ class InformationDeviceCategoryTableSeeder extends Seeder
             5 =>
                 array(
                     'id' => 6,
-                    'name' => '路由器',
+                    'name' => '微星 MSI',
                     'deleted_at' => NULL,
                     'created_at' => NULL,
                     'updated_at' => NULL,
@@ -70,7 +70,7 @@ class InformationDeviceCategoryTableSeeder extends Seeder
             6 =>
                 array(
                     'id' => 7,
-                    'name' => '打印机',
+                    'name' => '金士顿 Kingston',
                     'deleted_at' => NULL,
                     'created_at' => NULL,
                     'updated_at' => NULL,
@@ -78,7 +78,7 @@ class InformationDeviceCategoryTableSeeder extends Seeder
             7 =>
                 array(
                     'id' => 8,
-                    'name' => '扫描仪',
+                    'name' => '西部数据 WD',
                     'deleted_at' => NULL,
                     'created_at' => NULL,
                     'updated_at' => NULL,
@@ -86,7 +86,7 @@ class InformationDeviceCategoryTableSeeder extends Seeder
             8 =>
                 array(
                     'id' => 9,
-                    'name' => '复印机',
+                    'name' => '希捷 Seagate',
                     'deleted_at' => NULL,
                     'created_at' => NULL,
                     'updated_at' => NULL,
@@ -94,7 +94,7 @@ class InformationDeviceCategoryTableSeeder extends Seeder
             9 =>
                 array(
                     'id' => 10,
-                    'name' => '平板电脑',
+                    'name' => '华硕 ASUS',
                     'deleted_at' => NULL,
                     'created_at' => NULL,
                     'updated_at' => NULL,
@@ -102,7 +102,55 @@ class InformationDeviceCategoryTableSeeder extends Seeder
             10 =>
                 array(
                     'id' => 11,
-                    'name' => 'PDA',
+                    'name' => '联想 Lenovo',
+                    'deleted_at' => NULL,
+                    'created_at' => NULL,
+                    'updated_at' => NULL,
+                ),
+            11 =>
+                array(
+                    'id' => 12,
+                    'name' => '惠普 HP/HPE',
+                    'deleted_at' => NULL,
+                    'created_at' => NULL,
+                    'updated_at' => NULL,
+                ),
+            12 =>
+                array(
+                    'id' => 13,
+                    'name' => '华为 Huawei',
+                    'deleted_at' => NULL,
+                    'created_at' => NULL,
+                    'updated_at' => NULL,
+                ),
+            13 =>
+                array(
+                    'id' => 14,
+                    'name' => '小米 MI',
+                    'deleted_at' => NULL,
+                    'created_at' => NULL,
+                    'updated_at' => NULL,
+                ),
+            14 =>
+                array(
+                    'id' => 15,
+                    'name' => '荣耀 Honor',
+                    'deleted_at' => NULL,
+                    'created_at' => NULL,
+                    'updated_at' => NULL,
+                ),
+            15 =>
+                array(
+                    'id' => 16,
+                    'name' => '七彩虹 Colorful',
+                    'deleted_at' => NULL,
+                    'created_at' => NULL,
+                    'updated_at' => NULL,
+                ),
+            16 =>
+                array(
+                    'id' => 17,
+                    'name' => '影驰 Galaxy',
                     'deleted_at' => NULL,
                     'created_at' => NULL,
                     'updated_at' => NULL,
