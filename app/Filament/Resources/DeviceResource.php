@@ -15,6 +15,7 @@ use App\Filament\Resources\DeviceResource\RelationManagers\HasUserRelationManage
 use App\Http\Middleware\FilamentLockTab;
 use App\Models\Device;
 use App\Services\DeviceCategoryService;
+use App\Services\DeviceService;
 use Exception;
 use Filament\Forms\Form;
 use Filament\Infolists\Components\Grid;
@@ -89,15 +90,17 @@ class DeviceResource extends Resource
                     // 分配管理者
                     DeviceAction::createDeviceHasUser()
                         ->visible(function (Device $device) {
-                            return ! $device->hasUsers()->count();
+                            return !$device->hasUsers()->count();
                         }),
                     // 解除管理者
                     DeviceAction::deleteDeviceHasUser()
                         ->visible(function (Device $device) {
                             return $device->hasUsers()->count();
                         }),
-                    DeviceAction::createFlowHasFormForDeletingDevice(),
-                ]),
+                    DeviceAction::createFlowHasFormForDeletingDevice()
+                        ->visible(DeviceService::isSetDeleteFlow()),
+                    DeviceAction::deleteDevice(),
+                ])
             ])
             ->bulkActions([
 
@@ -118,7 +121,10 @@ class DeviceResource extends Resource
                     DeviceAction::setAssetNumberRule(),
                     DeviceAction::resetAssetNumberRule(),
                     DeviceAction::setDeviceDeleteFlowId(),
-                ]),
+                ])
+                    ->label('高级')
+                    ->icon('heroicon-m-cog-8-tooth')
+                    ->button(),
             ]);
     }
 

@@ -34,6 +34,19 @@ class SoftwareService
     }
 
     /**
+     * 判断是否配置报废流程.
+     *
+     * @return bool
+     */
+    public static function isSetDeleteFlow(): bool
+    {
+        return Setting::query()
+            ->where('custom_key', 'software_delete_flow_id')
+            ->count();
+
+    }
+
+    /**
      * 创建设备-配件关联.
      *
      * @throws Exception
@@ -63,12 +76,12 @@ class SoftwareService
                 ->first();
             if ($asset_number_rule) {
                 $asset_number_rule = new AssetNumberRule($asset_number_rule->toArray());
-            }
-            // 如果绑定了自动生成规则并且启用
-            if ($asset_number_rule->getAttribute('is_auto')) {
-                $asset_number_rule_service = new AssetNumberRuleService($asset_number_rule);
-                $asset_number = $asset_number_rule_service->generate();
-                $asset_number_rule_service->addAutoIncrementCount();
+                // 如果绑定了自动生成规则并且启用
+                if ($asset_number_rule->getAttribute('is_auto')) {
+                    $asset_number_rule_service = new AssetNumberRuleService($asset_number_rule);
+                    $asset_number = $asset_number_rule_service->generate();
+                    $asset_number_rule_service->addAutoIncrementCount();
+                }
             }
             AssetNumberTrackService::create($asset_number);
             $this->software->setAttribute('asset_number', $asset_number);
@@ -117,11 +130,11 @@ class SoftwareService
         $flow_id = Setting::query()
             ->where('custom_key', 'software_delete_flow_id')
             ->value('custom_value');
-        if (! $flow_id) {
+        if (!$flow_id) {
             throw new Exception('还未配置软件报废流程');
         }
         $flow = Flow::query()->where('id', $flow_id)->first();
-        if (! $flow) {
+        if (!$flow) {
             throw new Exception('未找到已配置的软件报废流程');
         }
 

@@ -16,6 +16,7 @@ use App\Services\SoftwareService;
 use App\Services\UserService;
 use App\Utils\LogUtil;
 use App\Utils\NotificationUtil;
+use Awcodes\Shout\Components\Shout;
 use Exception;
 use Filament\Forms\Components\Checkbox;
 use Filament\Forms\Components\Select;
@@ -283,7 +284,7 @@ class DeviceAction
      */
     public static function setAssetNumberRule(): Action
     {
-        return Action::make('资产编号配置')
+        return Action::make('配置资产编号自动生成规则')
             ->form([
                 Select::make('asset_number_rule_id')
                     ->label('规则')
@@ -297,7 +298,7 @@ class DeviceAction
             ->action(function (array $data) {
                 $data['class_name'] = Device::class;
                 AssetNumberRuleService::setAutoRule($data);
-                NotificationUtil::make(true, '已选择规则');
+                NotificationUtil::make(true, '已配置资产编号自动生成规则');
             });
     }
 
@@ -306,11 +307,11 @@ class DeviceAction
      */
     public static function resetAssetNumberRule(): Action
     {
-        return Action::make('重置资产编号配置')
+        return Action::make('清除资产编号自动生成规则')
             ->requiresConfirmation()
             ->action(function () {
                 AssetNumberRuleService::resetAutoRule(Device::class);
-                NotificationUtil::make(true, '已清除所有规则绑定关系');
+                NotificationUtil::make(true, '已清除编号自动生成规则');
             });
     }
 
@@ -322,6 +323,9 @@ class DeviceAction
         return Action::make('流程报废')
             ->icon('heroicon-m-archive-box-x-mark')
             ->form([
+                Shout::make('')
+                    ->color('danger')
+                    ->content('此操作将同时报废所含配件（不包含软件）'),
                 TextInput::make('comment')
                     ->label('说明')
                     ->required(),
@@ -333,7 +337,7 @@ class DeviceAction
                     $asset_number = $device->getAttribute('asset_number');
                     $flow_service->createHasForm(
                         '设备报废单',
-                        $asset_number.' 报废处理',
+                        $asset_number . ' 报废处理',
                         $asset_number
                     );
                     NotificationUtil::make(true, '已创建表单');
@@ -352,6 +356,11 @@ class DeviceAction
         return Action::make('强制报废')
             ->requiresConfirmation()
             ->icon('heroicon-m-archive-box-x-mark')
+            ->form([
+                Shout::make('hint')
+                    ->color('danger')
+                    ->content('此操作将同时报废所含配件（不包含软件）')
+            ])
             ->action(function (array $data, Device $device) {
                 try {
                     $device->service()->delete();

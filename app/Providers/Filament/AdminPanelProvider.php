@@ -65,9 +65,8 @@ class AdminPanelProvider extends PanelProvider
             ->breadcrumbs()
             ->plugins([
                 FilamentSpatieRolesPermissionsPlugin::make(),
-                ThemesPlugin::make(),
+//                ThemesPlugin::make(),
             ])
-//            ->brandName('CAT')
             ->brandLogo(asset('images/logo.png'))
             ->favicon(asset('images/logo.png'))
             ->topNavigation();

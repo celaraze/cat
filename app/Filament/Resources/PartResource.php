@@ -13,6 +13,7 @@ use App\Filament\Resources\PartResource\RelationManagers\HasPartRelationManager;
 use App\Http\Middleware\FilamentLockTab;
 use App\Models\Part;
 use App\Services\PartCategoryService;
+use App\Services\PartService;
 use Filament\Forms\Form;
 use Filament\Infolists\Components\Grid;
 use Filament\Infolists\Components\Group;
@@ -74,7 +75,9 @@ class PartResource extends Resource
             ->actions([
                 Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
-                PartAction::createFlowHasFormForDeletingPart(),
+                PartAction::createFlowHasFormForDeletingPart()
+                    ->visible(PartService::isSetDeleteFlow()),
+                PartAction::deletePart(),
             ])
             ->bulkActions([
 
@@ -92,7 +95,10 @@ class PartResource extends Resource
                     PartAction::setAssetNumberRule(),
                     PartAction::resetAssetNumberRule(),
                     PartAction::setPartDeleteFlowId(),
-                ]),
+                ])
+                    ->label('高级')
+                    ->icon('heroicon-m-cog-8-tooth')
+                    ->button(),
             ]);
     }
 

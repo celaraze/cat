@@ -151,7 +151,7 @@ class SoftwareAction
      */
     public static function setAssetNumberRule(): Action
     {
-        return Action::make('资产编号配置')
+        return Action::make('配置资产编号自动生成规则')
             ->form([
                 Select::make('asset_number_rule_id')
                     ->label('规则')
@@ -165,7 +165,7 @@ class SoftwareAction
             ->action(function (array $data) {
                 $data['class_name'] = Software::class;
                 AssetNumberRuleService::setAutoRule($data);
-                NotificationUtil::make(true, '已选择规则');
+                NotificationUtil::make(true, '已配置资产编号自动生成规则');
             });
     }
 
@@ -174,11 +174,11 @@ class SoftwareAction
      */
     public static function resetAssetNumberRule(): Action
     {
-        return Action::make('重置资产编号配置')
+        return Action::make('清除资产编号自动生成规则')
             ->requiresConfirmation()
             ->action(function () {
                 AssetNumberRuleService::resetAutoRule(Software::class);
-                NotificationUtil::make(true, '已清除所有规则绑定关系');
+                NotificationUtil::make(true, '已清除编号自动生成规则');
             });
     }
 
@@ -187,7 +187,7 @@ class SoftwareAction
      */
     public static function createFlowHasFormForDeletingSoftware(): Action
     {
-        return Action::make('报废（流程）')
+        return Action::make('流程报废')
             ->form([
                 TextInput::make('comment')
                     ->label('说明')
@@ -199,11 +199,30 @@ class SoftwareAction
                     $flow_service = new FlowService($software_delete_flow);
                     $asset_number = $software->getAttribute('asset_number');
                     $flow_service->createHasForm(
-                        '配件报废单',
-                        $asset_number.' 报废处理',
+                        '软件报废单',
+                        $asset_number . ' 报废处理',
                         $asset_number
                     );
                     NotificationUtil::make(true, '已创建表单');
+                } catch (Exception $exception) {
+                    LogUtil::error($exception);
+                    NotificationUtil::make(false, $exception);
+                }
+            });
+    }
+
+    /**
+     * 强制报废按钮.
+     */
+    public static function deleteSoftware(): Action
+    {
+        return Action::make('强制报废')
+            ->requiresConfirmation()
+            ->icon('heroicon-m-archive-box-x-mark')
+            ->action(function (array $data, Software $software) {
+                try {
+                    $software->service()->delete();
+                    NotificationUtil::make(true, '已报废');
                 } catch (Exception $exception) {
                     LogUtil::error($exception);
                     NotificationUtil::make(false, $exception);

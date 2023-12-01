@@ -18,7 +18,7 @@ class DeviceService
 
     public function __construct(Model $device = null)
     {
-        if (! $device) {
+        if (!$device) {
             $this->device = new Device();
         } else {
             $this->device = $device;
@@ -31,6 +31,19 @@ class DeviceService
     public static function pluckOptions(): Collection
     {
         return Device::query()->pluck('asset_number', 'id');
+    }
+
+    /**
+     * 判断是否配置报废流程.
+     *
+     * @return bool
+     */
+    public static function isSetDeleteFlow(): bool
+    {
+        return Setting::query()
+            ->where('custom_key', 'device_delete_flow_id')
+            ->count();
+
     }
 
     /**
@@ -65,12 +78,12 @@ class DeviceService
                 ->first();
             if ($asset_number_rule) {
                 $asset_number_rule = new AssetNumberRule($asset_number_rule->toArray());
-            }
-            // 如果绑定了自动生成规则并且启用
-            if ($asset_number_rule->getAttribute('is_auto')) {
-                $asset_number_rule_service = new AssetNumberRuleService($asset_number_rule);
-                $asset_number = $asset_number_rule_service->generate();
-                $asset_number_rule_service->addAutoIncrementCount();
+                // 如果绑定了自动生成规则并且启用
+                if ($asset_number_rule->getAttribute('is_auto')) {
+                    $asset_number_rule_service = new AssetNumberRuleService($asset_number_rule);
+                    $asset_number = $asset_number_rule_service->generate();
+                    $asset_number_rule_service->addAutoIncrementCount();
+                }
             }
             AssetNumberTrackService::create($asset_number);
             $this->device->setAttribute('asset_number', $asset_number);
@@ -160,11 +173,12 @@ class DeviceService
         $flow_id = Setting::query()
             ->where('custom_key', 'device_delete_flow_id')
             ->value('custom_value');
-        if (! $flow_id) {
+        if (!$flow_id) {
             throw new Exception('还未配置设备报废流程');
         }
-        $flow = Flow::query()->where('id', $flow_id)->first();
-        if (! $flow) {
+        $flow = Flow::query()
+            ->where('id', $flow_id)->first();
+        if (!$flow) {
             throw new Exception('未找到已配置的设备报废流程');
         }
 
