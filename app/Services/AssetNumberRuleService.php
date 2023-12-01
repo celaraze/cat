@@ -142,7 +142,7 @@ class AssetNumberRuleService
     public function addAutoIncrementCount(): void
     {
         $this->assetNumberRule->update([
-            'auto_increment_count' => $this->assetNumberRule->getAttribute('auto_increment_count')
+            'auto_increment_count' => $this->assetNumberRule->getAttribute('auto_increment_count') + 1
         ]);
     }
 }

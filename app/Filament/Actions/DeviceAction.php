@@ -348,7 +348,8 @@ class DeviceAction
      */
     public static function createFlowHasFormForDeletingDevice(): Action
     {
-        return Action::make('报废（流程）')
+        return Action::make('流程报废')
+            ->icon('heroicon-m-archive-box-x-mark')
             ->form([
                 TextInput::make('comment')
                     ->label('说明')
@@ -365,6 +366,27 @@ class DeviceAction
                         $asset_number
                     );
                     NotificationUtil::make(true, '已创建表单');
+                } catch (Exception $exception) {
+                    LogUtil::error($exception);
+                    NotificationUtil::make(false, $exception);
+                }
+            });
+    }
+
+    /**
+     * 强制报废按钮.
+     *
+     * @return Action
+     */
+    public static function deleteDevice(): Action
+    {
+        return Action::make('强制报废')
+            ->requiresConfirmation()
+            ->icon('heroicon-m-archive-box-x-mark')
+            ->action(function (array $data, Device $device) {
+                try {
+                    $device->service()->delete();
+                    NotificationUtil::make(true, '已报废');
                 } catch (Exception $exception) {
                     LogUtil::error($exception);
                     NotificationUtil::make(false, $exception);

@@ -68,12 +68,13 @@ class DeviceService
         // 开始事务
         DB::beginTransaction();
         try {
+            $asset_number = $data['asset_number'];
             $asset_number_rule = AssetNumberRule::query()
                 ->where('class_name', $this->device::class)
-                ->first()
-                ->toArray();
-            $asset_number_rule = new AssetNumberRule($asset_number_rule);
-            $asset_number = $data['asset_number'];
+                ->first();
+            if ($asset_number_rule) {
+                $asset_number_rule = new AssetNumberRule($asset_number_rule->toArray());
+            }
             // 如果绑定了自动生成规则并且启用
             if ($asset_number_rule->getAttribute('is_auto')) {
                 $asset_number_rule_service = new AssetNumberRuleService($asset_number_rule);
