@@ -169,7 +169,7 @@ class FlowHasFormService
      * 根据不同情况获取节点顺序信息.
      * 结案的表单从持久化数据中获取，没结案的实时获取.
      */
-    public function sortNodes(): mixed
+    public function getNodes(): mixed
     {
         $status = $this->flow_has_form->getAttribute('status');
         if ($status == 3 || $status == 4) {

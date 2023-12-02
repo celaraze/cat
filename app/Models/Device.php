@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Device extends Model
@@ -30,6 +31,14 @@ class Device extends Model
     public function brand(): BelongsTo
     {
         return $this->belongsTo(Brand::class, 'brand_id', 'id');
+    }
+
+    /**
+     * 一对一，设备有一个资产追踪.
+     */
+    public function assetNumberTrack(): HasOne
+    {
+        return $this->hasOne(AssetNumberTrack::class, 'asset_number', 'asset_number');
     }
 
     /**

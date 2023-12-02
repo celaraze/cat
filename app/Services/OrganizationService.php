@@ -7,6 +7,7 @@ use App\Models\OrganizationHasUser;
 use Exception;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
+use JetBrains\PhpStorm\ArrayShape;
 
 class OrganizationService
 {
@@ -24,6 +25,7 @@ class OrganizationService
     /**
      * 编辑组织.
      */
+    #[ArrayShape(['name' => 'string'])]
     public function update(array $data): Organization
     {
         $this->organization->update($data);
@@ -53,6 +55,7 @@ class OrganizationService
      *
      * @throws Exception
      */
+    #[ArrayShape(['organization_id' => 'int', 'user_ids' => 'array'])]
     public function createManyHasUsers(array $data): void
     {
         try {
@@ -77,6 +80,7 @@ class OrganizationService
      *
      * @throws Exception
      */
+    #[ArrayShape(['organization_id' => 'int', 'user_id' => 'int'])]
     public function createHasUser(array $data): Model
     {
         $organization_has_user = OrganizationHasUser::query()
@@ -93,6 +97,7 @@ class OrganizationService
     /**
      * 创建组织.
      */
+    #[ArrayShape(['name' => 'string'])]
     public function create(array $data): Organization
     {
         $this->organization->setAttribute('name', $data['name']);

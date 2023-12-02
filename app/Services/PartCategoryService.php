@@ -6,6 +6,7 @@ use App\Models\PartCategory;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
+use JetBrains\PhpStorm\ArrayShape;
 
 class PartCategoryService
 {
@@ -39,6 +40,7 @@ class PartCategoryService
     /**
      * 新增配件分类.
      */
+    #[ArrayShape(['name' => 'string'])]
     public function create(array $data): PartCategory
     {
         $this->part_category->setAttribute('name', $data['name']);

@@ -3,9 +3,8 @@
 namespace App\Services;
 
 use App\Models\Brand;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
+use JetBrains\PhpStorm\ArrayShape;
 
 class BrandService
 {
@@ -29,16 +28,9 @@ class BrandService
     }
 
     /**
-     * 通过名称获取模型.
-     */
-    public static function getModelByName(string $brand_name): Model|Builder|null
-    {
-        return Brand::query()->where('name', $brand_name)->first();
-    }
-
-    /**
      * 创建信息资产品牌.
      */
+    #[ArrayShape(['name' => 'string'])]
     public function create(array $data): Brand
     {
         $this->brand->setAttribute('name', $data['name']);

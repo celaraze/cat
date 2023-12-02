@@ -29,7 +29,7 @@ class FlowProgressChart extends ApexChartWidget
         $form_id = UrlUtil::getRecordId();
         $flow_has_form_service = new FlowHasFormService();
         $flow_has_form_service->setFlowHasFormByFormId($form_id);
-        $nodes = $flow_has_form_service->sortNodes();
+        $nodes = $flow_has_form_service->getNodes();
 
         return [
             'chart' => [

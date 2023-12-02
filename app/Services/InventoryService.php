@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\Inventory;
 use Exception;
 use Illuminate\Support\Facades\DB;
+use JetBrains\PhpStorm\ArrayShape;
 
 class InventoryService
 {
@@ -20,8 +21,15 @@ class InventoryService
     }
 
     /**
+     * 创建盘点.
+     *
      * @throws Exception
      */
+    #[ArrayShape([
+        'name' => 'string',
+        'class_name' => 'string',
+        'model_ids' => 'array',
+    ])]
     public function create(array $data): void
     {
         try {

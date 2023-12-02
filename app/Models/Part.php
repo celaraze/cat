@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Part extends Model
@@ -29,6 +30,14 @@ class Part extends Model
     public function brand(): BelongsTo
     {
         return $this->belongsTo(Brand::class, 'brand_id', 'id');
+    }
+
+    /**
+     * 一对一，配件有一个资产追踪.
+     */
+    public function assetNumberTrack(): HasOne
+    {
+        return $this->hasOne(AssetNumberTrack::class, 'asset_number', 'asset_number');
     }
 
     /**

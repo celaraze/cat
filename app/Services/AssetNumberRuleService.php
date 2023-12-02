@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
+use JetBrains\PhpStorm\ArrayShape;
 
 class AssetNumberRuleService
 {
@@ -44,6 +45,7 @@ class AssetNumberRuleService
     /**
      * 绑定资产编号自动生成规则.
      */
+    #[ArrayShape(['class_name' => 'string', 'is_auto' => 'bool'])]
     public static function setAutoRule(array $data): bool
     {
         $asset_number_rule = AssetNumberRule::query()
@@ -76,6 +78,7 @@ class AssetNumberRuleService
     /**
      * 新增资产编号生成规则.
      */
+    #[ArrayShape(['name' => 'string', 'formula' => 'string', 'auto_increment_length' => 'int'])]
     public function create(array $data): AssetNumberRule
     {
         $this->assetNumberRule->setAttribute('name', $data['name']);

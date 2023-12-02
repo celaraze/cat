@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\VendorHasContact;
+use JetBrains\PhpStorm\ArrayShape;
 
 class VendorHasContactService
 {
@@ -20,6 +21,7 @@ class VendorHasContactService
     /**
      * 创建供应商联系人.
      */
+    #[ArrayShape(['vendor_id' => 'int', 'name' => 'string', 'phone_number' => 'string', 'email' => 'string'])]
     public function create(array $data): VendorHasContact
     {
         $this->vendor_has_contact->setAttribute('vendor_id', $data['vendor_id']);

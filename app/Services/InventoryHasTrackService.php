@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\InventoryHasTrack;
+use JetBrains\PhpStorm\ArrayShape;
 
 class InventoryHasTrackService
 {
@@ -20,6 +21,11 @@ class InventoryHasTrackService
     /**
      * 盘点操作.
      */
+    #[ArrayShape([
+        'check' => 'string',
+        'user_id' => 'int',
+        'comment' => 'string',
+    ])]
     public function check(array $data): InventoryHasTrack
     {
         $this->inventory_has_track->setAttribute('check', $data['check']);

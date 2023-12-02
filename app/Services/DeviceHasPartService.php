@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\DeviceHasPart;
 use Exception;
+use JetBrains\PhpStorm\ArrayShape;
 
 class DeviceHasPartService
 {
@@ -35,6 +36,7 @@ class DeviceHasPartService
      *
      * @throws Exception
      */
+    #[ArrayShape(['user_id' => 'int', 'status' => 'string'])]
     public function delete(array $data): void
     {
         $new_device_has_part = $this->device_has_part->replicate();

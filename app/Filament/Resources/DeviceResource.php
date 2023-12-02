@@ -62,6 +62,9 @@ class DeviceResource extends Resource implements HasShieldPermissions
             'export',
             'retire',
             'force_retire',
+            'set_auto_asset_number_rule',
+            'reset_auto_asset_number_rule',
+            'reset_device_retire_flow',
         ];
     }
 
@@ -103,8 +106,16 @@ class DeviceResource extends Resource implements HasShieldPermissions
                     ->label('分类'),
             ])
             ->actions([
-                Tables\Actions\ViewAction::make(),
-                Tables\Actions\EditAction::make(),
+                // 查看
+                Tables\Actions\ViewAction::make()
+                    ->visible(function () {
+                        return auth()->user()->can('view_device');
+                    }),
+                // 编辑
+                Tables\Actions\EditAction::make()
+                    ->visible(function () {
+                        return auth()->user()->can('update_device');
+                    }),
                 Tables\Actions\ActionGroup::make([
                     // 分配管理者
                     DeviceAction::createDeviceHasUser()
@@ -152,9 +163,21 @@ class DeviceResource extends Resource implements HasShieldPermissions
                     ->visible(auth()->user()->can('export_device')),
                 DeviceAction::createDevice(),
                 Tables\Actions\ActionGroup::make([
-                    DeviceAction::setAssetNumberRule(),
-                    DeviceAction::resetAssetNumberRule(),
-                    DeviceAction::setDeviceRetireFlowId(),
+                    // 配置资产编号自动生成规则
+                    DeviceAction::setAssetNumberRule()
+                        ->visible(function () {
+                            return auth()->user()->can('set_auto_asset_number_rule_device');
+                        }),
+                    // 重置资产编号自动生成规则
+                    DeviceAction::resetAssetNumberRule()
+                        ->visible(function () {
+                            return auth()->user()->can('reset_auto_asset_number_rule_device');
+                        }),
+                    // 配置设备报废流程
+                    DeviceAction::setDeviceRetireFlow()
+                        ->visible(function () {
+                            return auth()->user()->can('set_device_retire_flow_device');
+                        }),
                 ])
                     ->label('高级')
                     ->icon('heroicon-m-cog-8-tooth')

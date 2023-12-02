@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
+use JetBrains\PhpStorm\ArrayShape;
 
 class PartService
 {
@@ -49,6 +50,11 @@ class PartService
      *
      * @throws Exception
      */
+    #[ArrayShape([
+        'device_id' => 'int',
+        'user_id' => 'int',
+        'status' => 'int',
+    ])]
     public function createHasPart(array $data): Model
     {
         if ($this->part->hasParts()->where('device_id', $data['device_id'])->count()) {
@@ -63,6 +69,14 @@ class PartService
      *
      * @throws Exception
      */
+    #[ArrayShape([
+        'asset_number' => 'string',
+        'category_id' => 'int',
+        'brand_id' => 'int',
+        'sn' => 'string',
+        'specification' => 'string',
+        'image' => 'string',
+    ])]
     public function create(array $data): void
     {
         // 开始事务
@@ -81,7 +95,6 @@ class PartService
                     $asset_number_rule_service->addAutoIncrementCount();
                 }
             }
-            AssetNumberTrackService::create($asset_number);
             $this->part->setAttribute('asset_number', $asset_number);
             $this->part->setAttribute('category_id', $data['category_id']);
             $this->part->setAttribute('brand_id', $data['brand_id']);
@@ -89,6 +102,8 @@ class PartService
             $this->part->setAttribute('specification', $data['specification'] ?? '无');
             $this->part->setAttribute('image', $data['image'] ?? '无');
             $this->part->save();
+            $this->part->assetNumberTrack()
+                ->create(['asset_number' => $asset_number]);
             // 写入事务
             DB::commit();
         } catch (Exception $exception) {

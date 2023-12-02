@@ -6,6 +6,18 @@ use App\Models\AssetNumberTrack;
 
 class AssetNumberTrackService
 {
+    public AssetNumberTrack $asset_number_track;
+
+    public function __construct(AssetNumberTrack $asset_number_track = null)
+    {
+        if ($asset_number_track) {
+            $this->asset_number_track = $asset_number_track;
+        } else {
+            $this->asset_number_track = new AssetNumberTrack();
+        }
+
+    }
+
     /**
      * 判断资产编号是否在记录清单中.
      */
@@ -18,15 +30,5 @@ class AssetNumberTrackService
         }
 
         return false;
-    }
-
-    /**
-     * 新增资产编号记录.
-     */
-    public static function create(string $asset_number): void
-    {
-        AssetNumberTrack::query()->create([
-            'asset_number' => $asset_number,
-        ]);
     }
 }

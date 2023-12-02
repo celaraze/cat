@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\FlowHasNode;
+use JetBrains\PhpStorm\ArrayShape;
 
 class FlowHasNodeService
 {
@@ -54,6 +55,13 @@ class FlowHasNodeService
     /**
      * 创建节点.
      */
+    #[ArrayShape([
+        'name' => 'string',
+        'flow_id' => 'int',
+        'user_id' => 'int',
+        'role_id' => 'int',
+        'parent_node_id' => 'int',
+    ])]
     public function create(array $data): FlowHasNode
     {
         $this->flow_has_node->setAttribute('name', $data['name']);

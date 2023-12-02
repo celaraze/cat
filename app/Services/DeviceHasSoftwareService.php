@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\DeviceHasSoftware;
 use Exception;
+use JetBrains\PhpStorm\ArrayShape;
 
 class DeviceHasSoftwareService
 {
@@ -23,6 +24,7 @@ class DeviceHasSoftwareService
      *
      * @throws Exception
      */
+    #[ArrayShape(['user_id' => 'int', 'status' => 'string'])]
     public function delete(array $data): void
     {
         $new_device_has_software = $this->device_has_software->replicate();

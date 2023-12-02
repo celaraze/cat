@@ -6,6 +6,7 @@ use App\Models\SoftwareCategory;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
+use JetBrains\PhpStorm\ArrayShape;
 
 class SoftwareCategoryService
 {
@@ -39,6 +40,7 @@ class SoftwareCategoryService
     /**
      * 创建设备分类.
      */
+    #[ArrayShape(['name' => 'string'])]
     public function create(array $data): SoftwareCategory
     {
         $this->software_category->setAttribute('name', $data['name']);

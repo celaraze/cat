@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
+use JetBrains\PhpStorm\ArrayShape;
 
 class DeviceService
 {
@@ -55,6 +56,7 @@ class DeviceService
     /**
      * 创建设备-用户记录.
      */
+    #[ArrayShape(['user_id' => 'int', 'comment' => 'string'])]
     public function createHasUser(array $data): Model
     {
         return $this->device->hasUsers()->create($data);
@@ -65,6 +67,15 @@ class DeviceService
      *
      * @throws Exception
      */
+    #[ArrayShape([
+        'asset_number' => 'string',
+        'category_id' => 'int',
+        'name' => 'string',
+        'brand_id' => 'int',
+        'sn' => 'string',
+        'specification' => 'string',
+        'image' => 'string',
+    ])]
     public function create(array $data): void
     {
         // 开始事务
@@ -83,7 +94,6 @@ class DeviceService
                     $asset_number_rule_service->addAutoIncrementCount();
                 }
             }
-            AssetNumberTrackService::create($asset_number);
             $this->device->setAttribute('asset_number', $asset_number);
             $this->device->setAttribute('category_id', $data['category_id']);
             $this->device->setAttribute('name', $data['name']);
@@ -92,6 +102,8 @@ class DeviceService
             $this->device->setAttribute('specification', $data['specification'] ?? '无');
             $this->device->setAttribute('image', $data['image'] ?? '无');
             $this->device->save();
+            $this->device->assetNumberTrack()
+                ->create(['asset_number' => $asset_number]);
             // 写入事务
             DB::commit();
         } catch (Exception $exception) {
@@ -106,6 +118,7 @@ class DeviceService
      *
      * @throws Exception
      */
+    #[ArrayShape(['part_id' => 'int', 'user_id' => 'int', 'status' => 'string'])]
     public function createHasPart(array $data): Model
     {
         if ($this->device->hasParts()->where('part_id', $data['part_id'])->count()) {
@@ -120,6 +133,7 @@ class DeviceService
      *
      * @throws Exception
      */
+    #[ArrayShape(['software_id' => 'int', 'user_id' => 'int', 'status' => 'string'])]
     public function createHasSoftware(array $data): Model
     {
         if ($this->device->hasSoftware()->where('software_id', $data['software_id'])->count()) {
@@ -132,6 +146,7 @@ class DeviceService
     /**
      * 删除设备-用户记录.
      */
+    #[ArrayShape(['delete_comment' => 'string'])]
     public function deleteHasUser(array $data): int
     {
         $this->device

@@ -3,9 +3,8 @@
 namespace App\Services;
 
 use App\Models\DeviceCategory;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
+use JetBrains\PhpStorm\ArrayShape;
 
 class DeviceCategoryService
 {
@@ -30,16 +29,9 @@ class DeviceCategoryService
     }
 
     /**
-     * 通过名称获取模型.
-     */
-    public static function getModelByName(string $category_name): Model|Builder|null
-    {
-        return DeviceCategory::query()->where('name', $category_name)->first();
-    }
-
-    /**
      * 创建设备分类.
      */
+    #[ArrayShape(['name' => 'string'])]
     public function create(array $data): DeviceCategory
     {
         $this->device_category->setAttribute('name', $data['name']);

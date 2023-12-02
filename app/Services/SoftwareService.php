@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
+use JetBrains\PhpStorm\ArrayShape;
 
 class SoftwareService
 {
@@ -49,6 +50,11 @@ class SoftwareService
      *
      * @throws Exception
      */
+    #[ArrayShape([
+        'device_id' => 'int',
+        'user_id' => 'int',
+        'status' => 'int',
+    ])]
     public function createHasSoftware(array $data): Model
     {
         if ($this->software->hasSoftware()->where('device_id', $data['device_id'])->count()) {
@@ -63,6 +69,16 @@ class SoftwareService
      *
      * @throws Exception
      */
+    #[ArrayShape([
+        'asset_number' => 'string',
+        'name' => 'string',
+        'category_id' => 'int',
+        'brand_id' => 'int',
+        'sn' => 'string',
+        'specification' => 'string',
+        'image' => 'string',
+        'max_license_count' => 'int',
+    ])]
     public function create(array $data): void
     {
         // 开始事务
@@ -81,7 +97,6 @@ class SoftwareService
                     $asset_number_rule_service->addAutoIncrementCount();
                 }
             }
-            AssetNumberTrackService::create($asset_number);
             $this->software->setAttribute('asset_number', $asset_number);
             $this->software->setAttribute('name', $data['name']);
             $this->software->setAttribute('category_id', $data['category_id']);
@@ -91,6 +106,8 @@ class SoftwareService
             $this->software->setAttribute('image', $data['image'] ?? '无');
             $this->software->setAttribute('max_license_count', $data['max_license_count']);
             $this->software->save();
+            $this->software->assetNumberTrack()
+                ->create(['asset_number' => $asset_number]);
             // 写入事务
             DB::commit();
         } catch (Exception $exception) {

@@ -259,7 +259,7 @@ class DeviceAction
     /**
      * 绑定设备报废流程.
      */
-    public static function setDeviceRetireFlowId(): Action
+    public static function setDeviceRetireFlow(): Action
     {
         return Action::make('配置报废流程')
             ->form([
