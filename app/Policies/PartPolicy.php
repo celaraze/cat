@@ -63,7 +63,7 @@ class PartPolicy
      */
     public function forceDelete(User $user, Part $part): bool
     {
-        return $user->can('force_delete_part');
+        return $user->can('{{ ForceDelete }}');
     }
 
     /**
@@ -71,7 +71,7 @@ class PartPolicy
      */
     public function forceDeleteAny(User $user): bool
     {
-        return $user->can('force_delete_any_part');
+        return $user->can('{{ ForceDeleteAny }}');
     }
 
     /**
@@ -79,7 +79,7 @@ class PartPolicy
      */
     public function restore(User $user, Part $part): bool
     {
-        return $user->can('restore_part');
+        return $user->can('{{ Restore }}');
     }
 
     /**
@@ -87,7 +87,7 @@ class PartPolicy
      */
     public function restoreAny(User $user): bool
     {
-        return $user->can('restore_any_part');
+        return $user->can('{{ RestoreAny }}');
     }
 
     /**
@@ -95,7 +95,7 @@ class PartPolicy
      */
     public function replicate(User $user, Part $part): bool
     {
-        return $user->can('replicate_part');
+        return $user->can('{{ Replicate }}');
     }
 
     /**
@@ -103,6 +103,6 @@ class PartPolicy
      */
     public function reorder(User $user): bool
     {
-        return $user->can('reorder_part');
+        return $user->can('{{ Reorder }}');
     }
 }

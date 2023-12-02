@@ -45,7 +45,7 @@ class AdminPanelProvider extends PanelProvider
                 '基础数据',
             ])
             ->widgets([
-                StatsOverviewWidget::make(),
+                StatsOverviewWidget::class,
             ])
             ->middleware([
                 EncryptCookies::class,

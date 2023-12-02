@@ -63,7 +63,7 @@ class PartCategoryPolicy
      */
     public function forceDelete(User $user, PartCategory $partCategory): bool
     {
-        return $user->can('force_delete_part::category');
+        return $user->can('{{ ForceDelete }}');
     }
 
     /**
@@ -71,7 +71,7 @@ class PartCategoryPolicy
      */
     public function forceDeleteAny(User $user): bool
     {
-        return $user->can('force_delete_any_part::category');
+        return $user->can('{{ ForceDeleteAny }}');
     }
 
     /**
@@ -79,7 +79,7 @@ class PartCategoryPolicy
      */
     public function restore(User $user, PartCategory $partCategory): bool
     {
-        return $user->can('restore_part::category');
+        return $user->can('{{ Restore }}');
     }
 
     /**
@@ -87,7 +87,7 @@ class PartCategoryPolicy
      */
     public function restoreAny(User $user): bool
     {
-        return $user->can('restore_any_part::category');
+        return $user->can('{{ RestoreAny }}');
     }
 
     /**
@@ -95,7 +95,7 @@ class PartCategoryPolicy
      */
     public function replicate(User $user, PartCategory $partCategory): bool
     {
-        return $user->can('replicate_part::category');
+        return $user->can('{{ Replicate }}');
     }
 
     /**
@@ -103,6 +103,6 @@ class PartCategoryPolicy
      */
     public function reorder(User $user): bool
     {
-        return $user->can('reorder_part::category');
+        return $user->can('{{ Reorder }}');
     }
 }

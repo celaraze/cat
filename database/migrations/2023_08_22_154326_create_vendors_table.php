@@ -20,9 +20,11 @@ return new class extends Migration
                 ->comment('地址');
             $table->string('public_phone_number')
                 ->default('无')
+                ->nullable()
                 ->comment('对公电话');
             $table->string('referrer')
                 ->default('无')
+                ->nullable()
                 ->comment('引荐人');
             $table->softDeletes();
             $table->timestamps();

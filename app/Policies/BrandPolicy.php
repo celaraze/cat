@@ -63,7 +63,7 @@ class BrandPolicy
      */
     public function forceDelete(User $user, Brand $brand): bool
     {
-        return $user->can('force_delete_brand');
+        return $user->can('{{ ForceDelete }}');
     }
 
     /**
@@ -71,7 +71,7 @@ class BrandPolicy
      */
     public function forceDeleteAny(User $user): bool
     {
-        return $user->can('force_delete_any_brand');
+        return $user->can('{{ ForceDeleteAny }}');
     }
 
     /**
@@ -79,7 +79,7 @@ class BrandPolicy
      */
     public function restore(User $user, Brand $brand): bool
     {
-        return $user->can('restore_brand');
+        return $user->can('{{ Restore }}');
     }
 
     /**
@@ -87,7 +87,7 @@ class BrandPolicy
      */
     public function restoreAny(User $user): bool
     {
-        return $user->can('restore_any_brand');
+        return $user->can('{{ RestoreAny }}');
     }
 
     /**
@@ -95,7 +95,7 @@ class BrandPolicy
      */
     public function replicate(User $user, Brand $brand): bool
     {
-        return $user->can('replicate_brand');
+        return $user->can('{{ Replicate }}');
     }
 
     /**
@@ -103,6 +103,6 @@ class BrandPolicy
      */
     public function reorder(User $user): bool
     {
-        return $user->can('reorder_brand');
+        return $user->can('{{ Reorder }}');
     }
 }

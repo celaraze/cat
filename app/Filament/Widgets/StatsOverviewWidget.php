@@ -5,13 +5,13 @@ namespace App\Filament\Widgets;
 use App\Models\Device;
 use App\Models\Part;
 use App\Models\Software;
-use Filament\Widgets\Concerns\InteractsWithPageFilters;
+use BezhanSalleh\FilamentShield\Traits\HasWidgetShield;
 use Filament\Widgets\StatsOverviewWidget as BaseWidget;
 use Filament\Widgets\StatsOverviewWidget\Stat;
 
 class StatsOverviewWidget extends BaseWidget
 {
-    use InteractsWithPageFilters;
+    use HasWidgetShield;
 
     protected static ?int $sort = 0;
 

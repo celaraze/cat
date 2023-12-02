@@ -10,6 +10,7 @@ use App\Filament\Resources\DeviceCategoryResource\Pages\Index;
 use App\Filament\Resources\DeviceCategoryResource\Pages\View;
 use App\Http\Middleware\FilamentLockTab;
 use App\Models\DeviceCategory;
+use BezhanSalleh\FilamentShield\Contracts\HasShieldPermissions;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -20,7 +21,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use pxlrbt\FilamentExcel\Actions\Tables\ExportAction;
 
-class DeviceCategoryResource extends Resource
+class DeviceCategoryResource extends Resource implements HasShieldPermissions
 {
     protected static ?string $model = DeviceCategory::class;
 
@@ -29,6 +30,20 @@ class DeviceCategoryResource extends Resource
     protected static string|array $routeMiddleware = FilamentLockTab::class;
 
     protected static ?string $modelLabel = '设备分类';
+
+    public static function getPermissionPrefixes(): array
+    {
+        return [
+            'view',
+            'view_any',
+            'create',
+            'update',
+            'delete',
+            'delete_any',
+            'import',
+            'export',
+        ];
+    }
 
     public static function table(Table $table): Table
     {
@@ -62,9 +77,15 @@ class DeviceCategoryResource extends Resource
                     ->importer(DeviceCategoryImporter::class)
                     ->icon('heroicon-o-arrow-up-tray')
                     ->color('info')
-                    ->label('导入'),
+                    ->label('导入')
+                    ->visible(function () {
+                        return auth()->user()->can('import_device_category');
+                    }),
                 ExportAction::make()
-                    ->label('导出'),
+                    ->label('导出')
+                    ->visible(function () {
+                        return auth()->user()->can('export_device_category');
+                    }),
                 DeviceAction::createDeviceCategory(),
             ]);
     }

@@ -22,9 +22,11 @@ return new class extends Migration
                 ->comment('名称');
             $table->string('sn')
                 ->comment('序列号')
+                ->nullable()
                 ->default('无');
             $table->string('specification')
                 ->comment('规格')
+                ->nullable()
                 ->default('无');
             $table->integer('max_license_count')
                 ->comment('授权数量')

@@ -63,7 +63,7 @@ class SoftwareCategoryPolicy
      */
     public function forceDelete(User $user, SoftwareCategory $softwareCategory): bool
     {
-        return $user->can('force_delete_software::category');
+        return $user->can('{{ ForceDelete }}');
     }
 
     /**
@@ -71,7 +71,7 @@ class SoftwareCategoryPolicy
      */
     public function forceDeleteAny(User $user): bool
     {
-        return $user->can('force_delete_any_software::category');
+        return $user->can('{{ ForceDeleteAny }}');
     }
 
     /**
@@ -79,7 +79,7 @@ class SoftwareCategoryPolicy
      */
     public function restore(User $user, SoftwareCategory $softwareCategory): bool
     {
-        return $user->can('restore_software::category');
+        return $user->can('{{ Restore }}');
     }
 
     /**
@@ -87,7 +87,7 @@ class SoftwareCategoryPolicy
      */
     public function restoreAny(User $user): bool
     {
-        return $user->can('restore_any_software::category');
+        return $user->can('{{ RestoreAny }}');
     }
 
     /**
@@ -95,7 +95,7 @@ class SoftwareCategoryPolicy
      */
     public function replicate(User $user, SoftwareCategory $softwareCategory): bool
     {
-        return $user->can('replicate_software::category');
+        return $user->can('{{ Replicate }}');
     }
 
     /**
@@ -103,6 +103,6 @@ class SoftwareCategoryPolicy
      */
     public function reorder(User $user): bool
     {
-        return $user->can('reorder_software::category');
+        return $user->can('{{ Reorder }}');
     }
 }

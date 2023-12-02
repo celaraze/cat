@@ -9,6 +9,7 @@ use App\Filament\Resources\BrandResource\Pages\Edit;
 use App\Filament\Resources\BrandResource\Pages\Index;
 use App\Http\Middleware\FilamentLockTab;
 use App\Models\Brand;
+use BezhanSalleh\FilamentShield\Contracts\HasShieldPermissions;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -19,7 +20,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use pxlrbt\FilamentExcel\Actions\Tables\ExportAction;
 
-class BrandResource extends Resource
+class BrandResource extends Resource implements HasShieldPermissions
 {
     protected static ?string $model = Brand::class;
 
@@ -32,6 +33,20 @@ class BrandResource extends Resource
     protected static ?string $navigationGroup = '资产';
 
     protected static string|array $routeMiddleware = FilamentLockTab::class;
+
+    public static function getPermissionPrefixes(): array
+    {
+        return [
+            'view',
+            'view_any',
+            'create',
+            'update',
+            'delete',
+            'delete_any',
+            'import',
+            'export',
+        ];
+    }
 
     public static function form(Form $form): Form
     {
@@ -75,9 +90,15 @@ class BrandResource extends Resource
                     ->importer(BrandImporter::class)
                     ->icon('heroicon-o-arrow-up-tray')
                     ->color('info')
-                    ->label('导入'),
+                    ->label('导入')
+                    ->visible(function () {
+                        return auth()->user()->can('import_brand');
+                    }),
                 ExportAction::make()
-                    ->label('导出'),
+                    ->label('导出')
+                    ->visible(function () {
+                        return auth()->user()->can('export_brand');
+                    }),
                 BrandAction::createBrand(),
             ]);
     }

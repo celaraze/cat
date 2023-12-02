@@ -10,6 +10,7 @@ use App\Filament\Resources\SoftwareCategoryResource\Pages\Index;
 use App\Filament\Resources\SoftwareCategoryResource\Pages\View;
 use App\Http\Middleware\FilamentLockTab;
 use App\Models\SoftwareCategory;
+use BezhanSalleh\FilamentShield\Contracts\HasShieldPermissions;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -20,7 +21,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use pxlrbt\FilamentExcel\Actions\Tables\ExportAction;
 
-class SoftwareCategoryResource extends Resource
+class SoftwareCategoryResource extends Resource implements HasShieldPermissions
 {
     protected static ?string $model = SoftwareCategory::class;
 
@@ -29,6 +30,20 @@ class SoftwareCategoryResource extends Resource
     protected static ?string $modelLabel = '软件分类';
 
     protected static string|array $routeMiddleware = FilamentLockTab::class;
+
+    public static function getPermissionPrefixes(): array
+    {
+        return [
+            'view',
+            'view_any',
+            'create',
+            'update',
+            'delete',
+            'delete_any',
+            'import',
+            'export',
+        ];
+    }
 
     public static function form(Form $form): Form
     {
@@ -70,9 +85,15 @@ class SoftwareCategoryResource extends Resource
                     ->importer(SoftwareCategoryImporter::class)
                     ->icon('heroicon-o-arrow-up-tray')
                     ->color('info')
-                    ->label('导入'),
+                    ->label('导入')
+                    ->visible(function () {
+                        return auth()->user()->can('import_software_category');
+                    }),
                 ExportAction::make()
-                    ->label('导出'),
+                    ->label('导出')
+                    ->visible(function () {
+                        return auth()->user()->can('export_software_category');
+                    }),
                 SoftwareAction::createSoftwareCategory(),
             ]);
     }

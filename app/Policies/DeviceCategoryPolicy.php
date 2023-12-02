@@ -63,7 +63,7 @@ class DeviceCategoryPolicy
      */
     public function forceDelete(User $user, DeviceCategory $deviceCategory): bool
     {
-        return $user->can('force_delete_device::category');
+        return $user->can('{{ ForceDelete }}');
     }
 
     /**
@@ -71,7 +71,7 @@ class DeviceCategoryPolicy
      */
     public function forceDeleteAny(User $user): bool
     {
-        return $user->can('force_delete_any_device::category');
+        return $user->can('{{ ForceDeleteAny }}');
     }
 
     /**
@@ -79,7 +79,7 @@ class DeviceCategoryPolicy
      */
     public function restore(User $user, DeviceCategory $deviceCategory): bool
     {
-        return $user->can('restore_device::category');
+        return $user->can('{{ Restore }}');
     }
 
     /**
@@ -87,7 +87,7 @@ class DeviceCategoryPolicy
      */
     public function restoreAny(User $user): bool
     {
-        return $user->can('restore_any_device::category');
+        return $user->can('{{ RestoreAny }}');
     }
 
     /**
@@ -95,7 +95,7 @@ class DeviceCategoryPolicy
      */
     public function replicate(User $user, DeviceCategory $deviceCategory): bool
     {
-        return $user->can('replicate_device::category');
+        return $user->can('{{ Replicate }}');
     }
 
     /**
@@ -103,6 +103,6 @@ class DeviceCategoryPolicy
      */
     public function reorder(User $user): bool
     {
-        return $user->can('reorder_device::category');
+        return $user->can('{{ Reorder }}');
     }
 }

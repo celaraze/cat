@@ -21,9 +21,11 @@ return new class extends Migration
                 ->comment('分类ID');
             $table->string('sn')
                 ->default('无')
+                ->nullable()
                 ->comment('序列号');
             $table->string('specification')
                 ->default('无')
+                ->nullable()
                 ->comment('规格');
             $table->string('image')
                 ->default('无')
