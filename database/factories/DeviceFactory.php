@@ -3,14 +3,15 @@
 namespace Database\Factories;
 
 use App\Models\Brand;
-use App\Models\SoftwareCategory;
+use App\Models\Device;
+use App\Models\DeviceCategory;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Software>
+ * @extends Factory<Device>
  */
-class SoftwareFactory extends Factory
+class DeviceFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -21,11 +22,10 @@ class SoftwareFactory extends Factory
     {
         return [
             'asset_number' => fake('en')->unique()->name(),
-            'category_id' => SoftwareCategory::factory()->create()->getKey(),
+            'category_id' => DeviceCategory::factory()->create()->getKey(),
             'name' => fake()->name(),
             'sn' => Str::random(10),
             'specification' => Str::random(10),
-            'max_license_count' => rand(10, 100),
             'image' => fake()->url(),
             'brand_id' => Brand::factory()->create()->getKey(),
         ];

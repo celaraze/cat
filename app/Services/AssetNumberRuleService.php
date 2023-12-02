@@ -44,22 +44,24 @@ class AssetNumberRuleService
     /**
      * 绑定资产编号自动生成规则.
      */
-    public static function setAutoRule(array $data): void
+    public static function setAutoRule(array $data): bool
     {
         $asset_number_rule = AssetNumberRule::query()
             ->where('id', $data['asset_number_rule_id'])
             ->first();
         $asset_number_rule->setAttribute('class_name', $data['class_name']);
         $asset_number_rule->setAttribute('is_auto', $data['is_auto']);
-        $asset_number_rule->save();
+
+        return $asset_number_rule->save();
     }
 
     /**
      * 解除资产编号自动生成规则.
      */
-    public static function resetAutoRule(string $class_name): void
+    public static function resetAutoRule(string $class_name): int
     {
-        AssetNumberRule::query()->where('class_name', $class_name)
+        return AssetNumberRule::query()
+            ->where('class_name', $class_name)
             ->update(['class_name' => '无']);
     }
 

@@ -24,7 +24,7 @@ class UserService
     /**
      * 已经有组织的用户.
      */
-    public static function existHasUserIds(): array
+    public static function existOrganizationHasUserIds(): array
     {
         return OrganizationHasUser::query()->pluck('user_id')->toArray();
     }
