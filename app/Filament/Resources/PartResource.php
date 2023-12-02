@@ -14,6 +14,7 @@ use App\Http\Middleware\FilamentLockTab;
 use App\Models\Part;
 use App\Services\PartCategoryService;
 use App\Services\PartService;
+use BezhanSalleh\FilamentShield\Contracts\HasShieldPermissions;
 use Filament\Forms\Form;
 use Filament\Infolists\Components\Grid;
 use Filament\Infolists\Components\Group;
@@ -29,7 +30,7 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Model;
 use pxlrbt\FilamentExcel\Actions\Tables\ExportAction;
 
-class PartResource extends Resource
+class PartResource extends Resource implements HasShieldPermissions
 {
     protected static ?string $model = Part::class;
 
@@ -39,9 +40,25 @@ class PartResource extends Resource
 
     protected static ?int $navigationSort = 2;
 
-    protected static ?string $navigationGroup = '信息资产';
+    protected static ?string $navigationGroup = '资产';
 
     protected static string|array $routeMiddleware = FilamentLockTab::class;
+
+    public static function getPermissionPrefixes(): array
+    {
+        return [
+            'view',
+            'view_any',
+            'create',
+            'update',
+            'delete',
+            'delete_any',
+            'import',
+            'export',
+            'retire',
+            'force_retire',
+        ];
+    }
 
     public static function table(Table $table): Table
     {
@@ -75,9 +92,18 @@ class PartResource extends Resource
             ->actions([
                 Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
-                PartAction::createFlowHasFormForDeletingPart()
-                    ->visible(PartService::isSetDeleteFlow()),
-                PartAction::deletePart(),
+                // 流程报废
+                PartAction::retirePart()
+                    ->visible(function () {
+                        $can = auth()->user()->can('retire_part');
+
+                        return $can && PartService::isSetRetireFlow();
+                    }),
+                // 强制报废
+                PartAction::forceRetirePart()
+                    ->visible(function () {
+                        return auth()->user()->can('force_retire_part');
+                    }),
             ])
             ->bulkActions([
 
@@ -87,14 +113,20 @@ class PartResource extends Resource
                     ->importer(PartImporter::class)
                     ->icon('heroicon-o-arrow-up-tray')
                     ->color('info')
-                    ->label('导入'),
+                    ->label('导入')
+                    ->visible(function () {
+                        return auth()->user()->can('import_part');
+                    }),
                 ExportAction::make()
-                    ->label('导出'),
+                    ->label('导出')
+                    ->visible(function () {
+                        return auth()->user()->can('export_part');
+                    }),
                 PartAction::createPart(),
                 Tables\Actions\ActionGroup::make([
                     PartAction::setAssetNumberRule(),
                     PartAction::resetAssetNumberRule(),
-                    PartAction::setPartDeleteFlowId(),
+                    PartAction::setPartRetireFlowId(),
                 ])
                     ->label('高级')
                     ->icon('heroicon-m-cog-8-tooth')

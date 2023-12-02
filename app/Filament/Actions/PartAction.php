@@ -125,7 +125,7 @@ class PartAction
     /**
      * 绑定配件报废流程.
      */
-    public static function setPartDeleteFlowId(): Action
+    public static function setPartRetireFlowId(): Action
     {
         return Action::make('配置报废流程')
             ->form([
@@ -137,7 +137,7 @@ class PartAction
             ->action(function (array $data) {
                 try {
                     $setting_service = new SettingService();
-                    $setting_service->set('part_delete_flow_id', $data['flow_id']);
+                    $setting_service->set('part_retire_flow_id', $data['flow_id']);
                     NotificationUtil::make(true, '流程配置成功');
                 } catch (Exception $exception) {
                     LogUtil::error($exception);
@@ -185,7 +185,7 @@ class PartAction
     /**
      * 发起配件报废流程表单.
      */
-    public static function createFlowHasFormForDeletingPart(): Action
+    public static function retirePart(): Action
     {
         return Action::make('流程报废')
             ->form([
@@ -195,8 +195,8 @@ class PartAction
             ])
             ->action(function (array $data, Part $part) {
                 try {
-                    $part_delete_flow = $part->service()->getDeleteFlow();
-                    $flow_service = new FlowService($part_delete_flow);
+                    $part_retire_flow = $part->service()->getRetireFlow();
+                    $flow_service = new FlowService($part_retire_flow);
                     $asset_number = $part->getAttribute('asset_number');
                     $flow_service->createHasForm(
                         '配件报废单',
@@ -214,14 +214,14 @@ class PartAction
     /**
      * 强制报废按钮.
      */
-    public static function deletePart(): Action
+    public static function forceRetirePart(): Action
     {
         return Action::make('强制报废')
             ->requiresConfirmation()
             ->icon('heroicon-m-archive-box-x-mark')
             ->action(function (array $data, Part $part) {
                 try {
-                    $part->service()->delete();
+                    $part->service()->retire();
                     NotificationUtil::make(true, '已报废');
                 } catch (Exception $exception) {
                     LogUtil::error($exception);

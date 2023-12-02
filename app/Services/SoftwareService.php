@@ -36,10 +36,10 @@ class SoftwareService
     /**
      * 判断是否配置报废流程.
      */
-    public static function isSetDeleteFlow(): bool
+    public static function isSetRetireFlow(): bool
     {
         return Setting::query()
-            ->where('custom_key', 'software_delete_flow_id')
+            ->where('custom_key', 'software_retire_flow_id')
             ->count();
 
     }
@@ -105,7 +105,7 @@ class SoftwareService
      *
      * @throws Exception
      */
-    public function delete(): void
+    public function retire(): void
     {
         try {
             DB::beginTransaction();
@@ -123,10 +123,10 @@ class SoftwareService
      *
      * @throws Exception
      */
-    public function getDeleteFlow(): Builder|Model
+    public function getRetireFlow(): Builder|Model
     {
         $flow_id = Setting::query()
-            ->where('custom_key', 'software_delete_flow_id')
+            ->where('custom_key', 'software_retire_flow_id')
             ->value('custom_value');
         if (! $flow_id) {
             throw new Exception('还未配置软件报废流程');

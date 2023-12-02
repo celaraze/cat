@@ -21,7 +21,8 @@ class Tree extends BasePage
         return [
             CreateAction::make()
                 ->icon('heroicon-m-plus')
-                ->label('新增'),
+                ->label('新增')
+                ->createAnother(false),
         ];
     }
 

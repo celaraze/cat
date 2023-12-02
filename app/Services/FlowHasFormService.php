@@ -117,7 +117,7 @@ class FlowHasFormService
                 // 报废流程
                 // 设备
                 $device_delete_flow_id = Setting::query()
-                    ->where('custom_key', 'device_delete_flow_id')
+                    ->where('custom_key', 'device_retire_flow_id')
                     ->value('custom_value');
                 if ($device_delete_flow_id == $flow->getKey()) {
                     /* @var $device Device */
@@ -127,11 +127,11 @@ class FlowHasFormService
                     if (! $device) {
                         throw new Exception('未找到报废流程中所指的设备资产');
                     }
-                    $device->service()->delete();
+                    $device->service()->retire();
                 }
                 // 配件
                 $part_delete_flow_id = Setting::query()
-                    ->where('custom_key', 'part_delete_flow_id')
+                    ->where('custom_key', 'part_retire_flow_id')
                     ->value('custom_value');
                 if ($part_delete_flow_id == $flow->getKey()) {
                     /* @var $part Part */
@@ -141,11 +141,11 @@ class FlowHasFormService
                     if (! $part) {
                         throw new Exception('未找到报废流程中所指的配件资产');
                     }
-                    $part->service()->delete();
+                    $part->service()->retire();
                 }
                 // 软件
                 $software_delete_flow_id = Setting::query()
-                    ->where('custom_key', 'software_delete_flow_id')
+                    ->where('custom_key', 'software_retire_flow_id')
                     ->value('custom_value');
                 if ($software_delete_flow_id == $flow->getKey()) {
                     /* @var $software Software */
@@ -155,7 +155,7 @@ class FlowHasFormService
                     if (! $software) {
                         throw new Exception('未找到报废流程中所指的软件资产');
                     }
-                    $software->service()->delete();
+                    $software->service()->retire();
                 }
             }
         }

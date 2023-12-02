@@ -37,7 +37,7 @@ class DeviceTest extends TestCase
     public function test_delete_device()
     {
         $device = Device::factory()->create();
-        $device->service()->delete();
+        $device->service()->retire();
         $this->assertTrue(true);
     }
 

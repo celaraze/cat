@@ -259,7 +259,7 @@ class DeviceAction
     /**
      * 绑定设备报废流程.
      */
-    public static function setDeviceDeleteFlowId(): Action
+    public static function setDeviceRetireFlowId(): Action
     {
         return Action::make('配置报废流程')
             ->form([
@@ -271,7 +271,7 @@ class DeviceAction
             ->action(function (array $data) {
                 try {
                     $setting_service = new SettingService();
-                    $setting_service->set('device_delete_flow_id', $data['flow_id']);
+                    $setting_service->set('device_retire_flow_id', $data['flow_id']);
                     NotificationUtil::make(true, '流程配置成功');
                 } catch (Exception $exception) {
                     LogUtil::error($exception);
@@ -319,7 +319,7 @@ class DeviceAction
     /**
      * 发起设备报废流程表单.
      */
-    public static function createFlowHasFormForDeletingDevice(): Action
+    public static function retireDevice(): Action
     {
         return Action::make('流程报废')
             ->icon('heroicon-m-archive-box-x-mark')
@@ -333,8 +333,8 @@ class DeviceAction
             ])
             ->action(function (array $data, Device $device) {
                 try {
-                    $device_delete_flow = $device->service()->getDeleteFlow();
-                    $flow_service = new FlowService($device_delete_flow);
+                    $device_retire_flow = $device->service()->getRetireFlow();
+                    $flow_service = new FlowService($device_retire_flow);
                     $asset_number = $device->getAttribute('asset_number');
                     $flow_service->createHasForm(
                         '设备报废单',
@@ -352,7 +352,7 @@ class DeviceAction
     /**
      * 强制报废按钮.
      */
-    public static function deleteDevice(): Action
+    public static function forceRetireDevice(): Action
     {
         return Action::make('强制报废')
             ->requiresConfirmation()
@@ -364,7 +364,7 @@ class DeviceAction
             ])
             ->action(function (array $data, Device $device) {
                 try {
-                    $device->service()->delete();
+                    $device->service()->retire();
                     NotificationUtil::make(true, '已报废');
                 } catch (Exception $exception) {
                     LogUtil::error($exception);

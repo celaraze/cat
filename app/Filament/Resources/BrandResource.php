@@ -29,7 +29,7 @@ class BrandResource extends Resource
 
     protected static ?int $navigationSort = 99;
 
-    protected static ?string $navigationGroup = '信息资产';
+    protected static ?string $navigationGroup = '资产';
 
     protected static string|array $routeMiddleware = FilamentLockTab::class;
 

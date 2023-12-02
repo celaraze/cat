@@ -76,5 +76,11 @@ return [
         'reorder' => '重新排序',
         'restore_any' => '批量恢复',
         'replicate' => '复制',
+        'assign_user' => '分配使用者',
+        'delete_assign_user' => '解除使用者',
+        'import' => '导入',
+        'export' => '导出',
+        'retire' => '流程报废',
+        'force_retire' => '强制报废',
     ],
 ];

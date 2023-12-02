@@ -13,6 +13,7 @@ use App\Filament\Resources\SoftwareResource\RelationManagers\HasSoftwareRelation
 use App\Http\Middleware\FilamentLockTab;
 use App\Models\Software;
 use App\Services\SoftwareService;
+use BezhanSalleh\FilamentShield\Contracts\HasShieldPermissions;
 use Filament\Forms\Form;
 use Filament\Infolists\Components\Grid;
 use Filament\Infolists\Components\Group;
@@ -30,7 +31,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use pxlrbt\FilamentExcel\Actions\Tables\ExportAction;
 
-class SoftwareResource extends Resource
+class SoftwareResource extends Resource implements HasShieldPermissions
 {
     protected static ?string $model = Software::class;
 
@@ -42,9 +43,25 @@ class SoftwareResource extends Resource
 
     protected static ?int $navigationSort = 3;
 
-    protected static ?string $navigationGroup = '信息资产';
+    protected static ?string $navigationGroup = '资产';
 
     protected static string|array $routeMiddleware = FilamentLockTab::class;
+
+    public static function getPermissionPrefixes(): array
+    {
+        return [
+            'view',
+            'view_any',
+            'create',
+            'update',
+            'delete',
+            'delete_any',
+            'import',
+            'export',
+            'retire',
+            'force_retire',
+        ];
+    }
 
     public static function table(Table $table): Table
     {
@@ -83,9 +100,18 @@ class SoftwareResource extends Resource
             ->actions([
                 Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
-                SoftwareAction::createFlowHasFormForDeletingSoftware()
-                    ->visible(SoftwareService::isSetDeleteFlow()),
-                SoftwareAction::deleteSoftware(),
+                // 流程报废
+                SoftwareAction::retireSoftware()
+                    ->visible(function () {
+                        $can = auth()->user()->can('retire_software');
+
+                        return $can && SoftwareService::isSetRetireFlow();
+                    }),
+                // 强制报废
+                SoftwareAction::forceRetireSoftware()
+                    ->visible(function () {
+                        return auth()->user()->can('force_retire_software');
+                    }),
             ])
             ->bulkActions([
 
@@ -95,14 +121,20 @@ class SoftwareResource extends Resource
                     ->importer(SoftwareImporter::class)
                     ->icon('heroicon-o-arrow-up-tray')
                     ->color('info')
-                    ->label('导入'),
+                    ->label('导入')
+                    ->visible(function () {
+                        return auth()->user()->can('import_part');
+                    }),
                 ExportAction::make()
-                    ->label('导出'),
+                    ->label('导出')
+                    ->visible(function () {
+                        return auth()->user()->can('export_part');
+                    }),
                 SoftwareAction::createSoftware(),
                 Tables\Actions\ActionGroup::make([
                     SoftwareAction::setAssetNumberRule(),
                     SoftwareAction::resetAssetNumberRule(),
-                    SoftwareAction::setSoftwareDeleteFlowId(),
+                    SoftwareAction::setSoftwareRetireFlowId(),
                 ])
                     ->label('高级')
                     ->icon('heroicon-m-cog-8-tooth')

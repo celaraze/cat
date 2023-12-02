@@ -125,7 +125,7 @@ class SoftwareAction
     /**
      * 绑定软件报废流程.
      */
-    public static function setSoftwareDeleteFlowId(): Action
+    public static function setSoftwareRetireFlowId(): Action
     {
         return Action::make('配置报废流程')
             ->form([
@@ -137,7 +137,7 @@ class SoftwareAction
             ->action(function (array $data) {
                 try {
                     $setting_service = new SettingService();
-                    $setting_service->set('software_delete_flow_id', $data['flow_id']);
+                    $setting_service->set('software_retire_flow_id', $data['flow_id']);
                     NotificationUtil::make(true, '流程配置成功');
                 } catch (Exception $exception) {
                     LogUtil::error($exception);
@@ -185,7 +185,7 @@ class SoftwareAction
     /**
      * 发起软件报废流程表单.
      */
-    public static function createFlowHasFormForDeletingSoftware(): Action
+    public static function retireSoftware(): Action
     {
         return Action::make('流程报废')
             ->form([
@@ -195,8 +195,8 @@ class SoftwareAction
             ])
             ->action(function (array $data, Software $software) {
                 try {
-                    $software_delete_flow = $software->service()->getDeleteFlow();
-                    $flow_service = new FlowService($software_delete_flow);
+                    $software_retire_flow = $software->service()->getRetireFlow();
+                    $flow_service = new FlowService($software_retire_flow);
                     $asset_number = $software->getAttribute('asset_number');
                     $flow_service->createHasForm(
                         '软件报废单',
@@ -214,14 +214,14 @@ class SoftwareAction
     /**
      * 强制报废按钮.
      */
-    public static function deleteSoftware(): Action
+    public static function forceRetireSoftware(): Action
     {
         return Action::make('强制报废')
             ->requiresConfirmation()
             ->icon('heroicon-m-archive-box-x-mark')
             ->action(function (array $data, Software $software) {
                 try {
-                    $software->service()->delete();
+                    $software->service()->retire();
                     NotificationUtil::make(true, '已报废');
                 } catch (Exception $exception) {
                     LogUtil::error($exception);

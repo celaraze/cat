@@ -16,6 +16,7 @@ use App\Http\Middleware\FilamentLockTab;
 use App\Models\Device;
 use App\Services\DeviceCategoryService;
 use App\Services\DeviceService;
+use BezhanSalleh\FilamentShield\Contracts\HasShieldPermissions;
 use Exception;
 use Filament\Forms\Form;
 use Filament\Infolists\Components\Grid;
@@ -32,7 +33,7 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Model;
 use pxlrbt\FilamentExcel\Actions\Tables\ExportAction;
 
-class DeviceResource extends Resource
+class DeviceResource extends Resource implements HasShieldPermissions
 {
     protected static ?string $model = Device::class;
 
@@ -42,9 +43,27 @@ class DeviceResource extends Resource
 
     protected static ?int $navigationSort = 1;
 
-    protected static ?string $navigationGroup = '信息资产';
+    protected static ?string $navigationGroup = '资产';
 
     protected static string|array $routeMiddleware = FilamentLockTab::class;
+
+    public static function getPermissionPrefixes(): array
+    {
+        return [
+            'view',
+            'view_any',
+            'create',
+            'update',
+            'delete',
+            'delete_any',
+            'assign_user',
+            'delete_assign_user',
+            'import',
+            'export',
+            'retire',
+            'force_retire',
+        ];
+    }
 
     /**
      * @throws Exception
@@ -90,16 +109,29 @@ class DeviceResource extends Resource
                     // 分配管理者
                     DeviceAction::createDeviceHasUser()
                         ->visible(function (Device $device) {
-                            return ! $device->hasUsers()->count();
+                            $can = auth()->user()->can('assign_user_device');
+
+                            return $can && ! $device->hasUsers()->count();
                         }),
                     // 解除管理者
                     DeviceAction::deleteDeviceHasUser()
                         ->visible(function (Device $device) {
-                            return $device->hasUsers()->count();
+                            $can = auth()->user()->can('delete_assign_user_device');
+
+                            return $can && $device->hasUsers()->count();
                         }),
-                    DeviceAction::createFlowHasFormForDeletingDevice()
-                        ->visible(DeviceService::isSetDeleteFlow()),
-                    DeviceAction::deleteDevice(),
+                    // 流程报废
+                    DeviceAction::retireDevice()
+                        ->visible(function () {
+                            $can = auth()->user()->can('retire_device');
+
+                            return $can && DeviceService::isSetRetireFlow();
+                        }),
+                    // 强制报废
+                    DeviceAction::forceRetireDevice()
+                        ->visible(function () {
+                            return auth()->user()->can('force_retire_device');
+                        }),
                 ]),
             ])
             ->bulkActions([
@@ -113,14 +145,16 @@ class DeviceResource extends Resource
                     ->importer(DeviceImporter::class)
                     ->icon('heroicon-o-arrow-up-tray')
                     ->color('info')
-                    ->label('导入'),
+                    ->label('导入')
+                    ->visible(auth()->user()->can('import_device')),
                 ExportAction::make()
-                    ->label('导出'),
+                    ->label('导出')
+                    ->visible(auth()->user()->can('export_device')),
                 DeviceAction::createDevice(),
                 Tables\Actions\ActionGroup::make([
                     DeviceAction::setAssetNumberRule(),
                     DeviceAction::resetAssetNumberRule(),
-                    DeviceAction::setDeviceDeleteFlowId(),
+                    DeviceAction::setDeviceRetireFlowId(),
                 ])
                     ->label('高级')
                     ->icon('heroicon-m-cog-8-tooth')

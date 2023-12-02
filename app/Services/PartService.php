@@ -36,10 +36,10 @@ class PartService
     /**
      * 判断是否配置报废流程.
      */
-    public static function isSetDeleteFlow(): bool
+    public static function isSetRetireFlow(): bool
     {
         return Setting::query()
-            ->where('custom_key', 'part_delete_flow_id')
+            ->where('custom_key', 'part_retire_flow_id')
             ->count();
 
     }
@@ -103,7 +103,7 @@ class PartService
      *
      * @throws Exception
      */
-    public function delete(): void
+    public function retire(): void
     {
         try {
             DB::beginTransaction();
@@ -121,15 +121,17 @@ class PartService
      *
      * @throws Exception
      */
-    public function getDeleteFlow(): Builder|Model
+    public function getRetireFlow(): Builder|Model
     {
         $flow_id = Setting::query()
-            ->where('custom_key', 'part_delete_flow_id')
+            ->where('custom_key', 'part_retire_flow_id')
             ->value('custom_value');
         if (! $flow_id) {
             throw new Exception('还未配置配件报废流程');
         }
-        $flow = Flow::query()->where('id', $flow_id)->first();
+        $flow = Flow::query()
+            ->where('id', $flow_id)
+            ->first();
         if (! $flow) {
             throw new Exception('未找到已配置的配件报废流程');
         }

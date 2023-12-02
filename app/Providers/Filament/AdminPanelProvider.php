@@ -2,6 +2,7 @@
 
 namespace App\Providers\Filament;
 
+use App\Filament\Widgets\StatsOverviewWidget;
 use BezhanSalleh\FilamentShield\FilamentShieldPlugin;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\DisableBladeIconComponents;
@@ -34,18 +35,17 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
-//            ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets')
             ->pages([
                 Pages\Dashboard::class,
             ])
             ->databaseNotifications()
             ->navigationGroups([
-                '信息资产',
+                '资产',
                 '工作流',
                 '基础数据',
             ])
             ->widgets([
-
+                StatsOverviewWidget::make(),
             ])
             ->middleware([
                 EncryptCookies::class,
@@ -69,6 +69,7 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->brandLogo(asset('images/logo.png'))
             ->favicon(asset('images/logo.png'))
-            ->topNavigation();
+            ->topNavigation()
+            ->maxContentWidth('full');
     }
 }
