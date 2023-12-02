@@ -12,8 +12,8 @@
     "license": "GPL-3.0-or-later",
     "require": {
         "php": "^8.1",
-        "althinect/filament-spatie-roles-permissions": "^2.0",
         "awcodes/shout": "^2.0",
+        "bezhansalleh/filament-shield": "^3.1",
         "filament/actions": "^3.0-stable",
         "filament/filament": "^3.0-stable",
         "filament/forms": "^3.0-stable",

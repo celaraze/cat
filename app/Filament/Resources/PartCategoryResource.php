@@ -26,6 +26,8 @@ class PartCategoryResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
+    protected static ?string $modelLabel = '配件分类';
+
     protected static string|array $routeMiddleware = FilamentLockTab::class;
 
     public static function form(Form $form): Form
