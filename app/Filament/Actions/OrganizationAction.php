@@ -94,7 +94,7 @@ class OrganizationAction
             ->form([
                 Select::make('user_ids')
                     ->label('成员')
-                    ->options(UserService::pluckOptions('id', UserService::existHasUserIds()))
+                    ->options(UserService::pluckOptions('id', UserService::existOrganizationHasUserIds()))
                     ->multiple()
                     ->searchable(),
             ])
