@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -62,5 +63,20 @@ class Software extends Model
     public function hasSoftware(): HasMany
     {
         return $this->hasMany(DeviceHasSoftware::class, 'software_id', 'id');
+    }
+
+    /**
+     * 远程一对多，软件有很多个设备.
+     */
+    public function devices(): HasManyThrough
+    {
+        return $this->hasManyThrough(
+            Device::class,  // 远程表
+            DeviceHasSoftware::class,   // 中间表
+            'software_id',    // 中间表对主表的关联字段
+            'id',   // 远程表对中间表的关联字段
+            'id',   // 主表对中间表的关联字段
+            'device_id' // 中间表对远程表的关联字段
+        );
     }
 }

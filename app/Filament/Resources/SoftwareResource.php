@@ -43,6 +43,17 @@ class SoftwareResource extends Resource implements HasShieldPermissions
 
     protected static ?string $navigationGroup = '资产';
 
+    protected static ?string $recordTitleAttribute = 'asset_number';
+
+    public static function getGlobalSearchResultDetails(Model $record): array
+    {
+        /* @var $record Software */
+        return [
+            '设备' => $record->devices()->value('asset_number'),
+            '用户' => $record->devices()->first()?->users()->value('name'),
+        ];
+    }
+
     public static function getPermissionPrefixes(): array
     {
         return [
@@ -58,7 +69,7 @@ class SoftwareResource extends Resource implements HasShieldPermissions
             'force_retire',
             'set_auto_asset_number_rule',
             'reset_auto_asset_number_rule',
-            'reset_software_retire_flow',
+            'set_retire_flow',
             'create_has_software',
             'delete_has_software',
         ];
@@ -162,7 +173,7 @@ class SoftwareResource extends Resource implements HasShieldPermissions
                     // 配置软件报废流程
                     SoftwareAction::setSoftwareRetireFlow()
                         ->visible(function () {
-                            return auth()->user()->can('set_software_retire_flow_software');
+                            return auth()->user()->can('set_retire_flow_software');
                         }),
                 ])
                     ->label('高级')

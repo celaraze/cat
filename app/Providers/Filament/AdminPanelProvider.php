@@ -68,7 +68,7 @@ class AdminPanelProvider extends PanelProvider
                 FilamentShieldPlugin::make(),
                 ThemesPlugin::make(),
             ])
-            ->brandLogo(asset('images/logo.png'))
+            ->brandName('☕️ CAT')
             ->favicon(asset('images/logo.png'))
             ->topNavigation()
             ->maxContentWidth('full')

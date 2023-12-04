@@ -8,22 +8,12 @@ use Leandrocfe\FilamentApexCharts\Widgets\ApexChartWidget;
 
 class FlowProgressChart extends ApexChartWidget
 {
-    /**
-     * Chart Id
-     */
     protected static string $chartId = 'flowProgressChart';
 
-    /**
-     * Widget Title
-     */
     protected static ?string $heading = '流程路径';
 
     protected static ?string $pollingInterval = null;
 
-    /**
-     * Chart options (series, labels, types, size, animations...)
-     * https://apexcharts.com/docs/options
-     */
     protected function getOptions(): array
     {
         $form_id = UrlUtil::getRecordId();

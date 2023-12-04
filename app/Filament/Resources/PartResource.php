@@ -40,6 +40,17 @@ class PartResource extends Resource implements HasShieldPermissions
 
     protected static ?string $navigationGroup = '资产';
 
+    protected static ?string $recordTitleAttribute = 'asset_number';
+
+    public static function getGlobalSearchResultDetails(Model $record): array
+    {
+        /* @var $record Part */
+        return [
+            '设备' => $record->devices()->value('asset_number'),
+            '用户' => $record->devices()->first()?->users()->value('name'),
+        ];
+    }
+
     public static function getPermissionPrefixes(): array
     {
         return [
@@ -55,7 +66,7 @@ class PartResource extends Resource implements HasShieldPermissions
             'force_retire',
             'set_auto_asset_number_rule',
             'reset_auto_asset_number_rule',
-            'reset_part_retire_flow',
+            'set_retire_flow',
             'create_has_part',
             'delete_has_part',
         ];
@@ -145,7 +156,7 @@ class PartResource extends Resource implements HasShieldPermissions
                     // 配置配件报废流程
                     PartAction::setPartRetireFlow()
                         ->visible(function () {
-                            return auth()->user()->can('set_part_retire_flow_part');
+                            return auth()->user()->can('set_retire_flow_part');
                         }),
                 ])
                     ->label('高级')

@@ -11,6 +11,7 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Model;
 
 class UserResource extends Resource implements HasShieldPermissions
 {
@@ -23,6 +24,16 @@ class UserResource extends Resource implements HasShieldPermissions
     protected static ?int $navigationSort = 3;
 
     protected static ?string $navigationGroup = '基础数据';
+
+    protected static ?string $recordTitleAttribute = 'name';
+
+    public static function getGlobalSearchResultDetails(Model $record): array
+    {
+        /* @var $record User */
+        return [
+            '账户' => $record->getAttribute('email'),
+        ];
+    }
 
     public static function getPermissionPrefixes(): array
     {

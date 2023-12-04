@@ -43,6 +43,16 @@ class DeviceResource extends Resource implements HasShieldPermissions
 
     protected static ?string $navigationGroup = '资产';
 
+    protected static ?string $recordTitleAttribute = 'asset_number';
+
+    public static function getGlobalSearchResultDetails(Model $record): array
+    {
+        /* @var $record Device */
+        return [
+            '用户' => $record->users()->value('name'),
+        ];
+    }
+
     public static function getPermissionPrefixes(): array
     {
         return [
@@ -60,7 +70,7 @@ class DeviceResource extends Resource implements HasShieldPermissions
             'force_retire',
             'set_auto_asset_number_rule',
             'reset_auto_asset_number_rule',
-            'reset_device_retire_flow',
+            'set_retire_flow',
             'create_has_part',
             'delete_has_part',
             'create_has_software',
@@ -184,7 +194,7 @@ class DeviceResource extends Resource implements HasShieldPermissions
                     // 配置设备报废流程
                     DeviceAction::setDeviceRetireFlow()
                         ->visible(function () {
-                            return auth()->user()->can('set_device_retire_flow_device');
+                            return auth()->user()->can('set_retire_flow_device');
                         }),
                 ])
                     ->label('高级')

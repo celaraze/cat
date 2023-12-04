@@ -91,7 +91,7 @@ class FlowHasFormResource extends Resource implements HasShieldPermissions
                 // 查看
                 Tables\Actions\ViewAction::make()
                     ->visible(function () {
-                        return auth()->user()->can('view_flow_has_form');
+                        return auth()->user()->can('view_flow::has::form');
                     }),
             ])
             ->bulkActions([
@@ -104,7 +104,7 @@ class FlowHasFormResource extends Resource implements HasShieldPermissions
                 // 创建
                 FlowAction::createHasForm()
                     ->visible(function () {
-                        return auth()->user()->can('create_flow_has_form');
+                        return auth()->user()->can('create_flow::has::form');
                     }),
             ]);
     }
