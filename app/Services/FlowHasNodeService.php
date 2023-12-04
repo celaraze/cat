@@ -27,7 +27,7 @@ class FlowHasNodeService
      */
     public function isFirstNode(): bool
     {
-        return !$this->flow_has_node->getAttribute('parent_node_id');
+        return ! $this->flow_has_node->getAttribute('parent_node_id');
     }
 
     /**
@@ -43,7 +43,7 @@ class FlowHasNodeService
      */
     public function isLastNode(): bool
     {
-        return !FlowHasNode::query()
+        return ! FlowHasNode::query()
             ->where('parent_node_id', $this->flow_has_node->getKey())
             ->count();
     }

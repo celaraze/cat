@@ -65,16 +65,18 @@ class HasUserRelationManager extends RelationManager
                     ->visible(function () {
                         /* @var Device $device */
                         $device = $this->getOwnerRecord();
+                        $can = auth()->user()->can('assign_user_device');
 
-                        return ! $device->service()->isExistHasUser();
+                        return $can && ! $device->service()->isExistHasUser();
                     }),
                 // 解除管理者
                 DeviceAction::deleteDeviceHasUser($this->getOwnerRecord())
                     ->visible(function () {
                         /* @var Device $device */
                         $device = $this->getOwnerRecord();
+                        $can = auth()->user()->can('delete_assign_user_device');
 
-                        return $device->service()->isExistHasUser();
+                        return $can && $device->service()->isExistHasUser();
                     }),
             ])
             ->actions([

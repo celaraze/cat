@@ -7,7 +7,7 @@ use BezhanSalleh\FilamentShield\FilamentShieldPlugin;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
-use Filament\Pages;
+use Filament\Navigation\MenuItem;
 use Filament\Panel;
 use Filament\PanelProvider;
 use Filament\Support\Colors\Color;
@@ -35,8 +35,9 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
+            ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets')
             ->pages([
-                Pages\Dashboard::class,
+
             ])
             ->databaseNotifications()
             ->navigationGroups([
@@ -70,6 +71,12 @@ class AdminPanelProvider extends PanelProvider
             ->brandLogo(asset('images/logo.png'))
             ->favicon(asset('images/logo.png'))
             ->topNavigation()
-            ->maxContentWidth('full');
+            ->maxContentWidth('full')
+            ->userMenuItems([
+                MenuItem::make()
+                    ->label('个人档')
+                    ->url('/users/profile')
+                    ->icon('heroicon-o-lock-open'),
+            ]);
     }
 }

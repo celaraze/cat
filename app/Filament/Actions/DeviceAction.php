@@ -329,7 +329,7 @@ class DeviceAction
                     $asset_number = $device->getAttribute('asset_number');
                     $flow_service->createHasForm(
                         '设备报废单',
-                        $asset_number . ' 报废处理',
+                        $asset_number.' 报废处理',
                         $asset_number
                     );
                     NotificationUtil::make(true, '已创建表单');

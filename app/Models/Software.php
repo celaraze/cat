@@ -41,18 +41,26 @@ class Software extends Model
     }
 
     /**
-     * 一对多，软件有很多软件管理记录.
-     */
-    public function hasSoftware(): HasMany
-    {
-        return $this->hasMany(DeviceHasSoftware::class, 'software_id', 'id');
-    }
-
-    /**
      * 模型到服务.
      */
     public function service(): SoftwareService
     {
         return new SoftwareService($this);
+    }
+
+    /**
+     * 已经使用的授权数量.
+     */
+    public function usedCount(): int
+    {
+        return $this->hasSoftware()->count();
+    }
+
+    /**
+     * 一对多，软件有很多软件管理记录.
+     */
+    public function hasSoftware(): HasMany
+    {
+        return $this->hasMany(DeviceHasSoftware::class, 'software_id', 'id');
     }
 }

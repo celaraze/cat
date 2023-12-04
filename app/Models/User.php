@@ -25,7 +25,6 @@ class User extends Authenticatable
         'remember_token',
     ];
 
-
     protected $casts = [
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
@@ -33,8 +32,6 @@ class User extends Authenticatable
 
     /**
      * 模型到服务.
-     *
-     * @return UserService
      */
     public function service(): UserService
     {

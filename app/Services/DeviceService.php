@@ -6,6 +6,7 @@ use App\Models\AssetNumberRule;
 use App\Models\Device;
 use App\Models\Flow;
 use App\Models\Setting;
+use App\Models\Software;
 use Exception;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
@@ -135,6 +136,15 @@ class DeviceService
         if ($this->device->hasSoftware()->where('software_id', $data['software_id'])->count()) {
             throw new Exception('软件已经附加到此设备');
         }
+        $software = Software::query()->where('id', $data['software_id'])->first();
+        if (! $software) {
+            throw new Exception('软件不存在');
+        }
+        /* @var $software Software */
+        $max_license_count = $software->getAttribute('max_license_count');
+        if ($max_license_count != 0 && $software->usedCount() >= $max_license_count) {
+            throw new Exception('软件授权数量不足');
+        }
 
         return $this->device->hasSoftware()->create($data);
     }
@@ -187,13 +197,13 @@ class DeviceService
         $flow_id = Setting::query()
             ->where('custom_key', 'device_retire_flow_id')
             ->value('custom_value');
-        if (!$flow_id) {
+        if (! $flow_id) {
             throw new Exception('还未配置设备报废流程');
         }
         $flow = Flow::query()
             ->where('id', $flow_id)
             ->first();
-        if (!$flow) {
+        if (! $flow) {
             throw new Exception('未找到已配置的设备报废流程');
         }
 

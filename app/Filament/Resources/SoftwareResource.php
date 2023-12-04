@@ -59,6 +59,8 @@ class SoftwareResource extends Resource implements HasShieldPermissions
             'set_auto_asset_number_rule',
             'reset_auto_asset_number_rule',
             'reset_software_retire_flow',
+            'create_has_software',
+            'delete_has_software',
         ];
     }
 
@@ -192,6 +194,8 @@ class SoftwareResource extends Resource implements HasShieldPermissions
                                             ->label('名称'),
                                         TextEntry::make('category.name')
                                             ->label('分类'),
+                                        TextEntry::make('max_license_count')
+                                            ->label('授权总数'),
                                     ]),
                                     Group::make([
                                         TextEntry::make('sn')

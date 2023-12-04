@@ -106,7 +106,7 @@ class AssetNumberRuleService
         $auto_increment_length = $this->asset_number_rule->getAttribute('auto_increment_length');
         $auto_increment_count = $this->asset_number_rule->getAttribute('auto_increment_count') + 1;
         for ($i = strlen($auto_increment_count); $i < $auto_increment_length; $i++) {
-            $auto_increment_count = '0' . $auto_increment_count;
+            $auto_increment_count = '0'.$auto_increment_count;
         }
 
         return [
@@ -122,7 +122,7 @@ class AssetNumberRuleService
      */
     public function addAutoIncrementCount(): void
     {
-        $auto_increment_count = (int)$this->asset_number_rule->getAttribute('auto_increment_count');
+        $auto_increment_count = (int) $this->asset_number_rule->getAttribute('auto_increment_count');
         $this->asset_number_rule->setAttribute('auto_increment_count', $auto_increment_count + 1);
         $this->asset_number_rule->save();
     }

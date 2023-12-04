@@ -58,7 +58,7 @@ class FlowResource extends Resource implements HasShieldPermissions
                 Tables\Filters\TrashedFilter::make(),
             ])
             ->actions([
-                
+
             ])
             ->bulkActions([
 

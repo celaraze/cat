@@ -137,13 +137,13 @@ class PartService
         $flow_id = Setting::query()
             ->where('custom_key', 'part_retire_flow_id')
             ->value('custom_value');
-        if (!$flow_id) {
+        if (! $flow_id) {
             throw new Exception('还未配置配件报废流程');
         }
         $flow = Flow::query()
             ->where('id', $flow_id)
             ->first();
-        if (!$flow) {
+        if (! $flow) {
             throw new Exception('未找到已配置的配件报废流程');
         }
 

@@ -24,7 +24,7 @@ class PartForm
                 ->maxLength(255)
                 ->label('资产编号')
                 ->required(function () {
-                    return !AssetNumberRuleService::isAuto(Part::class);
+                    return ! AssetNumberRuleService::isAuto(Part::class);
                 })
                 ->readOnly(function () {
                     return AssetNumberRuleService::isAuto(Part::class);
@@ -50,7 +50,7 @@ class PartForm
 
             //region 选择 品牌 brand_id
             Select::make('brand_id')
-                ->relationship('category', 'name')
+                ->relationship('brand', 'name')
                 ->label('品牌')
                 ->searchable()
                 ->preload()
@@ -76,7 +76,7 @@ class PartForm
                 ->directory('parts')
                 ->getUploadedFileNameForStorageUsing(
                     function (TemporaryUploadedFile $file) {
-                        return Uuid::uuid4() . '.' . $file->getClientOriginalExtension();
+                        return Uuid::uuid4().'.'.$file->getClientOriginalExtension();
                     }
                 ),
             //endregion

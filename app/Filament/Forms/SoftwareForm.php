@@ -24,7 +24,7 @@ class SoftwareForm
                 ->maxLength(255)
                 ->label('资产编号')
                 ->required(function () {
-                    return !AssetNumberRuleService::isAuto(Software::class);
+                    return ! AssetNumberRuleService::isAuto(Software::class);
                 })
                 ->readOnly(function () {
                     return AssetNumberRuleService::isAuto(Software::class);
@@ -90,7 +90,7 @@ class SoftwareForm
                 ->directory('software')
                 ->getUploadedFileNameForStorageUsing(
                     function (TemporaryUploadedFile $file) {
-                        return Uuid::uuid4() . '.' . $file->getClientOriginalExtension();
+                        return Uuid::uuid4().'.'.$file->getClientOriginalExtension();
                     }
                 ),
             //endregion

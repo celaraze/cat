@@ -10,6 +10,7 @@ use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class HasSoftwareRelationManager extends RelationManager
@@ -19,6 +20,11 @@ class HasSoftwareRelationManager extends RelationManager
     protected static ?string $title = '软件';
 
     protected static ?string $icon = 'heroicon-m-squares-plus';
+
+    public static function getBadge(Model $ownerRecord, string $pageClass): ?string
+    {
+        return $ownerRecord->hasSoftware()->count();
+    }
 
     public function form(Form $form): Form
     {
@@ -58,12 +64,19 @@ class HasSoftwareRelationManager extends RelationManager
                 Tables\Filters\TrashedFilter::make(),
             ])
             ->headerActions([
-                DeviceAction::createDeviceHasSoftware($this->getOwnerRecord()),
+                // 创建
+                DeviceAction::createDeviceHasSoftware($this->getOwnerRecord())
+                    ->visible(function () {
+                        return auth()->user()->can('create_has_software_device');
+                    }),
             ])
             ->actions([
+                // 删除
                 DeviceAction::deleteDeviceHasSoftware()
                     ->visible(function (DeviceHasSoftware $device_has_software) {
-                        return ! $device_has_software->service()->isDeleted();
+                        $can = auth()->user()->can('delete_has_software_device');
+
+                        return $can && ! $device_has_software->service()->isDeleted();
                     }),
             ])
             ->bulkActions([

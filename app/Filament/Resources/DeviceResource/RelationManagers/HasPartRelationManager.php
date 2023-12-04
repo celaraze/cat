@@ -9,6 +9,7 @@ use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class HasPartRelationManager extends RelationManager
@@ -18,6 +19,11 @@ class HasPartRelationManager extends RelationManager
     protected static ?string $title = '配件';
 
     protected static ?string $icon = 'heroicon-m-cpu-chip';
+
+    public static function getBadge(Model $ownerRecord, string $pageClass): ?string
+    {
+        return $ownerRecord->hasParts()->count();
+    }
 
     public function form(Form $form): Form
     {
@@ -59,7 +65,8 @@ class HasPartRelationManager extends RelationManager
                 DeviceAction::deleteDeviceHasPart()
                     ->visible(function (DeviceHasPart $device_has_part) {
                         $can = auth()->user()->can('delete_has_part_device');
-                        return $can && !$device_has_part->service()->isDeleted();
+
+                        return $can && ! $device_has_part->service()->isDeleted();
                     }),
             ])
             ->bulkActions([
@@ -75,7 +82,7 @@ class HasPartRelationManager extends RelationManager
             ->emptyStateActions([
 
             ])
-            ->modifyQueryUsing(fn(Builder $query) => $query->orderByDesc('created_at')
+            ->modifyQueryUsing(fn (Builder $query) => $query->orderByDesc('created_at')
                 ->withoutGlobalScopes([
                     SoftDeletingScope::class,
                 ]));

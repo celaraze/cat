@@ -56,6 +56,8 @@ class PartResource extends Resource implements HasShieldPermissions
             'set_auto_asset_number_rule',
             'reset_auto_asset_number_rule',
             'reset_part_retire_flow',
+            'create_has_part',
+            'delete_has_part',
         ];
     }
 

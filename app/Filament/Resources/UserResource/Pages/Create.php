@@ -3,9 +3,7 @@
 namespace App\Filament\Resources\UserResource\Pages;
 
 use App\Filament\Resources\UserResource;
-use Filament\Notifications\Notification;
 use Filament\Resources\Pages\CreateRecord;
-use Filament\Support\Exceptions\Halt;
 
 class Create extends CreateRecord
 {

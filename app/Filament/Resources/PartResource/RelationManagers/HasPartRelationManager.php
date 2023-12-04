@@ -55,12 +55,19 @@ class HasPartRelationManager extends RelationManager
 
             ])
             ->headerActions([
-                PartAction::createDeviceHasPart($this->getOwnerRecord()),
+                // 创建
+                PartAction::createDeviceHasPart($this->getOwnerRecord())
+                    ->visible(function () {
+                        return auth()->user()->can('create_has_part_part');
+                    }),
             ])
             ->actions([
+                // 删除
                 PartAction::deleteDeviceHasPart()
                     ->visible(function (DeviceHasPart $device_has_part) {
-                        return ! $device_has_part->service()->isDeleted();
+                        $can = auth()->user()->can('delete_has_part_part');
+
+                        return $can && ! $device_has_part->service()->isDeleted();
                     }),
             ])
             ->bulkActions([

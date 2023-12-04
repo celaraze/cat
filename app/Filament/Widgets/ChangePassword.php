@@ -1,0 +1,31 @@
+<?php
+
+namespace App\Filament\Widgets;
+
+use App\Filament\Actions\UserAction;
+use Filament\Actions\Action;
+use Filament\Actions\Concerns\InteractsWithActions;
+use Filament\Actions\Contracts\HasActions;
+use Filament\Forms\Concerns\InteractsWithForms;
+use Filament\Forms\Contracts\HasForms;
+use Filament\Widgets\Widget;
+
+class ChangePassword extends Widget implements HasActions, HasForms
+{
+    use InteractsWithActions;
+    use InteractsWithForms;
+
+    protected static string $view = 'filament.resources.widgets.change-password';
+
+    protected static ?int $sort = 1;
+
+    public function changePasswordAction(): Action
+    {
+        return UserAction::changePassword();
+    }
+
+    public function getDescription(): string
+    {
+        return '请养成定期修改密码的好习惯。';
+    }
+}

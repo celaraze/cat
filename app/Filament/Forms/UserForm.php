@@ -9,8 +9,6 @@ class UserForm
 {
     /**
      * 创建.
-     *
-     * @return array
      */
     public static function createOrEdit(): array
     {

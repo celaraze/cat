@@ -98,6 +98,7 @@ class UserResource extends Resource implements HasShieldPermissions
             'index' => Pages\Index::route('/'),
             'create' => Pages\Create::route('/create'),
             'edit' => Pages\Edit::route('/{record}/edit'),
+            'profile' => Pages\Profile::route('/profile'),
         ];
     }
 

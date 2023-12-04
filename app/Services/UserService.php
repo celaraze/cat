@@ -41,11 +41,9 @@ class UserService
     /**
      * 创建用户.
      *
-     * @param array $data
-     * @return User
      * @throws Exception
      */
-    #[ArrayShape(['name' => "mixed", 'email' => "mixed", 'password' => "string", 'password_verify' => "mixed"])]
+    #[ArrayShape(['name' => 'mixed', 'email' => 'mixed', 'password' => 'string', 'password_verify' => 'mixed'])]
     public function create(array $data): User
     {
         $this->user->setAttribute('name', $data['name']);
@@ -55,18 +53,18 @@ class UserService
         }
         $this->user->setAttribute('password', bcrypt($data['password']));
         $this->user->save();
+
         return $this->user;
     }
 
     /**
      * 重置密码.
-     *
-     * @return User
      */
-    public function resetPassword(): User
+    public function changePassword(string $password): User
     {
-        $this->user->setAttribute('password', null);
+        $this->user->setAttribute('password', bcrypt($password));
         $this->user->save();
+
         return $this->user;
     }
 }
