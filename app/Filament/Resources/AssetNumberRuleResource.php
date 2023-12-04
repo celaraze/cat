@@ -6,6 +6,7 @@ use App\Filament\Actions\AssetNumberRuleAction;
 use App\Filament\Forms\SettingForm;
 use App\Filament\Resources\AssetNumberRuleResource\Pages;
 use App\Models\AssetNumberRule;
+use BezhanSalleh\FilamentShield\Contracts\HasShieldPermissions;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -13,7 +14,7 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class AssetNumberRuleResource extends Resource
+class AssetNumberRuleResource extends Resource implements HasShieldPermissions
 {
     protected static ?string $model = AssetNumberRule::class;
 
@@ -25,10 +26,21 @@ class AssetNumberRuleResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
+    public static function getPermissionPrefixes(): array
+    {
+        return [
+            'view',
+            'view_any',
+            'create',
+            'update',
+            'delete',
+            'delete_any',
+        ];
+    }
+
     public static function form(Form $form): Form
     {
-        return $form
-            ->schema(SettingForm::createOrEditSettingAssetNumber());
+        return $form->schema(SettingForm::createOrEdit());
     }
 
     public static function table(Table $table): Table
@@ -48,17 +60,26 @@ class AssetNumberRuleResource extends Resource
                 Tables\Filters\TrashedFilter::make(),
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                // 编辑
+                Tables\Actions\EditAction::make()
+                    ->visible(function () {
+                        return auth()->user()->can('update_asset::number::rule');
+                    }),
+                // 删除
+                Tables\Actions\DeleteAction::make()
+                    ->visible(function () {
+                        return auth()->user()->can('delete_asset::number::rule');
+                    }),
             ])
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                    Tables\Actions\ForceDeleteBulkAction::make(),
-                    Tables\Actions\RestoreBulkAction::make(),
-                ]),
+
             ])
             ->headerActions([
-                AssetNumberRuleAction::createAssetNumberRule(),
+                // 创建
+                AssetNumberRuleAction::createAssetNumberRule()
+                    ->visible(function () {
+                        return auth()->user()->can('create_asset::number::rule');
+                    }),
             ]);
     }
 

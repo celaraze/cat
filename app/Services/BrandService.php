@@ -12,11 +12,7 @@ class BrandService
 
     public function __construct(Brand $brand = null)
     {
-        if ($brand) {
-            $this->brand = $brand;
-        } else {
-            $this->brand = new Brand();
-        }
+        $this->brand = $brand ?? new Brand();
     }
 
     /**

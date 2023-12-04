@@ -7,6 +7,7 @@ use App\Filament\Resources\FlowHasFormResource\Pages;
 use App\Filament\Resources\FlowHasFormResource\RelationManagers\FormRelationManager;
 use App\Models\FlowHasForm;
 use App\Utils\FlowHasFormUtil;
+use BezhanSalleh\FilamentShield\Contracts\HasShieldPermissions;
 use Filament\Forms\Form;
 use Filament\Infolists\Components\Group;
 use Filament\Infolists\Components\Section;
@@ -20,7 +21,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class FlowHasFormResource extends Resource
+class FlowHasFormResource extends Resource implements HasShieldPermissions
 {
     protected static ?string $model = FlowHasForm::class;
 
@@ -31,6 +32,18 @@ class FlowHasFormResource extends Resource
     protected static ?int $navigationSort = 1;
 
     protected static ?string $navigationGroup = '工作流';
+
+    public static function getPermissionPrefixes(): array
+    {
+        return [
+            'view',
+            'view_any',
+            'create',
+            'update',
+            'delete',
+            'delete_any',
+        ];
+    }
 
     public static function form(Form $form): Form
     {
@@ -75,7 +88,11 @@ class FlowHasFormResource extends Resource
                 Tables\Filters\TrashedFilter::make(),
             ])
             ->actions([
-                Tables\Actions\ViewAction::make(),
+                // 查看
+                Tables\Actions\ViewAction::make()
+                    ->visible(function () {
+                        return auth()->user()->can('view_flow_has_form');
+                    }),
             ])
             ->bulkActions([
 
@@ -84,7 +101,11 @@ class FlowHasFormResource extends Resource
 
             ])
             ->headerActions([
-                FlowAction::createHasForm(),
+                // 创建
+                FlowAction::createHasForm()
+                    ->visible(function () {
+                        return auth()->user()->can('create_flow_has_form');
+                    }),
             ]);
     }
 

@@ -5,14 +5,12 @@ namespace App\Filament\Resources;
 use App\Filament\Actions\DeviceAction;
 use App\Filament\Forms\DeviceForm;
 use App\Filament\Imports\DeviceImporter;
-use App\Filament\Resources\DeviceResource\Pages\Create;
 use App\Filament\Resources\DeviceResource\Pages\Edit;
 use App\Filament\Resources\DeviceResource\Pages\Index;
 use App\Filament\Resources\DeviceResource\Pages\View;
 use App\Filament\Resources\DeviceResource\RelationManagers\HasPartRelationManager;
 use App\Filament\Resources\DeviceResource\RelationManagers\HasSoftwareRelationManager;
 use App\Filament\Resources\DeviceResource\RelationManagers\HasUserRelationManager;
-use App\Http\Middleware\FilamentLockTab;
 use App\Models\Device;
 use App\Services\DeviceCategoryService;
 use App\Services\DeviceService;
@@ -45,8 +43,6 @@ class DeviceResource extends Resource implements HasShieldPermissions
 
     protected static ?string $navigationGroup = '资产';
 
-    protected static string|array $routeMiddleware = FilamentLockTab::class;
-
     public static function getPermissionPrefixes(): array
     {
         return [
@@ -65,6 +61,8 @@ class DeviceResource extends Resource implements HasShieldPermissions
             'set_auto_asset_number_rule',
             'reset_auto_asset_number_rule',
             'reset_device_retire_flow',
+            'create_has_part',
+            'delete_has_part',
         ];
     }
 
@@ -122,7 +120,7 @@ class DeviceResource extends Resource implements HasShieldPermissions
                         ->visible(function (Device $device) {
                             $can = auth()->user()->can('assign_user_device');
 
-                            return $can && ! $device->hasUsers()->count();
+                            return $can && !$device->hasUsers()->count();
                         }),
                     // 解除管理者
                     DeviceAction::deleteDeviceHasUser()
@@ -152,17 +150,25 @@ class DeviceResource extends Resource implements HasShieldPermissions
 
             ])
             ->headerActions([
+                // 导入
                 ImportAction::make()
                     ->importer(DeviceImporter::class)
                     ->icon('heroicon-o-arrow-up-tray')
                     ->color('info')
                     ->label('导入')
                     ->visible(auth()->user()->can('import_device')),
+                // 导出
                 ExportAction::make()
                     ->label('导出')
                     ->visible(auth()->user()->can('export_device')),
-                DeviceAction::createDevice(),
+                // 创建
+                DeviceAction::createDevice()
+                    ->visible(function () {
+                        return auth()->user()->can('create_device');
+                    }),
                 Tables\Actions\ActionGroup::make([
+                    // 前往分类
+                    DeviceAction::toDeviceCategory(),
                     // 配置资产编号自动生成规则
                     DeviceAction::setAssetNumberRule()
                         ->visible(function () {
@@ -187,8 +193,7 @@ class DeviceResource extends Resource implements HasShieldPermissions
 
     public static function form(Form $form): Form
     {
-        return $form
-            ->schema(DeviceForm::createOrEditDevice());
+        return $form->schema(DeviceForm::createOrEdit());
     }
 
     public static function infolist(Infolist $infolist): Infolist
@@ -246,15 +251,9 @@ class DeviceResource extends Resource implements HasShieldPermissions
     {
         return [
             'index' => Index::route('/'),
-            'create' => Create::route('/create'),
             'edit' => Edit::route('/{record}/edit'),
             'view' => View::route('/{record}'),
         ];
-    }
-
-    public static function canCreate(): bool
-    {
-        return false;
     }
 
     public static function canDelete(Model $record): bool

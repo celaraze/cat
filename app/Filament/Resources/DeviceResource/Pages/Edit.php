@@ -3,7 +3,6 @@
 namespace App\Filament\Resources\DeviceResource\Pages;
 
 use App\Filament\Resources\DeviceResource;
-use Filament\Actions;
 use Filament\Resources\Pages\EditRecord;
 
 class Edit extends EditRecord
@@ -13,8 +12,7 @@ class Edit extends EditRecord
     protected function getHeaderActions(): array
     {
         return [
-            Actions\Action::make('返回')
-                ->url($this->getResource()::getUrl('index')),
+
         ];
     }
 

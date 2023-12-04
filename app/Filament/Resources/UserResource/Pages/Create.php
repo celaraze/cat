@@ -11,27 +11,7 @@ class Create extends CreateRecord
 {
     protected static string $resource = UserResource::class;
 
-    /**
-     * 表单保存前事件.
-     *
-     * @throws Halt
-     */
-    protected function mutateFormDataBeforeCreate(array $data): array
-    {
-        // 验证两次密码是否一致
-        if ($data['password'] != $data['password_verify']) {
-            Notification::make()
-                ->danger()
-                ->title('验证失败')
-                ->body('两次密码不一致')
-                ->persistent()
-                ->send();
-            $this->halt();
-        }
-        unset($data['password_verify']);
-
-        return $data;
-    }
+    protected static bool $canCreateAnother = false;
 
     /**
      * 保存后跳转至列表.

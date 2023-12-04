@@ -14,8 +14,14 @@ class Edit extends EditRecord
     {
         return [
             Actions\DeleteAction::make(),
-            Actions\ForceDeleteAction::make(),
-            Actions\RestoreAction::make(),
         ];
+    }
+
+    /**
+     * 保存后返回上一个页面.
+     */
+    protected function getRedirectUrl(): string
+    {
+        return $this->previousUrl;
     }
 }

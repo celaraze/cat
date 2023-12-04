@@ -2,7 +2,9 @@
 
 namespace App\Filament\Actions;
 
+use App\Filament\Forms\VendorForm;
 use App\Services\VendorHasContactService;
+use App\Services\VendorService;
 use App\Utils\LogUtil;
 use App\Utils\NotificationUtil;
 use Exception;
@@ -41,6 +43,27 @@ class VendorAction
                     ];
                     $vendor_has_contact_service->create($data);
                     NotificationUtil::make(true, '已添加联系人');
+                } catch (Exception $exception) {
+                    LogUtil::error($exception);
+                    NotificationUtil::make(false, $exception);
+                }
+            });
+    }
+
+    /**
+     * 创建厂商.
+     */
+    public static function createVendor(): Action
+    {
+        return Action::make('创建厂商')
+            ->slideOver()
+            ->icon('heroicon-m-plus')
+            ->form(VendorForm::createOrEdit())
+            ->action(function (array $data) {
+                try {
+                    $vendor_service = new VendorService();
+                    $vendor_service->create($data);
+                    NotificationUtil::make(true, '已创建厂商');
                 } catch (Exception $exception) {
                     LogUtil::error($exception);
                     NotificationUtil::make(false, $exception);

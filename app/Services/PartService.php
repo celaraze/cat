@@ -19,11 +19,7 @@ class PartService
 
     public function __construct(Part $part = null)
     {
-        if ($part) {
-            $this->part = $part;
-        } else {
-            $this->part = new Part();
-        }
+        $this->part = $part ?? new Part();
     }
 
     /**
@@ -86,8 +82,8 @@ class PartService
             $asset_number_rule = AssetNumberRule::query()
                 ->where('class_name', $this->part::class)
                 ->first();
+            /* @var  $asset_number_rule AssetNumberRule */
             if ($asset_number_rule) {
-                $asset_number_rule = new AssetNumberRule($asset_number_rule->toArray());
                 // 如果绑定了自动生成规则并且启用
                 if ($asset_number_rule->getAttribute('is_auto')) {
                     $asset_number_rule_service = new AssetNumberRuleService($asset_number_rule);
@@ -141,13 +137,13 @@ class PartService
         $flow_id = Setting::query()
             ->where('custom_key', 'part_retire_flow_id')
             ->value('custom_value');
-        if (! $flow_id) {
+        if (!$flow_id) {
             throw new Exception('还未配置配件报废流程');
         }
         $flow = Flow::query()
             ->where('id', $flow_id)
             ->first();
-        if (! $flow) {
+        if (!$flow) {
             throw new Exception('未找到已配置的配件报废流程');
         }
 

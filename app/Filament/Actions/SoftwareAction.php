@@ -30,7 +30,7 @@ class SoftwareAction
         return Action::make('新增')
             ->slideOver()
             ->icon('heroicon-m-plus')
-            ->form(SoftwareForm::createOrEditSoftware())
+            ->form(SoftwareForm::createOrEdit())
             ->action(function (array $data) {
                 try {
                     $software_service = new SoftwareService();
@@ -125,7 +125,7 @@ class SoftwareAction
     /**
      * 绑定软件报废流程.
      */
-    public static function setSoftwareRetireFlowId(): Action
+    public static function setSoftwareRetireFlow(): Action
     {
         return Action::make('配置报废流程')
             ->form([
@@ -228,5 +228,25 @@ class SoftwareAction
                     NotificationUtil::make(false, $exception);
                 }
             });
+    }
+
+    /**
+     * 前往软件分类.
+     */
+    public static function toSoftwareCategory(): Action
+    {
+        return Action::make('分类')
+            ->icon('heroicon-s-square-3-stack-3d')
+            ->url('/software-categories');
+    }
+
+    /**
+     * 前往软件.
+     */
+    public static function toSoftware(): Action
+    {
+        return Action::make('返回软件')
+            ->icon('heroicon-s-server')
+            ->url('/software');
     }
 }

@@ -14,11 +14,7 @@ class SoftwareCategoryService
 
     public function __construct(SoftwareCategory $software_category = null)
     {
-        if ($software_category) {
-            $this->software_category = $software_category;
-        } else {
-            $this->software_category = new SoftwareCategory();
-        }
+        $this->software_category = $software_category ?? new SoftwareCategory();
     }
 
     /**

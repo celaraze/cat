@@ -3,7 +3,6 @@
 namespace App\Filament\Resources\SoftwareResource\Pages;
 
 use App\Filament\Resources\SoftwareResource;
-use Filament\Actions;
 use Filament\Resources\Pages\EditRecord;
 
 class Edit extends EditRecord
@@ -13,9 +12,15 @@ class Edit extends EditRecord
     protected function getHeaderActions(): array
     {
         return [
-            Actions\DeleteAction::make(),
-            Actions\ForceDeleteAction::make(),
-            Actions\RestoreAction::make(),
+
         ];
+    }
+
+    /**
+     * 保存后返回上一个页面.
+     */
+    protected function getRedirectUrl(): string
+    {
+        return $this->previousUrl;
     }
 }

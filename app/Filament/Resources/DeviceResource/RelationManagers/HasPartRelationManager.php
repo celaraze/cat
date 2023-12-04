@@ -55,23 +55,27 @@ class HasPartRelationManager extends RelationManager
                 Tables\Filters\TrashedFilter::make(),
             ])
             ->actions([
+                // 删除
                 DeviceAction::deleteDeviceHasPart()
                     ->visible(function (DeviceHasPart $device_has_part) {
-                        return ! $device_has_part->service()->isDeleted();
+                        $can = auth()->user()->can('delete_has_part_device');
+                        return $can && !$device_has_part->service()->isDeleted();
                     }),
             ])
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
+
             ])
             ->headerActions([
-                DeviceAction::createDeviceHasPart($this->getOwnerRecord()),
+                // 创建
+                DeviceAction::createDeviceHasPart($this->getOwnerRecord())
+                    ->visible(function () {
+                        return auth()->user()->can('create_has_part_device');
+                    }),
             ])
             ->emptyStateActions([
 
             ])
-            ->modifyQueryUsing(fn (Builder $query) => $query->orderByDesc('created_at')
+            ->modifyQueryUsing(fn(Builder $query) => $query->orderByDesc('created_at')
                 ->withoutGlobalScopes([
                     SoftDeletingScope::class,
                 ]));

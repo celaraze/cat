@@ -55,7 +55,7 @@ class PartAction
         return Action::make('新增')
             ->slideOver()
             ->icon('heroicon-m-plus')
-            ->form(PartForm::createOrEditPart())
+            ->form(PartForm::createOrEdit())
             ->action(function (array $data) {
                 try {
                     $device_service = new PartService();
@@ -125,7 +125,7 @@ class PartAction
     /**
      * 绑定配件报废流程.
      */
-    public static function setPartRetireFlowId(): Action
+    public static function setPartRetireFlow(): Action
     {
         return Action::make('配置报废流程')
             ->form([
@@ -228,5 +228,25 @@ class PartAction
                     NotificationUtil::make(false, $exception);
                 }
             });
+    }
+
+    /**
+     * 前往配件分类.
+     */
+    public static function toPartCategory(): Action
+    {
+        return Action::make('分类')
+            ->icon('heroicon-s-square-3-stack-3d')
+            ->url('/part-categories');
+    }
+
+    /**
+     * 前往配件.
+     */
+    public static function toPart(): Action
+    {
+        return Action::make('返回配件')
+            ->icon('heroicon-s-server')
+            ->url('/parts');
     }
 }

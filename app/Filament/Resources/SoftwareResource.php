@@ -5,12 +5,10 @@ namespace App\Filament\Resources;
 use App\Filament\Actions\SoftwareAction;
 use App\Filament\Forms\SoftwareForm;
 use App\Filament\Imports\SoftwareImporter;
-use App\Filament\Resources\SoftwareResource\Pages\Create;
 use App\Filament\Resources\SoftwareResource\Pages\Edit;
 use App\Filament\Resources\SoftwareResource\Pages\Index;
 use App\Filament\Resources\SoftwareResource\Pages\View;
 use App\Filament\Resources\SoftwareResource\RelationManagers\HasSoftwareRelationManager;
-use App\Http\Middleware\FilamentLockTab;
 use App\Models\Software;
 use App\Services\SoftwareService;
 use BezhanSalleh\FilamentShield\Contracts\HasShieldPermissions;
@@ -45,8 +43,6 @@ class SoftwareResource extends Resource implements HasShieldPermissions
 
     protected static ?string $navigationGroup = '资产';
 
-    protected static string|array $routeMiddleware = FilamentLockTab::class;
-
     public static function getPermissionPrefixes(): array
     {
         return [
@@ -60,6 +56,9 @@ class SoftwareResource extends Resource implements HasShieldPermissions
             'export',
             'retire',
             'force_retire',
+            'set_auto_asset_number_rule',
+            'reset_auto_asset_number_rule',
+            'reset_software_retire_flow',
         ];
     }
 
@@ -98,8 +97,16 @@ class SoftwareResource extends Resource implements HasShieldPermissions
                 Tables\Filters\TrashedFilter::make(),
             ])
             ->actions([
-                Tables\Actions\ViewAction::make(),
-                Tables\Actions\EditAction::make(),
+                // 查看
+                Tables\Actions\ViewAction::make()
+                    ->visible(function () {
+                        return auth()->user()->can('view_software');
+                    }),
+                // 编辑
+                Tables\Actions\EditAction::make()
+                    ->visible(function () {
+                        return auth()->user()->can('update_software');
+                    }),
                 // 流程报废
                 SoftwareAction::retireSoftware()
                     ->visible(function () {
@@ -117,24 +124,44 @@ class SoftwareResource extends Resource implements HasShieldPermissions
 
             ])
             ->headerActions([
+                // 导入
                 ImportAction::make()
                     ->importer(SoftwareImporter::class)
                     ->icon('heroicon-o-arrow-up-tray')
                     ->color('info')
                     ->label('导入')
                     ->visible(function () {
-                        return auth()->user()->can('import_part');
+                        return auth()->user()->can('import_software');
                     }),
+                // 导出
                 ExportAction::make()
                     ->label('导出')
                     ->visible(function () {
-                        return auth()->user()->can('export_part');
+                        return auth()->user()->can('export_software');
                     }),
-                SoftwareAction::createSoftware(),
+                // 创建
+                SoftwareAction::createSoftware()
+                    ->visible(function () {
+                        return auth()->user()->can('create_software');
+                    }),
                 Tables\Actions\ActionGroup::make([
-                    SoftwareAction::setAssetNumberRule(),
-                    SoftwareAction::resetAssetNumberRule(),
-                    SoftwareAction::setSoftwareRetireFlowId(),
+                    // 前往软件分类
+                    SoftwareAction::toSoftwareCategory(),
+                    // 配置资产编号自动生成规则
+                    SoftwareAction::setAssetNumberRule()
+                        ->visible(function () {
+                            return auth()->user()->can('set_auto_asset_number_rule_software');
+                        }),
+                    // 重置资产编号自动生成规则
+                    SoftwareAction::resetAssetNumberRule()
+                        ->visible(function () {
+                            return auth()->user()->can('reset_auto_asset_number_rule_software');
+                        }),
+                    // 配置软件报废流程
+                    SoftwareAction::setSoftwareRetireFlow()
+                        ->visible(function () {
+                            return auth()->user()->can('set_software_retire_flow_software');
+                        }),
                 ])
                     ->label('高级')
                     ->icon('heroicon-m-cog-8-tooth')
@@ -144,8 +171,7 @@ class SoftwareResource extends Resource implements HasShieldPermissions
 
     public static function form(Form $form): Form
     {
-        return $form
-            ->schema(SoftwareForm::createOrEditSoftware());
+        return $form->schema(SoftwareForm::createOrEdit());
     }
 
     public static function infolist(Infolist $infolist): Infolist
@@ -201,7 +227,6 @@ class SoftwareResource extends Resource implements HasShieldPermissions
     {
         return [
             'index' => Index::route('/'),
-            'create' => Create::route('/create'),
             'edit' => Edit::route('/{record}/edit'),
             'view' => View::route('/{record}'),
         ];

@@ -3,15 +3,12 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Actions\SoftwareAction;
+use App\Filament\Forms\SoftwareCategoryForm;
 use App\Filament\Imports\SoftwareCategoryImporter;
-use App\Filament\Resources\SoftwareCategoryResource\Pages\Create;
 use App\Filament\Resources\SoftwareCategoryResource\Pages\Edit;
 use App\Filament\Resources\SoftwareCategoryResource\Pages\Index;
-use App\Filament\Resources\SoftwareCategoryResource\Pages\View;
-use App\Http\Middleware\FilamentLockTab;
 use App\Models\SoftwareCategory;
 use BezhanSalleh\FilamentShield\Contracts\HasShieldPermissions;
-use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -29,13 +26,9 @@ class SoftwareCategoryResource extends Resource implements HasShieldPermissions
 
     protected static ?string $modelLabel = '软件分类';
 
-    protected static string|array $routeMiddleware = FilamentLockTab::class;
-
     public static function getPermissionPrefixes(): array
     {
         return [
-            'view',
-            'view_any',
             'create',
             'update',
             'delete',
@@ -47,13 +40,7 @@ class SoftwareCategoryResource extends Resource implements HasShieldPermissions
 
     public static function form(Form $form): Form
     {
-        return $form
-            ->schema([
-                TextInput::make('name')
-                    ->label('名称')
-                    ->maxLength(255)
-                    ->required(),
-            ]);
+        return $form->schema(SoftwareCategoryForm::createOrEdit());
     }
 
     public static function table(Table $table): Table
@@ -67,34 +54,42 @@ class SoftwareCategoryResource extends Resource implements HasShieldPermissions
                 Tables\Filters\TrashedFilter::make(),
             ])
             ->actions([
-                Tables\Actions\ViewAction::make(),
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
-                Tables\Actions\ForceDeleteAction::make(),
-                Tables\Actions\RestoreAction::make(),
+                // 编辑
+                Tables\Actions\EditAction::make()
+                    ->visible(function () {
+                        return auth()->user()->can('update_software::category');
+                    }),
+                // 删除
+                Tables\Actions\DeleteAction::make()
+                    ->visible(function () {
+                        return auth()->user()->can('delete_software::category');
+                    }),
             ])
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                    Tables\Actions\ForceDeleteBulkAction::make(),
-                    Tables\Actions\RestoreBulkAction::make(),
-                ]),
             ])
             ->headerActions([
+                // 导入
                 ImportAction::make()
                     ->importer(SoftwareCategoryImporter::class)
                     ->icon('heroicon-o-arrow-up-tray')
                     ->color('info')
                     ->label('导入')
                     ->visible(function () {
-                        return auth()->user()->can('import_software_category');
+                        return auth()->user()->can('import_software::category');
                     }),
+                // 导出
                 ExportAction::make()
                     ->label('导出')
                     ->visible(function () {
-                        return auth()->user()->can('export_software_category');
+                        return auth()->user()->can('export_software::category');
                     }),
-                SoftwareAction::createSoftwareCategory(),
+                // 创建
+                SoftwareAction::createSoftwareCategory()
+                    ->visible(function () {
+                        return auth()->user()->can('create_software::category');
+                    }),
+                // 前往软件
+                SoftwareAction::toSoftware(),
             ]);
     }
 
@@ -109,9 +104,7 @@ class SoftwareCategoryResource extends Resource implements HasShieldPermissions
     {
         return [
             'index' => Index::route('/'),
-            'create' => Create::route('/create'),
             'edit' => Edit::route('/{record}/edit'),
-            'view' => View::route('/{record}'),
         ];
     }
 

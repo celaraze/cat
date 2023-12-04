@@ -6,6 +6,7 @@ use App\Filament\Forms\OrganizationForm;
 use App\Filament\Resources\OrganizationResource\Pages;
 use App\Filament\Resources\OrganizationResource\RelationManagers\HasUserRelationManager;
 use App\Models\Organization;
+use BezhanSalleh\FilamentShield\Contracts\HasShieldPermissions;
 use Filament\Forms\Form;
 use Filament\Infolists\Components\Grid;
 use Filament\Infolists\Components\Group;
@@ -18,7 +19,7 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class OrganizationResource extends Resource
+class OrganizationResource extends Resource implements HasShieldPermissions
 {
     protected static ?string $model = Organization::class;
 
@@ -30,10 +31,21 @@ class OrganizationResource extends Resource
 
     protected static ?int $navigationSort = 2;
 
+    public static function getPermissionPrefixes(): array
+    {
+        return [
+            'view',
+            'view_any',
+            'create',
+            'update',
+            'delete',
+            'delete_any',
+        ];
+    }
+
     public static function form(Form $form): Form
     {
-        return $form
-            ->schema(OrganizationForm::createOrganization());
+        return $form->schema(OrganizationForm::createOrEdit());
     }
 
     public static function table(Table $table): Table

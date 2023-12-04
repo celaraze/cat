@@ -12,11 +12,7 @@ class DeviceCategoryService
 
     public function __construct(DeviceCategory $device_category = null)
     {
-        if ($device_category) {
-            $this->device_category = $device_category;
-        } else {
-            $this->device_category = new DeviceCategory();
-        }
+        $this->device_category = $device_category ?? new DeviceCategory();
     }
 
     /**

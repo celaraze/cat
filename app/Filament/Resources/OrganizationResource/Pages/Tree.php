@@ -16,7 +16,7 @@ class Tree extends BasePage
 
     protected static int $maxDepth = 5;
 
-    protected function getActions(): array
+    protected function getHeaderActions(): array
     {
         return [
             CreateAction::make()
@@ -34,11 +34,20 @@ class Tree extends BasePage
                 ->link()
                 ->action(function (Organization $organization) {
                     $this->redirect('organizations/'.$organization->getKey());
+                })
+                ->visible(function () {
+                    return auth()->user()->can('view_organization');
                 }),
             EditAction::make()
-                ->link(),
+                ->link()
+                ->visible(function () {
+                    return auth()->user()->can('update_organization');
+                }),
             DeleteAction::make()
-                ->link(),
+                ->link()
+                ->visible(function () {
+                    return auth()->user()->can('delete_organization');
+                }),
         ];
     }
 }

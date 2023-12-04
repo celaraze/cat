@@ -12,11 +12,7 @@ class DeviceHasPartService
 
     public function __construct(DeviceHasPart $device_has_part = null)
     {
-        if ($device_has_part) {
-            $this->device_has_part = $device_has_part;
-        } else {
-            $this->device_has_part = new DeviceHasPart();
-        }
+        $this->device_has_part = $device_has_part ?? new DeviceHasPart();
     }
 
     /**

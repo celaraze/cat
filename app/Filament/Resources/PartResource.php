@@ -5,12 +5,10 @@ namespace App\Filament\Resources;
 use App\Filament\Actions\PartAction;
 use App\Filament\Forms\PartForm;
 use App\Filament\Imports\PartImporter;
-use App\Filament\Resources\PartResource\Pages\Create;
 use App\Filament\Resources\PartResource\Pages\Edit;
 use App\Filament\Resources\PartResource\Pages\Index;
 use App\Filament\Resources\PartResource\Pages\View;
 use App\Filament\Resources\PartResource\RelationManagers\HasPartRelationManager;
-use App\Http\Middleware\FilamentLockTab;
 use App\Models\Part;
 use App\Services\PartCategoryService;
 use App\Services\PartService;
@@ -42,8 +40,6 @@ class PartResource extends Resource implements HasShieldPermissions
 
     protected static ?string $navigationGroup = '资产';
 
-    protected static string|array $routeMiddleware = FilamentLockTab::class;
-
     public static function getPermissionPrefixes(): array
     {
         return [
@@ -57,6 +53,9 @@ class PartResource extends Resource implements HasShieldPermissions
             'export',
             'retire',
             'force_retire',
+            'set_auto_asset_number_rule',
+            'reset_auto_asset_number_rule',
+            'reset_part_retire_flow',
         ];
     }
 
@@ -109,6 +108,7 @@ class PartResource extends Resource implements HasShieldPermissions
 
             ])
             ->headerActions([
+                // 导入
                 ImportAction::make()
                     ->importer(PartImporter::class)
                     ->icon('heroicon-o-arrow-up-tray')
@@ -117,16 +117,34 @@ class PartResource extends Resource implements HasShieldPermissions
                     ->visible(function () {
                         return auth()->user()->can('import_part');
                     }),
+                // 导出
                 ExportAction::make()
                     ->label('导出')
                     ->visible(function () {
                         return auth()->user()->can('export_part');
                     }),
-                PartAction::createPart(),
+                // 创建
+                PartAction::createPart()->visible(function () {
+                    return auth()->user()->can('create_part');
+                }),
                 Tables\Actions\ActionGroup::make([
-                    PartAction::setAssetNumberRule(),
-                    PartAction::resetAssetNumberRule(),
-                    PartAction::setPartRetireFlowId(),
+                    // 前往配件分类
+                    PartAction::toPartCategory(),
+                    // 配置资产编号自动生成
+                    PartAction::setAssetNumberRule()
+                        ->visible(function () {
+                            return auth()->user()->can('set_auto_asset_number_rule_part');
+                        }),
+                    // 重置资产编号配置流程
+                    PartAction::resetAssetNumberRule()
+                        ->visible(function () {
+                            return auth()->user()->can('reset_auto_asset_number_rule_part');
+                        }),
+                    // 配置配件报废流程
+                    PartAction::setPartRetireFlow()
+                        ->visible(function () {
+                            return auth()->user()->can('set_part_retire_flow_part');
+                        }),
                 ])
                     ->label('高级')
                     ->icon('heroicon-m-cog-8-tooth')
@@ -136,8 +154,7 @@ class PartResource extends Resource implements HasShieldPermissions
 
     public static function form(Form $form): Form
     {
-        return $form
-            ->schema(PartForm::createOrEditPart());
+        return $form->schema(PartForm::createOrEdit());
     }
 
     public static function infolist(Infolist $infolist): Infolist
@@ -191,7 +208,6 @@ class PartResource extends Resource implements HasShieldPermissions
     {
         return [
             'index' => Index::route('/'),
-            'create' => Create::route('/create'),
             'edit' => Edit::route('/{record}/edit'),
             'view' => View::route('/{record}'),
         ];

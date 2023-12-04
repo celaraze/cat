@@ -4,8 +4,6 @@ namespace App\Filament\Forms;
 
 use App\Models\Software;
 use App\Services\AssetNumberRuleService;
-use App\Services\BrandService;
-use App\Services\SoftwareCategoryService;
 use Filament\Forms\Components\Actions\Action;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Select;
@@ -16,9 +14,9 @@ use Ramsey\Uuid\Uuid;
 class SoftwareForm
 {
     /**
-     * 创建或者编辑设备的表单。
+     * 创建或编辑.
      */
-    public static function createOrEditSoftware(): array
+    public static function createOrEdit(): array
     {
         return [
             //region 文本 资产编号 asset_number
@@ -26,7 +24,7 @@ class SoftwareForm
                 ->maxLength(255)
                 ->label('资产编号')
                 ->required(function () {
-                    return ! AssetNumberRuleService::isAuto(Software::class);
+                    return !AssetNumberRuleService::isAuto(Software::class);
                 })
                 ->readOnly(function () {
                     return AssetNumberRuleService::isAuto(Software::class);
@@ -48,17 +46,21 @@ class SoftwareForm
 
             //region 选择 分类 category_id
             Select::make('category_id')
-                ->options(SoftwareCategoryService::pluckOptions())
+                ->relationship('category', 'name')
                 ->label('分类')
                 ->searchable()
+                ->preload()
+                ->createOptionForm(SoftwareCategoryForm::createOrEdit())
                 ->required(),
             //endregion
 
             //region 选择 品牌 brand_id
             Select::make('brand_id')
-                ->options(BrandService::pluckOptions())
+                ->relationship('brand', 'name')
                 ->label('品牌')
                 ->searchable()
+                ->preload()
+                ->createOptionForm(BrandForm::createOrEdit())
                 ->required(),
             //endregion
 
@@ -88,7 +90,7 @@ class SoftwareForm
                 ->directory('software')
                 ->getUploadedFileNameForStorageUsing(
                     function (TemporaryUploadedFile $file) {
-                        return Uuid::uuid4().'.'.$file->getClientOriginalExtension();
+                        return Uuid::uuid4() . '.' . $file->getClientOriginalExtension();
                     }
                 ),
             //endregion

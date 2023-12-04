@@ -13,11 +13,7 @@ class InventoryService
 
     public function __construct(Inventory $inventory = null)
     {
-        if ($inventory) {
-            $this->inventory = $inventory;
-        } else {
-            $this->inventory = new Inventory();
-        }
+        $this->inventory = $inventory ?? new Inventory();
     }
 
     /**

@@ -10,7 +10,6 @@ use App\Services\AssetNumberRuleService;
 use App\Services\DeviceCategoryService;
 use App\Services\DeviceService;
 use App\Services\FlowService;
-use App\Services\PartService;
 use App\Services\SettingService;
 use App\Services\SoftwareService;
 use App\Services\UserService;
@@ -102,7 +101,7 @@ class DeviceAction
         return Action::make('新增')
             ->slideOver()
             ->icon('heroicon-m-plus')
-            ->form(DeviceForm::createOrEditDevice())
+            ->form(DeviceForm::createOrEdit())
             ->action(function (array $data) {
                 try {
                     $device_service = new DeviceService();
@@ -146,15 +145,7 @@ class DeviceAction
     public static function createDeviceHasPart(Model $out_device = null): Action
     {
         return Action::make('附加配件')
-            ->form([
-                //region 选择 配件 part_id
-                Select::make('part_id')
-                    ->label('配件')
-                    ->options(PartService::pluckOptions())
-                    ->searchable()
-                    ->required(),
-                //endregion
-            ])
+            ->form(DeviceForm::createHasPart())
             ->action(function (array $data, Device $device) use ($out_device): void {
                 try {
                     if ($out_device) {
@@ -338,7 +329,7 @@ class DeviceAction
                     $asset_number = $device->getAttribute('asset_number');
                     $flow_service->createHasForm(
                         '设备报废单',
-                        $asset_number.' 报废处理',
+                        $asset_number . ' 报废处理',
                         $asset_number
                     );
                     NotificationUtil::make(true, '已创建表单');
@@ -371,5 +362,25 @@ class DeviceAction
                     NotificationUtil::make(false, $exception);
                 }
             });
+    }
+
+    /**
+     * 前往设备分类.
+     */
+    public static function toDeviceCategory(): Action
+    {
+        return Action::make('分类')
+            ->icon('heroicon-s-square-3-stack-3d')
+            ->url('/device-categories');
+    }
+
+    /**
+     * 前往设备.
+     */
+    public static function toDevice(): Action
+    {
+        return Action::make('返回设备')
+            ->icon('heroicon-s-server')
+            ->url('/devices');
     }
 }

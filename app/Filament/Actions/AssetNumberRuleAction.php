@@ -18,7 +18,8 @@ class AssetNumberRuleAction
     {
         return Action::make('新增规则')
             ->slideOver()
-            ->form(SettingForm::createOrEditSettingAssetNumber())
+            ->icon('heroicon-m-plus')
+            ->form(SettingForm::createOrEdit())
             ->action(function (array $data) {
                 try {
                     $asset_number_rule_service = new AssetNumberRuleService();

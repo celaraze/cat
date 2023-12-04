@@ -10,11 +10,7 @@ class AssetNumberTrackService
 
     public function __construct(AssetNumberTrack $asset_number_track = null)
     {
-        if ($asset_number_track) {
-            $this->asset_number_track = $asset_number_track;
-        } else {
-            $this->asset_number_track = new AssetNumberTrack();
-        }
+        $this->asset_number_track = $asset_number_track ?? new AssetNumberTrack();
 
     }
 

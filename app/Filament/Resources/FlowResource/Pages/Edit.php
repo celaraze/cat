@@ -16,6 +16,7 @@ class Edit extends EditRecord
     protected function getHeaderActions(): array
     {
         return [
+            // 删除
             Actions\DeleteAction::make()
                 ->before(function (Flow $flow) {
                     if ($flow->forms()->whereNotIn('status', [3, 4])->count()) {
@@ -29,6 +30,9 @@ class Edit extends EditRecord
                             $this->halt();
                         }
                     }
+                })
+                ->visible(function () {
+                    return auth()->user()->can('delete_flow');
                 }),
         ];
     }

@@ -25,7 +25,7 @@ class OrganizationAction
             ->slideOver()
             ->icon('heroicon-s-pencil-square')
             ->link()
-            ->form(OrganizationForm::createOrganization())
+            ->form(OrganizationForm::createOrEdit())
             ->action(function (array $data, Organization $organization) {
                 try {
 
@@ -49,7 +49,7 @@ class OrganizationAction
         return Action::make('新增')
             ->slideOver()
             ->icon('heroicon-m-plus')
-            ->form(OrganizationForm::createOrganization())
+            ->form(OrganizationForm::createOrEdit())
             ->action(function (array $data) {
                 try {
                     $organization_service = new OrganizationService();

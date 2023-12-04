@@ -4,8 +4,7 @@ namespace App\Filament\Forms;
 
 use App\Models\Device;
 use App\Services\AssetNumberRuleService;
-use App\Services\BrandService;
-use App\Services\DeviceCategoryService;
+use App\Services\PartService;
 use Filament\Forms\Components\Actions\Action;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Select;
@@ -16,9 +15,9 @@ use Ramsey\Uuid\Uuid;
 class DeviceForm
 {
     /**
-     * 创建或者编辑设备的表单。
+     * 创建或编辑.
      */
-    public static function createOrEditDevice(): array
+    public static function createOrEdit(): array
     {
         return [
             //region 文本 资产编号 asset_number
@@ -26,7 +25,7 @@ class DeviceForm
                 ->maxLength(255)
                 ->label('资产编号')
                 ->required(function () {
-                    return ! AssetNumberRuleService::isAuto(Device::class);
+                    return !AssetNumberRuleService::isAuto(Device::class);
                 })
                 ->readOnly(function () {
                     return AssetNumberRuleService::isAuto(Device::class);
@@ -42,9 +41,11 @@ class DeviceForm
 
             //region 选择 分类 category_id
             Select::make('category_id')
-                ->options(DeviceCategoryService::pluckOptions())
+                ->relationship('category', 'name')
                 ->label('分类')
+                ->preload()
                 ->searchable()
+                ->createOptionForm(DeviceCategoryForm::createOrEdit())
                 ->required(),
             //endregion
 
@@ -56,9 +57,11 @@ class DeviceForm
 
             //region 选择 品牌 brand_id
             Select::make('brand_id')
-                ->options(BrandService::pluckOptions())
                 ->label('品牌')
+                ->relationship('brand', 'name')
+                ->preload()
                 ->searchable()
+                ->createOptionForm(BrandForm::createOrEdit())
                 ->required(),
             //endregion
 
@@ -80,9 +83,28 @@ class DeviceForm
                 ->directory('devices')
                 ->getUploadedFileNameForStorageUsing(
                     function (TemporaryUploadedFile $file) {
-                        return Uuid::uuid4().'.'.$file->getClientOriginalExtension();
+                        return Uuid::uuid4() . '.' . $file->getClientOriginalExtension();
                     }
                 ),
+            //endregion
+        ];
+    }
+
+    /**
+     * 创建设备配件.
+     *
+     * @return array
+     */
+    public static function createHasPart(): array
+    {
+        return [
+            //region 选择 配件 part_id
+            Select::make('part_id')
+                ->label('配件')
+                ->options(PartService::pluckOptions())
+                ->searchable()
+                ->preload()
+                ->required(),
             //endregion
         ];
     }

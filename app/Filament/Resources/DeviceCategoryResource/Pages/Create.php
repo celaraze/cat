@@ -9,11 +9,6 @@ class Create extends CreateRecord
 {
     protected static string $resource = DeviceCategoryResource::class;
 
-    public static function canCreateAnother(): bool
-    {
-        return false;
-    }
-
     /**
      * 保存后跳转至列表.
      */

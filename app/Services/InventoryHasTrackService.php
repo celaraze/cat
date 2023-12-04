@@ -11,11 +11,7 @@ class InventoryHasTrackService
 
     public function __construct(InventoryHasTrack $inventory_has_track = null)
     {
-        if ($inventory_has_track) {
-            $this->inventory_has_track = $inventory_has_track;
-        } else {
-            $this->inventory_has_track = new InventoryHasTrack();
-        }
+        $this->inventory_has_track = $inventory_has_track ?? new InventoryHasTrack();
     }
 
     /**

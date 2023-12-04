@@ -3,14 +3,13 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Actions\BrandAction;
+use App\Filament\Forms\BrandForm;
 use App\Filament\Imports\BrandImporter;
 use App\Filament\Resources\BrandResource\Pages\Create;
 use App\Filament\Resources\BrandResource\Pages\Edit;
 use App\Filament\Resources\BrandResource\Pages\Index;
-use App\Http\Middleware\FilamentLockTab;
 use App\Models\Brand;
 use BezhanSalleh\FilamentShield\Contracts\HasShieldPermissions;
-use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -32,13 +31,9 @@ class BrandResource extends Resource implements HasShieldPermissions
 
     protected static ?string $navigationGroup = '资产';
 
-    protected static string|array $routeMiddleware = FilamentLockTab::class;
-
     public static function getPermissionPrefixes(): array
     {
         return [
-            'view',
-            'view_any',
             'create',
             'update',
             'delete',
@@ -50,12 +45,7 @@ class BrandResource extends Resource implements HasShieldPermissions
 
     public static function form(Form $form): Form
     {
-        return $form
-            ->schema([
-                Forms\Components\TextInput::make('name')
-                    ->label('名称')
-                    ->required(),
-            ]);
+        return $form->schema(BrandForm::createOrEdit());
     }
 
     public static function table(Table $table): Table
@@ -69,23 +59,25 @@ class BrandResource extends Resource implements HasShieldPermissions
                 Tables\Filters\TrashedFilter::make(),
             ])
             ->actions([
-                Tables\Actions\ViewAction::make(),
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
-                Tables\Actions\ForceDeleteAction::make(),
-                Tables\Actions\RestoreAction::make(),
+                // 编辑
+                Tables\Actions\EditAction::make()
+                    ->visible(function () {
+                        return auth()->user()->can('update_brand');
+                    }),
+                // 删除
+                Tables\Actions\DeleteAction::make()
+                    ->visible(function () {
+                        return auth()->user()->can('delete_brand');
+                    }),
             ])
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                    Tables\Actions\ForceDeleteBulkAction::make(),
-                    Tables\Actions\RestoreBulkAction::make(),
-                ]),
+
             ])
             ->emptyStateActions([
 
             ])
             ->headerActions([
+                // 导入
                 ImportAction::make()
                     ->importer(BrandImporter::class)
                     ->icon('heroicon-o-arrow-up-tray')
@@ -94,12 +86,17 @@ class BrandResource extends Resource implements HasShieldPermissions
                     ->visible(function () {
                         return auth()->user()->can('import_brand');
                     }),
+                // 导出
                 ExportAction::make()
                     ->label('导出')
                     ->visible(function () {
                         return auth()->user()->can('export_brand');
                     }),
-                BrandAction::createBrand(),
+                // 创建
+                BrandAction::createBrand()
+                    ->visible(function () {
+                        return auth()->user()->can('create_brand');
+                    }),
             ]);
     }
 

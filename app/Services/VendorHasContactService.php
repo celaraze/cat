@@ -11,11 +11,7 @@ class VendorHasContactService
 
     public function __construct(VendorHasContact $vendor_has_contact = null)
     {
-        if ($vendor_has_contact) {
-            $this->vendor_has_contact = $vendor_has_contact;
-        } else {
-            $this->vendor_has_contact = new VendorHasContact();
-        }
+        $this->vendor_has_contact = $vendor_has_contact ?? new VendorHasContact();
     }
 
     /**

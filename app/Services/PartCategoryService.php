@@ -14,11 +14,7 @@ class PartCategoryService
 
     public function __construct(PartCategory $part_category = null)
     {
-        if ($part_category) {
-            $this->part_category = $part_category;
-        } else {
-            $this->part_category = new PartCategory();
-        }
+        $this->part_category = $part_category ?? new PartCategory();
     }
 
     /**

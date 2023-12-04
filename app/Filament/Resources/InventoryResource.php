@@ -7,6 +7,7 @@ use App\Filament\Resources\InventoryResource\Pages;
 use App\Filament\Resources\InventoryResource\RelationManagers;
 use App\Models\Inventory;
 use App\Utils\AssetUtil;
+use BezhanSalleh\FilamentShield\Contracts\HasShieldPermissions;
 use Filament\Forms\Form;
 use Filament\Infolists\Components\Grid;
 use Filament\Infolists\Components\Group;
@@ -20,7 +21,7 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class InventoryResource extends Resource
+class InventoryResource extends Resource implements HasShieldPermissions
 {
     protected static ?string $model = Inventory::class;
 
@@ -32,11 +33,23 @@ class InventoryResource extends Resource
 
     protected static ?int $navigationSort = 3;
 
+    public static function getPermissionPrefixes(): array
+    {
+        return [
+            'view',
+            'view_any',
+            'create',
+            'update',
+            'delete',
+            'delete_any',
+        ];
+    }
+
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                //
+
             ]);
     }
 
@@ -78,14 +91,14 @@ class InventoryResource extends Resource
 
             ])
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                    Tables\Actions\ForceDeleteBulkAction::make(),
-                    Tables\Actions\RestoreBulkAction::make(),
-                ]),
+
             ])
             ->headerActions([
-                InventoryAction::createInventory(),
+                // 创建
+                InventoryAction::createInventory()
+                    ->visible(function () {
+                        return auth()->user()->can('create_inventory');
+                    }),
             ]);
     }
 

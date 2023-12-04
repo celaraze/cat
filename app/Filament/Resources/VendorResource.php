@@ -2,18 +2,23 @@
 
 namespace App\Filament\Resources;
 
+use App\Filament\Actions\VendorAction;
+use App\Filament\Forms\VendorForm;
+use App\Filament\Imports\VendorImporter;
 use App\Filament\Resources\VendorResource\Pages;
 use App\Filament\Resources\VendorResource\RelationManagers;
 use App\Models\Vendor;
-use Filament\Forms\Components\TextInput;
+use BezhanSalleh\FilamentShield\Contracts\HasShieldPermissions;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Actions\ImportAction;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use pxlrbt\FilamentExcel\Actions\Tables\ExportAction;
 
-class VendorResource extends Resource
+class VendorResource extends Resource implements HasShieldPermissions
 {
     protected static ?string $model = Vendor::class;
 
@@ -25,21 +30,23 @@ class VendorResource extends Resource
 
     protected static ?string $navigationGroup = '基础数据';
 
+    public static function getPermissionPrefixes(): array
+    {
+        return [
+            'view',
+            'view_any',
+            'create',
+            'update',
+            'delete',
+            'delete_any',
+            'import',
+            'export',
+        ];
+    }
+
     public static function form(Form $form): Form
     {
-        return $form
-            ->schema([
-                TextInput::make('name')
-                    ->label('名称')
-                    ->required(),
-                TextInput::make('address')
-                    ->label('地址')
-                    ->required(),
-                TextInput::make('public_phone_number')
-                    ->label('对公电话'),
-                TextInput::make('referrer')
-                    ->label('引荐人'),
-            ]);
+        return $form->schema(VendorForm::createOrEdit());
     }
 
     public static function table(Table $table): Table
@@ -57,17 +64,39 @@ class VendorResource extends Resource
 
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                // 编辑
+                Tables\Actions\EditAction::make()
+                    ->visible(function () {
+                        return auth()->user()->can('update_vendor');
+                    }),
             ])
             ->bulkActions([
-                //                Tables\Actions\BulkActionGroup::make([
-                //                    Tables\Actions\DeleteBulkAction::make(),
-                //                    Tables\Actions\ForceDeleteBulkAction::make(),
-                //                    Tables\Actions\RestoreBulkAction::make(),
-                //                ]),
+
             ])
             ->emptyStateActions([
 
+            ])
+            ->headerActions([
+                // 导入
+                ImportAction::make()
+                    ->importer(VendorImporter::class)
+                    ->icon('heroicon-o-arrow-up-tray')
+                    ->color('info')
+                    ->label('导入')
+                    ->visible(function () {
+                        return auth()->user()->can('import_vendor');
+                    }),
+                // 导出
+                ExportAction::make()
+                    ->label('导出')
+                    ->visible(function () {
+                        return auth()->user()->can('export_vendor');
+                    }),
+                // 创建
+                VendorAction::createVendor()
+                    ->visible(function () {
+                        return auth()->user()->can('create_vendor');
+                    }),
             ]);
     }
 
@@ -93,5 +122,10 @@ class VendorResource extends Resource
             ->withoutGlobalScopes([
                 SoftDeletingScope::class,
             ]);
+    }
+
+    public static function canCreate(): bool
+    {
+        return false;
     }
 }

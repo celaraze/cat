@@ -7,6 +7,7 @@ use App\Filament\Forms\FlowForm;
 use App\Filament\Resources\FlowResource\Pages;
 use App\Filament\Resources\FlowResource\RelationManagers\HasNodeRelationManager;
 use App\Models\Flow;
+use BezhanSalleh\FilamentShield\Contracts\HasShieldPermissions;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -14,7 +15,7 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class FlowResource extends Resource
+class FlowResource extends Resource implements HasShieldPermissions
 {
     protected static ?string $model = Flow::class;
 
@@ -25,6 +26,18 @@ class FlowResource extends Resource
     protected static ?int $navigationSort = 2;
 
     protected static ?string $navigationGroup = '工作流';
+
+    public static function getPermissionPrefixes(): array
+    {
+        return [
+            'view',
+            'view_any',
+            'create',
+            'update',
+            'delete',
+            'delete_any',
+        ];
+    }
 
     public static function form(Form $form): Form
     {
@@ -45,7 +58,7 @@ class FlowResource extends Resource
                 Tables\Filters\TrashedFilter::make(),
             ])
             ->actions([
-
+                
             ])
             ->bulkActions([
 
@@ -54,7 +67,11 @@ class FlowResource extends Resource
 
             ])
             ->headerActions([
-                FlowAction::createFlow(),
+                // 创建
+                FlowAction::createFlow()
+                    ->visible(function () {
+                        return auth()->user()->can('create_flow');
+                    }),
             ]);
     }
 

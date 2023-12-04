@@ -10,11 +10,7 @@ class SettingService
 
     public function __construct(Setting $setting = null)
     {
-        if ($setting) {
-            $this->setting = $setting;
-        } else {
-            $this->setting = new Setting();
-        }
+        $this->setting = $setting ?? new Setting();
     }
 
     /**

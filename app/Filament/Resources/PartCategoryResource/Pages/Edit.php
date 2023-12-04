@@ -16,4 +16,12 @@ class Edit extends EditRecord
             Actions\DeleteAction::make(),
         ];
     }
+
+    /**
+     * 保存后返回上一个页面.
+     */
+    protected function getRedirectUrl(): string
+    {
+        return $this->previousUrl;
+    }
 }

@@ -19,11 +19,7 @@ class SoftwareService
 
     public function __construct(Software $software = null)
     {
-        if ($software) {
-            return $this->software = $software;
-        } else {
-            return $this->software = new Software();
-        }
+        $this->software = $software ?? new Software();
     }
 
     /**
@@ -88,8 +84,8 @@ class SoftwareService
             $asset_number_rule = AssetNumberRule::query()
                 ->where('class_name', Software::class)
                 ->first();
+            /* @var  $asset_number_rule AssetNumberRule */
             if ($asset_number_rule) {
-                $asset_number_rule = new AssetNumberRule($asset_number_rule->toArray());
                 // 如果绑定了自动生成规则并且启用
                 if ($asset_number_rule->getAttribute('is_auto')) {
                     $asset_number_rule_service = new AssetNumberRuleService($asset_number_rule);
@@ -145,11 +141,11 @@ class SoftwareService
         $flow_id = Setting::query()
             ->where('custom_key', 'software_retire_flow_id')
             ->value('custom_value');
-        if (! $flow_id) {
+        if (!$flow_id) {
             throw new Exception('还未配置软件报废流程');
         }
         $flow = Flow::query()->where('id', $flow_id)->first();
-        if (! $flow) {
+        if (!$flow) {
             throw new Exception('未找到已配置的软件报废流程');
         }
 

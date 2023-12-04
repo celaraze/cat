@@ -4,7 +4,7 @@ namespace App\Filament\Forms;
 
 use Filament\Forms\Components\TextInput;
 
-class OrganizationForm
+class SoftwareCategoryForm
 {
     /**
      * 创建或编辑.
@@ -13,8 +13,9 @@ class OrganizationForm
     {
         return [
             TextInput::make('name')
-                ->required()
-                ->label('名称'),
+                ->label('名称')
+                ->maxLength(255)
+                ->required(),
         ];
     }
 }

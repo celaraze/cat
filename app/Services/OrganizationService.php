@@ -15,11 +15,7 @@ class OrganizationService
 
     public function __construct(Organization $organization = null)
     {
-        if ($organization) {
-            $this->organization = $organization;
-        } else {
-            $this->organization = new Organization();
-        }
+        $this->organization = $organization ?? new Organization();
     }
 
     /**

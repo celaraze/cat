@@ -10,11 +10,7 @@ class OrganizationHasUserService
 
     public function __construct(OrganizationHasUser $organization_has_user = null)
     {
-        if ($organization_has_user) {
-            $this->organization_has_user = $organization_has_user;
-        } else {
-            $this->organization_has_user = new OrganizationHasUser();
-        }
+        $this->organization_has_user = $organization_has_user ?? new OrganizationHasUser();
     }
 
     /**
