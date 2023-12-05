@@ -2,11 +2,12 @@
 
 namespace App\Filament\Actions;
 
+use App\Filament\Forms\DeviceHasSoftwareForm;
+use App\Filament\Forms\SoftwareCategoryForm;
 use App\Filament\Forms\SoftwareForm;
 use App\Models\DeviceHasSoftware;
 use App\Models\Software;
 use App\Services\AssetNumberRuleService;
-use App\Services\DeviceService;
 use App\Services\FlowService;
 use App\Services\SettingService;
 use App\Services\SoftwareCategoryService;
@@ -14,9 +15,6 @@ use App\Services\SoftwareService;
 use App\Utils\LogUtil;
 use App\Utils\NotificationUtil;
 use Exception;
-use Filament\Forms\Components\Checkbox;
-use Filament\Forms\Components\Select;
-use Filament\Forms\Components\TextInput;
 use Filament\Tables\Actions\Action;
 use Illuminate\Database\Eloquent\Model;
 
@@ -51,11 +49,7 @@ class SoftwareAction
         return Action::make('新增')
             ->slideOver()
             ->icon('heroicon-m-plus')
-            ->form([
-                TextInput::make('name')
-                    ->label('名称')
-                    ->required(),
-            ])
+            ->form(SoftwareCategoryForm::createOrEdit())
             ->action(function (array $data) {
                 try {
                     $software_category_service = new SoftwareCategoryService();
@@ -74,12 +68,7 @@ class SoftwareAction
     public static function createDeviceHasSoftware(Model $out_software = null): Action
     {
         return Action::make('附加到设备')
-            ->form([
-                Select::make('device_id')
-                    ->options(DeviceService::pluckOptions())
-                    ->searchable()
-                    ->label('设备'),
-            ])
+            ->form(DeviceHasSoftwareForm::create())
             ->action(function (array $data, Software $software) use ($out_software) {
                 try {
                     if ($out_software) {
@@ -128,12 +117,7 @@ class SoftwareAction
     public static function setSoftwareRetireFlow(): Action
     {
         return Action::make('配置报废流程')
-            ->form([
-                Select::make('flow_id')
-                    ->options(FlowService::pluckOptions())
-                    ->required()
-                    ->label('流程'),
-            ])
+            ->form(SoftwareForm::setRetireFlow())
             ->action(function (array $data) {
                 try {
                     $setting_service = new SettingService();
@@ -152,16 +136,7 @@ class SoftwareAction
     public static function setAssetNumberRule(): Action
     {
         return Action::make('配置资产编号自动生成规则')
-            ->form([
-                Select::make('asset_number_rule_id')
-                    ->label('规则')
-                    ->options(AssetNumberRuleService::pluckOptions())
-                    ->required()
-                    ->default(AssetNumberRuleService::getAutoRule(Software::class)?->getAttribute('id')),
-                Checkbox::make('is_auto')
-                    ->label('自动生成')
-                    ->default(AssetNumberRuleService::getAutoRule(Software::class)?->getAttribute('is_auto')),
-            ])
+            ->form(SoftwareForm::setAssetNumberRule())
             ->action(function (array $data) {
                 $data['class_name'] = Software::class;
                 AssetNumberRuleService::setAutoRule($data);
@@ -188,11 +163,7 @@ class SoftwareAction
     public static function retireSoftware(): Action
     {
         return Action::make('流程报废')
-            ->form([
-                TextInput::make('comment')
-                    ->label('说明')
-                    ->required(),
-            ])
+            ->form(SoftwareForm::retire())
             ->action(function (array $data, Software $software) {
                 try {
                     $software_retire_flow = $software->service()->getRetireFlow();

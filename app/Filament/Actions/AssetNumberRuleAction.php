@@ -29,6 +29,7 @@ class AssetNumberRuleAction
                     Log::error($exception);
                     NotificationUtil::make(false, $exception);
                 }
-            });
+            })
+            ->closeModalByClickingAway(false);
     }
 }

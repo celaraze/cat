@@ -2,11 +2,11 @@
 
 namespace App\Filament\Actions;
 
+use App\Filament\Forms\BrandForm;
 use App\Services\BrandService;
 use App\Utils\LogUtil;
 use App\Utils\NotificationUtil;
 use Exception;
-use Filament\Forms\Components\TextInput;
 use Filament\Tables\Actions\Action;
 
 class BrandAction
@@ -19,11 +19,7 @@ class BrandAction
         return Action::make('新增')
             ->slideOver()
             ->icon('heroicon-m-plus')
-            ->form([
-                TextInput::make('name')
-                    ->label('名称')
-                    ->required(),
-            ])
+            ->form(BrandForm::createOrEdit())
             ->action(function (array $data) {
                 try {
                     $brand_service = new BrandService();
@@ -33,6 +29,7 @@ class BrandAction
                     LogUtil::error($exception);
                     NotificationUtil::make(false, $exception);
                 }
-            });
+            })
+            ->closeModalByClickingAway(false);
     }
 }

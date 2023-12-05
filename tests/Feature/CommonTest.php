@@ -11,6 +11,6 @@ class CommonTest extends TestCase
      */
     public function test_example(): void
     {
-        $this->assertTrue(true);
+        self::assertTrue(true);
     }
 }

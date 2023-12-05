@@ -11,6 +11,7 @@ use App\Filament\Resources\DeviceResource\Pages\View;
 use App\Filament\Resources\DeviceResource\RelationManagers\HasPartRelationManager;
 use App\Filament\Resources\DeviceResource\RelationManagers\HasSoftwareRelationManager;
 use App\Filament\Resources\DeviceResource\RelationManagers\HasUserRelationManager;
+use App\Filament\Resources\DeviceResource\RelationManagers\TicketRelationManager;
 use App\Models\Device;
 use App\Services\DeviceCategoryService;
 use App\Services\DeviceService;
@@ -126,6 +127,7 @@ class DeviceResource extends Resource implements HasShieldPermissions
                     ->visible(function () {
                         return auth()->user()->can('update_device');
                     }),
+                DeviceAction::createTicket(),
                 Tables\Actions\ActionGroup::make([
                     // 分配管理者
                     DeviceAction::createDeviceHasUser()
@@ -256,6 +258,7 @@ class DeviceResource extends Resource implements HasShieldPermissions
             HasUserRelationManager::class,
             HasPartRelationManager::class,
             HasSoftwareRelationManager::class,
+            TicketRelationManager::class,
         ];
     }
 

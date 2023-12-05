@@ -27,4 +27,19 @@ class UserForm
                 ->preload(),
         ];
     }
+
+    /**
+     * 修改密码.
+     */
+    public static function changePassword(): array
+    {
+        return [
+            TextInput::make('password')
+                ->label('新密码')
+                ->required(),
+            TextInput::make('password-verify')
+                ->label('确认密码')
+                ->required(),
+        ];
+    }
 }

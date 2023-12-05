@@ -2,11 +2,17 @@
 
 namespace App\Filament\Forms;
 
+use App\Enums\Priority;
 use App\Models\Device;
 use App\Services\AssetNumberRuleService;
-use App\Services\PartService;
+use App\Services\DeviceService;
+use App\Services\FlowService;
+use App\Services\TicketCategoryService;
+use Awcodes\Shout\Components\Shout;
 use Filament\Forms\Components\Actions\Action;
+use Filament\Forms\Components\Checkbox;
 use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
@@ -14,6 +20,40 @@ use Ramsey\Uuid\Uuid;
 
 class DeviceForm
 {
+    /**
+     * 创建工单.
+     */
+    public static function createTicketFromDevice(string $asset_number): array
+    {
+        return [
+            Select::make('asset_number')
+                ->label('资产编号')
+                ->options(DeviceService::pluckOptions())
+                ->searchable()
+                ->preload()
+                ->placeholder($asset_number)
+                ->disabled(),
+            TextInput::make('subject')
+                ->label('主题')
+                ->required(),
+            RichEditor::make('description')
+                ->label('描述')
+                ->required(),
+            Select::make('category_id')
+                ->label('工单分类')
+                ->options(TicketCategoryService::pluckOptions())
+                ->searchable()
+                ->preload()
+                ->required(),
+            Select::make('priority')
+                ->label('优先级')
+                ->options(Priority::array())
+                ->searchable()
+                ->preload()
+                ->required(),
+        ];
+    }
+
     /**
      * 创建或编辑.
      */
@@ -91,19 +131,59 @@ class DeviceForm
     }
 
     /**
-     * 创建设备配件.
+     * 强制报废.
      */
-    public static function createHasPart(): array
+    public static function forceRetire(): array
     {
         return [
-            //region 选择 配件 part_id
-            Select::make('part_id')
-                ->label('配件')
-                ->options(PartService::pluckOptions())
-                ->searchable()
-                ->preload()
+            Shout::make('hint')
+                ->color('danger')
+                ->content('此操作将同时报废所含配件（不包含软件）'),
+        ];
+    }
+
+    /**
+     * 配置设备报废流程.
+     */
+    public static function setRetireFlow(): array
+    {
+        return [
+            Select::make('flow_id')
+                ->options(FlowService::pluckOptions())
+                ->required()
+                ->label('流程'),
+        ];
+    }
+
+    /**
+     * 配置资产编号自动生成规则.
+     */
+    public static function setAssetNumberRule(): array
+    {
+        return [
+            Select::make('asset_number_rule_id')
+                ->label('规则')
+                ->options(AssetNumberRuleService::pluckOptions())
+                ->required()
+                ->default(AssetNumberRuleService::getAutoRule(Device::class)?->getAttribute('id')),
+            Checkbox::make('is_auto')
+                ->label('自动生成')
+                ->default(AssetNumberRuleService::getAutoRule(Device::class)?->getAttribute('is_auto')),
+        ];
+    }
+
+    /**
+     * 流程报废.
+     */
+    public static function retire(): array
+    {
+        return [
+            Shout::make('')
+                ->color('danger')
+                ->content('此操作将同时报废所含配件（不包含软件）'),
+            TextInput::make('comment')
+                ->label('说明')
                 ->required(),
-            //endregion
         ];
     }
 }

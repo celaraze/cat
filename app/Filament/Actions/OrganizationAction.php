@@ -3,15 +3,14 @@
 namespace App\Filament\Actions;
 
 use App\Filament\Forms\OrganizationForm;
+use App\Filament\Forms\OrganizationHasUserForm;
 use App\Models\Organization;
 use App\Models\OrganizationHasUser;
 use App\Services\OrganizationService;
-use App\Services\UserService;
 use App\Utils\LogUtil;
 use App\Utils\NotificationUtil;
 use Exception;
 use Filament\Actions\Action;
-use Filament\Forms\Components\Select;
 use Illuminate\Database\Eloquent\Model;
 
 class OrganizationAction
@@ -91,13 +90,7 @@ class OrganizationAction
         return \Filament\Tables\Actions\Action::make('新增成员')
             ->slideOver()
             ->icon('heroicon-s-user-plus')
-            ->form([
-                Select::make('user_ids')
-                    ->label('成员')
-                    ->options(UserService::pluckOptions('id', UserService::existOrganizationHasUserIds()))
-                    ->multiple()
-                    ->searchable(),
-            ])
+            ->form(OrganizationHasUserForm::create())
             ->action(function (array $data, Organization $organization) use ($out_organization) {
                 try {
                     if ($out_organization) {

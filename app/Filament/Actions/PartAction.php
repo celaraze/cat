@@ -2,11 +2,12 @@
 
 namespace App\Filament\Actions;
 
+use App\Filament\Forms\DeviceHasPartForm;
+use App\Filament\Forms\PartCategoryForm;
 use App\Filament\Forms\PartForm;
 use App\Models\DeviceHasPart;
 use App\Models\Part;
 use App\Services\AssetNumberRuleService;
-use App\Services\DeviceService;
 use App\Services\FlowService;
 use App\Services\PartCategoryService;
 use App\Services\PartService;
@@ -14,9 +15,6 @@ use App\Services\SettingService;
 use App\Utils\LogUtil;
 use App\Utils\NotificationUtil;
 use Exception;
-use Filament\Forms\Components\Checkbox;
-use Filament\Forms\Components\Select;
-use Filament\Forms\Components\TextInput;
 use Filament\Tables\Actions\Action;
 use Illuminate\Database\Eloquent\Model;
 
@@ -30,11 +28,7 @@ class PartAction
         return Action::make('新增')
             ->slideOver()
             ->icon('heroicon-m-plus')
-            ->form([
-                TextInput::make('name')
-                    ->label('名称')
-                    ->required(),
-            ])
+            ->form(PartCategoryForm::createOrEdit())
             ->action(function (array $data) {
                 try {
                     $part_category_service = new PartCategoryService();
@@ -74,12 +68,7 @@ class PartAction
     public static function createDeviceHasPart(Model $out_part = null): Action
     {
         return Action::make('附加到设备')
-            ->form([
-                Select::make('device_id')
-                    ->options(DeviceService::pluckOptions())
-                    ->searchable()
-                    ->label('设备'),
-            ])
+            ->form(DeviceHasPartForm::createFromPart())
             ->action(function (array $data, Part $part) use ($out_part) {
                 try {
                     if ($out_part) {
@@ -128,12 +117,7 @@ class PartAction
     public static function setPartRetireFlow(): Action
     {
         return Action::make('配置报废流程')
-            ->form([
-                Select::make('flow_id')
-                    ->options(FlowService::pluckOptions())
-                    ->required()
-                    ->label('流程'),
-            ])
+            ->form(PartForm::setRetireFlow())
             ->action(function (array $data) {
                 try {
                     $setting_service = new SettingService();
@@ -152,16 +136,7 @@ class PartAction
     public static function setAssetNumberRule(): Action
     {
         return Action::make('配置资产编号自动生成规则')
-            ->form([
-                Select::make('asset_number_rule_id')
-                    ->label('规则')
-                    ->options(AssetNumberRuleService::pluckOptions())
-                    ->required()
-                    ->default(AssetNumberRuleService::getAutoRule(Part::class)?->getAttribute('id')),
-                Checkbox::make('is_auto')
-                    ->label('自动生成')
-                    ->default(AssetNumberRuleService::getAutoRule(Part::class)?->getAttribute('is_auto')),
-            ])
+            ->form(PartForm::setAssetNumberRule())
             ->action(function (array $data) {
                 $data['class_name'] = Part::class;
                 AssetNumberRuleService::setAutoRule($data);
@@ -188,11 +163,7 @@ class PartAction
     public static function retirePart(): Action
     {
         return Action::make('流程报废')
-            ->form([
-                TextInput::make('comment')
-                    ->label('说明')
-                    ->required(),
-            ])
+            ->form(PartForm::retire())
             ->action(function (array $data, Part $part) {
                 try {
                     $part_retire_flow = $part->service()->getRetireFlow();

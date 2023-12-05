@@ -56,6 +56,7 @@ class HasUserRelationManager extends RelationManager
                     ->size(TextColumnSize::ExtraSmall)
                     ->label('解除分配时间'),
             ])
+            ->defaultSort('deleted_at', 'desc')
             ->filters([
 
             ])

@@ -120,18 +120,20 @@ class SoftwareResource extends Resource implements HasShieldPermissions
                     ->visible(function () {
                         return auth()->user()->can('update_software');
                     }),
-                // 流程报废
-                SoftwareAction::retireSoftware()
-                    ->visible(function () {
-                        $can = auth()->user()->can('retire_software');
+                Tables\Actions\ActionGroup::make([
+                    // 流程报废
+                    SoftwareAction::retireSoftware()
+                        ->visible(function () {
+                            $can = auth()->user()->can('retire_software');
 
-                        return $can && SoftwareService::isSetRetireFlow();
-                    }),
-                // 强制报废
-                SoftwareAction::forceRetireSoftware()
-                    ->visible(function () {
-                        return auth()->user()->can('force_retire_software');
-                    }),
+                            return $can && SoftwareService::isSetRetireFlow();
+                        }),
+                    // 强制报废
+                    SoftwareAction::forceRetireSoftware()
+                        ->visible(function () {
+                            return auth()->user()->can('force_retire_software');
+                        }),
+                ]),
             ])
             ->bulkActions([
 

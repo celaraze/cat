@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\AssetNumberTrack;
+use Illuminate\Support\Collection;
 
 class AssetNumberTrackService
 {
@@ -26,5 +27,13 @@ class AssetNumberTrackService
         }
 
         return false;
+    }
+
+    /**
+     * 选单.
+     */
+    public static function pluckOptions(): Collection
+    {
+        return AssetNumberTrack::query()->pluck('asset_number', 'asset_number');
     }
 }

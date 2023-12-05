@@ -4,7 +4,9 @@ namespace App\Filament\Forms;
 
 use App\Models\Software;
 use App\Services\AssetNumberRuleService;
+use App\Services\FlowService;
 use Filament\Forms\Components\Actions\Action;
+use Filament\Forms\Components\Checkbox;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
@@ -94,6 +96,48 @@ class SoftwareForm
                     }
                 ),
             //endregion
+        ];
+    }
+
+    /**
+     * 配置报废流程.
+     */
+    public static function setRetireFlow(): array
+    {
+        return [
+            Select::make('flow_id')
+                ->options(FlowService::pluckOptions())
+                ->required()
+                ->label('流程'),
+        ];
+    }
+
+    /**
+     * 配置资产编号自动生成规则.
+     */
+    public static function setAssetNumberRule(): array
+    {
+        return [
+            Select::make('asset_number_rule_id')
+                ->label('规则')
+                ->options(AssetNumberRuleService::pluckOptions())
+                ->required()
+                ->default(AssetNumberRuleService::getAutoRule(Software::class)?->getAttribute('id')),
+            Checkbox::make('is_auto')
+                ->label('自动生成')
+                ->default(AssetNumberRuleService::getAutoRule(Software::class)?->getAttribute('is_auto')),
+        ];
+    }
+
+    /**
+     * 流程报废.
+     */
+    public static function retire(): array
+    {
+        return [
+            TextInput::make('comment')
+                ->label('说明')
+                ->required(),
         ];
     }
 }

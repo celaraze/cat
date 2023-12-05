@@ -2,19 +2,14 @@
 
 namespace App\Filament\Actions;
 
+use App\Filament\Forms\InventoryForm;
 use App\Filament\Resources\InventoryResource;
-use App\Models\Device;
 use App\Models\Inventory;
 use App\Models\InventoryHasTrack;
-use App\Models\Part;
-use App\Models\Software;
 use App\Services\InventoryService;
 use App\Utils\LogUtil;
 use App\Utils\NotificationUtil;
 use Exception;
-use Filament\Forms\Components\Radio;
-use Filament\Forms\Components\Select;
-use Filament\Forms\Components\TextInput;
 use Filament\Tables\Actions\Action;
 
 class InventoryAction
@@ -27,34 +22,7 @@ class InventoryAction
         return Action::make('新增')
             ->slideOver()
             ->icon('heroicon-m-plus')
-            ->form([
-                TextInput::make('name')
-                    ->label('任务名称')
-                    ->required(),
-                Select::make('class_name')
-                    ->options([
-                        Device::class => '设备',
-                        Part::class => '配件',
-                        Software::class => '软件',
-                    ])
-                    ->label('资产')
-                    ->reactive()
-                    ->required(),
-                Select::make('model_ids')
-                    ->multiple()
-                    ->searchable()
-                    ->label('资产编号')
-                    ->options(function (callable $get) {
-                        $model = $get('class_name');
-                        if (! $model) {
-                            return [];
-                        }
-                        $model = new $model;
-
-                        return $model->service()->pluckOptions();
-                    })
-                    ->hint('留空为选择全部该类资产'),
-            ])
+            ->form(InventoryForm::create())
             ->action(function (array $data) {
                 try {
                     $inventory_service = new InventoryService();
@@ -95,17 +63,7 @@ class InventoryAction
     {
         return Action::make('盘点')
             ->icon('heroicon-m-document-check')
-            ->form([
-                Radio::make('check')
-                    ->options([
-                        1 => '在库',
-                        2 => '标记缺失',
-                    ])
-                    ->label('操作')
-                    ->required(),
-                TextInput::make('comment')
-                    ->label('备忘'),
-            ])
+            ->form(InventoryForm::check())
             ->action(function (array $data, InventoryHasTrack $inventory_has_track) {
                 try {
                     $inventory_has_track->service()->check($data);

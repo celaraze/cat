@@ -72,6 +72,14 @@ class Device extends Model
     }
 
     /**
+     * 一对多，设备有很多工单.
+     */
+    public function tickets(): HasMany
+    {
+        return $this->hasMany(Ticket::class, 'asset_number', 'asset_number');
+    }
+
+    /**
      * 远程一对多，设备有很多个配件.
      */
     public function software(): HasManyThrough

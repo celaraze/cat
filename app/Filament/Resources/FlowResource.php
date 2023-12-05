@@ -42,7 +42,7 @@ class FlowResource extends Resource implements HasShieldPermissions
     public static function form(Form $form): Form
     {
         return $form
-            ->schema(FlowForm::createFlow());
+            ->schema(FlowForm::create());
     }
 
     public static function table(Table $table): Table

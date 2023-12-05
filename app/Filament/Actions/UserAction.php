@@ -2,11 +2,11 @@
 
 namespace App\Filament\Actions;
 
+use App\Filament\Forms\UserForm;
 use App\Models\User;
 use App\Utils\LogUtil;
 use App\Utils\NotificationUtil;
 use Exception;
-use Filament\Forms\Components\TextInput;
 use Filament\Tables\Actions\Action;
 
 class UserAction
@@ -38,14 +38,7 @@ class UserAction
     {
         return \Filament\Actions\Action::make('changePasswordAction')
             ->label('修改密码')
-            ->form([
-                TextInput::make('password')
-                    ->label('新密码')
-                    ->required(),
-                TextInput::make('password-verify')
-                    ->label('确认密码')
-                    ->required(),
-            ])
+            ->form(UserForm::changePassword())
             ->action(function (array $data) {
                 try {
                     if ($data['password'] != $data['password-verify']) {

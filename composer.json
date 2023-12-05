@@ -30,6 +30,7 @@
         "psr/simple-cache": "^2.0",
         "pxlrbt/filament-excel": "^2.1",
         "solution-forest/filament-tree": "^2.0",
+        "swisnl/filament-backgrounds": "^1.1",
         "tymon/jwt-auth": "^2.0"
     },
     "require-dev": {
