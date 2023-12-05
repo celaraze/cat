@@ -14,32 +14,19 @@
     <img src="https://img.shields.io/badge/License-GPL3.0-blue" />
 </p>
 
-***这不是正式版本，目前仍处于开发阶段，请酌情用于生产环境。***
-
 <p align="center">
-    <img src="https://s3.bmp.ovh/imgs/2023/12/01/aba4e96303691dcd.png" />
+    这不是正式版本，目前仍处于开发阶段，请酌情用于生产环境。
 </p>
 
 来一杯咖啡与茶，为 IT 运维从业者减轻管理负担，提升管理效率，从繁重无序的工作中解压出来，利用剩余时间多喝一杯休息一下。
 
 这是一个专为 IT 运维从业者打造的一站式解决方案平台，包含资产管理、工单、工作流、仓储等功能模块。
 
-本项目是 celaraze/chemex 重构版。原项目 chemex 名称弃用，需要老版本即 chemex IT
-资产管理系统的，请访问：[https://github.com/celaraze/chemex.git](https://github.com/celaraze/chemex.git) 。
-
-与 chemex 对比，CAT 有什么不同：
-
-1，CAT 采用全新架构设计，大量提升使用体验的细节，及紧跟最新版本潮流。
-
-2，CAT 大部分会还原 chemex 的基础功能，但部分设计可能由于实际业务需求将被弃用。
-
-3，重做了数据导出、导入功能，现在将提供一个更加人性化的方式。
-
-4，简化了部署需求。
-
-5，增加各类资产编号自动生成规则。
-
 ❤ 感谢各位支持。CAT 提倡与各位使用者、开发者一起创建健康生态，让本项目变的更好，欢迎提供 PR 贡献。
+
+<p align="center">
+    <img src="https://s3.bmp.ovh/imgs/2023/12/01/aba4e96303691dcd.png" />
+</p>
 
 ## 发行策略
 
@@ -56,35 +43,9 @@ CAT 以滚动更新形式发布，具体版本号以发布日期标定。
 | main | 正式版本分支，稳定且可被用于生产环境。    |
 | dev  | 开发版本分支，极不稳定，不应被用于生产环境。 |
 
-## 安装
-
-> CAT 是个标准的 Laravel应用程序，也适用于所有的 LNMP/WNMP/DNMP 环境。
-
-### 先决条件
-
-git：用于管理版本，部署和升级必要工具。
-
-PHP：仅支持 PHP8.2 以上版本。
-
-composer：PHP 的包管理工具，用于安装必要的依赖包。
-
-MySQL：数据库引擎，建议 MySQL 8 以上版本，理论上 MariaDB 10.11 以上版本兼容支持。
-
-ext-intl：扩展。
-
-ext-zip：扩展。
-
-ext-pdo：扩展。
-
-ext-mysqli：扩展。
-
-ext-xml：扩展。
-
-ext-opcache：扩展，很重要，可以大幅提升站点性能。
-
-以上扩展安装过程注意版本必须与 PHP 版本一致。
-
 ### 快速开始
+
+通过访问 [**文档 Wiki**](https://github.com/celaraze/cat/wiki) 来安装和查看更多信息。
 
 生产环境下为遵守安全策略，非常建议在服务器本地进行部署，暂时不提供相关线上初始化安装的功能。因此，虽然前期部署的步骤较多，但已经为大家自动化处理了很大部分的流程，只需要跟着下面的命令一步步执行，一般是不会有部署问题的。
 
@@ -109,59 +70,6 @@ ext-opcache：扩展，很重要，可以大幅提升站点性能。
 10. 执行 `php artisan cat:install` 根据提示创建管理员账户。
 
 11. 此时可以通过访问 `http://127.0.0.1:8000` 来访问系统。
-
-### ESXi OVF
-
-提供了适用于 ESXi 的 OVF 模板，导入虚拟机即可开箱即用。
-
-OVF：[cat-OVF.zip](https://pan.baidu.com/s/1U6ttPaRNWX4c19ryzYNzsw?pwd=4rp7)
-
-基于 Rocky Linux 制作，Linux root 密码为 `cat`，内置宝塔面板，使用 Nginx、PHP 8.1、MySQL 8 以及 Redis 7。
-
-宝塔面板登陆地址：`http://your_ip:8888/admin` 。
-
-宝塔面板用户密码：`catadmin / catadmin`。
-
-CAT 用户密码：`admin@test.com / admin`。
-
-出于安全考虑，请在部署后第一时间修改操作系统和宝塔面板密码，同时解除宝塔面板预先绑定的手机账户。
-
-### 生产环境最佳实践
-
-1. 请参考 Laravel 官方建议之部署指南：[Laravel 部署](https://learnku.com/docs/laravel/10.x/deployment/14840)。
-
-2. 站点主目录应该为 `your_path/cat/public` 作为入口。
-
-3. 针对 Nginx 的配置，请务必遵循一下伪静态规则：
-
-```nginx
-    ···
-    
-    location / {
-        try_files $uri $uri/ /index.php?$query_string;
-    }
-
-    location ~* \.(jpg|jpeg|gif|png|webp|svg|woff|woff2|ttf|css|js|ico|xml)$ {
-        try_files $uri /index.php?$query_string;
-        access_log off;
-        log_not_found off;
-        expires 14d;
-    }
-    
-    ···
-```
-
-## 更新
-
-无论使用何种部署方式，更新原理相同。
-
-1. 执行 `cd` 命令进入 CAT 部署所在的根目录。
-
-2. 执行 `git reset --hard` 将本地修改全部初始化，如果您定义过自定义内容，请提前保存。
-
-3. 执行 `git checkout main && git pull --force` 拉取最新代码。
-
-4. 执行 `php artisan cat:update` 进行更新操作。
 
 ## 问题反馈
 
