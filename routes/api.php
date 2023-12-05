@@ -1,6 +1,7 @@
 <?php
 
-use Illuminate\Http\Request;
+use App\Http\Controllers\InventoryController;
+use App\Http\Controllers\SanctumController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,6 +15,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
+Route::post('/auth/login', [SanctumController::class, 'login']);
+
+Route::middleware('auth:sanctum')
+    ->post('/inventory/check', [InventoryController::class, 'check']);
+
+Route::middleware('auth:sanctum')
+    ->get('/inventory', [InventoryController::class, 'inventory']);

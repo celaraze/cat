@@ -42,6 +42,7 @@ class InventoryResource extends Resource implements HasShieldPermissions
             'update',
             'delete',
             'delete_any',
+            'check',
         ];
     }
 

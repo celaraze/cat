@@ -1,0 +1,8 @@
+# curl --location --request GET 'http://localhost:8000/api/inventory'
+#--header 'User-Agent: Apifox/1.0.0 (https://apifox.com)'
+#--header 'Authorization: Bearer 1|VTimTapj4C1Zp6EbZwZ9NYLwZJMSx2jT2K4Vynnyf1b3be31'
+GET http://localhost:8000/api/inventory
+User-Agent: Apifox/1.0.0 (https://apifox.com)
+Authorization: Bearer 1|VTimTapj4C1Zp6EbZwZ9NYLwZJMSx2jT2K4Vynnyf1b3be31
+
+###

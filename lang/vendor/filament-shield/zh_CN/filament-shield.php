@@ -89,5 +89,6 @@ return [
         'delete_has_part' => '脱离配件',
         'create_has_software' => '附加软件',
         'delete_has_software' => '脱离软件',
+        'check' => '盘点',
     ],
 ];

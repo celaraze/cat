@@ -1,0 +1,22 @@
+###
+
+# curl --location --request POST 'http://localhost:8000/api/auth/login'
+#--header 'User-Agent: Apifox/1.0.0 (https://apifox.com)'
+#--header 'Content-Type: application/json'
+#--data-raw '{
+#    "email": "celaraze@qq.com",
+#    "password": "aiyanyan1314",
+#    "device_name": "test_macbook"
+#}'
+POST http://localhost:8000/api/auth/login
+User-Agent: Apifox/1.0.0 (https://apifox.com)
+Content-Type: application/json
+
+{
+    "email": "admin@qq.com",
+    "password": "admin",
+    "device_name": "test_macbook"
+}
+
+###
+

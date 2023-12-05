@@ -1,0 +1,22 @@
+# curl --location --request POST 'http://localhost:8000/api/inventory/check'
+#--header 'User-Agent: Apifox/1.0.0 (https://apifox.com)'
+#--header 'Content-Type: application/json'
+#--header 'Authorization: Bearer 1|VTimTapj4C1Zp6EbZwZ9NYLwZJMSx2jT2K4Vynnyf1b3be31'
+#--data-raw '{
+#    "inventory_id": 1,
+#    "asset_number": "DEVICE-2023124-00001",
+#    "check": 1
+#}'
+POST http://localhost:8000/api/inventory/check
+User-Agent: Apifox/1.0.0 (https://apifox.com)
+Authorization: Bearer 1|VTimTapj4C1Zp6EbZwZ9NYLwZJMSx2jT2K4Vynnyf1b3be31
+Content-Type: application/json
+
+{
+    "inventory_id": 1,
+    "asset_number": "DEVICE-2023124-00001",
+    "check": 1
+}
+
+###
+
