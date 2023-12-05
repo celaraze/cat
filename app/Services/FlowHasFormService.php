@@ -44,7 +44,7 @@ class FlowHasFormService
         if ($status == 1) {
             // 如果这是新表单，从第一个节点开始走流程，也就是 parent_node_id == 0
             // 否则执行流程节点顺序
-            if (!$this->flow_has_form->getAttribute('node_id')) {
+            if (! $this->flow_has_form->getAttribute('node_id')) {
                 $parent_node_id = 0;
             } else {
                 $parent_node_id = $this->flow_has_form->getAttribute('node_id');
@@ -55,13 +55,13 @@ class FlowHasFormService
                 ->first();
             $next_next_node = $next_node->childNode;
             // 判断下一个节点是不是最终节点，就是判断下一个节点的下一个节点是否存在
-            if (!$next_next_node) {
+            if (! $next_next_node) {
                 $status = 4;
             }
         }
         // 如果审批是退回
         if ($status == 2) {
-            if (!$this->flow_has_form->getAttribute('node_id')) {
+            if (! $this->flow_has_form->getAttribute('node_id')) {
                 // 数据库事务回滚
                 DB::rollBack();
                 throw new Exception('表单已在最初始阶段，无法退回');
@@ -72,7 +72,7 @@ class FlowHasFormService
             /* @var FlowHasNodeService $prev_node 这里 $next_node 实际上是 $prev_node */
             $next_node = $current_node->parentNode;
             // 判断表单是否已经被退回到了第一个节点，即 $next_node 为空
-            if (!$next_node) {
+            if (! $next_node) {
                 // 数据库事务回滚
                 DB::rollBack();
                 throw new Exception('流程无法退回，请选择驳回申请');
@@ -82,7 +82,7 @@ class FlowHasFormService
         // 审批完成就是没有已下一个节点里，即 $next_node 为空
         // 同时要排除表单不是被驳回的，则是判断 $status != 3
         // 再次排除表单已经结案的，则是判断 $status != 4
-        if (!$next_node && $status != 3 && $status != 4) {
+        if (! $next_node && $status != 3 && $status != 4) {
             // 数据库事务回滚
             DB::rollBack();
             throw new Exception('流程已经终结');
@@ -95,7 +95,7 @@ class FlowHasFormService
             $new_form->setAttribute('node_id', $next_node->getKey());
         }
         // PATCH 表单退回到最初的申请人关卡时，当前审批人和审核角色都只能从节点信息读到0，需要做处理将当前审批人改为申请人
-        if (!$new_form->getAttribute('current_approve_user_id') && !$new_form->getAttribute('current_approve_role_id')) {
+        if (! $new_form->getAttribute('current_approve_user_id') && ! $new_form->getAttribute('current_approve_role_id')) {
             $new_form->setAttribute('current_approve_user_id', $new_form->getAttribute('applicant_user_id'));
         }
         $new_form->setAttribute('status', $status);
@@ -120,7 +120,7 @@ class FlowHasFormService
                     $device = Device::query()
                         ->where('asset_number', $this->flow_has_form->getAttribute('payload'))
                         ->first();
-                    if (!$device) {
+                    if (! $device) {
                         throw new Exception('未找到报废流程中所指的设备资产');
                     }
                     $device->service()->retire();
@@ -134,7 +134,7 @@ class FlowHasFormService
                     $part = Part::query()
                         ->where('asset_number', $this->flow_has_form->getAttribute('payload'))
                         ->first();
-                    if (!$part) {
+                    if (! $part) {
                         throw new Exception('未找到报废流程中所指的配件资产');
                     }
                     $part->service()->retire();
@@ -148,7 +148,7 @@ class FlowHasFormService
                     $software = Software::query()
                         ->where('asset_number', $this->flow_has_form->getAttribute('payload'))
                         ->first();
-                    if (!$software) {
+                    if (! $software) {
                         throw new Exception('未找到报废流程中所指的软件资产');
                     }
                     $software->service()->retire();
@@ -158,7 +158,7 @@ class FlowHasFormService
         $new_form->save();
         // 数据库事务提交
         DB::commit();
-        redirect('/flow-has-forms/' . $new_form->getKey());
+        redirect('/flow-has-forms/'.$new_form->getKey());
     }
 
     /**
@@ -174,7 +174,7 @@ class FlowHasFormService
             $nodes = $this->flow_has_form->flow->service()->sortNodes();
         }
         $key = array_search($this->flow_has_form->getAttribute('node_id'), $nodes['id']);
-        $nodes['name'][$key] = '🚩' . $nodes['name'][$key];
+        $nodes['name'][$key] = '🚩'.$nodes['name'][$key];
 
         return $nodes;
     }

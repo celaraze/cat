@@ -338,14 +338,14 @@ class DeviceAction
     /**
      * 创建工单.
      *
-     * @param null $asset_number
+     * @param  null  $asset_number
      */
     public static function createTicket($asset_number = null): Action
     {
         return Action::make('创建工单')
             ->slideOver()
             ->form(function (Device $device) use ($asset_number) {
-                if (!$asset_number) {
+                if (! $asset_number) {
                     $asset_number = $device->getAttribute('asset_number');
                 }
 
@@ -353,7 +353,7 @@ class DeviceAction
             })
             ->action(function (array $data, Device $device) use ($asset_number) {
                 try {
-                    if (!$asset_number) {
+                    if (! $asset_number) {
                         $asset_number = $device->getAttribute('asset_number');
                     }
                     $data['asset_number'] = $asset_number;

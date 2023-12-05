@@ -36,6 +36,7 @@ class Install extends Command
         $this->call('db:seed');
         $this->warn('创建超级管理员账户');
         $this->call('make:filament-user');
+        $this->call('shield:super-admin');
         $this->call('cat:toc');
     }
 }

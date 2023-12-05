@@ -65,14 +65,14 @@ class FlowHasForm extends Model
             get: function () {
                 if ($this->getAttribute('current_approve_user_id')) {
                     $name = '用户：'.User::query()
-                            ->where('id', $this->getAttribute('current_approve_user_id'))
-                            ->value('name');
+                        ->where('id', $this->getAttribute('current_approve_user_id'))
+                        ->value('name');
                 } elseif (! $this->getAttribute('current_approve_user_id') && ! $this->getAttribute('current_approve_role_id')) {
                     $name = '申请人';
                 } else {
                     $name = '角色：'.Role::query()
-                            ->where('id', $this->getAttribute('current_approve_role_id'))
-                            ->value('name');
+                        ->where('id', $this->getAttribute('current_approve_role_id'))
+                        ->value('name');
                 }
 
                 return $name;
