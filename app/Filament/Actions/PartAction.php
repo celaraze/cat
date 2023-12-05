@@ -171,7 +171,7 @@ class PartAction
                     $asset_number = $part->getAttribute('asset_number');
                     $flow_service->createHasForm(
                         '配件报废单',
-                        $asset_number.' 报废处理',
+                        $data['comment'],
                         $asset_number
                     );
                     NotificationUtil::make(true, '已创建表单');
@@ -190,7 +190,7 @@ class PartAction
         return Action::make('强制报废')
             ->requiresConfirmation()
             ->icon('heroicon-m-archive-box-x-mark')
-            ->action(function (array $data, Part $part) {
+            ->action(function (Part $part) {
                 try {
                     $part->service()->retire();
                     NotificationUtil::make(true, '已报废');

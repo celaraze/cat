@@ -8,6 +8,7 @@ use App\Utils\LogUtil;
 use App\Utils\NotificationUtil;
 use Exception;
 use Filament\Tables\Actions\Action;
+use Illuminate\Auth\AuthenticationException;
 
 class UserAction
 {
@@ -42,7 +43,7 @@ class UserAction
             ->action(function (array $data) {
                 try {
                     if ($data['password'] != $data['password-verify']) {
-                        throw new Exception('密码不一致');
+                        throw new AuthenticationException('密码不一致');
                     }
                     /* @var User $user */
                     $user = auth()->user();

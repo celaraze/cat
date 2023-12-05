@@ -30,7 +30,7 @@ class Toc extends Command
         try {
             LogUtil::toc();
         } catch (Exception $exception) {
-
+            LogUtil::error($exception);
         }
     }
 }

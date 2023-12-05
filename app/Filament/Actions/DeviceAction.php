@@ -284,7 +284,7 @@ class DeviceAction
                     $asset_number = $device->getAttribute('asset_number');
                     $flow_service->createHasForm(
                         '设备报废单',
-                        $asset_number.' 报废处理',
+                        $data['comment'],
                         $asset_number
                     );
                     NotificationUtil::make(true, '已创建表单');
@@ -304,7 +304,7 @@ class DeviceAction
             ->requiresConfirmation()
             ->icon('heroicon-m-archive-box-x-mark')
             ->form(DeviceForm::forceRetire())
-            ->action(function (array $data, Device $device) {
+            ->action(function (Device $device) {
                 try {
                     $device->service()->retire();
                     NotificationUtil::make(true, '已报废');
@@ -338,14 +338,14 @@ class DeviceAction
     /**
      * 创建工单.
      *
-     * @param  null  $asset_number
+     * @param null $asset_number
      */
     public static function createTicket($asset_number = null): Action
     {
         return Action::make('创建工单')
             ->slideOver()
             ->form(function (Device $device) use ($asset_number) {
-                if (! $asset_number) {
+                if (!$asset_number) {
                     $asset_number = $device->getAttribute('asset_number');
                 }
 
@@ -353,7 +353,7 @@ class DeviceAction
             })
             ->action(function (array $data, Device $device) use ($asset_number) {
                 try {
-                    if (! $asset_number) {
+                    if (!$asset_number) {
                         $asset_number = $device->getAttribute('asset_number');
                     }
                     $data['asset_number'] = $asset_number;

@@ -171,7 +171,7 @@ class SoftwareAction
                     $asset_number = $software->getAttribute('asset_number');
                     $flow_service->createHasForm(
                         '软件报废单',
-                        $asset_number.' 报废处理',
+                        $data['comment'],
                         $asset_number
                     );
                     NotificationUtil::make(true, '已创建表单');
@@ -190,7 +190,7 @@ class SoftwareAction
         return Action::make('强制报废')
             ->requiresConfirmation()
             ->icon('heroicon-m-archive-box-x-mark')
-            ->action(function (array $data, Software $software) {
+            ->action(function (Software $software) {
                 try {
                     $software->service()->retire();
                     NotificationUtil::make(true, '已报废');

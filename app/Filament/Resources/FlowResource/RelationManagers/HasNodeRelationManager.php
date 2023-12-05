@@ -55,16 +55,15 @@ class HasNodeRelationManager extends RelationManager
                     ->visible(function (FlowHasNode $node) {
                         $flow_has_node_service = new FlowHasNodeService($node);
 
-                        return ! $flow_has_node_service->isExistChildNode();
+                        return !$flow_has_node_service->isExistChildNode();
                     }),
-                // todo 删除按钮需要判断逻辑，不能直接用预设
                 FlowAction::deleteHasNode($this->getOwnerRecord())
                     ->visible(function (FlowHasNode $node) {
                         $flow_has_node_service = new FlowHasNodeService($node);
 
                         // 第一个节点不允许被删除
                         // 中间节点不允许删除，只可以删除最后的节点
-                        return ! $flow_has_node_service->isFirstNode() && $flow_has_node_service->isLastNode();
+                        return !$flow_has_node_service->isFirstNode() && $flow_has_node_service->isLastNode();
                     }),
             ])
             ->bulkActions([
@@ -73,10 +72,5 @@ class HasNodeRelationManager extends RelationManager
             ->emptyStateActions([
 
             ]);
-    }
-
-    protected function nodeCounts()
-    {
-
     }
 }
