@@ -21,9 +21,9 @@ class UserResource extends Resource implements HasShieldPermissions
 
     protected static ?string $modelLabel = '用户';
 
-    protected static ?int $navigationSort = 3;
+    protected static ?int $navigationSort = 1;
 
-    protected static ?string $navigationGroup = '基础数据';
+    protected static ?string $navigationGroup = '安全';
 
     protected static ?string $recordTitleAttribute = 'name';
 

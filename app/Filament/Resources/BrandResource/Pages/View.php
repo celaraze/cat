@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Filament\Resources\SoftwareResource\Pages;
+namespace App\Filament\Resources\BrandResource\Pages;
 
-use App\Filament\Resources\SoftwareResource;
+use App\Filament\Resources\BrandResource;
 use Filament\Resources\Pages\ViewRecord;
 
 class View extends ViewRecord
 {
-    protected static string $resource = SoftwareResource::class;
+    protected static string $resource = BrandResource::class;
 
     public static function getNavigationLabel(): string
     {

@@ -1,27 +1,28 @@
 <?php
 
-namespace App\Filament\Resources\FlowHasFormResource\RelationManagers;
+namespace App\Filament\Resources\FlowHasFormResource\Pages;
 
+use App\Filament\Resources\FlowHasFormResource;
 use App\Utils\FlowHasFormUtil;
-use Filament\Forms\Form;
-use Filament\Resources\RelationManagers\RelationManager;
+use Filament\Resources\Pages\ManageRelatedRecords;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class FormRelationManager extends RelationManager
+class Form extends ManageRelatedRecords
 {
+    protected static string $resource = FlowHasFormResource::class;
+
     protected static string $relationship = 'forms';
 
-    protected static ?string $title = '';
+    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
-    public function form(Form $form): Form
+    protected static ?string $title = '记录';
+
+    public static function getNavigationLabel(): string
     {
-        return $form
-            ->schema([
-
-            ]);
+        return '记录';
     }
 
     public function table(Table $table): Table
@@ -47,22 +48,20 @@ class FormRelationManager extends RelationManager
                     }),
             ])
             ->filters([
-                //
+
             ])
             ->headerActions([
-                Tables\Actions\CreateAction::make(),
+
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+
             ])
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
+
             ])
-            ->modifyQueryUsing(fn (Builder $query) => $query->withoutGlobalScopes([
-                SoftDeletingScope::class,
-            ]));
+            ->modifyQueryUsing(fn(Builder $query) => $query->orderByDesc('created_at')
+                ->withoutGlobalScopes([
+                    SoftDeletingScope::class,
+                ]));
     }
 }

@@ -36,7 +36,7 @@ class FlowAction
                 } else {
                     $flow_has_node_service = new FlowHasNodeService($node);
                     $is_last_node = $flow_has_node_service->isLastNode();
-                    if (! $is_last_node) {
+                    if (!$is_last_node) {
                         NotificationUtil::make(false, '该节点不是最终节点，请在最终节点后追加');
                     } elseif (empty($data['user_id']) && empty($data['role_id'])) {
                         NotificationUtil::make(false, '流程审批类型不能为空，必须选择用户或者角色');
@@ -59,7 +59,7 @@ class FlowAction
     /**
      * 删除节点.
      *
-     * @param  Flow  $flow
+     * @param Flow $flow
      */
     public static function deleteHasNode(Model $flow): Action
     {
@@ -85,6 +85,7 @@ class FlowAction
     {
         /* @var $flow Flow */
         return Action::make('清空节点')
+            ->color('danger')
             ->requiresConfirmation()
             ->action(function () use ($flow) {
                 if ($flow->activeForms()) {
@@ -103,6 +104,7 @@ class FlowAction
     {
         return Action::make('发起表单')
             ->slideOver()
+            ->icon('heroicon-m-plus')
             ->form(FlowHasFormForm::create())
             ->action(function (array $data) {
                 try {
@@ -113,7 +115,8 @@ class FlowAction
                     LogUtil::error($exception);
                     NotificationUtil::make(false, $exception);
                 }
-            });
+            })
+            ->closeModalByClickingAway(false);
     }
 
     /**
@@ -145,7 +148,7 @@ class FlowAction
                     // 回滚事务
                     DB::rollBack();
                     LogUtil::error($exception);
-                    NotificationUtil::make(false, '流程创建失败：'.$exception->getMessage());
+                    NotificationUtil::make(false, '流程创建失败：' . $exception->getMessage());
                 }
             });
     }

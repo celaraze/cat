@@ -4,21 +4,24 @@ namespace App\Filament\Resources;
 
 use App\Filament\Actions\InventoryAction;
 use App\Filament\Resources\InventoryResource\Pages;
-use App\Filament\Resources\InventoryResource\RelationManagers;
+use App\Filament\Resources\InventoryResource\Pages\HasTrack;
+use App\Filament\Resources\InventoryResource\Pages\Index;
+use App\Filament\Resources\InventoryResource\Pages\View;
 use App\Models\Inventory;
 use App\Utils\AssetUtil;
 use BezhanSalleh\FilamentShield\Contracts\HasShieldPermissions;
-use Filament\Forms\Form;
 use Filament\Infolists\Components\Grid;
 use Filament\Infolists\Components\Group;
 use Filament\Infolists\Components\Section;
 use Filament\Infolists\Components\Split;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Infolists\Infolist;
+use Filament\Resources\Pages\Page;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class InventoryResource extends Resource implements HasShieldPermissions
@@ -33,6 +36,15 @@ class InventoryResource extends Resource implements HasShieldPermissions
 
     protected static ?int $navigationSort = 3;
 
+    public static function getRecordSubNavigation(Page $page): array
+    {
+        return $page->generateNavigationItems([
+            Index::class,
+            View::class,
+            HasTrack::class,
+        ]);
+    }
+
     public static function getPermissionPrefixes(): array
     {
         return [
@@ -44,14 +56,6 @@ class InventoryResource extends Resource implements HasShieldPermissions
             'delete_any',
             'check',
         ];
-    }
-
-    public static function form(Form $form): Form
-    {
-        return $form
-            ->schema([
-
-            ]);
     }
 
     public static function table(Table $table): Table
@@ -137,19 +141,12 @@ class InventoryResource extends Resource implements HasShieldPermissions
         ])->columns(3);
     }
 
-    public static function getRelations(): array
-    {
-        return [
-            RelationManagers\HasTrackRelationManager::make(),
-        ];
-    }
-
     public static function getPages(): array
     {
         return [
-            'index' => Pages\Index::route('/'),
-            'create' => Pages\Create::route('/create'),
-            'view' => Pages\View::route('/{record}'),
+            'index' => Index::route('/'),
+            'view' => View::route('/{record}'),
+            'tracks' => HasTrack::route('/{record}/tracks'),
         ];
     }
 
@@ -162,6 +159,16 @@ class InventoryResource extends Resource implements HasShieldPermissions
     }
 
     public static function canCreate(): bool
+    {
+        return false;
+    }
+
+    public static function canEdit(Model $record): bool
+    {
+        return false;
+    }
+
+    public static function canDelete(Model $record): bool
     {
         return false;
     }

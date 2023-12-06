@@ -6,9 +6,9 @@ use App\Filament\Actions\PartAction;
 use App\Filament\Forms\PartForm;
 use App\Filament\Imports\PartImporter;
 use App\Filament\Resources\PartResource\Pages\Edit;
+use App\Filament\Resources\PartResource\Pages\HasPart;
 use App\Filament\Resources\PartResource\Pages\Index;
 use App\Filament\Resources\PartResource\Pages\View;
-use App\Filament\Resources\PartResource\RelationManagers\HasPartRelationManager;
 use App\Models\Part;
 use App\Services\PartCategoryService;
 use App\Services\PartService;
@@ -21,6 +21,7 @@ use Filament\Infolists\Components\Section;
 use Filament\Infolists\Components\Split;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Infolists\Infolist;
+use Filament\Resources\Pages\Page;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Actions\ImportAction;
@@ -41,6 +42,16 @@ class PartResource extends Resource implements HasShieldPermissions
     protected static ?string $navigationGroup = '资产';
 
     protected static ?string $recordTitleAttribute = 'asset_number';
+
+    public static function getRecordSubNavigation(Page $page): array
+    {
+        return $page->generateNavigationItems([
+            Index::class,
+            View::class,
+            Edit::class,
+            HasPart::class,
+        ]);
+    }
 
     public static function getGlobalSearchResultDetails(Model $record): array
     {
@@ -212,19 +223,13 @@ class PartResource extends Resource implements HasShieldPermissions
         ])->columns(3);
     }
 
-    public static function getRelations(): array
-    {
-        return [
-            HasPartRelationManager::make(),
-        ];
-    }
-
     public static function getPages(): array
     {
         return [
             'index' => Index::route('/'),
             'edit' => Edit::route('/{record}/edit'),
             'view' => View::route('/{record}'),
+            'parts' => HasPart::route('{record}/has_parts'),
         ];
     }
 

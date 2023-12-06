@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\Vendor;
+use Illuminate\Database\Eloquent\Model;
 use JetBrains\PhpStorm\ArrayShape;
 
 class VendorService
@@ -12,6 +13,18 @@ class VendorService
     public function __construct(Vendor $vendor = null)
     {
         $this->vendor = $vendor ?? new Vendor();
+    }
+
+    /**
+     * 创建厂商联系人.
+     *
+     * @param array $data
+     * @return Model
+     */
+    #[ArrayShape(['name' => 'string', 'phone_number' => 'string', 'email' => 'string'])]
+    public function createHasContacts(array $data): Model
+    {
+        return $this->vendor->contacts()->create($data);
     }
 
     /**

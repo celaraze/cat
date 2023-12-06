@@ -4,10 +4,14 @@ namespace App\Filament\Resources;
 
 use App\Filament\Actions\AssetNumberRuleAction;
 use App\Filament\Forms\SettingForm;
-use App\Filament\Resources\AssetNumberRuleResource\Pages;
+use App\Filament\Resources\AssetNumberRuleResource\Pages\Create;
+use App\Filament\Resources\AssetNumberRuleResource\Pages\Edit;
+use App\Filament\Resources\AssetNumberRuleResource\Pages\Index;
+use App\Filament\Resources\AssetNumberRuleResource\Pages\View;
 use App\Models\AssetNumberRule;
 use BezhanSalleh\FilamentShield\Contracts\HasShieldPermissions;
 use Filament\Forms\Form;
+use Filament\Resources\Pages\Page;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -18,13 +22,22 @@ class AssetNumberRuleResource extends Resource implements HasShieldPermissions
 {
     protected static ?string $model = AssetNumberRule::class;
 
-    protected static ?int $navigationSort = 5;
+    protected static ?int $navigationSort = 3;
 
     protected static ?string $navigationGroup = '基础数据';
 
     protected static ?string $modelLabel = '资产编号规则';
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+
+    public static function getRecordSubNavigation(Page $page): array
+    {
+        return $page->generateNavigationItems([
+            Index::class,
+            View::class,
+            Edit::class,
+        ]);
+    }
 
     public static function getPermissionPrefixes(): array
     {
@@ -60,6 +73,8 @@ class AssetNumberRuleResource extends Resource implements HasShieldPermissions
                 Tables\Filters\TrashedFilter::make(),
             ])
             ->actions([
+                // 查看
+                Tables\Actions\ViewAction::make(),
                 // 编辑
                 Tables\Actions\EditAction::make()
                     ->visible(function () {
@@ -83,19 +98,12 @@ class AssetNumberRuleResource extends Resource implements HasShieldPermissions
             ]);
     }
 
-    public static function getRelations(): array
-    {
-        return [
-            //
-        ];
-    }
-
     public static function getPages(): array
     {
         return [
-            'index' => Pages\Index::route('/'),
-            'create' => Pages\Create::route('/create'),
-            'edit' => Pages\Edit::route('/{record}/edit'),
+            'index' => Index::route('/'),
+            'view' => View::route('/{record}'),
+            'edit' => Edit::route('/{record}/edit'),
         ];
     }
 

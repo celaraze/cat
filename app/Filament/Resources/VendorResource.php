@@ -5,11 +5,14 @@ namespace App\Filament\Resources;
 use App\Filament\Actions\VendorAction;
 use App\Filament\Forms\VendorForm;
 use App\Filament\Imports\VendorImporter;
-use App\Filament\Resources\VendorResource\Pages;
-use App\Filament\Resources\VendorResource\RelationManagers;
+use App\Filament\Resources\VendorResource\Pages\Contact;
+use App\Filament\Resources\VendorResource\Pages\Edit;
+use App\Filament\Resources\VendorResource\Pages\Index;
+use App\Filament\Resources\VendorResource\Pages\View;
 use App\Models\Vendor;
 use BezhanSalleh\FilamentShield\Contracts\HasShieldPermissions;
 use Filament\Forms\Form;
+use Filament\Resources\Pages\Page;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Actions\ImportAction;
@@ -26,9 +29,19 @@ class VendorResource extends Resource implements HasShieldPermissions
 
     protected static ?string $modelLabel = '厂商';
 
-    protected static ?int $navigationSort = 1;
+    protected static ?int $navigationSort = 2;
 
     protected static ?string $navigationGroup = '基础数据';
+
+    public static function getRecordSubNavigation(Page $page): array
+    {
+        return $page->generateNavigationItems([
+            Index::class,
+            View::class,
+            Edit::class,
+            Contact::class,
+        ]);
+    }
 
     public static function getPermissionPrefixes(): array
     {
@@ -100,19 +113,13 @@ class VendorResource extends Resource implements HasShieldPermissions
             ]);
     }
 
-    public static function getRelations(): array
-    {
-        return [
-            RelationManagers\HasContactRelationManager::class,
-        ];
-    }
-
     public static function getPages(): array
     {
         return [
-            'index' => Pages\Index::route('/'),
-            'create' => Pages\Create::route('/create'),
-            'edit' => Pages\Edit::route('/{record}/edit'),
+            'index' => Index::route('/'),
+            'view' => View::route('/{record}'),
+            'edit' => Edit::route('/{record}/edit'),
+            'contacts' => Contact::route('/{record}/contacts'),
         ];
     }
 

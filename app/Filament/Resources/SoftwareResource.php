@@ -6,9 +6,9 @@ use App\Filament\Actions\SoftwareAction;
 use App\Filament\Forms\SoftwareForm;
 use App\Filament\Imports\SoftwareImporter;
 use App\Filament\Resources\SoftwareResource\Pages\Edit;
+use App\Filament\Resources\SoftwareResource\Pages\HasSoftware;
 use App\Filament\Resources\SoftwareResource\Pages\Index;
 use App\Filament\Resources\SoftwareResource\Pages\View;
-use App\Filament\Resources\SoftwareResource\RelationManagers\HasSoftwareRelationManager;
 use App\Models\Software;
 use App\Services\SoftwareService;
 use BezhanSalleh\FilamentShield\Contracts\HasShieldPermissions;
@@ -20,6 +20,7 @@ use Filament\Infolists\Components\Section;
 use Filament\Infolists\Components\Split;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Infolists\Infolist;
+use Filament\Resources\Pages\Page;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Actions\ImportAction;
@@ -52,6 +53,16 @@ class SoftwareResource extends Resource implements HasShieldPermissions
             '设备' => $record->devices()->value('asset_number'),
             '用户' => $record->devices()->first()?->users()->value('name'),
         ];
+    }
+
+    public static function getRecordSubNavigation(Page $page): array
+    {
+        return $page->generateNavigationItems([
+            Index::class,
+            View::class,
+            Edit::class,
+            HasSoftware::class,
+        ]);
     }
 
     public static function getPermissionPrefixes(): array
@@ -233,19 +244,13 @@ class SoftwareResource extends Resource implements HasShieldPermissions
         ])->columns(3);
     }
 
-    public static function getRelations(): array
-    {
-        return [
-            HasSoftwareRelationManager::make(),
-        ];
-    }
-
     public static function getPages(): array
     {
         return [
             'index' => Index::route('/'),
             'edit' => Edit::route('/{record}/edit'),
             'view' => View::route('/{record}'),
+            'software' => HasSoftware::route('/{record}/has_software'),
         ];
     }
 

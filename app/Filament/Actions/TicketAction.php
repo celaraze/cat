@@ -67,6 +67,8 @@ class TicketAction
     {
         /* @var $ticket Ticket */
         return Action::make('发表评论')
+            ->slideOver()
+            ->icon('heroicon-m-plus-circle')
             ->form(TicketHasTrackForm::create())
             ->action(function (array $data) use ($ticket) {
                 try {
@@ -97,7 +99,7 @@ class TicketAction
     public static function toTicket(): Action
     {
         return Action::make('返回工单')
-            ->icon('heroicon-s-server')
+            ->icon('heroicon-o-document-text')
             ->url('/tickets');
     }
 

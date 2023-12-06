@@ -9,18 +9,8 @@ class Edit extends EditRecord
 {
     protected static string $resource = DeviceResource::class;
 
-    protected function getHeaderActions(): array
+    public static function getNavigationLabel(): string
     {
-        return [
-
-        ];
-    }
-
-    /**
-     * 保存后返回上一个页面.
-     */
-    protected function getRedirectUrl(): string
-    {
-        return $this->previousUrl;
+        return '编辑';
     }
 }

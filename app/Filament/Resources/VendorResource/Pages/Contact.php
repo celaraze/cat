@@ -1,39 +1,34 @@
 <?php
 
-namespace App\Filament\Resources\VendorResource\RelationManagers;
+namespace App\Filament\Resources\VendorResource\Pages;
 
 use App\Filament\Actions\VendorAction;
-use Filament\Forms;
+use App\Filament\Forms\VendorHasContactForm;
+use App\Filament\Resources\VendorResource;
 use Filament\Forms\Form;
-use Filament\Resources\RelationManagers\RelationManager;
+use Filament\Resources\Pages\ManageRelatedRecords;
 use Filament\Tables;
 use Filament\Tables\Table;
 
-class HasContactRelationManager extends RelationManager
+class Contact extends ManageRelatedRecords
 {
+    protected static string $resource = VendorResource::class;
+
     protected static string $relationship = 'contacts';
+
+    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
     protected static ?string $title = '联系人';
 
-    protected static ?string $icon = 'heroicon-o-user';
+    public static function getNavigationLabel(): string
+    {
+        return '联系人';
+    }
 
     public function form(Form $form): Form
     {
         return $form
-            ->schema([
-                Forms\Components\TextInput::make('name')
-                    ->required()
-                    ->maxLength(255)
-                    ->label('名称'),
-                Forms\Components\TextInput::make('phone_number')
-                    ->maxLength(255)
-                    ->required()
-                    ->label('电话'),
-                Forms\Components\TextInput::make('email')
-                    ->maxLength(255)
-                    ->email()
-                    ->label('邮箱'),
-            ]);
+            ->schema(VendorHasContactForm::createOrEdit());
     }
 
     public function table(Table $table): Table
@@ -52,22 +47,18 @@ class HasContactRelationManager extends RelationManager
                     ->label('邮箱'),
             ])
             ->filters([
-                //
+
             ])
             ->headerActions([
                 // 添加联系人
-                VendorAction::createVendorHasContact($this->getOwnerRecord()->getKey()),
+                VendorAction::createVendorHasContact($this->getOwnerRecord()),
             ])
-            ->
-            actions([
+            ->actions([
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
             ])
-                ->bulkActions([
+            ->bulkActions([
 
-                ])
-                ->emptyStateActions([
-
-                ]);
+            ]);
     }
 }

@@ -3,17 +3,16 @@
 namespace App\Filament\Resources\InventoryResource\Pages;
 
 use App\Filament\Resources\InventoryResource;
-use Filament\Actions;
 use Filament\Resources\Pages\ListRecords;
 
 class Index extends ListRecords
 {
     protected static string $resource = InventoryResource::class;
 
-    protected function getHeaderActions(): array
+    protected static ?string $navigationIcon = 'heroicon-m-arrow-uturn-left';
+
+    public static function getNavigationLabel(): string
     {
-        return [
-            Actions\CreateAction::make(),
-        ];
+        return '返回列表';
     }
 }

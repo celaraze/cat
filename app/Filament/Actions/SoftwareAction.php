@@ -68,7 +68,7 @@ class SoftwareAction
     public static function createDeviceHasSoftware(Model $out_software = null): Action
     {
         return Action::make('附加到设备')
-            ->form(DeviceHasSoftwareForm::create())
+            ->form(DeviceHasSoftwareForm::createFromSoftware())
             ->action(function (array $data, Software $software) use ($out_software) {
                 try {
                     if ($out_software) {

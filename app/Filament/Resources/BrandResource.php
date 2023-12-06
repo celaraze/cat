@@ -8,9 +8,11 @@ use App\Filament\Imports\BrandImporter;
 use App\Filament\Resources\BrandResource\Pages\Create;
 use App\Filament\Resources\BrandResource\Pages\Edit;
 use App\Filament\Resources\BrandResource\Pages\Index;
+use App\Filament\Resources\BrandResource\Pages\View;
 use App\Models\Brand;
 use BezhanSalleh\FilamentShield\Contracts\HasShieldPermissions;
 use Filament\Forms\Form;
+use Filament\Resources\Pages\Page;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Actions\ImportAction;
@@ -27,13 +29,24 @@ class BrandResource extends Resource implements HasShieldPermissions
 
     protected static ?string $navigationIcon = 'heroicon-s-tag';
 
-    protected static ?int $navigationSort = 99;
+    protected static ?int $navigationSort = 1;
 
-    protected static ?string $navigationGroup = '资产';
+    protected static ?string $navigationGroup = '基础数据';
+
+    public static function getRecordSubNavigation(Page $page): array
+    {
+        return $page->generateNavigationItems([
+            Index::class,
+            View::class,
+            Edit::class,
+        ]);
+    }
 
     public static function getPermissionPrefixes(): array
     {
         return [
+            'view',
+            'view_any',
             'create',
             'update',
             'delete',
@@ -59,6 +72,8 @@ class BrandResource extends Resource implements HasShieldPermissions
                 Tables\Filters\TrashedFilter::make(),
             ])
             ->actions([
+                // 查看
+                Tables\Actions\ViewAction::make(),
                 // 编辑
                 Tables\Actions\EditAction::make()
                     ->visible(function () {
@@ -100,18 +115,11 @@ class BrandResource extends Resource implements HasShieldPermissions
             ]);
     }
 
-    public static function getRelations(): array
-    {
-        return [
-            //
-        ];
-    }
-
     public static function getPages(): array
     {
         return [
             'index' => Index::route('/'),
-            'create' => Create::route('/create'),
+            'view' => View::route('/{record}'),
             'edit' => Edit::route('/{record}/edit'),
         ];
     }

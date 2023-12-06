@@ -9,12 +9,10 @@ class Index extends ListRecords
 {
     protected static string $resource = BrandResource::class;
 
-    protected static string $view = 'filament.resources.pages.list-records';
+    protected static ?string $navigationIcon = 'heroicon-m-arrow-uturn-left';
 
-    protected function getHeaderActions(): array
+    public static function getNavigationLabel(): string
     {
-        return [
-
-        ];
+        return '返回列表';
     }
 }

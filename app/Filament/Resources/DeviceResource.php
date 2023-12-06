@@ -6,12 +6,12 @@ use App\Filament\Actions\DeviceAction;
 use App\Filament\Forms\DeviceForm;
 use App\Filament\Imports\DeviceImporter;
 use App\Filament\Resources\DeviceResource\Pages\Edit;
+use App\Filament\Resources\DeviceResource\Pages\HasPart;
+use App\Filament\Resources\DeviceResource\Pages\HasSoftware;
+use App\Filament\Resources\DeviceResource\Pages\HasUser;
 use App\Filament\Resources\DeviceResource\Pages\Index;
+use App\Filament\Resources\DeviceResource\Pages\Ticket;
 use App\Filament\Resources\DeviceResource\Pages\View;
-use App\Filament\Resources\DeviceResource\RelationManagers\HasPartRelationManager;
-use App\Filament\Resources\DeviceResource\RelationManagers\HasSoftwareRelationManager;
-use App\Filament\Resources\DeviceResource\RelationManagers\HasUserRelationManager;
-use App\Filament\Resources\DeviceResource\RelationManagers\TicketRelationManager;
 use App\Models\Device;
 use App\Services\DeviceCategoryService;
 use App\Services\DeviceService;
@@ -25,6 +25,7 @@ use Filament\Infolists\Components\Section;
 use Filament\Infolists\Components\Split;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Infolists\Infolist;
+use Filament\Resources\Pages\Page;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Actions\ImportAction;
@@ -52,6 +53,19 @@ class DeviceResource extends Resource implements HasShieldPermissions
         return [
             '用户' => $record->users()->value('name'),
         ];
+    }
+
+    public static function getRecordSubNavigation(Page $page): array
+    {
+        return $page->generateNavigationItems([
+            Index::class,
+            View::class,
+            Edit::class,
+            HasUser::class,
+            HasPart::class,
+            HasSoftware::class,
+            Ticket::class,
+        ]);
     }
 
     public static function getPermissionPrefixes(): array
@@ -134,7 +148,7 @@ class DeviceResource extends Resource implements HasShieldPermissions
                         ->visible(function (Device $device) {
                             $can = auth()->user()->can('assign_user_device');
 
-                            return $can && ! $device->hasUsers()->count();
+                            return $can && !$device->hasUsers()->count();
                         }),
                     // 解除管理者
                     DeviceAction::deleteDeviceHasUser()
@@ -252,23 +266,22 @@ class DeviceResource extends Resource implements HasShieldPermissions
         ])->columns(3);
     }
 
-    public static function getRelations(): array
-    {
-        return [
-            HasUserRelationManager::class,
-            HasPartRelationManager::class,
-            HasSoftwareRelationManager::class,
-            TicketRelationManager::class,
-        ];
-    }
-
     public static function getPages(): array
     {
         return [
             'index' => Index::route('/'),
             'edit' => Edit::route('/{record}/edit'),
             'view' => View::route('/{record}'),
+            'users' => HasUser::route('/{record}/has_users'),
+            'parts' => HasPart::route('/{record}/has_parts'),
+            'software' => HasSoftware::route('{record}/has_software'),
+            'tickets' => Ticket::route('/{record}/has_tickets'),
         ];
+    }
+
+    public static function canCreate(): bool
+    {
+        return false;
     }
 
     public static function canDelete(Model $record): bool

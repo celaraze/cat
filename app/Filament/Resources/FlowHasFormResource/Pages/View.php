@@ -13,6 +13,11 @@ class View extends ViewRecord
 {
     protected static string $resource = FlowHasFormResource::class;
 
+    public static function getNavigationLabel(): string
+    {
+        return '详情';
+    }
+
     protected function getActions(): array
     {
         return [

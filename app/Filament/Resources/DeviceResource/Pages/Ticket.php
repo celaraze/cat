@@ -1,42 +1,34 @@
 <?php
 
-namespace App\Filament\Resources\DeviceResource\RelationManagers;
+namespace App\Filament\Resources\DeviceResource\Pages;
 
 use App\Filament\Actions\DeviceAction;
-use Filament\Forms\Components\TextInput;
-use Filament\Forms\Form;
-use Filament\Resources\RelationManagers\RelationManager;
+use App\Filament\Resources\DeviceResource;
+use Filament\Resources\Pages\ManageRelatedRecords;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class TicketRelationManager extends RelationManager
+class Ticket extends ManageRelatedRecords
 {
+    protected static string $resource = DeviceResource::class;
+
     protected static string $relationship = 'tickets';
+
+    protected static ?string $navigationIcon = 'heroicon-o-document-text';
 
     protected static ?string $title = '工单';
 
-    protected static ?string $icon = 'heroicon-o-document-text';
-
-    public static function getBadge(Model $ownerRecord, string $pageClass): ?string
+    public static function getNavigationLabel(): string
     {
-        return $ownerRecord->tickets()->count();
-    }
-
-    public function form(Form $form): Form
-    {
-        return $form
-            ->schema([
-                TextInput::make('subject'),
-            ]);
+        return '工单';
     }
 
     public function table(Table $table): Table
     {
         return $table
-            ->recordTitleAttribute('asset_number')
+            ->recordTitleAttribute('name')
             ->columns([
                 Tables\Columns\TextColumn::make('subject')
                     ->label('主题'),
@@ -56,20 +48,26 @@ class TicketRelationManager extends RelationManager
                     })
                     ->label('状态'),
             ])
-            ->defaultSort('created_at', 'desc')
             ->filters([
-
+                
             ])
             ->headerActions([
+                // 创建
                 DeviceAction::createTicket($this->getOwnerRecord()->getAttribute('asset_number')),
             ])
             ->actions([
+                // 前往工单
                 DeviceAction::toTicket(),
             ])
             ->bulkActions([
-
+                Tables\Actions\BulkActionGroup::make([
+                    Tables\Actions\DissociateBulkAction::make(),
+                    Tables\Actions\DeleteBulkAction::make(),
+                    Tables\Actions\RestoreBulkAction::make(),
+                    Tables\Actions\ForceDeleteBulkAction::make(),
+                ]),
             ])
-            ->modifyQueryUsing(fn (Builder $query) => $query->orderByDesc('created_at')
+            ->modifyQueryUsing(fn(Builder $query) => $query->orderByDesc('created_at')
                 ->withoutGlobalScopes([
                     SoftDeletingScope::class,
                 ]));

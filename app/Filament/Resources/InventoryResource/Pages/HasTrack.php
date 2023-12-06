@@ -1,29 +1,28 @@
 <?php
 
-namespace App\Filament\Resources\InventoryResource\RelationManagers;
+namespace App\Filament\Resources\InventoryResource\Pages;
 
 use App\Filament\Actions\InventoryAction;
+use App\Filament\Resources\InventoryResource;
 use App\Models\InventoryHasTrack;
 use App\Utils\InventoryUtil;
-use Filament\Forms\Form;
-use Filament\Resources\RelationManagers\RelationManager;
+use Filament\Resources\Pages\ManageRelatedRecords;
 use Filament\Tables;
 use Filament\Tables\Table;
 
-class HasTrackRelationManager extends RelationManager
+class HasTrack extends ManageRelatedRecords
 {
+    protected static string $resource = InventoryResource::class;
+
     protected static string $relationship = 'hasTracks';
 
-    protected static ?string $title = '明细';
+    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
-    protected static ?string $icon = 'heroicon-m-cpu-chip';
+    protected static ?string $title = '记录';
 
-    public function form(Form $form): Form
+    public static function getNavigationLabel(): string
     {
-        return $form
-            ->schema([
-
-            ]);
+        return '记录';
     }
 
     public function table(Table $table): Table
@@ -42,7 +41,7 @@ class HasTrackRelationManager extends RelationManager
                     ->label('备忘'),
             ])
             ->filters([
-                //
+
             ])
             ->headerActions([
 
@@ -50,7 +49,7 @@ class HasTrackRelationManager extends RelationManager
             ->actions([
                 InventoryAction::check()
                     ->visible(function (InventoryHasTrack $inventory_has_track) {
-                        return ! $inventory_has_track->service()->isChecked();
+                        return !$inventory_has_track->service()->isChecked();
                     }),
             ])
             ->bulkActions([

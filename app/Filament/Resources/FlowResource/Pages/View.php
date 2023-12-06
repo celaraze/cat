@@ -3,16 +3,14 @@
 namespace App\Filament\Resources\FlowResource\Pages;
 
 use App\Filament\Resources\FlowResource;
-use Filament\Resources\Pages\ListRecords;
+use Filament\Resources\Pages\ViewRecord;
 
-class Index extends ListRecords
+class View extends ViewRecord
 {
     protected static string $resource = FlowResource::class;
 
-    protected static ?string $navigationIcon = 'heroicon-m-arrow-uturn-left';
-
     public static function getNavigationLabel(): string
     {
-        return '返回列表';
+        return '详情';
     }
 }

@@ -9,7 +9,7 @@ class VendorHasContactForm
     /**
      * 创建.
      */
-    public static function create(): array
+    public static function createOrEdit(): array
     {
         return [
             TextInput::make('name')

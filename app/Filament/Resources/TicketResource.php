@@ -4,16 +4,18 @@ namespace App\Filament\Resources;
 
 use App\Enums\Priority;
 use App\Filament\Actions\TicketAction;
-use App\Filament\Resources\TicketResource\Pages;
-use App\Filament\Resources\TicketResource\RelationManagers\TrackRelationManager;
+use App\Filament\Resources\TicketResource\Pages\Edit;
+use App\Filament\Resources\TicketResource\Pages\Index;
+use App\Filament\Resources\TicketResource\Pages\Track;
+use App\Filament\Resources\TicketResource\Pages\View;
 use App\Models\Ticket;
-use Filament\Forms\Form;
 use Filament\Infolists\Components\Grid;
 use Filament\Infolists\Components\Group;
 use Filament\Infolists\Components\Section;
 use Filament\Infolists\Components\Split;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Infolists\Infolist;
+use Filament\Resources\Pages\Page;
 use Filament\Resources\Resource;
 use Filament\Tables\Actions\ActionGroup;
 use Filament\Tables\Columns\TextColumn;
@@ -35,12 +37,14 @@ class TicketResource extends Resource
 
     protected static ?string $recordTitleAttribute = 'asset_number';
 
-    public static function form(Form $form): Form
+    public static function getRecordSubNavigation(Page $page): array
     {
-        return $form
-            ->schema([
-                //
-            ]);
+        return $page->generateNavigationItems([
+            Index::class,
+            View::class,
+            Edit::class,
+            Track::class,
+        ]);
     }
 
     public static function table(Table $table): Table
@@ -76,7 +80,7 @@ class TicketResource extends Resource
                 // 抢单
                 TicketAction::setAssignee()
                     ->visible(function (Ticket $ticket) {
-                        return ! $ticket->service()->isSetAssignee();
+                        return !$ticket->service()->isSetAssignee();
                     }),
             ])
             ->bulkActions([
@@ -88,7 +92,10 @@ class TicketResource extends Resource
                 ActionGroup::make([
                     // 前往分类
                     TicketAction::toTicketCategory(),
-                ]),
+                ])
+                    ->label('高级')
+                    ->icon('heroicon-m-cog-8-tooth')
+                    ->button(),
             ]);
     }
 
@@ -141,19 +148,12 @@ class TicketResource extends Resource
         ])->columns(4);
     }
 
-    public static function getRelations(): array
-    {
-        return [
-            TrackRelationManager::make(),
-        ];
-    }
-
     public static function getPages(): array
     {
         return [
-            'index' => Pages\Index::route('/'),
-            'create' => Pages\Create::route('/create'),
-            'view' => Pages\View::route('/{record}'),
+            'index' => Index::route('/'),
+            'view' => View::route('/{record}'),
+            'tracks' => Track::route('/{record}/tracks'),
         ];
     }
 

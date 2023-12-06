@@ -50,10 +50,10 @@ class TicketCategoryResource extends Resource
 
             ])
             ->headerActions([
-                // 前往工单
-                TicketAction::toTicket(),
                 // 创建
                 TicketAction::createTicketCategory(),
+                // 前往工单
+                TicketAction::toTicket(),
             ]);
     }
 

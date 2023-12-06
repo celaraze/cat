@@ -9,7 +9,7 @@
 
 <p align="center">
     <img src="https://img.shields.io/badge/Latest Release-WIP-orange" />
-    <img src="https://img.shields.io/badge/PHP-8.1+-green" />
+    <img src="https://img.shields.io/badge/PHP-8.2+-green" />
     <img src="https://img.shields.io/badge/MySQL-8+-blueviolet" />
     <img src="https://img.shields.io/badge/License-GPL3.0-blue" />
 </p>
@@ -49,7 +49,7 @@ CAT 以滚动更新形式发布，具体版本号以发布日期标定。
 
 生产环境下为遵守安全策略，非常建议在服务器本地进行部署，暂时不提供相关线上初始化安装的功能。因此，虽然前期部署的步骤较多，但已经为大家自动化处理了很大部分的流程，只需要跟着下面的命令一步步执行，一般是不会有部署问题的。
 
-1. 为你的计算机安装 `PHP8.1` 环境，参考：[PHP官方](https://www.php.net/downloads) 。
+1. 为你的计算机安装 `PHP8.2` 环境，参考：[PHP官方](https://www.php.net/downloads) 。
 
 2. 为你的计算机安装 `MySQL` 或者 `MariaDB`。
 

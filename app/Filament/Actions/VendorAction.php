@@ -4,38 +4,43 @@ namespace App\Filament\Actions;
 
 use App\Filament\Forms\VendorForm;
 use App\Filament\Forms\VendorHasContactForm;
-use App\Services\VendorHasContactService;
+use App\Models\Vendor;
 use App\Services\VendorService;
 use App\Utils\LogUtil;
 use App\Utils\NotificationUtil;
 use Exception;
 use Filament\Tables\Actions\Action;
+use Illuminate\Database\Eloquent\Model;
 
 class VendorAction
 {
     /**
      * 创建联系人按钮.
      */
-    public static function createVendorHasContact(string $vendor_id): Action
+    public static function createVendorHasContact(Model $out_vendor = null): Action
     {
         return Action::make('添加联系人')
-            ->form(VendorHasContactForm::create())
-            ->action(function (array $data) use ($vendor_id) {
+            ->slideOver()
+            ->icon('heroicon-m-plus-circle')
+            ->form(VendorHasContactForm::createOrEdit())
+            ->action(function (array $data, Vendor $vendor) use ($out_vendor) {
                 try {
-                    $vendor_has_contact_service = new VendorHasContactService();
+                    if ($out_vendor) {
+                        $vendor = $out_vendor;
+                    }
                     $data = [
-                        'vendor_id' => $vendor_id,
                         'name' => $data['name'],
                         'phone_number' => $data['phone_number'],
                         'email' => $data['email'],
                     ];
-                    $vendor_has_contact_service->create($data);
+                    $vendor->service()->createHasContacts($data);
                     NotificationUtil::make(true, '已添加联系人');
                 } catch (Exception $exception) {
                     LogUtil::error($exception);
                     NotificationUtil::make(false, $exception);
                 }
-            });
+            })
+            ->closeModalByClickingAway(false);
     }
 
     /**
@@ -56,6 +61,7 @@ class VendorAction
                     LogUtil::error($exception);
                     NotificationUtil::make(false, $exception);
                 }
-            });
+            })
+            ->closeModalByClickingAway(false);
     }
 }

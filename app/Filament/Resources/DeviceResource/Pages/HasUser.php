@@ -1,25 +1,33 @@
 <?php
 
-namespace App\Filament\Resources\DeviceResource\RelationManagers;
+namespace App\Filament\Resources\DeviceResource\Pages;
 
 use App\Filament\Actions\DeviceAction;
+use App\Filament\Resources\DeviceResource;
 use App\Models\Device;
 use App\Models\DeviceHasUser;
 use Filament\Forms\Form;
-use Filament\Resources\RelationManagers\RelationManager;
+use Filament\Resources\Pages\ManageRelatedRecords;
 use Filament\Tables;
 use Filament\Tables\Columns\TextColumn\TextColumnSize;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class HasUserRelationManager extends RelationManager
+class HasUser extends ManageRelatedRecords
 {
+    protected static string $resource = DeviceResource::class;
+
     protected static string $relationship = 'hasUsers';
 
-    protected static ?string $title = '管理者';
+    protected static ?string $navigationIcon = 'heroicon-o-user';
 
-    protected static ?string $icon = 'heroicon-o-user';
+    protected static ?string $title = '用户';
+
+    public static function getNavigationLabel(): string
+    {
+        return '用户';
+    }
 
     public function form(Form $form): Form
     {
@@ -68,7 +76,7 @@ class HasUserRelationManager extends RelationManager
                         $device = $this->getOwnerRecord();
                         $can = auth()->user()->can('assign_user_device');
 
-                        return $can && ! $device->service()->isExistHasUser();
+                        return $can && !$device->service()->isExistHasUser();
                     }),
                 // 解除管理者
                 DeviceAction::deleteDeviceHasUser($this->getOwnerRecord())
@@ -86,10 +94,7 @@ class HasUserRelationManager extends RelationManager
             ->bulkActions([
 
             ])
-            ->emptyStateActions([
-
-            ])
-            ->modifyQueryUsing(fn (Builder $query) => $query->orderByDesc('created_at')
+            ->modifyQueryUsing(fn(Builder $query) => $query->orderByDesc('created_at')
                 ->withoutGlobalScopes([
                     SoftDeletingScope::class,
                 ]));

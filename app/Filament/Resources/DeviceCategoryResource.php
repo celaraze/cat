@@ -29,6 +29,8 @@ class DeviceCategoryResource extends Resource implements HasShieldPermissions
     public static function getPermissionPrefixes(): array
     {
         return [
+            'view',
+            'view_any',
             'create',
             'update',
             'delete',
@@ -94,13 +96,6 @@ class DeviceCategoryResource extends Resource implements HasShieldPermissions
     public static function form(Form $form): Form
     {
         return $form->schema(DeviceCategoryForm::createOrEdit());
-    }
-
-    public static function getRelations(): array
-    {
-        return [
-            //
-        ];
     }
 
     public static function getPages(): array

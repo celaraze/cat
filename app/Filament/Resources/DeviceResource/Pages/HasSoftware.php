@@ -1,45 +1,35 @@
 <?php
 
-namespace App\Filament\Resources\DeviceResource\RelationManagers;
+namespace App\Filament\Resources\DeviceResource\Pages;
 
 use App\Filament\Actions\DeviceAction;
+use App\Filament\Resources\DeviceResource;
 use App\Models\DeviceHasSoftware;
-use Filament\Forms;
-use Filament\Forms\Form;
-use Filament\Resources\RelationManagers\RelationManager;
+use Filament\Resources\Pages\ManageRelatedRecords;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class HasSoftwareRelationManager extends RelationManager
+class HasSoftware extends ManageRelatedRecords
 {
+    protected static string $resource = DeviceResource::class;
+
     protected static string $relationship = 'hasSoftware';
+
+    protected static ?string $navigationIcon = 'heroicon-m-squares-plus';
 
     protected static ?string $title = '软件';
 
-    protected static ?string $icon = 'heroicon-m-squares-plus';
-
-    public static function getBadge(Model $ownerRecord, string $pageClass): ?string
+    public static function getNavigationLabel(): string
     {
-        return $ownerRecord->hasSoftware()->count();
-    }
-
-    public function form(Form $form): Form
-    {
-        return $form
-            ->schema([
-                Forms\Components\TextInput::make('asset_number')
-                    ->required()
-                    ->maxLength(255),
-            ]);
+        return '软件';
     }
 
     public function table(Table $table): Table
     {
         return $table
-            ->recordTitleAttribute('software.asset_number')
+            ->recordTitleAttribute('name')
             ->columns([
                 Tables\Columns\TextColumn::make('software.category.name')
                     ->label('分类'),
@@ -61,7 +51,7 @@ class HasSoftwareRelationManager extends RelationManager
                     ->label('操作人'),
             ])
             ->filters([
-                Tables\Filters\TrashedFilter::make(),
+                Tables\Filters\TrashedFilter::make()
             ])
             ->headerActions([
                 // 创建
@@ -76,13 +66,13 @@ class HasSoftwareRelationManager extends RelationManager
                     ->visible(function (DeviceHasSoftware $device_has_software) {
                         $can = auth()->user()->can('delete_has_software_device');
 
-                        return $can && ! $device_has_software->service()->isDeleted();
+                        return $can && !$device_has_software->service()->isDeleted();
                     }),
             ])
             ->bulkActions([
 
             ])
-            ->modifyQueryUsing(fn (Builder $query) => $query->orderByDesc('created_at')
+            ->modifyQueryUsing(fn(Builder $query) => $query->orderByDesc('created_at')
                 ->withoutGlobalScopes([
                     SoftDeletingScope::class,
                 ]));

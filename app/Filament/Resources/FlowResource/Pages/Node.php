@@ -1,27 +1,28 @@
 <?php
 
-namespace App\Filament\Resources\FlowResource\RelationManagers;
+namespace App\Filament\Resources\FlowResource\Pages;
 
 use App\Filament\Actions\FlowAction;
+use App\Filament\Resources\FlowResource;
 use App\Models\FlowHasNode;
 use App\Services\FlowHasNodeService;
-use Filament\Forms\Form;
-use Filament\Resources\RelationManagers\RelationManager;
+use Filament\Resources\Pages\ManageRelatedRecords;
 use Filament\Tables;
 use Filament\Tables\Table;
 
-class HasNodeRelationManager extends RelationManager
+class Node extends ManageRelatedRecords
 {
+    protected static string $resource = FlowResource::class;
+
     protected static string $relationship = 'nodes';
+
+    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
     protected static ?string $title = '节点';
 
-    public function form(Form $form): Form
+    public static function getNavigationLabel(): string
     {
-        return $form
-            ->schema([
-
-            ]);
+        return '节点';
     }
 
     public function table(Table $table): Table
@@ -44,7 +45,7 @@ class HasNodeRelationManager extends RelationManager
                     }),
             ])
             ->filters([
-                //
+
             ])
             ->headerActions([
                 FlowAction::deleteHasNodeWithAll($this->getOwnerRecord())
@@ -55,7 +56,7 @@ class HasNodeRelationManager extends RelationManager
                     ->visible(function (FlowHasNode $node) {
                         $flow_has_node_service = new FlowHasNodeService($node);
 
-                        return ! $flow_has_node_service->isExistChildNode();
+                        return !$flow_has_node_service->isExistChildNode();
                     }),
                 FlowAction::deleteHasNode($this->getOwnerRecord())
                     ->visible(function (FlowHasNode $node) {
@@ -63,13 +64,10 @@ class HasNodeRelationManager extends RelationManager
 
                         // 第一个节点不允许被删除
                         // 中间节点不允许删除，只可以删除最后的节点
-                        return ! $flow_has_node_service->isFirstNode() && $flow_has_node_service->isLastNode();
+                        return !$flow_has_node_service->isFirstNode() && $flow_has_node_service->isLastNode();
                     }),
             ])
             ->bulkActions([
-
-            ])
-            ->emptyStateActions([
 
             ]);
     }

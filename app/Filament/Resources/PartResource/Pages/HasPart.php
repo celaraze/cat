@@ -1,36 +1,35 @@
 <?php
 
-namespace App\Filament\Resources\PartResource\RelationManagers;
+namespace App\Filament\Resources\PartResource\Pages;
 
 use App\Filament\Actions\PartAction;
+use App\Filament\Resources\PartResource;
 use App\Models\DeviceHasPart;
-use Filament\Forms\Form;
-use Filament\Resources\RelationManagers\RelationManager;
+use Filament\Resources\Pages\ManageRelatedRecords;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class HasPartRelationManager extends RelationManager
+class HasPart extends ManageRelatedRecords
 {
+    protected static string $resource = PartResource::class;
+
     protected static string $relationship = 'hasParts';
 
-    protected static ?string $title = '设备';
+    protected static ?string $navigationIcon = 'heroicon-m-cpu-chip';
 
-    protected static ?string $icon = 'heroicon-o-cube';
+    protected static ?string $title = '附属记录';
 
-    public function form(Form $form): Form
+    public static function getNavigationLabel(): string
     {
-        return $form
-            ->schema([
-
-            ]);
+        return '附属记录';
     }
 
     public function table(Table $table): Table
     {
         return $table
-            ->recordTitleAttribute('device.asset_number')
+            ->recordTitleAttribute('name')
             ->columns([
                 Tables\Columns\TextColumn::make('device.asset_number')
                     ->label('资产编号'),
@@ -67,16 +66,13 @@ class HasPartRelationManager extends RelationManager
                     ->visible(function (DeviceHasPart $device_has_part) {
                         $can = auth()->user()->can('delete_has_part_part');
 
-                        return $can && ! $device_has_part->service()->isDeleted();
+                        return $can && !$device_has_part->service()->isDeleted();
                     }),
             ])
             ->bulkActions([
 
             ])
-            ->emptyStateActions([
-
-            ])
-            ->modifyQueryUsing(fn (Builder $query) => $query->orderByDesc('created_at')
+            ->modifyQueryUsing(fn(Builder $query) => $query->orderByDesc('created_at')
                 ->withoutGlobalScopes([
                     SoftDeletingScope::class,
                 ]));

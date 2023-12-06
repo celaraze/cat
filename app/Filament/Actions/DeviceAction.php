@@ -5,6 +5,7 @@ namespace App\Filament\Actions;
 use App\Filament\Forms\DeviceCategoryForm;
 use App\Filament\Forms\DeviceForm;
 use App\Filament\Forms\DeviceHasPartForm;
+use App\Filament\Forms\DeviceHasSoftwareForm;
 use App\Filament\Forms\DeviceHasUserForm;
 use App\Filament\Resources\TicketResource;
 use App\Models\Device;
@@ -120,13 +121,13 @@ class DeviceAction
     }
 
     /**
-     * 附加配件按钮.
+     * 附加软件按钮.
      */
     public static function createDeviceHasSoftware(Model $out_device = null): Action
     {
         return Action::make('附加软件')
             ->icon('heroicon-m-plus-circle')
-            ->form(DeviceHasPartForm::create())
+            ->form(DeviceHasSoftwareForm::create())
             ->action(function (array $data, Device $device) use ($out_device): void {
                 try {
                     if ($out_device) {
@@ -338,14 +339,15 @@ class DeviceAction
     /**
      * 创建工单.
      *
-     * @param  null  $asset_number
+     * @param null $asset_number
      */
     public static function createTicket($asset_number = null): Action
     {
         return Action::make('创建工单')
+            ->icon('heroicon-m-plus-circle')
             ->slideOver()
             ->form(function (Device $device) use ($asset_number) {
-                if (! $asset_number) {
+                if (!$asset_number) {
                     $asset_number = $device->getAttribute('asset_number');
                 }
 
@@ -353,7 +355,7 @@ class DeviceAction
             })
             ->action(function (array $data, Device $device) use ($asset_number) {
                 try {
-                    if (! $asset_number) {
+                    if (!$asset_number) {
                         $asset_number = $device->getAttribute('asset_number');
                     }
                     $data['asset_number'] = $asset_number;

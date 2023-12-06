@@ -3,22 +3,14 @@
 namespace App\Filament\Resources\AssetNumberRuleResource\Pages;
 
 use App\Filament\Resources\AssetNumberRuleResource;
-use Filament\Actions;
-use Filament\Resources\Pages\EditRecord;
+use Filament\Resources\Pages\ViewRecord;
 
-class Edit extends EditRecord
+class View extends ViewRecord
 {
     protected static string $resource = AssetNumberRuleResource::class;
 
     public static function getNavigationLabel(): string
     {
-        return '编辑';
-    }
-
-    protected function getHeaderActions(): array
-    {
-        return [
-            Actions\DeleteAction::make(),
-        ];
+        return '详情';
     }
 }

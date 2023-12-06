@@ -25,7 +25,7 @@ class OrganizationResource extends Resource implements HasShieldPermissions
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
-    protected static ?string $navigationGroup = '基础数据';
+    protected static ?string $navigationGroup = '安全';
 
     protected static ?string $modelLabel = '组织';
 

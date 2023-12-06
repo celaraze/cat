@@ -3,17 +3,19 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Actions\FlowAction;
-use App\Filament\Resources\FlowHasFormResource\Pages;
-use App\Filament\Resources\FlowHasFormResource\RelationManagers\FormRelationManager;
+use App\Filament\Resources\FlowHasFormResource\Pages\Create;
+use App\Filament\Resources\FlowHasFormResource\Pages\Form;
+use App\Filament\Resources\FlowHasFormResource\Pages\Index;
+use App\Filament\Resources\FlowHasFormResource\Pages\View;
 use App\Models\FlowHasForm;
 use App\Utils\FlowHasFormUtil;
 use BezhanSalleh\FilamentShield\Contracts\HasShieldPermissions;
-use Filament\Forms\Form;
 use Filament\Infolists\Components\Group;
 use Filament\Infolists\Components\Section;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Infolists\Components\ViewEntry;
 use Filament\Infolists\Infolist;
+use Filament\Resources\Pages\Page;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -33,6 +35,15 @@ class FlowHasFormResource extends Resource implements HasShieldPermissions
 
     protected static ?string $navigationGroup = '工作流';
 
+    public static function getRecordSubNavigation(Page $page): array
+    {
+        return $page->generateNavigationItems([
+            Index::class,
+            View::class,
+            Form::class,
+        ]);
+    }
+
     public static function getPermissionPrefixes(): array
     {
         return [
@@ -43,14 +54,6 @@ class FlowHasFormResource extends Resource implements HasShieldPermissions
             'delete',
             'delete_any',
         ];
-    }
-
-    public static function form(Form $form): Form
-    {
-        return $form
-            ->schema([
-
-            ]);
     }
 
     public static function table(Table $table): Table
@@ -109,20 +112,13 @@ class FlowHasFormResource extends Resource implements HasShieldPermissions
             ]);
     }
 
-    public static function getRelations(): array
-    {
-        return [
-            FormRelationManager::class,
-        ];
-    }
-
     public static function getPages(): array
     {
         return [
-            'index' => Pages\Index::route('/'),
-            'create' => Pages\Create::route('/create'),
-            'edit' => Pages\Edit::route('/{record}/edit'),
-            'view' => Pages\View::route('/{record}'),
+            'index' => Index::route('/'),
+            'create' => Create::route('/create'),
+            'view' => View::route('/{record}'),
+            'forms' => Form::route('/{record}/forms'),
         ];
     }
 

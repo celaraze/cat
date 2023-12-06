@@ -1,42 +1,47 @@
 <?php
 
-namespace App\Filament\Resources\SoftwareResource\RelationManagers;
+namespace App\Filament\Resources\SoftwareResource\Pages;
 
 use App\Filament\Actions\SoftwareAction;
+use App\Filament\Resources\SoftwareResource;
 use App\Models\DeviceHasSoftware;
+use Filament\Forms;
 use Filament\Forms\Form;
-use Filament\Resources\RelationManagers\RelationManager;
+use Filament\Resources\Pages\ManageRelatedRecords;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class HasSoftwareRelationManager extends RelationManager
+class HasSoftware extends ManageRelatedRecords
 {
-    protected static string $relationship = 'hasSoftware';
+    protected static string $resource = SoftwareResource::class;
 
-    protected static ?string $title = '设备';
+    protected static string $relationship = 'hasSoftware';
 
     protected static ?string $icon = 'heroicon-o-cube';
 
-    public static function getTitle(Model $ownerRecord, string $pageClass): string
+    protected static ?string $title = '附属记录';
+
+    public static function getNavigationLabel(): string
     {
-        return self::$title.' 已使用 '.$ownerRecord->hasSoftware()->count();
+        return '附属记录';
     }
 
     public function form(Form $form): Form
     {
         return $form
             ->schema([
-
+                Forms\Components\TextInput::make('name')
+                    ->required()
+                    ->maxLength(255),
             ]);
     }
 
     public function table(Table $table): Table
     {
         return $table
-            ->recordTitleAttribute('device.asset_number')
+            ->recordTitleAttribute('name')
             ->columns([
                 Tables\Columns\TextColumn::make('device.asset_number')
                     ->label('资产编号'),
@@ -73,16 +78,13 @@ class HasSoftwareRelationManager extends RelationManager
                     ->visible(function (DeviceHasSoftware $device_has_software) {
                         $can = auth()->user()->can('delete_has_software_software');
 
-                        return $can && ! $device_has_software->service()->isDeleted();
+                        return $can && !$device_has_software->service()->isDeleted();
                     }),
             ])
             ->bulkActions([
 
             ])
-            ->emptyStateActions([
-
-            ])
-            ->modifyQueryUsing(fn (Builder $query) => $query->orderByDesc('created_at')
+            ->modifyQueryUsing(fn(Builder $query) => $query->orderByDesc('created_at')
                 ->withoutGlobalScopes([
                     SoftDeletingScope::class,
                 ]));

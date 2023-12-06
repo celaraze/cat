@@ -1,29 +1,34 @@
 <?php
 
-namespace App\Filament\Resources\TicketResource\RelationManagers;
+namespace App\Filament\Resources\TicketResource\Pages;
 
 use App\Filament\Actions\TicketAction;
-use Filament\Forms\Form;
-use Filament\Resources\RelationManagers\RelationManager;
+use App\Filament\Resources\TicketResource;
+use Filament\Resources\Pages\ManageRelatedRecords;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class TrackRelationManager extends RelationManager
+class Track extends ManageRelatedRecords
 {
+    protected static string $resource = TicketResource::class;
+
     protected static string $relationship = 'tracks';
 
-    public function form(Form $form): Form
-    {
-        return $form
-            ->schema([
+    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
-            ]);
+    protected static ?string $title = '记录';
+
+    public static function getNavigationLabel(): string
+    {
+        return '记录';
     }
 
     public function table(Table $table): Table
     {
         return $table
-            ->recordTitleAttribute('ticket_id')
+            ->recordTitleAttribute('name')
             ->columns([
                 Tables\Columns\TextColumn::make('created_at')
                     ->label('创建时间'),
@@ -35,11 +40,11 @@ class TrackRelationManager extends RelationManager
                     ->wrap()
                     ->html(),
             ])
-            ->defaultSort('created_at', 'desc')
             ->filters([
-                //
+
             ])
             ->headerActions([
+                // 创建
                 TicketAction::createTicketHasTrack($this->getOwnerRecord()),
             ])
             ->actions([
@@ -47,6 +52,10 @@ class TrackRelationManager extends RelationManager
             ])
             ->bulkActions([
 
-            ]);
+            ])
+            ->modifyQueryUsing(fn(Builder $query) => $query->orderByDesc('created_at')
+                ->withoutGlobalScopes([
+                    SoftDeletingScope::class,
+                ]));
     }
 }

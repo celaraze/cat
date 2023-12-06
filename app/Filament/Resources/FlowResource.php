@@ -4,11 +4,15 @@ namespace App\Filament\Resources;
 
 use App\Filament\Actions\FlowAction;
 use App\Filament\Forms\FlowForm;
-use App\Filament\Resources\FlowResource\Pages;
-use App\Filament\Resources\FlowResource\RelationManagers\HasNodeRelationManager;
+use App\Filament\Resources\FlowResource\Pages\Create;
+use App\Filament\Resources\FlowResource\Pages\Edit;
+use App\Filament\Resources\FlowResource\Pages\Index;
+use App\Filament\Resources\FlowResource\Pages\Node;
+use App\Filament\Resources\FlowResource\Pages\View;
 use App\Models\Flow;
 use BezhanSalleh\FilamentShield\Contracts\HasShieldPermissions;
 use Filament\Forms\Form;
+use Filament\Resources\Pages\Page;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -26,6 +30,16 @@ class FlowResource extends Resource implements HasShieldPermissions
     protected static ?int $navigationSort = 2;
 
     protected static ?string $navigationGroup = '工作流';
+
+    public static function getRecordSubNavigation(Page $page): array
+    {
+        return $page->generateNavigationItems([
+            Index::class,
+            View::class,
+            Edit::class,
+            Node::class,
+        ]);
+    }
 
     public static function getPermissionPrefixes(): array
     {
@@ -75,19 +89,14 @@ class FlowResource extends Resource implements HasShieldPermissions
             ]);
     }
 
-    public static function getRelations(): array
-    {
-        return [
-            HasNodeRelationManager::make(),
-        ];
-    }
-
     public static function getPages(): array
     {
         return [
-            'index' => Pages\Index::route('/'),
-            'create' => Pages\Create::route('/create'),
-            'edit' => Pages\Edit::route('/{record}/edit'),
+            'index' => Index::route('/'),
+            'view' => View::route('/{record}'),
+            'create' => Create::route('/create'),
+            'edit' => Edit::route('/{record}/edit'),
+            'nodes' => Node::route('/{record}/nodes'),
         ];
     }
 
