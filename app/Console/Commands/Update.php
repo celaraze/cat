@@ -25,6 +25,6 @@ class Update extends Command
      */
     public function handle(): void
     {
-        $this->call('mirage');
+        $this->call('migrate');
     }
 }
