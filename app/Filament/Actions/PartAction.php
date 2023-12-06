@@ -65,7 +65,7 @@ class PartAction
     /**
      * 创建配件-设备按钮.
      */
-    public static function createDeviceHasPart(Model $out_part = null): Action
+    public static function createDeviceHasPart(?Model $out_part = null): Action
     {
         return Action::make('附加到设备')
             ->form(DeviceHasPartForm::createFromPart())

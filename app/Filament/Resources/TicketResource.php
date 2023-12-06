@@ -80,7 +80,7 @@ class TicketResource extends Resource
                 // 抢单
                 TicketAction::setAssignee()
                     ->visible(function (Ticket $ticket) {
-                        return !$ticket->service()->isSetAssignee();
+                        return ! $ticket->service()->isSetAssignee();
                     }),
             ])
             ->bulkActions([

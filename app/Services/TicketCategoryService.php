@@ -9,7 +9,7 @@ class TicketCategoryService
 {
     public TicketCategory $ticket_category;
 
-    public function __construct(TicketCategory $ticket_category = null)
+    public function __construct(?TicketCategory $ticket_category = null)
     {
         $this->ticket_category = $ticket_category ?? new TicketCategory();
     }

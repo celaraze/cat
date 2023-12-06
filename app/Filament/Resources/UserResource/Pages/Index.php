@@ -9,10 +9,10 @@ class Index extends ListRecords
 {
     protected static string $resource = UserResource::class;
 
-    protected function getHeaderActions(): array
-    {
-        return [
+    protected static ?string $navigationIcon = 'heroicon-m-arrow-uturn-left';
 
-        ];
+    public static function getNavigationLabel(): string
+    {
+        return '返回列表';
     }
 }

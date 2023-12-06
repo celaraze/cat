@@ -4,6 +4,7 @@ namespace App\Filament\Actions;
 
 use App\Filament\Forms\UserForm;
 use App\Models\User;
+use App\Services\UserService;
 use App\Utils\LogUtil;
 use App\Utils\NotificationUtil;
 use Exception;
@@ -49,6 +50,29 @@ class UserAction
                     $user = auth()->user();
                     $user->service()->changePassword($data['password']);
                     NotificationUtil::make(true, '已修改密码');
+                } catch (Exception $exception) {
+                    LogUtil::error($exception);
+                    NotificationUtil::make(false, $exception);
+                }
+            });
+    }
+
+    /**
+     * 创建用户.
+     */
+    public static function createUser(): Action
+    {
+        return Action::make('新增')
+            ->icon('heroicon-m-plus')
+            ->slideOver()
+            ->form(UserForm::create())
+            ->action(function (array $data) {
+                try {
+                    $data['password'] = 'cat';
+                    $data['password_verify'] = 'cat';
+                    $user_service = new UserService();
+                    $user_service->create($data);
+                    NotificationUtil::make(true, '已创建用户');
                 } catch (Exception $exception) {
                     LogUtil::error($exception);
                     NotificationUtil::make(false, $exception);

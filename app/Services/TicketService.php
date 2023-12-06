@@ -10,7 +10,7 @@ class TicketService
 {
     public Ticket $ticket;
 
-    public function __construct(Ticket $ticket = null)
+    public function __construct(?Ticket $ticket = null)
     {
         $this->ticket = $ticket ?? new Ticket();
     }

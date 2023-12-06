@@ -8,7 +8,7 @@ class SettingService
 {
     public Setting $setting;
 
-    public function __construct(Setting $setting = null)
+    public function __construct(?Setting $setting = null)
     {
         $this->setting = $setting ?? new Setting();
     }

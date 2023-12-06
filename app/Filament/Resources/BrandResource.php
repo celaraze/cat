@@ -5,7 +5,6 @@ namespace App\Filament\Resources;
 use App\Filament\Actions\BrandAction;
 use App\Filament\Forms\BrandForm;
 use App\Filament\Imports\BrandImporter;
-use App\Filament\Resources\BrandResource\Pages\Create;
 use App\Filament\Resources\BrandResource\Pages\Edit;
 use App\Filament\Resources\BrandResource\Pages\Index;
 use App\Filament\Resources\BrandResource\Pages\View;

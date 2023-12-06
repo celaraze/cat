@@ -10,7 +10,7 @@ class DeviceHasSoftwareService
 {
     public DeviceHasSoftware $device_has_software;
 
-    public function __construct(DeviceHasSoftware $device_has_software = null)
+    public function __construct(?DeviceHasSoftware $device_has_software = null)
     {
         $this->device_has_software = $device_has_software ?? new DeviceHasSoftware();
     }

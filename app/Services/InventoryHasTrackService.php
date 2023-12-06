@@ -9,7 +9,7 @@ class InventoryHasTrackService
 {
     public InventoryHasTrack $inventory_has_track;
 
-    public function __construct(InventoryHasTrack $inventory_has_track = null)
+    public function __construct(?InventoryHasTrack $inventory_has_track = null)
     {
         $this->inventory_has_track = $inventory_has_track ?? new InventoryHasTrack();
     }

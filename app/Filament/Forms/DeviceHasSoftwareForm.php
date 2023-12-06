@@ -18,7 +18,7 @@ class DeviceHasSoftwareForm
                 ->label('软件')
                 ->options(SoftwareService::pluckOptions())
                 ->searchable()
-                ->preload()
+                ->preload(),
         ];
     }
 

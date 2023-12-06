@@ -12,7 +12,7 @@ class SoftwareCategoryService
 {
     public SoftwareCategory $software_category;
 
-    public function __construct(SoftwareCategory $software_category = null)
+    public function __construct(?SoftwareCategory $software_category = null)
     {
         $this->software_category = $software_category ?? new SoftwareCategory();
     }

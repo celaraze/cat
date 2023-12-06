@@ -18,7 +18,7 @@ class DeviceService
 {
     public Model $device;
 
-    public function __construct(Model $device = null)
+    public function __construct(?Model $device = null)
     {
         $this->device = $device ?? new Device();
     }

@@ -9,7 +9,7 @@ class FlowHasNodeService
 {
     public FlowHasNode $flow_has_node;
 
-    public function __construct(FlowHasNode $flow_has_node = null)
+    public function __construct(?FlowHasNode $flow_has_node = null)
     {
         $this->flow_has_node = $flow_has_node ?? new FlowHasNode();
     }

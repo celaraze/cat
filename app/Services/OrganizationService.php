@@ -13,7 +13,7 @@ class OrganizationService
 {
     public Organization $organization;
 
-    public function __construct(Organization $organization = null)
+    public function __construct(?Organization $organization = null)
     {
         $this->organization = $organization ?? new Organization();
     }

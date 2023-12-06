@@ -12,7 +12,7 @@ class FlowService
 {
     public Flow $flow;
 
-    public function __construct(Flow|string $flow_or_id = null)
+    public function __construct(Flow|string|null $flow_or_id = null)
     {
         if ($flow_or_id) {
             if (is_object($flow_or_id)) {
@@ -42,7 +42,7 @@ class FlowService
      *
      * @throws Exception
      */
-    public function createHasForm(string $form_name, string $comment, string $payload = null): FlowHasForm
+    public function createHasForm(string $form_name, string $comment, ?string $payload = null): FlowHasForm
     {
         $node_counts = $this->flow->nodes()->where('parent_node_id', '!=', 0)->count();
         if (! $node_counts) {

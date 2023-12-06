@@ -3,7 +3,6 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Actions\InventoryAction;
-use App\Filament\Resources\InventoryResource\Pages;
 use App\Filament\Resources\InventoryResource\Pages\HasTrack;
 use App\Filament\Resources\InventoryResource\Pages\Index;
 use App\Filament\Resources\InventoryResource\Pages\View;

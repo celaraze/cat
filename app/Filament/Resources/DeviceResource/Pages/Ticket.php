@@ -49,7 +49,7 @@ class Ticket extends ManageRelatedRecords
                     ->label('状态'),
             ])
             ->filters([
-                
+
             ])
             ->headerActions([
                 // 创建
@@ -67,7 +67,7 @@ class Ticket extends ManageRelatedRecords
                     Tables\Actions\ForceDeleteBulkAction::make(),
                 ]),
             ])
-            ->modifyQueryUsing(fn(Builder $query) => $query->orderByDesc('created_at')
+            ->modifyQueryUsing(fn (Builder $query) => $query->orderByDesc('created_at')
                 ->withoutGlobalScopes([
                     SoftDeletingScope::class,
                 ]));

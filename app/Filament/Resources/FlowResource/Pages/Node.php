@@ -56,7 +56,7 @@ class Node extends ManageRelatedRecords
                     ->visible(function (FlowHasNode $node) {
                         $flow_has_node_service = new FlowHasNodeService($node);
 
-                        return !$flow_has_node_service->isExistChildNode();
+                        return ! $flow_has_node_service->isExistChildNode();
                     }),
                 FlowAction::deleteHasNode($this->getOwnerRecord())
                     ->visible(function (FlowHasNode $node) {
@@ -64,7 +64,7 @@ class Node extends ManageRelatedRecords
 
                         // 第一个节点不允许被删除
                         // 中间节点不允许删除，只可以删除最后的节点
-                        return !$flow_has_node_service->isFirstNode() && $flow_has_node_service->isLastNode();
+                        return ! $flow_has_node_service->isFirstNode() && $flow_has_node_service->isLastNode();
                     }),
             ])
             ->bulkActions([

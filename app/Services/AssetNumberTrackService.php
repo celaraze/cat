@@ -9,7 +9,7 @@ class AssetNumberTrackService
 {
     public AssetNumberTrack $asset_number_track;
 
-    public function __construct(AssetNumberTrack $asset_number_track = null)
+    public function __construct(?AssetNumberTrack $asset_number_track = null)
     {
         $this->asset_number_track = $asset_number_track ?? new AssetNumberTrack();
 

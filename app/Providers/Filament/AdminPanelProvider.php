@@ -77,7 +77,7 @@ class AdminPanelProvider extends PanelProvider
             ->userMenuItems([
                 MenuItem::make()
                     ->label('个人档')
-                    ->url('/users/profile')
+                    ->url('/profile')
                     ->icon('heroicon-o-lock-open'),
             ]);
     }

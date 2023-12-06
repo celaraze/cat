@@ -11,7 +11,7 @@ class InventoryService
 {
     public Inventory $inventory;
 
-    public function __construct(Inventory $inventory = null)
+    public function __construct(?Inventory $inventory = null)
     {
         $this->inventory = $inventory ?? new Inventory();
     }

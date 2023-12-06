@@ -78,13 +78,13 @@ class HasSoftware extends ManageRelatedRecords
                     ->visible(function (DeviceHasSoftware $device_has_software) {
                         $can = auth()->user()->can('delete_has_software_software');
 
-                        return $can && !$device_has_software->service()->isDeleted();
+                        return $can && ! $device_has_software->service()->isDeleted();
                     }),
             ])
             ->bulkActions([
 
             ])
-            ->modifyQueryUsing(fn(Builder $query) => $query->orderByDesc('created_at')
+            ->modifyQueryUsing(fn (Builder $query) => $query->orderByDesc('created_at')
                 ->withoutGlobalScopes([
                     SoftDeletingScope::class,
                 ]));

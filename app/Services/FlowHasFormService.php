@@ -16,7 +16,7 @@ class FlowHasFormService
 {
     public FlowHasForm $flow_has_form;
 
-    public function __construct(FlowHasForm $flow_has_form = null)
+    public function __construct(?FlowHasForm $flow_has_form = null)
     {
         $this->flow_has_form = $flow_has_form ?? new FlowHasForm();
     }

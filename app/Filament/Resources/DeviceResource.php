@@ -148,7 +148,7 @@ class DeviceResource extends Resource implements HasShieldPermissions
                         ->visible(function (Device $device) {
                             $can = auth()->user()->can('assign_user_device');
 
-                            return $can && !$device->hasUsers()->count();
+                            return $can && ! $device->hasUsers()->count();
                         }),
                     // 解除管理者
                     DeviceAction::deleteDeviceHasUser()

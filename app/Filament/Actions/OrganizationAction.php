@@ -85,7 +85,7 @@ class OrganizationAction
     /**
      * 新增组织用户记录.
      */
-    public static function createHasUser(Model $out_organization = null): \Filament\Tables\Actions\Action
+    public static function createHasUser(?Model $out_organization = null): \Filament\Tables\Actions\Action
     {
         return \Filament\Tables\Actions\Action::make('新增成员')
             ->slideOver()

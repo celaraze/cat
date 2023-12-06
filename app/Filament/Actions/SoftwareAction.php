@@ -65,7 +65,7 @@ class SoftwareAction
     /**
      * 创建软件-设备按钮.
      */
-    public static function createDeviceHasSoftware(Model $out_software = null): Action
+    public static function createDeviceHasSoftware(?Model $out_software = null): Action
     {
         return Action::make('附加到设备')
             ->form(DeviceHasSoftwareForm::createFromSoftware())

@@ -12,7 +12,7 @@ class PartCategoryService
 {
     public PartCategory $part_category;
 
-    public function __construct(PartCategory $part_category = null)
+    public function __construct(?PartCategory $part_category = null)
     {
         $this->part_category = $part_category ?? new PartCategory();
     }

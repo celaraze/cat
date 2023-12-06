@@ -17,7 +17,7 @@ class SoftwareService
 {
     public Software $software;
 
-    public function __construct(Software $software = null)
+    public function __construct(?Software $software = null)
     {
         $this->software = $software ?? new Software();
     }

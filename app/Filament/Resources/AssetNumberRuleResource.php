@@ -4,7 +4,6 @@ namespace App\Filament\Resources;
 
 use App\Filament\Actions\AssetNumberRuleAction;
 use App\Filament\Forms\SettingForm;
-use App\Filament\Resources\AssetNumberRuleResource\Pages\Create;
 use App\Filament\Resources\AssetNumberRuleResource\Pages\Edit;
 use App\Filament\Resources\AssetNumberRuleResource\Pages\Index;
 use App\Filament\Resources\AssetNumberRuleResource\Pages\View;

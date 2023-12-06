@@ -17,7 +17,7 @@ class PartService
 {
     public Part $part;
 
-    public function __construct(Part $part = null)
+    public function __construct(?Part $part = null)
     {
         $this->part = $part ?? new Part();
     }

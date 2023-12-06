@@ -8,7 +8,7 @@ class OrganizationHasUserService
 {
     public OrganizationHasUser $organization_has_user;
 
-    public function __construct(OrganizationHasUser $organization_has_user = null)
+    public function __construct(?OrganizationHasUser $organization_has_user = null)
     {
         $this->organization_has_user = $organization_has_user ?? new OrganizationHasUser();
     }

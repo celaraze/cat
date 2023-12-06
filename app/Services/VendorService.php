@@ -10,16 +10,13 @@ class VendorService
 {
     public Vendor $vendor;
 
-    public function __construct(Vendor $vendor = null)
+    public function __construct(?Vendor $vendor = null)
     {
         $this->vendor = $vendor ?? new Vendor();
     }
 
     /**
      * 创建厂商联系人.
-     *
-     * @param array $data
-     * @return Model
      */
     #[ArrayShape(['name' => 'string', 'phone_number' => 'string', 'email' => 'string'])]
     public function createHasContacts(array $data): Model

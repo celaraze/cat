@@ -51,7 +51,7 @@ class HasSoftware extends ManageRelatedRecords
                     ->label('操作人'),
             ])
             ->filters([
-                Tables\Filters\TrashedFilter::make()
+                Tables\Filters\TrashedFilter::make(),
             ])
             ->headerActions([
                 // 创建
@@ -66,13 +66,13 @@ class HasSoftware extends ManageRelatedRecords
                     ->visible(function (DeviceHasSoftware $device_has_software) {
                         $can = auth()->user()->can('delete_has_software_device');
 
-                        return $can && !$device_has_software->service()->isDeleted();
+                        return $can && ! $device_has_software->service()->isDeleted();
                     }),
             ])
             ->bulkActions([
 
             ])
-            ->modifyQueryUsing(fn(Builder $query) => $query->orderByDesc('created_at')
+            ->modifyQueryUsing(fn (Builder $query) => $query->orderByDesc('created_at')
                 ->withoutGlobalScopes([
                     SoftDeletingScope::class,
                 ]));

@@ -53,7 +53,7 @@ class HasPart extends ManageRelatedRecords
                 ]
             )
             ->filters([
-                Tables\Filters\TrashedFilter::make()
+                Tables\Filters\TrashedFilter::make(),
             ])
             ->headerActions([
                 // 创建
@@ -68,13 +68,13 @@ class HasPart extends ManageRelatedRecords
                     ->visible(function (DeviceHasPart $device_has_part) {
                         $can = auth()->user()->can('delete_has_part_device');
 
-                        return $can && !$device_has_part->service()->isDeleted();
+                        return $can && ! $device_has_part->service()->isDeleted();
                     }),
             ])
             ->bulkActions([
 
             ])
-            ->modifyQueryUsing(fn(Builder $query) => $query->orderByDesc('created_at')
+            ->modifyQueryUsing(fn (Builder $query) => $query->orderByDesc('created_at')
                 ->withoutGlobalScopes([
                     SoftDeletingScope::class,
                 ]));

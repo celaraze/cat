@@ -10,7 +10,7 @@ class BrandService
 {
     public Brand $brand;
 
-    public function __construct(Brand $brand = null)
+    public function __construct(?Brand $brand = null)
     {
         $this->brand = $brand ?? new Brand();
     }

@@ -13,7 +13,7 @@ class AssetNumberRuleService
 {
     public AssetNumberRule $asset_number_rule;
 
-    public function __construct(AssetNumberRule $asset_number_rule = null)
+    public function __construct(?AssetNumberRule $asset_number_rule = null)
     {
         $this->asset_number_rule = $asset_number_rule ?? new AssetNumberRule();
     }

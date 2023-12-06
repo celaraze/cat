@@ -29,7 +29,7 @@ class DeviceAction
     /**
      * 分配管理者按钮.
      */
-    public static function createDeviceHasUser(Model $out_device = null): Action
+    public static function createDeviceHasUser(?Model $out_device = null): Action
     {
         return Action::make('分配管理者')
             ->icon('heroicon-s-user-plus')
@@ -56,7 +56,7 @@ class DeviceAction
     /**
      * 解除管理者按钮.
      */
-    public static function deleteDeviceHasUser(Model $out_device = null): Action
+    public static function deleteDeviceHasUser(?Model $out_device = null): Action
     {
         return Action::make('解除管理者')
             ->icon('heroicon-s-user-minus')
@@ -123,7 +123,7 @@ class DeviceAction
     /**
      * 附加软件按钮.
      */
-    public static function createDeviceHasSoftware(Model $out_device = null): Action
+    public static function createDeviceHasSoftware(?Model $out_device = null): Action
     {
         return Action::make('附加软件')
             ->icon('heroicon-m-plus-circle')
@@ -151,7 +151,7 @@ class DeviceAction
     /**
      * 创建设备配件按钮.
      */
-    public static function createDeviceHasPart(Model $out_device = null): Action
+    public static function createDeviceHasPart(?Model $out_device = null): Action
     {
         return Action::make('附加配件')
             ->icon('heroicon-m-plus-circle')
@@ -339,7 +339,7 @@ class DeviceAction
     /**
      * 创建工单.
      *
-     * @param null $asset_number
+     * @param  null  $asset_number
      */
     public static function createTicket($asset_number = null): Action
     {
@@ -347,7 +347,7 @@ class DeviceAction
             ->icon('heroicon-m-plus-circle')
             ->slideOver()
             ->form(function (Device $device) use ($asset_number) {
-                if (!$asset_number) {
+                if (! $asset_number) {
                     $asset_number = $device->getAttribute('asset_number');
                 }
 
@@ -355,7 +355,7 @@ class DeviceAction
             })
             ->action(function (array $data, Device $device) use ($asset_number) {
                 try {
-                    if (!$asset_number) {
+                    if (! $asset_number) {
                         $asset_number = $device->getAttribute('asset_number');
                     }
                     $data['asset_number'] = $asset_number;

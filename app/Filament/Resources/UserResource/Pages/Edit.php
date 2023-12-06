@@ -3,7 +3,6 @@
 namespace App\Filament\Resources\UserResource\Pages;
 
 use App\Filament\Resources\UserResource;
-use Filament\Actions;
 use Filament\Notifications\Notification;
 use Filament\Resources\Pages\EditRecord;
 use Filament\Support\Exceptions\Halt;
@@ -14,11 +13,9 @@ class Edit extends EditRecord
 {
     protected static string $resource = UserResource::class;
 
-    protected function getHeaderActions(): array
+    public static function getNavigationLabel(): string
     {
-        return [
-            Actions\DeleteAction::make(),
-        ];
+        return '编辑';
     }
 
     /**

@@ -76,7 +76,7 @@ class HasUser extends ManageRelatedRecords
                         $device = $this->getOwnerRecord();
                         $can = auth()->user()->can('assign_user_device');
 
-                        return $can && !$device->service()->isExistHasUser();
+                        return $can && ! $device->service()->isExistHasUser();
                     }),
                 // 解除管理者
                 DeviceAction::deleteDeviceHasUser($this->getOwnerRecord())
@@ -94,7 +94,7 @@ class HasUser extends ManageRelatedRecords
             ->bulkActions([
 
             ])
-            ->modifyQueryUsing(fn(Builder $query) => $query->orderByDesc('created_at')
+            ->modifyQueryUsing(fn (Builder $query) => $query->orderByDesc('created_at')
                 ->withoutGlobalScopes([
                     SoftDeletingScope::class,
                 ]));

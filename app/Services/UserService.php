@@ -12,7 +12,7 @@ class UserService
 {
     public User $user;
 
-    public function __construct(User $user = null)
+    public function __construct(?User $user = null)
     {
         $this->user = $user ?? new User();
     }
@@ -20,7 +20,7 @@ class UserService
     /**
      * 选单.
      */
-    public static function pluckOptions(string $exclude_column = null, array $exclude_array = null): Collection
+    public static function pluckOptions(?string $exclude_column = null, ?array $exclude_array = null): Collection
     {
         $query = User::query();
         if ($exclude_column && $exclude_array) {

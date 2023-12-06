@@ -10,7 +10,7 @@ class DeviceHasPartService
 {
     public DeviceHasPart $device_has_part;
 
-    public function __construct(DeviceHasPart $device_has_part = null)
+    public function __construct(?DeviceHasPart $device_has_part = null)
     {
         $this->device_has_part = $device_has_part ?? new DeviceHasPart();
     }
