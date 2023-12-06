@@ -80,17 +80,20 @@ class AdminPanelProvider extends PanelProvider
                     ->url('/profile')
                     ->icon('heroicon-o-lock-open'),
                 MenuItem::make()
-                    ->label('Github')
+                    ->label('去 Github 为作者点赞 🌟')
                     ->url('https://github.com/celaraze/cat')
+                    ->openUrlInNewTab()
                     ->icon('heroicon-s-code-square'),
                 MenuItem::make()
                     ->label('官方文档')
                     ->url('https://github.com/celaraze/cat/wiki')
+                    ->openUrlInNewTab()
                     ->icon('heroicon-o-book-open'),
                 MenuItem::make()
                     ->label('官方用户群')
                     ->url('http://qm.qq.com/cgi-bin/qm/qr?_wv=1027&k=oSXcaCdY4u5iIEQj43J2GsDk_PygRR2G&authKey=atvXMk1ZoXRwuuNzMLY7852APIHfnBp3cA4fu7oFui7MWRSCrg2EafCAI%2B9akAPa&noverify=0&group_code=1016567640')
-                    ->icon('blade-icons/heroicon-s-user-group'),
+                    ->openUrlInNewTab()
+                    ->icon('heroicon-s-user-group'),
             ]);
     }
 }
