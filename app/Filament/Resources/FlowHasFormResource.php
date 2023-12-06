@@ -27,7 +27,7 @@ class FlowHasFormResource extends Resource implements HasShieldPermissions
 {
     protected static ?string $model = FlowHasForm::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-s-document-text';
 
     protected static ?string $modelLabel = '表单';
 

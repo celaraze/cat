@@ -25,7 +25,7 @@ class Install extends Command
      */
     public function handle(): void
     {
-        $this->info('欢迎使用 CAT 一站式信息运维平台');
+        $this->info('欢迎使用 CAT 一站式运维平台');
         $this->call('optimize:clear');
         $this->warn('正在设置存储系统');
         $this->call('storage:link');

@@ -38,7 +38,8 @@ class PartAction
                     LogUtil::error($exception);
                     NotificationUtil::make(false, $exception);
                 }
-            });
+            })
+            ->closeModalByClickingAway(false);
     }
 
     /**
@@ -59,7 +60,8 @@ class PartAction
                     LogUtil::error($exception);
                     NotificationUtil::make(false, $exception);
                 }
-            });
+            })
+            ->closeModalByClickingAway(false);
     }
 
     /**
@@ -68,6 +70,8 @@ class PartAction
     public static function createDeviceHasPart(?Model $out_part = null): Action
     {
         return Action::make('附加到设备')
+            ->slideOver()
+            ->icon('heroicon-m-plus-circle')
             ->form(DeviceHasPartForm::createFromPart())
             ->action(function (array $data, Part $part) use ($out_part) {
                 try {
@@ -85,7 +89,8 @@ class PartAction
                     LogUtil::error($exception);
                     NotificationUtil::make(false, $exception);
                 }
-            });
+            })
+            ->closeModalByClickingAway(false);
     }
 
     /**
@@ -94,6 +99,7 @@ class PartAction
     public static function deleteDeviceHasPart(): Action
     {
         return Action::make('脱离')
+            ->icon('heroicon-s-minus-circle')
             ->requiresConfirmation()
             ->color('danger')
             ->action(function (DeviceHasPart $device_has_part) {
@@ -108,7 +114,8 @@ class PartAction
                     LogUtil::error($exception);
                     NotificationUtil::make(false, $exception);
                 }
-            });
+            })
+            ->closeModalByClickingAway(false);
     }
 
     /**
@@ -117,6 +124,7 @@ class PartAction
     public static function setPartRetireFlow(): Action
     {
         return Action::make('配置报废流程')
+            ->slideOver()
             ->form(PartForm::setRetireFlow())
             ->action(function (array $data) {
                 try {
@@ -127,7 +135,8 @@ class PartAction
                     LogUtil::error($exception);
                     NotificationUtil::make(false, $exception);
                 }
-            });
+            })
+            ->closeModalByClickingAway(false);
     }
 
     /**
@@ -136,12 +145,14 @@ class PartAction
     public static function setAssetNumberRule(): Action
     {
         return Action::make('配置资产编号自动生成规则')
+            ->slideOver()
             ->form(PartForm::setAssetNumberRule())
             ->action(function (array $data) {
                 $data['class_name'] = Part::class;
                 AssetNumberRuleService::setAutoRule($data);
                 NotificationUtil::make(true, '已配置资产编号自动生成规则');
-            });
+            })
+            ->closeModalByClickingAway(false);
     }
 
     /**
@@ -154,7 +165,8 @@ class PartAction
             ->action(function () {
                 AssetNumberRuleService::resetAutoRule(Part::class);
                 NotificationUtil::make(true, '已清除编号自动生成规则');
-            });
+            })
+            ->closeModalByClickingAway(false);
     }
 
     /**
@@ -163,6 +175,8 @@ class PartAction
     public static function retirePart(): Action
     {
         return Action::make('流程报废')
+            ->slideOver()
+            ->icon('heroicon-m-archive-box-x-mark')
             ->form(PartForm::retire())
             ->action(function (array $data, Part $part) {
                 try {
@@ -179,7 +193,8 @@ class PartAction
                     LogUtil::error($exception);
                     NotificationUtil::make(false, $exception);
                 }
-            });
+            })
+            ->closeModalByClickingAway(false);
     }
 
     /**
@@ -198,7 +213,8 @@ class PartAction
                     LogUtil::error($exception);
                     NotificationUtil::make(false, $exception);
                 }
-            });
+            })
+            ->closeModalByClickingAway(false);
     }
 
     /**

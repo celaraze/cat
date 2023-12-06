@@ -21,7 +21,7 @@ use Illuminate\Database\Eloquent\Model;
 class SoftwareAction
 {
     /**
-     * 创建配件.
+     * 创建软件.
      */
     public static function createSoftware(): Action
     {
@@ -38,7 +38,8 @@ class SoftwareAction
                     LogUtil::error($exception);
                     NotificationUtil::make(false, $exception);
                 }
-            });
+            })
+            ->closeModalByClickingAway(false);
     }
 
     /**
@@ -59,15 +60,18 @@ class SoftwareAction
                     LogUtil::error($exception);
                     NotificationUtil::make(false, $exception);
                 }
-            });
+            })
+            ->closeModalByClickingAway(false);
     }
 
     /**
-     * 创建软件-设备按钮.
+     * 软件附加到设备按钮.
      */
     public static function createDeviceHasSoftware(?Model $out_software = null): Action
     {
         return Action::make('附加到设备')
+            ->slideOver()
+            ->icon('heroicon-m-plus-circle')
             ->form(DeviceHasSoftwareForm::createFromSoftware())
             ->action(function (array $data, Software $software) use ($out_software) {
                 try {
@@ -85,7 +89,8 @@ class SoftwareAction
                     LogUtil::error($exception);
                     NotificationUtil::make(false, $exception);
                 }
-            });
+            })
+            ->closeModalByClickingAway(false);
     }
 
     /**
@@ -108,15 +113,17 @@ class SoftwareAction
                     LogUtil::error($exception);
                     NotificationUtil::make(false, $exception);
                 }
-            });
+            })
+            ->closeModalByClickingAway(false);
     }
 
     /**
-     * 绑定软件报废流程.
+     * 配置软件报废流程.
      */
     public static function setSoftwareRetireFlow(): Action
     {
         return Action::make('配置报废流程')
+            ->slideOver()
             ->form(SoftwareForm::setRetireFlow())
             ->action(function (array $data) {
                 try {
@@ -127,25 +134,28 @@ class SoftwareAction
                     LogUtil::error($exception);
                     NotificationUtil::make(false, $exception);
                 }
-            });
+            })
+            ->closeModalByClickingAway(false);
     }
 
     /**
-     * 设置资产编号生成配置.
+     * 配置资产编号生成配置.
      */
     public static function setAssetNumberRule(): Action
     {
         return Action::make('配置资产编号自动生成规则')
+            ->slideOver()
             ->form(SoftwareForm::setAssetNumberRule())
             ->action(function (array $data) {
                 $data['class_name'] = Software::class;
                 AssetNumberRuleService::setAutoRule($data);
                 NotificationUtil::make(true, '已配置资产编号自动生成规则');
-            });
+            })
+            ->closeModalByClickingAway(false);
     }
 
     /**
-     * 重置资产编号生成配置.
+     * 配置资产编号生成配置.
      */
     public static function resetAssetNumberRule(): Action
     {
@@ -154,15 +164,18 @@ class SoftwareAction
             ->action(function () {
                 AssetNumberRuleService::resetAutoRule(Software::class);
                 NotificationUtil::make(true, '已清除编号自动生成规则');
-            });
+            })
+            ->closeModalByClickingAway(false);
     }
 
     /**
-     * 发起软件报废流程表单.
+     * 流程报废按钮.
      */
     public static function retireSoftware(): Action
     {
         return Action::make('流程报废')
+            ->slideOver()
+            ->icon('heroicon-m-archive-box-x-mark')
             ->form(SoftwareForm::retire())
             ->action(function (array $data, Software $software) {
                 try {
@@ -179,7 +192,8 @@ class SoftwareAction
                     LogUtil::error($exception);
                     NotificationUtil::make(false, $exception);
                 }
-            });
+            })
+            ->closeModalByClickingAway(false);
     }
 
     /**
@@ -198,7 +212,8 @@ class SoftwareAction
                     LogUtil::error($exception);
                     NotificationUtil::make(false, $exception);
                 }
-            });
+            })
+            ->closeModalByClickingAway(false);
     }
 
     /**

@@ -3,12 +3,12 @@
 return [
     'shield_resource' => [
         'should_register_navigation' => true,
-        'slug' => 'shield/roles',
+        'slug' => 'roles',
         'navigation_sort' => -1,
         'navigation_badge' => true,
         'navigation_group' => true,
         'is_globally_searchable' => false,
-        'show_model_path' => true,
+        'show_model_path' => false,
         'is_scoped_to_tenant' => true,
     ],
 
@@ -64,6 +64,7 @@ return [
 
         'pages' => [
             'Dashboard',
+            'Profile',
         ],
 
         'widgets' => [

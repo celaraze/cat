@@ -1,27 +1,26 @@
 <?php
 
-namespace App\Filament\Resources\OrganizationResource\RelationManagers;
+namespace App\Filament\Resources\OrganizationResource\Pages;
 
 use App\Filament\Actions\OrganizationAction;
-use Filament\Forms\Form;
-use Filament\Resources\RelationManagers\RelationManager;
+use App\Filament\Resources\OrganizationResource;
+use Filament\Resources\Pages\ManageRelatedRecords;
 use Filament\Tables;
 use Filament\Tables\Table;
 
-class HasUserRelationManager extends RelationManager
+class HasUser extends ManageRelatedRecords
 {
+    protected static string $resource = OrganizationResource::class;
+
     protected static string $relationship = 'hasUsers';
+
+    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
     protected static ?string $title = '成员';
 
-    protected static ?string $icon = 'heroicon-m-users';
-
-    public function form(Form $form): Form
+    public static function getNavigationLabel(): string
     {
-        return $form
-            ->schema([
-
-            ]);
+        return '成员';
     }
 
     public function table(Table $table): Table
@@ -33,18 +32,18 @@ class HasUserRelationManager extends RelationManager
                     ->label('名称'),
             ])
             ->filters([
-                //
+
             ])
             ->headerActions([
+                // 新增成员
                 OrganizationAction::createHasUser($this->getOwnerRecord()),
             ])
             ->actions([
+                // 删除成员
                 OrganizationAction::deleteHasUser(),
             ])
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
+
             ]);
     }
 }

@@ -27,7 +27,7 @@ class InventoryResource extends Resource implements HasShieldPermissions
 {
     protected static ?string $model = Inventory::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-magnifying-glass';
 
     protected static ?string $navigationGroup = '工作流';
 

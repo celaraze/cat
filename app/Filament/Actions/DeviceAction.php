@@ -32,6 +32,7 @@ class DeviceAction
     public static function createDeviceHasUser(?Model $out_device = null): Action
     {
         return Action::make('分配管理者')
+            ->slideOver()
             ->icon('heroicon-s-user-plus')
             ->form(DeviceHasUserForm::create())
             ->action(function (array $data, Device $device) use ($out_device): void {
@@ -59,6 +60,7 @@ class DeviceAction
     public static function deleteDeviceHasUser(?Model $out_device = null): Action
     {
         return Action::make('解除管理者')
+            ->slideOver()
             ->icon('heroicon-s-user-minus')
             ->form(DeviceHasUserForm::delete())
             ->action(function (array $data, Device $device) use ($out_device): void {
@@ -126,6 +128,7 @@ class DeviceAction
     public static function createDeviceHasSoftware(?Model $out_device = null): Action
     {
         return Action::make('附加软件')
+            ->slideOver()
             ->icon('heroicon-m-plus-circle')
             ->form(DeviceHasSoftwareForm::create())
             ->action(function (array $data, Device $device) use ($out_device): void {
@@ -154,6 +157,7 @@ class DeviceAction
     public static function createDeviceHasPart(?Model $out_device = null): Action
     {
         return Action::make('附加配件')
+            ->slideOver()
             ->icon('heroicon-m-plus-circle')
             ->form(DeviceHasPartForm::create())
             ->action(function (array $data, Device $device) use ($out_device): void {
@@ -182,6 +186,7 @@ class DeviceAction
     public static function deleteDeviceHasPart(): Action
     {
         return Action::make('脱离')
+            ->icon('heroicon-s-minus-circle')
             ->requiresConfirmation()
             ->color('danger')
             ->action(function (DeviceHasPart $device_has_part) {
@@ -196,7 +201,8 @@ class DeviceAction
                     LogUtil::error($exception);
                     NotificationUtil::make(false, $exception);
                 }
-            });
+            })
+            ->closeModalByClickingAway(false);
     }
 
     /**
@@ -205,6 +211,7 @@ class DeviceAction
     public static function deleteDeviceHasSoftware(): Action
     {
         return Action::make('脱离')
+            ->icon('heroicon-s-minus-circle')
             ->requiresConfirmation()
             ->color('danger')
             ->action(function (DeviceHasSoftware $device_has_software) {
@@ -219,7 +226,8 @@ class DeviceAction
                     LogUtil::error($exception);
                     NotificationUtil::make(false, $exception);
                 }
-            });
+            })
+            ->closeModalByClickingAway(false);
     }
 
     /**
@@ -228,6 +236,7 @@ class DeviceAction
     public static function setDeviceRetireFlow(): Action
     {
         return Action::make('配置报废流程')
+            ->slideOver()
             ->form(DeviceForm::setRetireFlow())
             ->action(function (array $data) {
                 try {
@@ -248,6 +257,7 @@ class DeviceAction
     public static function setAssetNumberRule(): Action
     {
         return Action::make('配置资产编号自动生成规则')
+            ->slideOver()
             ->form(DeviceForm::setAssetNumberRule())
             ->action(function (array $data) {
                 $data['class_name'] = Device::class;
@@ -263,6 +273,7 @@ class DeviceAction
     public static function resetAssetNumberRule(): Action
     {
         return Action::make('清除资产编号自动生成规则')
+            ->slideOver()
             ->requiresConfirmation()
             ->action(function () {
                 AssetNumberRuleService::resetAutoRule(Device::class);
@@ -276,6 +287,7 @@ class DeviceAction
     public static function retireDevice(): Action
     {
         return Action::make('流程报废')
+            ->slideOver()
             ->icon('heroicon-m-archive-box-x-mark')
             ->form(DeviceForm::retire())
             ->action(function (array $data, Device $device) {
@@ -293,7 +305,8 @@ class DeviceAction
                     LogUtil::error($exception);
                     NotificationUtil::make(false, $exception);
                 }
-            })->closeModalByClickingAway(false);
+            })
+            ->closeModalByClickingAway(false);
     }
 
     /**
@@ -313,7 +326,8 @@ class DeviceAction
                     LogUtil::error($exception);
                     NotificationUtil::make(false, $exception);
                 }
-            });
+            })
+            ->closeModalByClickingAway(false);
     }
 
     /**

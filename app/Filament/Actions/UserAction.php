@@ -40,6 +40,8 @@ class UserAction
     {
         return \Filament\Actions\Action::make('changePasswordAction')
             ->label('修改密码')
+            ->slideOver()
+            ->icon('heroicon-o-lock-closed')
             ->form(UserForm::changePassword())
             ->action(function (array $data) {
                 try {
@@ -54,7 +56,8 @@ class UserAction
                     LogUtil::error($exception);
                     NotificationUtil::make(false, $exception);
                 }
-            });
+            })
+            ->closeModalByClickingAway(false);
     }
 
     /**
@@ -63,8 +66,8 @@ class UserAction
     public static function createUser(): Action
     {
         return Action::make('新增')
-            ->icon('heroicon-m-plus')
             ->slideOver()
+            ->icon('heroicon-m-plus')
             ->form(UserForm::create())
             ->action(function (array $data) {
                 try {
@@ -77,6 +80,7 @@ class UserAction
                     LogUtil::error($exception);
                     NotificationUtil::make(false, $exception);
                 }
-            });
+            })
+            ->closeModalByClickingAway(false);
     }
 }

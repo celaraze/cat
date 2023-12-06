@@ -32,7 +32,8 @@ class InventoryAction
                     LogUtil::error($exception);
                     NotificationUtil::make(false, $exception);
                 }
-            });
+            })
+            ->closeModalByClickingAway(false);
     }
 
     /**
@@ -53,7 +54,8 @@ class InventoryAction
                     LogUtil::error($exception);
                     NotificationUtil::make(false, $exception);
                 }
-            });
+            })
+            ->closeModalByClickingAway(false);
     }
 
     /**
@@ -62,6 +64,7 @@ class InventoryAction
     public static function check(): Action
     {
         return Action::make('盘点')
+            ->slideOver()
             ->icon('heroicon-m-document-check')
             ->form(InventoryForm::check())
             ->action(function (array $data, InventoryHasTrack $inventory_has_track) {
@@ -72,6 +75,7 @@ class InventoryAction
                     LogUtil::error($exception);
                     NotificationUtil::make(false, $exception);
                 }
-            });
+            })
+            ->closeModalByClickingAway(false);
     }
 }

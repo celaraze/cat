@@ -27,7 +27,7 @@ class AssetNumberRuleResource extends Resource implements HasShieldPermissions
 
     protected static ?string $modelLabel = '资产编号规则';
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-calculator';
 
     public static function getRecordSubNavigation(Page $page): array
     {

@@ -28,6 +28,7 @@ class FlowAction
     {
         /* @var $flow Flow */
         return Action::make('追加节点')
+            ->slideOver()
             ->icon('heroicon-s-user-plus')
             ->form(FlowHasNodeForm::create())
             ->action(function (array $data, FlowHasNode $node) use ($flow): void {
@@ -53,7 +54,8 @@ class FlowAction
                         NotificationUtil::make(true, '节点追加成功');
                     }
                 }
-            });
+            })
+            ->closeModalByClickingAway(false);
     }
 
     /**
@@ -75,7 +77,8 @@ class FlowAction
                     $node->delete();
                     NotificationUtil::make(true, '成功删除节点');
                 }
-            });
+            })
+            ->closeModalByClickingAway(false);
     }
 
     /**
@@ -94,7 +97,8 @@ class FlowAction
                     $flow->nodes()->where('parent_node_id', '!=', 0)->delete();
                     NotificationUtil::make(true, '成功删除所有节点');
                 }
-            });
+            })
+            ->closeModalByClickingAway(false);
     }
 
     /**
@@ -126,6 +130,7 @@ class FlowAction
     {
         return Action::make('创建流程')
             ->slideOver()
+            ->icon('heroicon-m-plus')
             ->form(FlowForm::create())
             ->action(function (array $data) {
                 try {
@@ -150,7 +155,8 @@ class FlowAction
                     LogUtil::error($exception);
                     NotificationUtil::make(false, '流程创建失败：'.$exception->getMessage());
                 }
-            });
+            })
+            ->closeModalByClickingAway(false);
     }
 
     /**
@@ -159,6 +165,8 @@ class FlowAction
     public static function approve(): \Filament\Actions\Action
     {
         return \Filament\Actions\Action::make('审批')
+            ->slideOver()
+            ->icon('heroicon-o-shield-exclamation')
             ->form(FlowHasFormForm::approve())
             ->action(function (array $data, FlowHasForm $flow_has_form) {
                 try {
@@ -169,6 +177,7 @@ class FlowAction
                     LogUtil::error($exception);
                     NotificationUtil::make(false, $exception->getMessage());
                 }
-            });
+            })
+            ->closeModalByClickingAway(false);
     }
 }

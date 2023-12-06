@@ -23,7 +23,7 @@ class FlowResource extends Resource implements HasShieldPermissions
 {
     protected static ?string $model = Flow::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-m-bars-arrow-down';
 
     protected static ?string $modelLabel = '流程';
 

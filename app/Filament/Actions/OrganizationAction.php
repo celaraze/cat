@@ -16,31 +16,6 @@ use Illuminate\Database\Eloquent\Model;
 class OrganizationAction
 {
     /**
-     * 编辑组织按钮.
-     */
-    public static function updateOrganization(): \SolutionForest\FilamentTree\Actions\Action
-    {
-        return \SolutionForest\FilamentTree\Actions\Action::make('编辑')
-            ->slideOver()
-            ->icon('heroicon-s-pencil-square')
-            ->link()
-            ->form(OrganizationForm::createOrEdit())
-            ->action(function (array $data, Organization $organization) {
-                try {
-
-                    $data = [
-                        'name' => $data['name'],
-                    ];
-                    $organization->service()->update($data);
-                    NotificationUtil::make(true, '已修改组织');
-                } catch (Exception $exception) {
-                    LogUtil::error($exception);
-                    NotificationUtil::make(false, $exception);
-                }
-            });
-    }
-
-    /**
      * 创建组织按钮.
      */
     public static function createOrganization(): Action
@@ -58,28 +33,8 @@ class OrganizationAction
                     LogUtil::error($exception);
                     NotificationUtil::make(false, $exception);
                 }
-            });
-    }
-
-    /**
-     * 删除组织按钮.
-     */
-    public static function deleteOrganization(): \SolutionForest\FilamentTree\Actions\Action
-    {
-        return \SolutionForest\FilamentTree\Actions\Action::make('删除')
-            ->requiresConfirmation()
-            ->icon('heroicon-s-trash')
-            ->color('danger')
-            ->link()
-            ->action(function (Organization $organization) {
-                try {
-                    $organization->service()->delete();
-                    NotificationUtil::make(true, '已删除组织');
-                } catch (Exception $exception) {
-                    LogUtil::error($exception);
-                    NotificationUtil::make(false, $exception);
-                }
-            });
+            })
+            ->closeModalByClickingAway(false);
     }
 
     /**
@@ -103,7 +58,8 @@ class OrganizationAction
                     LogUtil::error($exception);
                     NotificationUtil::make(false, $exception);
                 }
-            });
+            })
+            ->closeModalByClickingAway(false);
     }
 
     /**
@@ -123,6 +79,7 @@ class OrganizationAction
                     LogUtil::error($exception);
                     NotificationUtil::make(false, $exception);
                 }
-            });
+            })
+            ->closeModalByClickingAway(false);
     }
 }

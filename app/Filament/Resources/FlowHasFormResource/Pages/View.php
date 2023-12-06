@@ -2,7 +2,6 @@
 
 namespace App\Filament\Resources\FlowHasFormResource\Pages;
 
-use App\Filament\Actions\CommonAction;
 use App\Filament\Actions\FlowAction;
 use App\Filament\Resources\FlowHasFormResource;
 use App\Models\FlowHasForm;
@@ -42,7 +41,6 @@ class View extends ViewRecord
 
                     return false;
                 }),
-            CommonAction::back($this->getResource()),
         ];
     }
 }
