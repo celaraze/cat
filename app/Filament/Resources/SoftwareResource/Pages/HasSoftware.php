@@ -84,7 +84,7 @@ class HasSoftware extends ManageRelatedRecords
             ->bulkActions([
 
             ])
-            ->modifyQueryUsing(fn (Builder $query) => $query->orderByDesc('created_at')
+            ->modifyQueryUsing(fn (Builder $query) => $query->orderByDesc('id')
                 ->withoutGlobalScopes([
                     SoftDeletingScope::class,
                 ]));

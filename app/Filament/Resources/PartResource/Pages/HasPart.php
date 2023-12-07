@@ -5,6 +5,7 @@ namespace App\Filament\Resources\PartResource\Pages;
 use App\Filament\Actions\PartAction;
 use App\Filament\Resources\PartResource;
 use App\Models\DeviceHasPart;
+use App\Models\Part;
 use Filament\Resources\Pages\ManageRelatedRecords;
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -57,7 +58,10 @@ class HasPart extends ManageRelatedRecords
                 // 创建
                 PartAction::createDeviceHasPart($this->getOwnerRecord())
                     ->visible(function () {
-                        return auth()->user()->can('create_has_part_part');
+                        $can = auth()->user()->can('create_has_part_part');
+                        $part = $this->getOwnerRecord();
+                        /* @var Part $part */
+                        return $can && !$part->hasParts()->count();
                     }),
             ])
             ->actions([
@@ -66,13 +70,13 @@ class HasPart extends ManageRelatedRecords
                     ->visible(function (DeviceHasPart $device_has_part) {
                         $can = auth()->user()->can('delete_has_part_part');
 
-                        return $can && ! $device_has_part->service()->isDeleted();
+                        return $can && !$device_has_part->service()->isDeleted();
                     }),
             ])
             ->bulkActions([
 
             ])
-            ->modifyQueryUsing(fn (Builder $query) => $query->orderByDesc('created_at')
+            ->modifyQueryUsing(fn(Builder $query) => $query->orderByDesc('id')
                 ->withoutGlobalScopes([
                     SoftDeletingScope::class,
                 ]));

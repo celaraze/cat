@@ -154,7 +154,7 @@ class SoftwareResource extends Resource implements HasShieldPermissions
                 ImportAction::make()
                     ->importer(SoftwareImporter::class)
                     ->icon('heroicon-o-arrow-up-tray')
-                    ->color('info')
+                    ->color('primary')
                     ->label('导入')
                     ->visible(function () {
                         return auth()->user()->can('import_software');

@@ -119,7 +119,7 @@ class UserResource extends Resource implements HasShieldPermissions
                 ImportAction::make()
                     ->importer(UserImporter::class)
                     ->icon('heroicon-o-arrow-up-tray')
-                    ->color('info')
+                    ->color('primary')
                     ->label('导入')
                     ->visible(auth()->user()->can('import_user')),
                 // 导出

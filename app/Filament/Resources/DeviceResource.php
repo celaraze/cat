@@ -182,7 +182,7 @@ class DeviceResource extends Resource implements HasShieldPermissions
                 ImportAction::make()
                     ->importer(DeviceImporter::class)
                     ->icon('heroicon-o-arrow-up-tray')
-                    ->color('info')
+                    ->color('primary')
                     ->label('导入')
                     ->visible(auth()->user()->can('import_device')),
                 // 导出
