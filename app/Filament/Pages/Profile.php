@@ -2,6 +2,7 @@
 
 namespace App\Filament\Pages;
 
+use App\Filament\Widgets\ChangeAvatar;
 use App\Filament\Widgets\ChangePassword;
 use Filament\Pages\Page;
 
@@ -22,6 +23,7 @@ class Profile extends Page
     {
         return [
             ChangePassword::make(),
+            ChangeAvatar::make(),
         ];
     }
 }

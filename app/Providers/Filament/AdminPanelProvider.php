@@ -78,7 +78,7 @@ class AdminPanelProvider extends PanelProvider
                 MenuItem::make()
                     ->label('个人档')
                     ->url('/profile')
-                    ->icon('heroicon-o-lock-open'),
+                    ->icon('heroicon-m-identification'),
                 MenuItem::make()
                     ->label('去 Github 为作者点赞 🌟')
                     ->url('https://github.com/celaraze/cat')

@@ -69,6 +69,17 @@ class UserService
     }
 
     /**
+     * 上传头像.
+     */
+    public function changeAvatar(string $avatar_url): User
+    {
+        $this->user->setAttribute('avatar_url', $avatar_url);
+        $this->user->save();
+
+        return $this->user;
+    }
+
+    /**
      * 删除用户.
      *
      * @throws Exception

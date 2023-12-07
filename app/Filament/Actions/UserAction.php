@@ -42,7 +42,7 @@ class UserAction
         return \Filament\Actions\Action::make('changePasswordAction')
             ->label('修改密码')
             ->slideOver()
-            ->icon('heroicon-o-lock-closed')
+            ->icon('heroicon-m-key')
             ->form(UserForm::changePassword())
             ->action(function (array $data) {
                 try {
@@ -53,6 +53,27 @@ class UserAction
                     $user = auth()->user();
                     $user->service()->changePassword($data['password']);
                     NotificationUtil::make(true, '已修改密码');
+                } catch (Exception $exception) {
+                    LogUtil::error($exception);
+                    NotificationUtil::make(false, $exception);
+                }
+            })
+            ->closeModalByClickingAway(false);
+    }
+
+    public static function changeAvatar(): \Filament\Actions\Action
+    {
+        return \Filament\Actions\Action::make('changeAvatarAction')
+            ->label('上传头像')
+            ->slideOver()
+            ->icon('heroicon-s-paint-brush')
+            ->form(UserForm::changeAvatar())
+            ->action(function (array $data) {
+                try {
+                    /* @var User $user */
+                    $user = auth()->user();
+                    $user->service()->changeAvatar($data['avatar']);
+                    NotificationUtil::make(true, '已上传头像');
                 } catch (Exception $exception) {
                     LogUtil::error($exception);
                     NotificationUtil::make(false, $exception);

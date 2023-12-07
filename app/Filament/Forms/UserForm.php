@@ -3,8 +3,11 @@
 namespace App\Filament\Forms;
 
 use Awcodes\Shout\Components\Shout;
+use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
+use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
+use Ramsey\Uuid\Uuid;
 
 class UserForm
 {
@@ -65,6 +68,23 @@ class UserForm
                 ->label('确认密码')
                 ->password()
                 ->required(),
+        ];
+    }
+
+    /**
+     * 修改头像.
+     */
+    public static function changeAvatar(): array
+    {
+        return [
+            FileUpload::make('avatar')
+                ->label('照片')
+                ->directory('avatars')
+                ->getUploadedFileNameForStorageUsing(
+                    function (TemporaryUploadedFile $file) {
+                        return Uuid::uuid4().'.'.$file->getClientOriginalExtension();
+                    }
+                ),
         ];
     }
 
