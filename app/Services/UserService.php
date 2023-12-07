@@ -67,4 +67,27 @@ class UserService
 
         return $this->user;
     }
+
+    /**
+     * 删除用户.
+     *
+     * @throws Exception
+     */
+    public function delete(): ?bool
+    {
+        if ($this->user->approvalNodes()->count()) {
+            throw new Exception('请先在流程中删除以此用户审批的节点');
+        }
+        if ($this->user->deviceHasUsers()->count()) {
+            throw new Exception('请先删除设备分配记录');
+        }
+        if ($this->user->applicantForms()->count()) {
+            throw new Exception('请先结案此用户的申请表单');
+        }
+        if ($this->user->approvalForms()->count()) {
+            throw new Exception('请先结案以此用户审批的申请表单');
+        }
+
+        return $this->user->delete();
+    }
 }

@@ -73,13 +73,9 @@
 
 7. 执行 `composer install` 安装后端依赖。
 
-8. 执行 `npm install` 安装前端依赖。
+8. 执行 `php artisan cat:install` 根据提示创建管理员账户。
 
-9. 执行 `npm run build` 编译前端依赖。
-
-10. 执行 `php artisan cat:install` 根据提示创建管理员账户。
-
-11. 此时可以通过访问 `http://127.0.0.1:8000` 来访问系统。
+9. 此时可以通过访问 `http://127.0.0.1:8000` 来访问系统。
 
 ## 问题反馈
 

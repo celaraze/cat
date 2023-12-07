@@ -83,4 +83,32 @@ class UserAction
             })
             ->closeModalByClickingAway(false);
     }
+
+    /**
+     * 删除用户按钮.
+     */
+    public static function deleteUser(): Action
+    {
+        return Action::make('删除')
+            ->color('danger')
+            ->icon('heroicon-o-trash')
+            ->requiresConfirmation()
+            ->form(function (User $user) {
+                $bool['device_has_users'] = ! $user->deviceHasUsers()->count();
+                $bool['applicant_forms'] = ! $user->applicantForms()->count();
+                $bool['approve_forms'] = ! $user->approvalForms()->count();
+                $bool['approve_nodes'] = ! $user->approvalNodes()->count();
+
+                return UserForm::delete($bool);
+            })
+            ->action(function (User $user) {
+                try {
+                    $user->service()->delete();
+                    NotificationUtil::make(true, '已删除用户');
+                } catch (Exception $exception) {
+                    LogUtil::error($exception);
+                    NotificationUtil::make(false, $exception);
+                }
+            });
+    }
 }

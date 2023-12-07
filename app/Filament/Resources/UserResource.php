@@ -16,7 +16,9 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Actions\ImportAction;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletingScope;
 use pxlrbt\FilamentExcel\Actions\Tables\ExportAction;
 
 class UserResource extends Resource implements HasShieldPermissions
@@ -79,7 +81,7 @@ class UserResource extends Resource implements HasShieldPermissions
                     ->label('邮箱'),
             ])
             ->filters([
-                //
+                Tables\Filters\TrashedFilter::make(),
             ])
             ->actions([
                 // 详情
@@ -96,6 +98,11 @@ class UserResource extends Resource implements HasShieldPermissions
                 UserAction::resetPassword()
                     ->visible(function () {
                         return auth()->user()->can('reset_password_user');
+                    }),
+                // 删除用户
+                UserAction::deleteUser()
+                    ->visible(function () {
+                        return auth()->user()->can('delete_user');
                     }),
             ])
             ->bulkActions([
@@ -121,6 +128,14 @@ class UserResource extends Resource implements HasShieldPermissions
                     ->visible(function () {
                         return auth()->user()->can('create_user');
                     }),
+            ]);
+    }
+
+    public static function getEloquentQuery(): Builder
+    {
+        return parent::getEloquentQuery()
+            ->withoutGlobalScopes([
+                SoftDeletingScope::class,
             ]);
     }
 
