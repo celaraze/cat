@@ -49,7 +49,7 @@ class DeviceResource extends Resource implements HasShieldPermissions
 
     public static function getGlobalSearchResultDetails(Model $record): array
     {
-        /* @var Device $record  */
+        /* @var Device $record */
         return [
             '用户' => $record->users()->value('name'),
         ];
@@ -102,7 +102,9 @@ class DeviceResource extends Resource implements HasShieldPermissions
             ->columns([
                 Tables\Columns\ImageColumn::make('image')
                     ->label('照片')
-                    ->toggleable(),
+                    ->toggleable()
+                    ->circular()
+                    ->defaultImageUrl(('/images/default.jpg')),
                 Tables\Columns\TextColumn::make('asset_number')
                     ->searchable()
                     ->label('资产编号'),
@@ -260,7 +262,8 @@ class DeviceResource extends Resource implements HasShieldPermissions
                     ->schema([
                         ImageEntry::make('image')
                             ->disk('public')
-                            ->label('照片'),
+                            ->label('照片')
+                            ->defaultImageUrl(('/images/default.jpg')),
                     ]),
             ])->columnSpan(['lg' => 1]),
         ])->columns(3);

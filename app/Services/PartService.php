@@ -104,7 +104,7 @@ class PartService
             $this->part->setAttribute('brand_id', $data['brand_id']);
             $this->part->setAttribute('sn', $data['sn'] ?? '无');
             $this->part->setAttribute('specification', $data['specification'] ?? '无');
-            $this->part->setAttribute('image', $data['image'] ?? '无');
+            $this->part->setAttribute('image', $data['image']);
             $this->part->setAttribute('description', $data['description']);
             $this->part->save();
             $this->part->assetNumberTrack()

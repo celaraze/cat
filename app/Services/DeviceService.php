@@ -94,7 +94,7 @@ class DeviceService
             $asset_number_rule = AssetNumberRule::query()
                 ->where('class_name', $this->device::class)
                 ->first();
-            /* @var AssetNumberRule $asset_number_rule  */
+            /* @var AssetNumberRule $asset_number_rule */
             if ($asset_number_rule) {
                 // 如果绑定了自动生成规则并且启用
                 if ($asset_number_rule->getAttribute('is_auto')) {
@@ -109,7 +109,7 @@ class DeviceService
             $this->device->setAttribute('brand_id', $data['brand_id']);
             $this->device->setAttribute('sn', $data['sn'] ?? '无');
             $this->device->setAttribute('specification', $data['specification'] ?? '无');
-            $this->device->setAttribute('image', $data['image'] ?? '无');
+            $this->device->setAttribute('image', $data['image']);
             $this->device->setAttribute('description', $data['description']);
             $this->device->save();
             $this->device->assetNumberTrack()
@@ -153,7 +153,7 @@ class DeviceService
         if (! $software) {
             throw new Exception('软件不存在');
         }
-        /* @var Software $software  */
+        /* @var Software $software */
         $max_license_count = $software->getAttribute('max_license_count');
         if ($max_license_count != 0 && $software->usedCount() >= $max_license_count) {
             throw new Exception('软件授权数量不足');

@@ -55,7 +55,7 @@ class PartResource extends Resource implements HasShieldPermissions
 
     public static function getGlobalSearchResultDetails(Model $record): array
     {
-        /* @var Part $record  */
+        /* @var Part $record */
         return [
             '设备' => $record->devices()->value('asset_number'),
             '用户' => $record->devices()->first()?->users()->value('name'),
@@ -88,7 +88,10 @@ class PartResource extends Resource implements HasShieldPermissions
         return $table
             ->columns([
                 Tables\Columns\ImageColumn::make('images')
-                    ->label('照片'),
+                    ->label('照片')
+                    ->circular()
+                    ->toggleable()
+                    ->defaultImageUrl(('/images/default.jpg')),
                 Tables\Columns\TextColumn::make('asset_number')
                     ->searchable()
                     ->toggleable()
@@ -217,7 +220,8 @@ class PartResource extends Resource implements HasShieldPermissions
                     ->schema([
                         ImageEntry::make('image')
                             ->disk('public')
-                            ->label('照片'),
+                            ->label('照片')
+                            ->defaultImageUrl(('/images/default.jpg')),
                     ]),
             ])->columnSpan(['lg' => 1]),
         ])->columns(3);

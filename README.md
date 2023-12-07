@@ -55,7 +55,7 @@
 
 ### 快速开始
 
-在线演示 [CAT DEMO](http://cat.celaraze.com:50080/) ，登录信息 `cat@localhost.com / cat`。
+在线演示 [**CAT DEMO**](http://cat.celaraze.com:50080/) ，登录信息 `cat@localhost.com / cat`，用于展示的站点回关闭部分敏感权限。
 
 通过访问 [**文档 Wiki**](https://github.com/celaraze/cat/wiki) 来安装和查看更多信息。
 

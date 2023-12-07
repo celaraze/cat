@@ -107,7 +107,7 @@ class SoftwareService
             $asset_number_rule = AssetNumberRule::query()
                 ->where('class_name', Software::class)
                 ->first();
-            /* @var AssetNumberRule $asset_number_rule  */
+            /* @var AssetNumberRule $asset_number_rule */
             if ($asset_number_rule) {
                 // 如果绑定了自动生成规则并且启用
                 if ($asset_number_rule->getAttribute('is_auto')) {
@@ -122,7 +122,7 @@ class SoftwareService
             $this->software->setAttribute('brand_id', $data['brand_id']);
             $this->software->setAttribute('sn', $data['sn'] ?? '无');
             $this->software->setAttribute('specification', $data['specification'] ?? '无');
-            $this->software->setAttribute('image', $data['image'] ?? '无');
+            $this->software->setAttribute('image', $data['image']);
             $this->software->setAttribute('max_license_count', $data['max_license_count']);
             $this->software->setAttribute('description', $data['description']);
             $this->software->save();
