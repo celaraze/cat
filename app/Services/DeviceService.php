@@ -26,9 +26,21 @@ class DeviceService
     /**
      * 选单.
      */
-    public static function pluckOptions(): Collection
+    public static function pluckOptions(string $key_column = 'id', array $exclude_ids = []): Collection
     {
-        return Device::query()->pluck('asset_number', 'id');
+        return Device::query()
+            ->whereNotIn('id', $exclude_ids)
+            ->get()
+            ->mapWithKeys(function (Device $device) use ($key_column) {
+                $title = '';
+                $title .= $device->getAttribute('asset_number');
+                $title .= ' | '.$device->getAttribute('name');
+                $user = $device->users()->first();
+                $user_name = $user?->getAttribute('name') ?? '闲置';
+                $title .= ' | '.$user_name;
+
+                return [$device->getAttribute($key_column) => $title];
+            });
     }
 
     /**
@@ -82,7 +94,7 @@ class DeviceService
             $asset_number_rule = AssetNumberRule::query()
                 ->where('class_name', $this->device::class)
                 ->first();
-            /* @var $asset_number_rule AssetNumberRule */
+            /* @var AssetNumberRule $asset_number_rule  */
             if ($asset_number_rule) {
                 // 如果绑定了自动生成规则并且启用
                 if ($asset_number_rule->getAttribute('is_auto')) {
@@ -98,6 +110,7 @@ class DeviceService
             $this->device->setAttribute('sn', $data['sn'] ?? '无');
             $this->device->setAttribute('specification', $data['specification'] ?? '无');
             $this->device->setAttribute('image', $data['image'] ?? '无');
+            $this->device->setAttribute('description', $data['description']);
             $this->device->save();
             $this->device->assetNumberTrack()
                 ->create(['asset_number' => $asset_number]);
@@ -140,7 +153,7 @@ class DeviceService
         if (! $software) {
             throw new Exception('软件不存在');
         }
-        /* @var $software Software */
+        /* @var Software $software  */
         $max_license_count = $software->getAttribute('max_license_count');
         if ($max_license_count != 0 && $software->usedCount() >= $max_license_count) {
             throw new Exception('软件授权数量不足');

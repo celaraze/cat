@@ -49,7 +49,7 @@ class DeviceResource extends Resource implements HasShieldPermissions
 
     public static function getGlobalSearchResultDetails(Model $record): array
     {
-        /* @var $record Device */
+        /* @var Device $record  */
         return [
             '用户' => $record->users()->value('name'),
         ];

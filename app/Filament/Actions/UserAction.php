@@ -95,10 +95,10 @@ class UserAction
             ->icon('heroicon-o-trash')
             ->requiresConfirmation()
             ->form(function (User $user) {
-                $bool['device_has_users'] = !$user->deviceHasUsers()->count();
-                $bool['applicant_forms'] = !$user->applicantForms()->whereNotIn('status', [3, 4])->count();
-                $bool['approve_forms'] = !$user->approvalForms()->whereNotIn('status', [3, 4])->count();
-                $bool['approve_nodes'] = !$user->approvalNodes()->count();
+                $bool['device_has_users'] = ! $user->deviceHasUsers()->count();
+                $bool['applicant_forms'] = ! $user->applicantForms()->whereNotIn('status', [3, 4])->count();
+                $bool['approve_forms'] = ! $user->approvalForms()->whereNotIn('status', [3, 4])->count();
+                $bool['approve_nodes'] = ! $user->approvalNodes()->count();
 
                 return UserForm::delete($bool);
             })

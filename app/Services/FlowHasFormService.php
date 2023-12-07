@@ -102,7 +102,7 @@ class FlowHasFormService
         $new_form->setAttribute('approve_comment', $approve_comment);
         // 如果表单流程结束，将经历的节点信息快照方式保存
         if ($status == 3 || $status == 4) {
-            /* @var $flow Flow */
+            /* @var Flow $flow  */
             $flow = $this->flow_has_form->flow()->first();
 
             $flow_progress = $flow->service()->sortNodes();
@@ -116,7 +116,7 @@ class FlowHasFormService
                     ->where('custom_key', 'device_retire_flow_id')
                     ->value('custom_value');
                 if ($device_delete_flow_id == $flow->getKey()) {
-                    /* @var $device Device */
+                    /* @var Device $device  */
                     $device = Device::query()
                         ->where('asset_number', $this->flow_has_form->getAttribute('payload'))
                         ->first();
@@ -130,7 +130,7 @@ class FlowHasFormService
                     ->where('custom_key', 'part_retire_flow_id')
                     ->value('custom_value');
                 if ($part_delete_flow_id == $flow->getKey()) {
-                    /* @var $part Part */
+                    /* @var Part $part  */
                     $part = Part::query()
                         ->where('asset_number', $this->flow_has_form->getAttribute('payload'))
                         ->first();
@@ -144,7 +144,7 @@ class FlowHasFormService
                     ->where('custom_key', 'software_retire_flow_id')
                     ->value('custom_value');
                 if ($software_delete_flow_id == $flow->getKey()) {
-                    /* @var $software Software */
+                    /* @var  Software $software  */
                     $software = Software::query()
                         ->where('asset_number', $this->flow_has_form->getAttribute('payload'))
                         ->first();

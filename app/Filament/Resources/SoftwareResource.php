@@ -48,7 +48,7 @@ class SoftwareResource extends Resource implements HasShieldPermissions
 
     public static function getGlobalSearchResultDetails(Model $record): array
     {
-        /* @var $record Software */
+        /* @var Software $record  */
         return [
             '设备' => $record->devices()->value('asset_number'),
             '用户' => $record->devices()->first()?->users()->value('name'),

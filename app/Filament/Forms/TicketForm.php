@@ -18,7 +18,7 @@ class TicketForm
         return [
             Select::make('asset_number')
                 ->label('资产编号')
-                ->options(DeviceService::pluckOptions())
+                ->options(DeviceService::pluckOptions('asset_number'))
                 ->searchable()
                 ->preload()
                 ->required(),

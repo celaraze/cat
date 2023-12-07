@@ -27,7 +27,25 @@ class SoftwareService
      */
     public static function pluckOptions(): Collection
     {
-        return Software::query()->pluck('name', 'id');
+        return Software::query()->get()->mapWithKeys(function (Software $software) {
+            $title = '';
+            $title .= $software->getAttribute('asset_number');
+            $title .= ' | '.$software->brand()->first()?->getAttribute('name') ?? ' | 未知';
+            $title .= ' | '.$software->getAttribute('name');
+            $title .= ' | '.$software->getAttribute('specification');
+            $title .= ' | '.$software->category()->first()?->getAttribute('name') ?? ' | 闲置';
+            if ($software->getAttribute('max_license_count') == 0) {
+                $title .= ' - 无限制';
+            } else {
+                if ($software->getAttribute('max_license_count') > $software->usedCount()) {
+                    $title .= ' | '.$software->usedCount().'/'.$software->getAttribute('max_license_count').' 已使用';
+                } else {
+                    $title .= ' | '.$software->usedCount().'/'.$software->getAttribute('max_license_count').' 已使用 | 软件授权数量不足';
+                }
+            }
+
+            return [$software->getKey() => $title];
+        });
     }
 
     /**
@@ -89,7 +107,7 @@ class SoftwareService
             $asset_number_rule = AssetNumberRule::query()
                 ->where('class_name', Software::class)
                 ->first();
-            /* @var  $asset_number_rule AssetNumberRule */
+            /* @var AssetNumberRule $asset_number_rule  */
             if ($asset_number_rule) {
                 // 如果绑定了自动生成规则并且启用
                 if ($asset_number_rule->getAttribute('is_auto')) {
@@ -106,6 +124,7 @@ class SoftwareService
             $this->software->setAttribute('specification', $data['specification'] ?? '无');
             $this->software->setAttribute('image', $data['image'] ?? '无');
             $this->software->setAttribute('max_license_count', $data['max_license_count']);
+            $this->software->setAttribute('description', $data['description']);
             $this->software->save();
             $this->software->assetNumberTrack()
                 ->create(['asset_number' => $asset_number]);
@@ -146,11 +165,11 @@ class SoftwareService
         $flow_id = Setting::query()
             ->where('custom_key', 'software_retire_flow_id')
             ->value('custom_value');
-        if (!$flow_id) {
+        if (! $flow_id) {
             throw new Exception('还未配置软件报废流程');
         }
         $flow = Flow::query()->where('id', $flow_id)->first();
-        if (!$flow) {
+        if (! $flow) {
             throw new Exception('未找到已配置的软件报废流程');
         }
 

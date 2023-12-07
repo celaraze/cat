@@ -69,10 +69,11 @@ class SoftwareAction
      */
     public static function createDeviceHasSoftware(?Model $out_software = null): Action
     {
+        /* @var Software $out_software */
         return Action::make('附加到设备')
             ->slideOver()
             ->icon('heroicon-m-plus-circle')
-            ->form(DeviceHasSoftwareForm::createFromSoftware())
+            ->form(DeviceHasSoftwareForm::createFromSoftware($out_software))
             ->action(function (array $data, Software $software) use ($out_software) {
                 try {
                     if ($out_software) {

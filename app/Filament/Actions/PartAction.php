@@ -69,10 +69,11 @@ class PartAction
      */
     public static function createDeviceHasPart(?Model $out_part = null): Action
     {
+        /* @var Part $out_part */
         return Action::make('附加到设备')
             ->slideOver()
             ->icon('heroicon-m-plus-circle')
-            ->form(DeviceHasPartForm::createFromPart())
+            ->form(DeviceHasPartForm::createFromPart($out_part))
             ->action(function (array $data, Part $part) use ($out_part) {
                 try {
                     if ($out_part) {

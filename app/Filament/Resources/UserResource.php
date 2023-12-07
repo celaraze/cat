@@ -46,7 +46,7 @@ class UserResource extends Resource implements HasShieldPermissions
 
     public static function getGlobalSearchResultDetails(Model $record): array
     {
-        /* @var $record User */
+        /* @var User $record  */
         return [
             '账户' => $record->getAttribute('email'),
         ];
@@ -101,7 +101,8 @@ class UserResource extends Resource implements HasShieldPermissions
                         $can = auth()->user()->can('reset_password_user');
                         // DEMO 模式不允许清除密码
                         $demo_mode = config('app.demo_mode');
-                        return $can && !$demo_mode;
+
+                        return $can && ! $demo_mode;
                     }),
                 // 删除用户
                 UserAction::deleteUser()

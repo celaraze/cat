@@ -14,6 +14,7 @@ use Filament\Forms\Components\Checkbox;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 use Ramsey\Uuid\Uuid;
@@ -28,7 +29,7 @@ class DeviceForm
         return [
             Select::make('asset_number')
                 ->label('资产编号')
-                ->options(DeviceService::pluckOptions())
+                ->options(DeviceService::pluckOptions('asset_number'))
                 ->searchable()
                 ->preload()
                 ->placeholder($asset_number)
@@ -127,6 +128,9 @@ class DeviceForm
                     }
                 ),
             //endregion
+
+            Textarea::make('description')
+                ->label('说明'),
         ];
     }
 

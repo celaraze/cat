@@ -60,8 +60,9 @@ class HasPart extends ManageRelatedRecords
                     ->visible(function () {
                         $can = auth()->user()->can('create_has_part_part');
                         $part = $this->getOwnerRecord();
+
                         /* @var Part $part */
-                        return $can && !$part->hasParts()->count();
+                        return $can && ! $part->hasParts()->count();
                     }),
             ])
             ->actions([
@@ -70,13 +71,13 @@ class HasPart extends ManageRelatedRecords
                     ->visible(function (DeviceHasPart $device_has_part) {
                         $can = auth()->user()->can('delete_has_part_part');
 
-                        return $can && !$device_has_part->service()->isDeleted();
+                        return $can && ! $device_has_part->service()->isDeleted();
                     }),
             ])
             ->bulkActions([
 
             ])
-            ->modifyQueryUsing(fn(Builder $query) => $query->orderByDesc('id')
+            ->modifyQueryUsing(fn (Builder $query) => $query->orderByDesc('id')
                 ->withoutGlobalScopes([
                     SoftDeletingScope::class,
                 ]));

@@ -65,7 +65,7 @@ class TicketAction
      */
     public static function createTicketHasTrack(Model $ticket): Action
     {
-        /* @var $ticket Ticket */
+        /* @var Ticket $ticket */
         return Action::make('发表评论')
             ->slideOver()
             ->icon('heroicon-m-plus-circle')
@@ -108,7 +108,7 @@ class TicketAction
      */
     public static function finish(Model $ticket): \Filament\Actions\Action
     {
-        /* @var $ticket Ticket */
+        /* @var Ticket $ticket  */
         return \Filament\Actions\Action::make('标记完成')
             ->color('success')
             ->icon('heroicon-o-check-circle')

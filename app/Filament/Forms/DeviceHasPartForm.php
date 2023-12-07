@@ -2,6 +2,7 @@
 
 namespace App\Filament\Forms;
 
+use App\Models\Part;
 use App\Services\DeviceService;
 use App\Services\PartService;
 use Filament\Forms\Components\Select;
@@ -28,11 +29,13 @@ class DeviceHasPartForm
     /**
      * 配件附加到设备.
      */
-    public static function createFromPart(): array
+    public static function createFromPart(Part $part): array
     {
+        $device_ids = $part->hasParts()->pluck('device_id')->toArray();
+
         return [
             Select::make('device_id')
-                ->options(DeviceService::pluckOptions())
+                ->options(DeviceService::pluckOptions('id', $device_ids))
                 ->searchable()
                 ->label('设备'),
         ];

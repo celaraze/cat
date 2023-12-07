@@ -18,7 +18,7 @@ class SettingService
      */
     public function set(string $key, string $value): void
     {
-        /* @var $exist Setting */
+        /* @var Setting $exist  */
         $exist = Setting::query()->where('custom_key', $key)->first();
         if ($exist) {
             $this->setting = $exist;

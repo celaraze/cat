@@ -26,7 +26,7 @@ class FlowAction
      */
     public static function createHasNode(Model $flow): Action
     {
-        /* @var $flow Flow */
+        /* @var Flow $flow  */
         return Action::make('追加节点')
             ->slideOver()
             ->icon('heroicon-s-user-plus')
@@ -65,7 +65,7 @@ class FlowAction
      */
     public static function deleteHasNode(Model $flow): Action
     {
-        /* @var $flow Flow */
+        /* @var Flow $flow  */
         return Action::make('删除')
             ->color('danger')
             ->icon('heroicon-s-trash')
@@ -86,7 +86,7 @@ class FlowAction
      */
     public static function deleteHasNodeWithAll(Model $flow): Action
     {
-        /* @var $flow Flow */
+        /* @var Flow $flow  */
         return Action::make('清空节点')
             ->color('danger')
             ->requiresConfirmation()

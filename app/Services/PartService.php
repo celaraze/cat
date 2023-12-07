@@ -27,7 +27,15 @@ class PartService
      */
     public static function pluckOptions(): Collection
     {
-        return Part::query()->pluck('asset_number', 'id');
+        return Part::query()->get()->mapWithKeys(function (Part $part) {
+            $title = '';
+            $title .= $part->getAttribute('asset_number');
+            $title .= ' | '.$part->brand()->first()?->getAttribute('name') ?? '未知';
+            $title .= ' | '.$part->getAttribute('specification');
+            $title .= ' | '.$part->category()->first()?->getAttribute('name') ?? '闲置';
+
+            return [$part->getKey() => $title];
+        });
     }
 
     /**
@@ -82,7 +90,7 @@ class PartService
             $asset_number_rule = AssetNumberRule::query()
                 ->where('class_name', $this->part::class)
                 ->first();
-            /* @var  $asset_number_rule AssetNumberRule */
+            /* @var AssetNumberRule $asset_number_rule  */
             if ($asset_number_rule) {
                 // 如果绑定了自动生成规则并且启用
                 if ($asset_number_rule->getAttribute('is_auto')) {
@@ -97,6 +105,7 @@ class PartService
             $this->part->setAttribute('sn', $data['sn'] ?? '无');
             $this->part->setAttribute('specification', $data['specification'] ?? '无');
             $this->part->setAttribute('image', $data['image'] ?? '无');
+            $this->part->setAttribute('description', $data['description']);
             $this->part->save();
             $this->part->assetNumberTrack()
                 ->create(['asset_number' => $asset_number]);
@@ -137,13 +146,13 @@ class PartService
         $flow_id = Setting::query()
             ->where('custom_key', 'part_retire_flow_id')
             ->value('custom_value');
-        if (!$flow_id) {
+        if (! $flow_id) {
             throw new Exception('还未配置配件报废流程');
         }
         $flow = Flow::query()
             ->where('id', $flow_id)
             ->first();
-        if (!$flow) {
+        if (! $flow) {
             throw new Exception('未找到已配置的配件报废流程');
         }
 

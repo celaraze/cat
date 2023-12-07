@@ -9,6 +9,7 @@ use Filament\Forms\Components\Actions\Action;
 use Filament\Forms\Components\Checkbox;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 use Ramsey\Uuid\Uuid;
@@ -82,6 +83,9 @@ class PartForm
                     }
                 ),
             //endregion
+
+            Textarea::make('description')
+                ->label('说明'),
         ];
     }
 
