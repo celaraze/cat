@@ -23,7 +23,7 @@ class ChangePassword extends Widget implements HasActions, HasForms
     {
         return UserAction::changePassword()
             // DEMO 模式不允许修改密码
-            ->visible(!config('DEMO_MODE'));
+            ->visible(!config('app.demo_mode'));
     }
 
     public function getDescription(): string
