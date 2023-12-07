@@ -25,6 +25,6 @@ class Version extends Command
      */
     public function handle(): void
     {
-        $this->info('20231206-1');
+        $this->info('20231207-1');
     }
 }

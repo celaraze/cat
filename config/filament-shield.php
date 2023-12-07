@@ -73,6 +73,7 @@ return [
             'StatsOverviewWidget',
             'FlowProgressChart',
             'ChangePassword',
+            'ChangeAvatar',
         ],
 
         'resources' => [],

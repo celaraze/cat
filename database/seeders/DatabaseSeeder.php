@@ -17,6 +17,5 @@ class DatabaseSeeder extends Seeder
         $this->call(SoftwareCategoriesTableSeeder::class);
         $this->call(PartCategoriesTableSeeder::class);
         $this->call(AssetNumberRulesTableSeeder::class);
-        $this->call(ShieldSeeder::class);
     }
 }

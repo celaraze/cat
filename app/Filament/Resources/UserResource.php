@@ -46,7 +46,7 @@ class UserResource extends Resource implements HasShieldPermissions
 
     public static function getGlobalSearchResultDetails(Model $record): array
     {
-        /* @var User $record  */
+        /* @var User $record */
         return [
             '账户' => $record->getAttribute('email'),
         ];
@@ -76,6 +76,11 @@ class UserResource extends Resource implements HasShieldPermissions
     {
         return $table
             ->columns([
+                Tables\Columns\ImageColumn::make('avatar_url')
+                    ->label('头像')
+                    ->toggleable()
+                    ->circular()
+                    ->defaultImageUrl(('/images/default.jpg')),
                 Tables\Columns\TextColumn::make('name')
                     ->label('名称'),
                 Tables\Columns\TextColumn::make('email')

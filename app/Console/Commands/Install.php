@@ -34,9 +34,12 @@ class Install extends Command
         $this->call('migrate');
         $this->warn('正在初始化基础数据');
         $this->call('db:seed');
-        $this->warn('创建超级管理员账户');
+        $this->warn('请创建超级管理员账户');
         $this->call('make:filament-user');
+        $this->warn('正在同步刷新权限，请耐心等待');
+        $this->call('shield:generate', ['--all' => null]);
         $this->call('shield:super-admin');
         $this->call('cat:toc');
+        $this->warn('安装完成！记得给作者点赞：✨ https://github.com/celaraze/cat.git ✨');
     }
 }
