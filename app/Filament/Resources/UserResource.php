@@ -97,7 +97,10 @@ class UserResource extends Resource implements HasShieldPermissions
                 // 清除密码
                 UserAction::resetPassword()
                     ->visible(function () {
-                        return auth()->user()->can('reset_password_user');
+                        $can = auth()->user()->can('reset_password_user');
+                        // DEMO 模式不允许清除密码
+                        $demo_mode = config('DEMO_MODE');
+                        return $can && !$demo_mode;
                     }),
                 // 删除用户
                 UserAction::deleteUser()

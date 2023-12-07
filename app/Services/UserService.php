@@ -81,11 +81,14 @@ class UserService
         if ($this->user->deviceHasUsers()->count()) {
             throw new Exception('请先删除设备分配记录');
         }
-        if ($this->user->applicantForms()->count()) {
+        if ($this->user->applicantForms()->whereNotIn('status', [3, 4])->count()) {
             throw new Exception('请先结案此用户的申请表单');
         }
-        if ($this->user->approvalForms()->count()) {
+        if ($this->user->approvalForms()->whereNotIn('status', [3, 4])->count()) {
             throw new Exception('请先结案以此用户审批的申请表单');
+        }
+        if ($this->user->getKey() == auth()->id()) {
+            throw new Exception('不能删除自己');
         }
 
         return $this->user->delete();
