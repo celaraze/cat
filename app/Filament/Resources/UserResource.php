@@ -63,6 +63,7 @@ class UserResource extends Resource implements HasShieldPermissions
             'delete_any',
             'import',
             'export',
+            'reset_password',
         ];
     }
 

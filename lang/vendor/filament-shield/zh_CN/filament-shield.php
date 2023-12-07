@@ -90,5 +90,6 @@ return [
         'create_has_software' => '附加软件',
         'delete_has_software' => '脱离软件',
         'check' => '盘点',
+        'reset_password' => '重置密码',
     ],
 ];
