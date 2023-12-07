@@ -22,6 +22,7 @@ class UserAction
             ->color('warning')
             ->icon('heroicon-o-lock-open')
             ->requiresConfirmation()
+            ->form()
             ->action(function (User $user) {
                 try {
                     $user->service()->changePassword('cat');

@@ -22,6 +22,9 @@ class UserForm
                 ->label('邮箱')
                 ->rules(['email'])
                 ->required(),
+            Shout::make('')
+                ->color('warning')
+                ->content('新建用户的默认密码为 cat ，请提醒用户及时修改密码。'),
         ];
     }
 
@@ -79,29 +82,43 @@ class UserForm
                 ->content(function () use ($bool) {
                     $icon = $bool['device_has_users'] ? '✔' : '✖';
 
-                    return $icon.' 此用户没有正在管理的设备';
+                    return $icon . ' 此用户没有正在管理的设备';
                 }),
             Shout::make('')
                 ->color('warning')
                 ->content(function () use ($bool) {
                     $icon = $bool['applicant_forms'] ? '✔' : '✖';
 
-                    return $icon.' 此用户没有尚未结案的申请表单';
+                    return $icon . ' 此用户没有尚未结案的申请表单';
                 }),
             Shout::make('')
                 ->color('warning')
                 ->content(function () use ($bool) {
                     $icon = $bool['approve_forms'] ? '✔' : '✖';
 
-                    return $icon.' 此用户没有尚未结案的审批表单';
+                    return $icon . ' 此用户没有尚未结案的审批表单';
                 }),
             Shout::make('')
                 ->color('warning')
                 ->content(function () use ($bool) {
                     $icon = $bool['approve_nodes'] ? '✔' : '✖';
 
-                    return $icon.' 此用户没有正在审批的节点';
+                    return $icon . ' 此用户没有正在审批的节点';
                 }),
+        ];
+    }
+
+    /**
+     * 修改密码.
+     *
+     * @return array
+     */
+    public static function resetPassword(): array
+    {
+        return [
+            Shout::make('')
+                ->color('warning')
+                ->content('重置后用户的默认密码为 cat ，请提醒用户及时修改密码。'),
         ];
     }
 }
