@@ -35,12 +35,18 @@ class VendorResource extends Resource implements HasShieldPermissions
 
     public static function getRecordSubNavigation(Page $page): array
     {
-        return $page->generateNavigationItems([
+        $navigation_items = [
             Index::class,
             View::class,
             Edit::class,
             Contact::class,
-        ]);
+        ];
+        $can_update_vendor = auth()->user()->can('update_vendor');
+        if (! $can_update_vendor) {
+            unset($navigation_items[2]);
+        }
+
+        return $page->generateNavigationItems($navigation_items);
     }
 
     public static function getPermissionPrefixes(): array
@@ -83,11 +89,8 @@ class VendorResource extends Resource implements HasShieldPermissions
 
             ])
             ->actions([
-                // 编辑
-                Tables\Actions\EditAction::make()
-                    ->visible(function () {
-                        return auth()->user()->can('update_vendor');
-                    }),
+                // 查看
+                Tables\Actions\ViewAction::make(),
             ])
             ->bulkActions([
 

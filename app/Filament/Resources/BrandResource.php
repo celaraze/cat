@@ -34,11 +34,17 @@ class BrandResource extends Resource implements HasShieldPermissions
 
     public static function getRecordSubNavigation(Page $page): array
     {
-        return $page->generateNavigationItems([
+        $navigation = [
             Index::class,
             View::class,
             Edit::class,
-        ]);
+        ];
+        $can_update_brand = auth()->user()->can('update_brand');
+        if (! $can_update_brand) {
+            unset($navigation[2]);
+        }
+
+        return $page->generateNavigationItems($navigation);
     }
 
     public static function getPermissionPrefixes(): array
@@ -73,11 +79,6 @@ class BrandResource extends Resource implements HasShieldPermissions
             ->actions([
                 // 查看
                 Tables\Actions\ViewAction::make(),
-                // 编辑
-                Tables\Actions\EditAction::make()
-                    ->visible(function () {
-                        return auth()->user()->can('update_brand');
-                    }),
                 // 删除
                 Tables\Actions\DeleteAction::make()
                     ->visible(function () {

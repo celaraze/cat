@@ -4,6 +4,7 @@ namespace App\Filament\Resources\DeviceResource\Pages;
 
 use App\Filament\Actions\DeviceAction;
 use App\Filament\Resources\DeviceResource;
+use App\Models\Device;
 use App\Models\DeviceHasPart;
 use Filament\Resources\Pages\ManageRelatedRecords;
 use Filament\Tables;
@@ -69,16 +70,24 @@ class HasPart extends ManageRelatedRecords
                 // 创建
                 DeviceAction::createHasPart($this->getOwnerRecord())
                     ->visible(function () {
-                        return auth()->user()->can('create_has_part_device');
+                        /* @var Device $device */
+                        $device = $this->getOwnerRecord();
+                        $can = auth()->user()->can('create_has_part_device');
+                        $is_retired = $device->service()->isRetired();
+
+                        return $can && ! $is_retired;
                     }),
             ])
             ->actions([
                 // 删除
                 DeviceAction::deleteHasPart()
                     ->visible(function (DeviceHasPart $device_has_part) {
+                        /* @var Device $device */
+                        $device = $this->getOwnerRecord();
                         $can = auth()->user()->can('delete_has_part_device');
+                        $is_retired = $device->service()->isRetired();
 
-                        return $can && ! $device_has_part->service()->isDeleted();
+                        return $can && ! $is_retired && ! $device_has_part->service()->isDeleted();
                     }),
             ])
             ->bulkActions([

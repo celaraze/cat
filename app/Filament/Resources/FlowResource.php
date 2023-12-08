@@ -33,12 +33,18 @@ class FlowResource extends Resource implements HasShieldPermissions
 
     public static function getRecordSubNavigation(Page $page): array
     {
-        return $page->generateNavigationItems([
+        $navigation_items = [
             Index::class,
             View::class,
             Edit::class,
             Node::class,
-        ]);
+        ];
+        $can_update_flow = auth()->user()->can('update_flow');
+        if (! $can_update_flow) {
+            unset($navigation_items[2]);
+        }
+
+        return $page->generateNavigationItems($navigation_items);
     }
 
     public static function getPermissionPrefixes(): array

@@ -222,4 +222,16 @@ class DeviceService
 
         return $flow;
     }
+
+    /**
+     * 是否报废.
+     */
+    public function isRetired(): bool
+    {
+        if ($this->device->getAttribute('deleted_at')) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }

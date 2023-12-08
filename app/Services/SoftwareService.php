@@ -175,4 +175,16 @@ class SoftwareService
 
         return $flow;
     }
+
+    /**
+     * 是否报废.
+     */
+    public function isRetired(): bool
+    {
+        if ($this->software->getAttribute('deleted_at')) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }

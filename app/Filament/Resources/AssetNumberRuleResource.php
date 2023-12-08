@@ -31,11 +31,17 @@ class AssetNumberRuleResource extends Resource implements HasShieldPermissions
 
     public static function getRecordSubNavigation(Page $page): array
     {
-        return $page->generateNavigationItems([
+        $navigation_items = [
             Index::class,
             View::class,
             Edit::class,
-        ]);
+        ];
+        $can_update_device = auth()->user()->can('update_asset::number::rule');
+        if (! $can_update_device) {
+            unset($navigation_items[2]);
+        }
+
+        return $page->generateNavigationItems($navigation_items);
     }
 
     public static function getPermissionPrefixes(): array
@@ -74,13 +80,9 @@ class AssetNumberRuleResource extends Resource implements HasShieldPermissions
             ->actions([
                 // 查看
                 Tables\Actions\ViewAction::make(),
-                // 编辑
-                Tables\Actions\EditAction::make()
-                    ->visible(function () {
-                        return auth()->user()->can('update_asset::number::rule');
-                    }),
                 // 删除
                 Tables\Actions\DeleteAction::make()
+                    ->closeModalByClickingAway(false)
                     ->visible(function () {
                         return auth()->user()->can('delete_asset::number::rule');
                     }),

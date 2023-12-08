@@ -36,12 +36,18 @@ class OrganizationResource extends Resource implements HasShieldPermissions
 
     public static function getRecordSubNavigation(Page $page): array
     {
-        return $page->generateNavigationItems([
+        $navigation_items = [
             Tree::class,
             View::class,
             Edit::class,
             HasUser::class,
-        ]);
+        ];
+        $can_update_organization = auth()->user()->can('update_organization');
+        if (! $can_update_organization) {
+            unset($navigation_items[2]);
+        }
+
+        return $page->generateNavigationItems($navigation_items);
     }
 
     public static function getPermissionPrefixes(): array

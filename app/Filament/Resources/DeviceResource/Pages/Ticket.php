@@ -4,6 +4,7 @@ namespace App\Filament\Resources\DeviceResource\Pages;
 
 use App\Filament\Actions\DeviceAction;
 use App\Filament\Resources\DeviceResource;
+use App\Models\Device;
 use Filament\Resources\Pages\ManageRelatedRecords;
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -63,7 +64,13 @@ class Ticket extends ManageRelatedRecords
             ])
             ->headerActions([
                 // 创建
-                DeviceAction::createTicket($this->getOwnerRecord()->getAttribute('asset_number')),
+                DeviceAction::createTicket($this->getOwnerRecord()->getAttribute('asset_number'))
+                    ->visible(function () {
+                        /* @var Device $device */
+                        $device = $this->getOwnerRecord();
+
+                        return ! $device->service()->isRetired();
+                    }),
             ])
             ->actions([
                 // 前往工单

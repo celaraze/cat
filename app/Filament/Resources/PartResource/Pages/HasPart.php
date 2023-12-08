@@ -68,11 +68,12 @@ class HasPart extends ManageRelatedRecords
                 // 创建
                 PartAction::createDeviceHasPart($this->getOwnerRecord())
                     ->visible(function () {
-                        $can = auth()->user()->can('create_has_part_part');
-                        $part = $this->getOwnerRecord();
-
                         /* @var Part $part */
-                        return $can && ! $part->hasParts()->count();
+                        $part = $this->getOwnerRecord();
+                        $can = auth()->user()->can('create_has_part_part');
+                        $is_retired = $part->service()->isRetired();
+
+                        return $can && ! $is_retired && ! $part->hasParts()->count();
                     }),
             ])
             ->actions([
@@ -80,8 +81,9 @@ class HasPart extends ManageRelatedRecords
                 PartAction::deleteDeviceHasPart()
                     ->visible(function (DeviceHasPart $device_has_part) {
                         $can = auth()->user()->can('delete_has_part_part');
+                        $is_retired = $device_has_part->part()->first()?->service()->isRetired() ?? false;
 
-                        return $can && ! $device_has_part->service()->isDeleted();
+                        return $can && ! $is_retired && ! $device_has_part->service()->isDeleted();
                     }),
             ])
             ->bulkActions([

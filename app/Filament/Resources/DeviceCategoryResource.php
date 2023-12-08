@@ -31,12 +31,18 @@ class DeviceCategoryResource extends Resource implements HasShieldPermissions
 
     public static function getRecordSubNavigation(Page $page): array
     {
-        return $page->generateNavigationItems([
+        $navigation_items = [
             Index::class,
             View::class,
             Edit::class,
             Device::class,
-        ]);
+        ];
+        $can_update_device_category = auth()->user()->can('update_device::category');
+        if (! $can_update_device_category) {
+            unset($navigation_items[2]);
+        }
+
+        return $page->generateNavigationItems($navigation_items);
     }
 
     public static function getPermissionPrefixes(): array
@@ -70,11 +76,6 @@ class DeviceCategoryResource extends Resource implements HasShieldPermissions
                 Tables\Actions\ViewAction::make()
                     ->visible(function () {
                         return auth()->user()->can('view_device::category');
-                    }),
-                // 编辑
-                Tables\Actions\EditAction::make()
-                    ->visible(function () {
-                        return auth()->user()->can('update_device::category');
                     }),
                 // 删除
                 DeviceCategoryAction::delete()

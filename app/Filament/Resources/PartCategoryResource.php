@@ -31,12 +31,18 @@ class PartCategoryResource extends Resource implements HasShieldPermissions
 
     public static function getRecordSubNavigation(Page $page): array
     {
-        return $page->generateNavigationItems([
+        $navigation_items = [
             Index::class,
             View::class,
             Edit::class,
             Part::class,
-        ]);
+        ];
+        $can_update_part_category = auth()->user()->can('update_part::category');
+        if (! $can_update_part_category) {
+            unset($navigation_items[2]);
+        }
+
+        return $page->generateNavigationItems($navigation_items);
     }
 
     public static function getPermissionPrefixes(): array
@@ -75,11 +81,6 @@ class PartCategoryResource extends Resource implements HasShieldPermissions
                 Tables\Actions\ViewAction::make()
                     ->visible(function () {
                         return auth()->user()->can('view_part::category');
-                    }),
-                // 编辑
-                Tables\Actions\EditAction::make()
-                    ->visible(function () {
-                        return auth()->user()->can('update_part::category');
                     }),
                 // 删除
                 PartCategoryAction::delete()

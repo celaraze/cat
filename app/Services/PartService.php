@@ -90,7 +90,7 @@ class PartService
             $asset_number_rule = AssetNumberRule::query()
                 ->where('class_name', $this->part::class)
                 ->first();
-            /* @var AssetNumberRule $asset_number_rule  */
+            /* @var AssetNumberRule $asset_number_rule */
             if ($asset_number_rule) {
                 // 如果绑定了自动生成规则并且启用
                 if ($asset_number_rule->getAttribute('is_auto')) {
@@ -157,5 +157,17 @@ class PartService
         }
 
         return $flow;
+    }
+
+    /**
+     * 是否报废.
+     */
+    public function isRetired(): bool
+    {
+        if ($this->part->getAttribute('deleted_at')) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }

@@ -5,19 +5,23 @@ namespace App\Filament\Resources;
 use App\Filament\Actions\TicketAction;
 use App\Filament\Actions\TicketCategoryAction;
 use App\Filament\Forms\TicketCategoryForm;
+use App\Filament\Imports\TicketCategoryImporter;
 use App\Filament\Resources\TicketCategoryResource\Pages\Edit;
 use App\Filament\Resources\TicketCategoryResource\Pages\Index;
 use App\Filament\Resources\TicketCategoryResource\Pages\View;
 use App\Models\TicketCategory;
+use BezhanSalleh\FilamentShield\Contracts\HasShieldPermissions;
 use Filament\Forms\Form;
 use Filament\Resources\Pages\Page;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Actions\ImportAction;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use pxlrbt\FilamentExcel\Actions\Tables\ExportAction;
 
-class TicketCategoryResource extends Resource
+class TicketCategoryResource extends Resource implements HasShieldPermissions
 {
     protected static ?string $model = TicketCategory::class;
 
@@ -27,11 +31,31 @@ class TicketCategoryResource extends Resource
 
     public static function getRecordSubNavigation(Page $page): array
     {
-        return $page->generateNavigationItems([
+        $navigation_items = [
             Index::class,
             View::class,
             Edit::class,
-        ]);
+        ];
+        $can_update_ticket_category = auth()->user()->can('update_ticket::category');
+        if (! $can_update_ticket_category) {
+            unset($navigation_items[2]);
+        }
+
+        return $page->generateNavigationItems($navigation_items);
+    }
+
+    public static function getPermissionPrefixes(): array
+    {
+        return [
+            'view',
+            'view_any',
+            'create',
+            'update',
+            'delete',
+            'delete_any',
+            'import',
+            'export',
+        ];
     }
 
     public static function shouldRegisterNavigation(): bool
@@ -60,8 +84,6 @@ class TicketCategoryResource extends Resource
             ->actions([
                 // 详情
                 Tables\Actions\ViewAction::make(),
-                // 编辑
-                Tables\Actions\EditAction::make(),
                 // 删除
                 TicketCategoryAction::delete(),
             ])
@@ -69,6 +91,21 @@ class TicketCategoryResource extends Resource
 
             ])
             ->headerActions([
+                // 导入
+                ImportAction::make()
+                    ->importer(TicketCategoryImporter::class)
+                    ->icon('heroicon-o-arrow-up-tray')
+                    ->color('primary')
+                    ->label('导入')
+                    ->visible(function () {
+                        return auth()->user()->can('import_ticket::category');
+                    }),
+                // 导出
+                ExportAction::make()
+                    ->label('导出')
+                    ->visible(function () {
+                        return auth()->user()->can('export_ticket::category');
+                    }),
                 // 创建
                 TicketCategoryAction::create(),
                 // 前往工单

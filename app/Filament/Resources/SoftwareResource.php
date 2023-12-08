@@ -58,12 +58,19 @@ class SoftwareResource extends Resource implements HasShieldPermissions
 
     public static function getRecordSubNavigation(Page $page): array
     {
-        return $page->generateNavigationItems([
+        $navigation_items = [
             Index::class,
             View::class,
             Edit::class,
             HasSoftware::class,
-        ]);
+        ];
+        $software_service = $page->getWidgetData()['record']->service();
+        $can_update_software = auth()->user()->can('update_software');
+        if ($software_service->isRetired() || ! $can_update_software) {
+            unset($navigation_items[2]);
+        }
+
+        return $page->generateNavigationItems($navigation_items);
     }
 
     public static function getPermissionPrefixes(): array
@@ -120,6 +127,12 @@ class SoftwareResource extends Resource implements HasShieldPermissions
                     ->searchable()
                     ->toggleable()
                     ->label('规格'),
+                Tables\Columns\TextColumn::make('deleted_at')
+                    ->searchable()
+                    ->toggleable()
+                    ->badge()
+                    ->color('danger')
+                    ->label('报废时间'),
             ])
             ->filters([
                 Tables\Filters\TrashedFilter::make(),
@@ -133,11 +146,6 @@ class SoftwareResource extends Resource implements HasShieldPermissions
                 Tables\Actions\ViewAction::make()
                     ->visible(function () {
                         return auth()->user()->can('view_software');
-                    }),
-                // 编辑
-                Tables\Actions\EditAction::make()
-                    ->visible(function () {
-                        return auth()->user()->can('update_software');
                     }),
                 Tables\Actions\ActionGroup::make([
                     // 流程报废

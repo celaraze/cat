@@ -83,8 +83,9 @@ class HasUser extends ManageRelatedRecords
                         /* @var Device $device */
                         $device = $this->getOwnerRecord();
                         $can = auth()->user()->can('assign_user_device');
+                        $is_retired = $device->service()->isRetired();
 
-                        return $can && ! $device->service()->isExistHasUser();
+                        return $can && ! $is_retired && ! $device->service()->isExistHasUser();
                     }),
                 // 解除管理者
                 DeviceAction::deleteHasUser($this->getOwnerRecord())
@@ -92,8 +93,9 @@ class HasUser extends ManageRelatedRecords
                         /* @var Device $device */
                         $device = $this->getOwnerRecord();
                         $can = auth()->user()->can('delete_assign_user_device');
+                        $is_retired = $device->service()->isRetired();
 
-                        return $can && $device->service()->isExistHasUser();
+                        return $can && ! $is_retired && $device->service()->isExistHasUser();
                     }),
             ])
             ->actions([

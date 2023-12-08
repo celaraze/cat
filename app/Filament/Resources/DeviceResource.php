@@ -59,7 +59,7 @@ class DeviceResource extends Resource implements HasShieldPermissions
 
     public static function getRecordSubNavigation(Page $page): array
     {
-        return $page->generateNavigationItems([
+        $navigation_items = [
             Index::class,
             View::class,
             Edit::class,
@@ -67,7 +67,14 @@ class DeviceResource extends Resource implements HasShieldPermissions
             HasPart::class,
             HasSoftware::class,
             Ticket::class,
-        ]);
+        ];
+        $device_service = $page->getWidgetData()['record']->service();
+        $can_update_device = auth()->user()->can('update_device');
+        if ($device_service->isRetired() || ! $can_update_device) {
+            unset($navigation_items[2]);
+        }
+
+        return $page->generateNavigationItems($navigation_items);
     }
 
     public static function getPermissionPrefixes(): array
@@ -145,11 +152,6 @@ class DeviceResource extends Resource implements HasShieldPermissions
                     ->visible(function () {
                         return auth()->user()->can('view_device');
                     }),
-                // 编辑
-                Tables\Actions\EditAction::make()
-                    ->visible(function () {
-                        return auth()->user()->can('update_device');
-                    }),
                 Tables\Actions\ActionGroup::make([
                     // 创建工单
                     DeviceAction::createTicket(),
@@ -179,7 +181,10 @@ class DeviceResource extends Resource implements HasShieldPermissions
                         ->visible(function () {
                             return auth()->user()->can('force_retire_device');
                         }),
-                ]),
+                ])
+                    ->visible(function (Device $device) {
+                        return ! $device->service()->isRetired();
+                    }),
             ])
             ->bulkActions([
 

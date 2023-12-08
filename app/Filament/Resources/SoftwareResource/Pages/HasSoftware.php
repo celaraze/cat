@@ -5,6 +5,7 @@ namespace App\Filament\Resources\SoftwareResource\Pages;
 use App\Filament\Actions\SoftwareAction;
 use App\Filament\Resources\SoftwareResource;
 use App\Models\DeviceHasSoftware;
+use App\Models\Software;
 use Filament\Forms\Form;
 use Filament\Resources\Pages\ManageRelatedRecords;
 use Filament\Tables;
@@ -76,7 +77,12 @@ class HasSoftware extends ManageRelatedRecords
                 // 创建
                 SoftwareAction::createDeviceHasSoftware($this->getOwnerRecord())
                     ->visible(function () {
-                        return auth()->user()->can('create_has_software_software');
+                        /* @var Software $software */
+                        $software = $this->getOwnerRecord();
+                        $can = auth()->user()->can('create_has_software_software');
+                        $is_retired = $software->service()->isRetired();
+
+                        return $can && ! $is_retired;
                     }),
             ])
             ->actions([
@@ -84,8 +90,9 @@ class HasSoftware extends ManageRelatedRecords
                 SoftwareAction::deleteDeviceHasSoftware()
                     ->visible(function (DeviceHasSoftware $device_has_software) {
                         $can = auth()->user()->can('delete_has_software_software');
+                        $is_retired = $device_has_software->software()->first()?->service()->isRetired() ?? false;
 
-                        return $can && ! $device_has_software->service()->isDeleted();
+                        return $can && ! $is_retired && ! $device_has_software->service()->isDeleted();
                     }),
             ])
             ->bulkActions([

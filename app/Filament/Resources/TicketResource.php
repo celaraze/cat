@@ -39,12 +39,14 @@ class TicketResource extends Resource
 
     public static function getRecordSubNavigation(Page $page): array
     {
-        return $page->generateNavigationItems([
+        $navigation_items = [
             Index::class,
             View::class,
             Edit::class,
             Track::class,
-        ]);
+        ];
+
+        return $page->generateNavigationItems($navigation_items);
     }
 
     public static function table(Table $table): Table

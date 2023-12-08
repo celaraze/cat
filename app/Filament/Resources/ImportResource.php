@@ -33,11 +33,13 @@ class ImportResource extends Resource
 
     public static function getRecordSubNavigation(Page $page): array
     {
-        return $page->generateNavigationItems([
+        $navigation_items = [
             Index::class,
             View::class,
             FailedImportRows::class,
-        ]);
+        ];
+
+        return $page->generateNavigationItems($navigation_items);
     }
 
     public static function form(Form $form): Form
