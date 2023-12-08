@@ -11,6 +11,8 @@ use App\Models\Setting;
 use App\Models\Software;
 use Exception;
 use Illuminate\Support\Facades\DB;
+use JetBrains\PhpStorm\ArrayShape;
+use Ramsey\Uuid\Uuid;
 
 class FlowHasFormService
 {
@@ -102,7 +104,7 @@ class FlowHasFormService
         $new_form->setAttribute('approve_comment', $approve_comment);
         // 如果表单流程结束，将经历的节点信息快照方式保存
         if ($status == 3 || $status == 4) {
-            /* @var Flow $flow  */
+            /* @var Flow $flow */
             $flow = $this->flow_has_form->flow()->first();
 
             $flow_progress = $flow->service()->sortNodes();
@@ -116,7 +118,7 @@ class FlowHasFormService
                     ->where('custom_key', 'device_retire_flow_id')
                     ->value('custom_value');
                 if ($device_delete_flow_id == $flow->getKey()) {
-                    /* @var Device $device  */
+                    /* @var Device $device */
                     $device = Device::query()
                         ->where('asset_number', $this->flow_has_form->getAttribute('payload'))
                         ->first();
@@ -130,7 +132,7 @@ class FlowHasFormService
                     ->where('custom_key', 'part_retire_flow_id')
                     ->value('custom_value');
                 if ($part_delete_flow_id == $flow->getKey()) {
-                    /* @var Part $part  */
+                    /* @var Part $part */
                     $part = Part::query()
                         ->where('asset_number', $this->flow_has_form->getAttribute('payload'))
                         ->first();
@@ -144,7 +146,7 @@ class FlowHasFormService
                     ->where('custom_key', 'software_retire_flow_id')
                     ->value('custom_value');
                 if ($software_delete_flow_id == $flow->getKey()) {
-                    /* @var  Software $software  */
+                    /* @var  Software $software */
                     $software = Software::query()
                         ->where('asset_number', $this->flow_has_form->getAttribute('payload'))
                         ->first();
@@ -191,5 +193,45 @@ class FlowHasFormService
         // 子类映射，上述方法获取到的结果类型是Model，需要转换为FlowHasForm类型
         $flow_has_form = new FlowHasForm($flow_has_form);
         $this->flow_has_form = $flow_has_form;
+    }
+
+    /**
+     * 创建流程表单.
+     *
+     * @throws Exception
+     */
+    #[ArrayShape([
+        'name' => 'string',
+        'flow_id' => 'int',
+        'comment' => 'string',
+        'payload' => 'string',
+    ])]
+    public function create(array $data): bool
+    {
+        /* @var Flow $flow */
+        $flow = Flow::query()->where('id', $data['flow_id'])->first();
+        $node_counts = $flow->nodes()
+            ->where('parent_node_id', '!=', 0)
+            ->count();
+        if (! $node_counts) {
+            throw new Exception('表单所属流程至少需要一个除申请人外的节点');
+        }
+        $first_node = $flow->nodes()
+            ->where('parent_node_id', 0)
+            ->first();
+        $this->flow_has_form->setAttribute('name', $data['name']);
+        $this->flow_has_form->setAttribute('flow_name', $flow->getAttribute('name'));
+        $this->flow_has_form->setAttribute('uuid', Uuid::uuid4());
+        $this->flow_has_form->setAttribute('flow_id', $flow->getKey());
+        $this->flow_has_form->setAttribute('applicant_user_id', auth()->id());
+        $this->flow_has_form->setAttribute('current_approve_user_id', $this->flow_has_form->getAttribute('applicant_user_id'));
+        $this->flow_has_form->setAttribute('comment', $data['comment']);
+        $this->flow_has_form->setAttribute('node_id', $first_node->getKey());
+        $this->flow_has_form->setAttribute('node_name', $first_node->getAttribute('name'));
+        if ($data['payload']) {
+            $this->flow_has_form->setAttribute('payload', $data['payload']);
+        }
+
+        return $this->flow_has_form->save();
     }
 }

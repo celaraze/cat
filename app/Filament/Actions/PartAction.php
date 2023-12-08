@@ -8,7 +8,8 @@ use App\Filament\Resources\PartCategoryResource;
 use App\Models\DeviceHasPart;
 use App\Models\Part;
 use App\Services\AssetNumberRuleService;
-use App\Services\FlowService;
+use App\Services\DeviceHasPartService;
+use App\Services\FlowHasFormService;
 use App\Services\PartService;
 use App\Services\SettingService;
 use App\Utils\LogUtil;
@@ -19,6 +20,35 @@ use Illuminate\Database\Eloquent\Model;
 
 class PartAction
 {
+    /**
+     * 创建配件-设备按钮.
+     */
+    public static function createDeviceHasPart(?Model $out_part = null): Action
+    {
+        /* @var Part $out_part */
+        return Action::make('附加到设备')
+            ->slideOver()
+            ->icon('heroicon-m-plus-circle')
+            ->form(DeviceHasPartForm::createFromPart($out_part))
+            ->action(function (array $data, Part $part) use ($out_part) {
+                try {
+                    if ($out_part) {
+                        $part = $out_part;
+                    }
+                    $data['part_id'] = $part->getKey();
+                    $data['user_id'] = auth()->id();
+                    $data['status'] = 0;
+                    $device_has_part_service = new DeviceHasPartService();
+                    $device_has_part_service->create($data);
+                    NotificationUtil::make(true, '配件已附加到设备');
+                } catch (Exception $exception) {
+                    LogUtil::error($exception);
+                    NotificationUtil::make(false, $exception);
+                }
+            })
+            ->closeModalByClickingAway(false);
+    }
+
     /**
      * 创建配件.
      */
@@ -42,36 +72,6 @@ class PartAction
     }
 
     /**
-     * 创建配件-设备按钮.
-     */
-    public static function createDeviceHasPart(?Model $out_part = null): Action
-    {
-        /* @var Part $out_part */
-        return Action::make('附加到设备')
-            ->slideOver()
-            ->icon('heroicon-m-plus-circle')
-            ->form(DeviceHasPartForm::createFromPart($out_part))
-            ->action(function (array $data, Part $part) use ($out_part) {
-                try {
-                    if ($out_part) {
-                        $part = $out_part;
-                    }
-                    $data = [
-                        'device_id' => $data['device_id'],
-                        'user_id' => auth()->id(),
-                        'status' => '附加',
-                    ];
-                    $part->service()->createHasPart($data);
-                    NotificationUtil::make(true, '配件已附加到设备');
-                } catch (Exception $exception) {
-                    LogUtil::error($exception);
-                    NotificationUtil::make(false, $exception);
-                }
-            })
-            ->closeModalByClickingAway(false);
-    }
-
-    /**
      * 配件脱离设备按钮.
      */
     public static function deleteDeviceHasPart(): Action
@@ -84,7 +84,7 @@ class PartAction
                 try {
                     $data = [
                         'user_id' => auth()->id(),
-                        'status' => '脱离',
+                        'status' => 1,
                     ];
                     $device_has_part->service()->delete($data);
                     NotificationUtil::make(true, '配件已脱离设备');
@@ -179,13 +179,12 @@ class PartAction
             ->action(function (array $data, Part $part) {
                 try {
                     $part_retire_flow = $part->service()->getRetireFlow();
-                    $flow_service = new FlowService($part_retire_flow);
                     $asset_number = $part->getAttribute('asset_number');
-                    $flow_service->createHasForm(
-                        '配件报废单',
-                        $data['comment'],
-                        $asset_number
-                    );
+                    $flow_has_form_service = new FlowHasFormService();
+                    $data['flow_id'] = $part_retire_flow->getKey();
+                    $data['name'] = '配件报废单 - '.$asset_number;
+                    $data['payload'] = $asset_number;
+                    $flow_has_form_service->create($data);
                     NotificationUtil::make(true, '已创建表单');
                 } catch (Exception $exception) {
                     LogUtil::error($exception);

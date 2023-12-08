@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\Enums\AssetEnum;
 use App\Filament\Actions\PartAction;
 use App\Filament\Forms\PartForm;
 use App\Filament\Imports\PartImporter;
@@ -10,6 +11,7 @@ use App\Filament\Resources\PartResource\Pages\HasPart;
 use App\Filament\Resources\PartResource\Pages\Index;
 use App\Filament\Resources\PartResource\Pages\View;
 use App\Models\Part;
+use App\Services\BrandService;
 use App\Services\PartCategoryService;
 use App\Services\PartService;
 use BezhanSalleh\FilamentShield\Contracts\HasShieldPermissions;
@@ -117,26 +119,32 @@ class PartResource extends Resource implements HasShieldPermissions
                     ->searchable()
                     ->toggleable()
                     ->label('规格'),
-                Tables\Columns\TextColumn::make('deleted_at')
-                    ->searchable()
+                Tables\Columns\TextColumn::make('status')
                     ->toggleable()
+                    ->formatStateUsing(function ($state) {
+                        return AssetEnum::statusText($state);
+                    })
                     ->badge()
-                    ->color('danger')
-                    ->label('报废时间'),
+                    ->color(function ($state) {
+                        return AssetEnum::statusColor($state);
+                    })
+                    ->label('状态'),
             ])
             ->filters([
-                Tables\Filters\TrashedFilter::make(),
                 Tables\Filters\SelectFilter::make('category_id')
                     ->multiple()
                     ->options(PartCategoryService::pluckOptions())
                     ->label('分类'),
+                Tables\Filters\SelectFilter::make('brand_id')
+                    ->multiple()
+                    ->options(BrandService::pluckOptions())
+                    ->label('品牌'),
+                Tables\Filters\SelectFilter::make('status')
+                    ->multiple()
+                    ->options(AssetEnum::allStatusText())
+                    ->label('状态'),
             ])
             ->actions([
-                // 详情
-                Tables\Actions\ViewAction::make()
-                    ->visible(function () {
-                        return auth()->user()->can('view_part');
-                    }),
                 Tables\Actions\ActionGroup::make([
                     // 流程报废
                     PartAction::retire()
@@ -197,7 +205,8 @@ class PartResource extends Resource implements HasShieldPermissions
                     ->label('高级')
                     ->icon('heroicon-m-cog-8-tooth')
                     ->button(),
-            ]);
+            ])
+            ->heading('配件清单');
     }
 
     public static function form(Form $form): Form
@@ -235,6 +244,17 @@ class PartResource extends Resource implements HasShieldPermissions
                     ]),
             ])->columnSpan(['lg' => 2]),
             Group::make()->schema([
+                Section::make()
+                    ->schema([
+                        TextEntry::make('status')
+                            ->formatStateUsing(function ($state) {
+                                return AssetEnum::statusText($state);
+                            })
+                            ->color(function ($state) {
+                                return AssetEnum::statusColor($state);
+                            })
+                            ->label(''),
+                    ]),
                 Section::make()
                     ->schema([
                         ImageEntry::make('image')

@@ -5,8 +5,8 @@ namespace App\Services;
 use App\Models\AssetNumberRule;
 use App\Models\Device;
 use App\Models\Flow;
+use App\Models\Part;
 use App\Models\Setting;
-use App\Models\Software;
 use Exception;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
@@ -30,13 +30,14 @@ class DeviceService
     {
         return Device::query()
             ->whereNotIn('id', $exclude_ids)
+            ->whereNotIn('status', [3])
             ->get()
             ->mapWithKeys(function (Device $device) use ($key_column) {
                 $title = '';
                 $title .= $device->getAttribute('asset_number');
                 $title .= ' | '.$device->getAttribute('name');
                 $user = $device->users()->first();
-                $user_name = $user?->getAttribute('name') ?? '闲置';
+                $user_name = $user?->getAttribute('name') ?? '无人使用';
                 $title .= ' | '.$user_name;
 
                 return [$device->getAttribute($key_column) => $title];
@@ -60,15 +61,6 @@ class DeviceService
     public function isExistHasUser(): bool
     {
         return $this->device->hasUsers()->count();
-    }
-
-    /**
-     * 创建设备-用户记录.
-     */
-    #[ArrayShape(['user_id' => 'int', 'comment' => 'string'])]
-    public function createHasUser(array $data): Model
-    {
-        return $this->device->hasUsers()->create($data);
     }
 
     /**
@@ -124,61 +116,6 @@ class DeviceService
     }
 
     /**
-     * 创建设备-配件记录.
-     *
-     * @throws Exception
-     */
-    #[ArrayShape(['part_id' => 'int', 'user_id' => 'int', 'status' => 'string'])]
-    public function createHasPart(array $data): Model
-    {
-        if ($this->device->hasParts()->where('part_id', $data['part_id'])->count()) {
-            throw new Exception('配件已经附加到此设备');
-        }
-
-        return $this->device->hasParts()->create($data);
-    }
-
-    /**
-     * 创建设备-软件记录.
-     *
-     * @throws Exception
-     */
-    #[ArrayShape(['software_id' => 'int', 'user_id' => 'int', 'status' => 'string'])]
-    public function createHasSoftware(array $data): Model
-    {
-        if ($this->device->hasSoftware()->where('software_id', $data['software_id'])->count()) {
-            throw new Exception('软件已经附加到此设备');
-        }
-        $software = Software::query()->where('id', $data['software_id'])->first();
-        if (! $software) {
-            throw new Exception('软件不存在');
-        }
-        /* @var Software $software */
-        $max_license_count = $software->getAttribute('max_license_count');
-        if ($max_license_count != 0 && $software->usedCount() >= $max_license_count) {
-            throw new Exception('软件授权数量不足');
-        }
-
-        return $this->device->hasSoftware()->create($data);
-    }
-
-    /**
-     * 删除设备-用户记录.
-     */
-    #[ArrayShape(['delete_comment' => 'string'])]
-    public function deleteHasUser(array $data): int
-    {
-        $this->device
-            ->hasUsers()
-            ->first()
-            ->update([
-                'delete_comment' => $data['delete_comment'],
-            ]);
-
-        return $this->device->hasUsers()->delete();
-    }
-
-    /**
      * 报废设备.
      *
      * @throws Exception
@@ -189,10 +126,15 @@ class DeviceService
             DB::beginTransaction();
             $this->device->hasUsers()->delete();
             $this->device->hasParts()->delete();
-            // 设备报废会携带所含配件全部报废
-            $this->device->parts()->delete();
             $this->device->hasSoftware()->delete();
-            $this->device->delete();
+            // 设备报废会携带所含配件全部报废
+            foreach ($this->device->parts()->get() as $part) {
+                /* @var Part $part */
+                $part->setAttribute('status', 3);
+                $part->save();
+            }
+            $this->device->setAttribute('status', 3);
+            $this->device->save();
             DB::commit();
         } catch (Exception $exception) {
             DB::rollBack();
@@ -228,7 +170,7 @@ class DeviceService
      */
     public function isRetired(): bool
     {
-        if ($this->device->getAttribute('deleted_at')) {
+        if ($this->device->getAttribute('status') == 3) {
             return true;
         } else {
             return false;

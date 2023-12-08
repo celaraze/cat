@@ -3,8 +3,6 @@
 namespace App\Services;
 
 use App\Models\Ticket;
-use Illuminate\Database\Eloquent\Model;
-use JetBrains\PhpStorm\ArrayShape;
 
 class TicketService
 {
@@ -13,15 +11,6 @@ class TicketService
     public function __construct(?Ticket $ticket = null)
     {
         $this->ticket = $ticket ?? new Ticket();
-    }
-
-    /**
-     * 创建工单记录.
-     */
-    #[ArrayShape(['comment' => 'string', 'user_id' => 'int'])]
-    public function createHasTrack(array $data): Model
-    {
-        return $this->ticket->tracks()->create($data);
     }
 
     /**
@@ -44,9 +33,11 @@ class TicketService
     /**
      * 完成.
      */
-    public function finish(): ?bool
+    public function finish(): bool
     {
-        return $this->ticket->delete();
+        $this->ticket->setAttribute('status', 2);
+
+        return $this->ticket->save();
     }
 
     /**
@@ -55,6 +46,7 @@ class TicketService
     public function setAssignee(int $user_id): bool
     {
         $this->ticket->setAttribute('assignee_id', $user_id);
+        $this->ticket->setAttribute('status', 1);
 
         return $this->ticket->save();
     }

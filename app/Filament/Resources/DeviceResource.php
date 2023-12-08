@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\Enums\AssetEnum;
 use App\Filament\Actions\DeviceAction;
 use App\Filament\Forms\DeviceForm;
 use App\Filament\Imports\DeviceImporter;
@@ -13,6 +14,7 @@ use App\Filament\Resources\DeviceResource\Pages\Index;
 use App\Filament\Resources\DeviceResource\Pages\Ticket;
 use App\Filament\Resources\DeviceResource\Pages\View;
 use App\Models\Device;
+use App\Services\BrandService;
 use App\Services\DeviceCategoryService;
 use App\Services\DeviceService;
 use BezhanSalleh\FilamentShield\Contracts\HasShieldPermissions;
@@ -117,51 +119,76 @@ class DeviceResource extends Resource implements HasShieldPermissions
                 Tables\Columns\TextColumn::make('asset_number')
                     ->searchable()
                     ->toggleable()
+                    ->copyable()
+                    ->badge()
+                    ->sortable()
+                    ->color('gray')
                     ->label('资产编号'),
                 Tables\Columns\TextColumn::make('name')
                     ->searchable()
                     ->toggleable()
+                    ->sortable()
                     ->label('名称'),
                 Tables\Columns\TextColumn::make('brand.name')
                     ->searchable()
                     ->toggleable()
+                    ->sortable()
                     ->label('品牌'),
                 Tables\Columns\TextColumn::make('category.name')
                     ->searchable()
                     ->toggleable()
+                    ->sortable()
                     ->label('分类'),
                 Tables\Columns\TextColumn::make('users.name')
                     ->searchable()
                     ->toggleable()
+                    ->badge()
+                    ->color('success')
+                    ->sortable()
                     ->label('管理者'),
                 Tables\Columns\TextColumn::make('specification')
                     ->searchable()
                     ->toggleable()
+                    ->sortable()
                     ->label('规格'),
+                Tables\Columns\TextColumn::make('status')
+                    ->toggleable()
+                    ->badge()
+                    ->sortable()
+                    ->formatStateUsing(function ($state) {
+                        return AssetEnum::statusText($state);
+                    })
+                    ->color(function ($state) {
+                        return AssetEnum::statusColor($state);
+                    })
+                    ->label('状态'),
             ])
             ->filters([
-                Tables\Filters\TrashedFilter::make(),
                 Tables\Filters\SelectFilter::make('category_id')
                     ->multiple()
                     ->options(DeviceCategoryService::pluckOptions())
                     ->label('分类'),
+                Tables\Filters\SelectFilter::make('brand_id')
+                    ->multiple()
+                    ->options(BrandService::pluckOptions())
+                    ->label('品牌'),
+                Tables\Filters\SelectFilter::make('status')
+                    ->multiple()
+                    ->options(AssetEnum::allStatusText())
+                    ->label('状态'),
             ])
             ->actions([
-                // 查看
-                Tables\Actions\ViewAction::make()
-                    ->visible(function () {
-                        return auth()->user()->can('view_device');
+                // 分配管理者
+                DeviceAction::createHasUser()
+                    ->visible(function (Device $device) {
+                        $can = auth()->user()->can('assign_user_device');
+                        $is_retired = $device->service()->isRetired();
+
+                        return $can && ! $is_retired && ! $device->hasUsers()->count();
                     }),
                 Tables\Actions\ActionGroup::make([
                     // 创建工单
                     DeviceAction::createTicket(),
-                    // 分配管理者
-                    DeviceAction::createHasUser()
-                        ->visible(function (Device $device) {
-                            $can = auth()->user()->can('assign_user_device');
-
-                            return $can && ! $device->hasUsers()->count();
-                        }),
                     // 解除管理者
                     DeviceAction::deleteHasUser()
                         ->visible(function (Device $device) {
@@ -231,7 +258,8 @@ class DeviceResource extends Resource implements HasShieldPermissions
                     ->label('高级')
                     ->icon('heroicon-m-cog-8-tooth')
                     ->button(),
-            ]);
+            ])
+            ->heading('设备清单');
     }
 
     public static function form(Form $form): Form
@@ -271,6 +299,17 @@ class DeviceResource extends Resource implements HasShieldPermissions
                     ]),
             ])->columnSpan(['lg' => 2]),
             Group::make()->schema([
+                Section::make()
+                    ->schema([
+                        TextEntry::make('status')
+                            ->formatStateUsing(function ($state) {
+                                return AssetEnum::statusText($state);
+                            })
+                            ->color(function ($state) {
+                                return AssetEnum::statusColor($state);
+                            })
+                            ->label(''),
+                    ]),
                 Section::make()
                     ->schema([
                         ImageEntry::make('image')

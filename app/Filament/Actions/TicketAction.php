@@ -5,6 +5,7 @@ namespace App\Filament\Actions;
 use App\Filament\Forms\TicketForm;
 use App\Filament\Forms\TicketHasTrackForm;
 use App\Models\Ticket;
+use App\Services\TicketHasTrackService;
 use App\Services\TicketService;
 use App\Utils\LogUtil;
 use App\Utils\NotificationUtil;
@@ -14,6 +15,31 @@ use Illuminate\Database\Eloquent\Model;
 
 class TicketAction
 {
+    /**
+     * 创建工单记录按钮.
+     */
+    public static function createHasTrack(Model $ticket): Action
+    {
+        /* @var Ticket $ticket */
+        return Action::make('发表评论')
+            ->slideOver()
+            ->icon('heroicon-m-plus-circle')
+            ->form(TicketHasTrackForm::create())
+            ->action(function (array $data) use ($ticket) {
+                try {
+                    $data['ticket_id'] = $ticket->getAttribute('id');
+                    $data['user_id'] = auth()->id();
+                    $ticket_has_track_service = new TicketHasTrackService();
+                    $ticket_has_track_service->create($data);
+                    NotificationUtil::make(true, '已发表评论');
+                } catch (Exception $exception) {
+                    LogUtil::error($exception);
+                    NotificationUtil::make(false, $exception);
+                }
+            })
+            ->closeModalByClickingAway(false);
+    }
+
     /**
      * 创建工单按钮.
      */
@@ -28,29 +54,6 @@ class TicketAction
                     $ticket_service = new TicketService();
                     $ticket_service->create($data);
                     NotificationUtil::make(true, '已创建工单');
-                } catch (Exception $exception) {
-                    LogUtil::error($exception);
-                    NotificationUtil::make(false, $exception);
-                }
-            })
-            ->closeModalByClickingAway(false);
-    }
-
-    /**
-     * 创建工单记录按钮.
-     */
-    public static function createHasTrack(Model $ticket): Action
-    {
-        /* @var Ticket $ticket */
-        return Action::make('发表评论')
-            ->slideOver()
-            ->icon('heroicon-m-plus-circle')
-            ->form(TicketHasTrackForm::create())
-            ->action(function (array $data) use ($ticket) {
-                try {
-                    $data['user_id'] = auth()->id();
-                    $ticket->service()->createHasTrack($data);
-                    NotificationUtil::make(true, '已发表评论');
                 } catch (Exception $exception) {
                     LogUtil::error($exception);
                     NotificationUtil::make(false, $exception);
@@ -84,7 +87,7 @@ class TicketAction
      */
     public static function finish(Model $ticket): \Filament\Actions\Action
     {
-        /* @var Ticket $ticket  */
+        /* @var Ticket $ticket */
         return \Filament\Actions\Action::make('标记完成')
             ->color('success')
             ->icon('heroicon-o-check-circle')

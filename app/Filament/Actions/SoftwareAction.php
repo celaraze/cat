@@ -8,7 +8,8 @@ use App\Filament\Resources\SoftwareCategoryResource;
 use App\Models\DeviceHasSoftware;
 use App\Models\Software;
 use App\Services\AssetNumberRuleService;
-use App\Services\FlowService;
+use App\Services\DeviceHasSoftwareService;
+use App\Services\FlowHasFormService;
 use App\Services\SettingService;
 use App\Services\SoftwareService;
 use App\Utils\LogUtil;
@@ -19,6 +20,35 @@ use Illuminate\Database\Eloquent\Model;
 
 class SoftwareAction
 {
+    /**
+     * 软件附加到设备按钮.
+     */
+    public static function createDeviceHasSoftware(?Model $out_software = null): Action
+    {
+        /* @var Software $out_software */
+        return Action::make('附加到设备')
+            ->slideOver()
+            ->icon('heroicon-m-plus-circle')
+            ->form(DeviceHasSoftwareForm::createFromSoftware($out_software))
+            ->action(function (array $data, Software $software) use ($out_software) {
+                try {
+                    if ($out_software) {
+                        $software = $out_software;
+                    }
+                    $data['software_id'] = $software->getKey();
+                    $data['user_id'] = auth()->id();
+                    $data['status'] = 0;
+                    $device_has_software_service = new DeviceHasSoftwareService();
+                    $device_has_software_service->create($data);
+                    NotificationUtil::make(true, '软件已附加到设备');
+                } catch (Exception $exception) {
+                    LogUtil::error($exception);
+                    NotificationUtil::make(false, $exception);
+                }
+            })
+            ->closeModalByClickingAway(false);
+    }
+
     /**
      * 创建软件.
      */
@@ -42,36 +72,6 @@ class SoftwareAction
     }
 
     /**
-     * 软件附加到设备按钮.
-     */
-    public static function createDeviceHasSoftware(?Model $out_software = null): Action
-    {
-        /* @var Software $out_software */
-        return Action::make('附加到设备')
-            ->slideOver()
-            ->icon('heroicon-m-plus-circle')
-            ->form(DeviceHasSoftwareForm::createFromSoftware($out_software))
-            ->action(function (array $data, Software $software) use ($out_software) {
-                try {
-                    if ($out_software) {
-                        $software = $out_software;
-                    }
-                    $data = [
-                        'device_id' => $data['device_id'],
-                        'user_id' => auth()->id(),
-                        'status' => '附加',
-                    ];
-                    $software->service()->createHasSoftware($data);
-                    NotificationUtil::make(true, '软件已附加到设备');
-                } catch (Exception $exception) {
-                    LogUtil::error($exception);
-                    NotificationUtil::make(false, $exception);
-                }
-            })
-            ->closeModalByClickingAway(false);
-    }
-
-    /**
      * 软件脱离设备按钮.
      */
     public static function deleteDeviceHasSoftware(): Action
@@ -83,7 +83,7 @@ class SoftwareAction
                 try {
                     $data = [
                         'user_id' => auth()->id(),
-                        'status' => '脱离',
+                        'status' => 1,
                     ];
                     $device_has_software->service()->delete($data);
                     NotificationUtil::make(true, '软件已脱离设备');
@@ -147,34 +147,6 @@ class SoftwareAction
     }
 
     /**
-     * 流程报废按钮.
-     */
-    public static function retire(): Action
-    {
-        return Action::make('流程报废')
-            ->slideOver()
-            ->icon('heroicon-m-archive-box-x-mark')
-            ->form(SoftwareForm::retire())
-            ->action(function (array $data, Software $software) {
-                try {
-                    $software_retire_flow = $software->service()->getRetireFlow();
-                    $flow_service = new FlowService($software_retire_flow);
-                    $asset_number = $software->getAttribute('asset_number');
-                    $flow_service->createHasForm(
-                        '软件报废单',
-                        $data['comment'],
-                        $asset_number
-                    );
-                    NotificationUtil::make(true, '已创建表单');
-                } catch (Exception $exception) {
-                    LogUtil::error($exception);
-                    NotificationUtil::make(false, $exception);
-                }
-            })
-            ->closeModalByClickingAway(false);
-    }
-
-    /**
      * 强制报废按钮.
      */
     public static function forceRetire(): Action
@@ -186,6 +158,33 @@ class SoftwareAction
                 try {
                     $software->service()->retire();
                     NotificationUtil::make(true, '已报废');
+                } catch (Exception $exception) {
+                    LogUtil::error($exception);
+                    NotificationUtil::make(false, $exception);
+                }
+            })
+            ->closeModalByClickingAway(false);
+    }
+
+    /**
+     * 流程报废按钮.
+     */
+    public static function retire(): Action
+    {
+        return Action::make('流程报废')
+            ->slideOver()
+            ->icon('heroicon-m-archive-box-x-mark')
+            ->form(SoftwareForm::retire())
+            ->action(function (array $data, Software $software) {
+                try {
+                    $software_retire_flow = $software->service()->getRetireFlow();
+                    $asset_number = $software->getAttribute('asset_number');
+                    $flow_has_form_service = new FlowHasFormService();
+                    $data['flow_id'] = $software_retire_flow->getKey();
+                    $data['name'] = '软件报废单 - '.$asset_number;
+                    $data['payload'] = $asset_number;
+                    $flow_has_form_service->create($data);
+                    NotificationUtil::make(true, '已创建表单');
                 } catch (Exception $exception) {
                     LogUtil::error($exception);
                     NotificationUtil::make(false, $exception);

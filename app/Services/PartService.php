@@ -27,15 +27,17 @@ class PartService
      */
     public static function pluckOptions(): Collection
     {
-        return Part::query()->get()->mapWithKeys(function (Part $part) {
-            $title = '';
-            $title .= $part->getAttribute('asset_number');
-            $title .= ' | '.$part->brand()->first()?->getAttribute('name') ?? '未知';
-            $title .= ' | '.$part->getAttribute('specification');
-            $title .= ' | '.$part->category()->first()?->getAttribute('name') ?? '闲置';
+        return Part::query()->get()
+            ->whereNotIn('status', [3])
+            ->mapWithKeys(function (Part $part) {
+                $title = '';
+                $title .= $part->getAttribute('asset_number');
+                $title .= ' | '.$part->brand()->first()?->getAttribute('name') ?? '未知品牌';
+                $title .= ' | '.$part->getAttribute('specification');
+                $title .= ' | '.$part->category()->first()?->getAttribute('name') ?? '未知分类';
 
-            return [$part->getKey() => $title];
-        });
+                return [$part->getKey() => $title];
+            });
     }
 
     /**
@@ -59,13 +61,21 @@ class PartService
         'user_id' => 'int',
         'status' => 'int',
     ])]
-    public function createHasPart(array $data): Model
+    public function createHasPart(array $data): void
     {
         if ($this->part->hasParts()->count()) {
             throw new Exception('配件已经附加到设备');
         }
-
-        return $this->part->hasParts()->create($data);
+        try {
+            DB::beginTransaction();
+            $this->part->setAttribute('status', 1);
+            $this->part->save();
+            $this->part->hasParts()->create($data);
+            DB::commit();
+        } catch (Exception $exception) {
+            DB::rollBack();
+            throw $exception;
+        }
     }
 
     /**
@@ -128,7 +138,8 @@ class PartService
         try {
             DB::beginTransaction();
             $this->part->hasParts()->delete();
-            $this->part->delete();
+            $this->part->setAttribute('status', 3);
+            $this->part->save();
             DB::commit();
         } catch (Exception $exception) {
             DB::rollBack();
@@ -164,7 +175,7 @@ class PartService
      */
     public function isRetired(): bool
     {
-        if ($this->part->getAttribute('deleted_at')) {
+        if ($this->part->getAttribute('status') == 3) {
             return true;
         } else {
             return false;

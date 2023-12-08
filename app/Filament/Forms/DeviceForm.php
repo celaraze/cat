@@ -2,7 +2,7 @@
 
 namespace App\Filament\Forms;
 
-use App\Enums\Priority;
+use App\Enums\TicketEnum;
 use App\Models\Device;
 use App\Services\AssetNumberRuleService;
 use App\Services\DeviceService;
@@ -48,7 +48,7 @@ class DeviceForm
                 ->required(),
             Select::make('priority')
                 ->label('优先级')
-                ->options(Priority::array())
+                ->options(TicketEnum::array())
                 ->searchable()
                 ->preload()
                 ->required(),

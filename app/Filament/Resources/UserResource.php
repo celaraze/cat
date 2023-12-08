@@ -100,11 +100,6 @@ class UserResource extends Resource implements HasShieldPermissions
                 Tables\Filters\TrashedFilter::make(),
             ])
             ->actions([
-                // 详情
-                Tables\Actions\ViewAction::make()
-                    ->visible(function () {
-                        return auth()->user()->can('view_user');
-                    }),
                 // 清除密码
                 UserAction::resetPassword()
                     ->visible(function () {

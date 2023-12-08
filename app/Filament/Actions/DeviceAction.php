@@ -11,10 +11,14 @@ use App\Filament\Resources\TicketResource;
 use App\Models\Device;
 use App\Models\DeviceHasPart;
 use App\Models\DeviceHasSoftware;
+use App\Models\DeviceHasUser;
 use App\Models\Ticket;
 use App\Services\AssetNumberRuleService;
+use App\Services\DeviceHasPartService;
+use App\Services\DeviceHasSoftwareService;
+use App\Services\DeviceHasUserService;
 use App\Services\DeviceService;
-use App\Services\FlowService;
+use App\Services\FlowHasFormService;
 use App\Services\SettingService;
 use App\Services\TicketService;
 use App\Utils\LogUtil;
@@ -30,7 +34,7 @@ class DeviceAction
      */
     public static function createHasUser(?Model $out_device = null): Action
     {
-        return Action::make('分配管理者')
+        return Action::make('分配用户')
             ->slideOver()
             ->icon('heroicon-s-user-plus')
             ->form(DeviceHasUserForm::create())
@@ -39,36 +43,10 @@ class DeviceAction
                     if ($out_device) {
                         $device = $out_device;
                     }
-                    $data = [
-                        'user_id' => $data['user_id'],
-                        'comment' => $data['comment'],
-                    ];
-                    $device->service()->createHasUser($data);
+                    $data['device_id'] = $device->getKey();
+                    $device_has_user_service = new DeviceHasUserService();
+                    $device_has_user_service->create($data);
                     NotificationUtil::make(true, '设备已归属管理者');
-                } catch (Exception $exception) {
-                    LogUtil::error($exception);
-                    NotificationUtil::make(false, $exception);
-                }
-            })
-            ->closeModalByClickingAway(false);
-    }
-
-    /**
-     * 解除管理者按钮.
-     */
-    public static function deleteHasUser(?Model $out_device = null): Action
-    {
-        return Action::make('解除管理者')
-            ->slideOver()
-            ->icon('heroicon-s-user-minus')
-            ->form(DeviceHasUserForm::delete())
-            ->action(function (array $data, Device $device) use ($out_device): void {
-                try {
-                    if ($out_device) {
-                        $device = $out_device;
-                    }
-                    $device->service()->deleteHasUser($data);
-                    NotificationUtil::make(true, '设备已解除管理者');
                 } catch (Exception $exception) {
                     LogUtil::error($exception);
                     NotificationUtil::make(false, $exception);
@@ -100,6 +78,34 @@ class DeviceAction
     }
 
     /**
+     * 解除管理者按钮.
+     */
+    public static function deleteHasUser(?Model $out_device = null): Action
+    {
+        return Action::make('解除用户')
+            ->slideOver()
+            ->icon('heroicon-s-user-minus')
+            ->form(DeviceHasUserForm::delete())
+            ->action(function (array $data, Device $device) use ($out_device): void {
+                try {
+                    if ($out_device) {
+                        $device = $out_device;
+                    }
+                    $data['device_id'] = $device->getKey();
+                    /* @var DeviceHasUser $device_has_user */
+                    $device_has_user = $device->hasUsers()->first();
+                    $device_has_user_service = $device_has_user->service();
+                    $device_has_user_service->delete($data);
+                    NotificationUtil::make(true, '设备已解除用户');
+                } catch (Exception $exception) {
+                    LogUtil::error($exception);
+                    NotificationUtil::make(false, $exception);
+                }
+            })
+            ->closeModalByClickingAway(false);
+    }
+
+    /**
      * 附加软件按钮.
      */
     public static function createHasSoftware(?Model $out_device = null): Action
@@ -113,12 +119,11 @@ class DeviceAction
                     if ($out_device) {
                         $device = $out_device;
                     }
-                    $data = [
-                        'software_id' => $data['software_id'],
-                        'user_id' => auth()->id(),
-                        'status' => '附加',
-                    ];
-                    $device->service()->createHasSoftware($data);
+                    $data['device_id'] = $device->getKey();
+                    $data['user_id'] = auth()->id();
+                    $data['status'] = 0;
+                    $device_has_software_service = new DeviceHasSoftwareService();
+                    $device_has_software_service->create($data);
                     NotificationUtil::make(true, '设备已附加软件');
                 } catch (Exception $exception) {
                     LogUtil::error($exception);
@@ -142,12 +147,11 @@ class DeviceAction
                     if ($out_device) {
                         $device = $out_device;
                     }
-                    $data = [
-                        'part_id' => $data['part_id'],
-                        'user_id' => auth()->id(),
-                        'status' => '附加',
-                    ];
-                    $device->service()->createHasPart($data);
+                    $data['device_id'] = $device->getKey();
+                    $data['user_id'] = auth()->id();
+                    $data['status'] = 0;
+                    $device_has_part_service = new DeviceHasPartService();
+                    $device_has_part_service->create($data);
                     NotificationUtil::make(true, '设备已附加配件');
                 } catch (Exception $exception) {
                     LogUtil::error($exception);
@@ -170,7 +174,7 @@ class DeviceAction
                 try {
                     $data = [
                         'user_id' => auth()->id(),
-                        'status' => '脱离',
+                        'status' => 1,
                     ];
                     $device_has_part->service()->delete($data);
                     NotificationUtil::make(true, '已脱离设备');
@@ -195,7 +199,7 @@ class DeviceAction
                 try {
                     $data = [
                         'user_id' => auth()->id(),
-                        'status' => '脱离',
+                        'status' => 1,
                     ];
                     $device_has_software->service()->delete($data);
                     NotificationUtil::make(true, '已脱离设备');
@@ -259,34 +263,6 @@ class DeviceAction
     }
 
     /**
-     * 流程报废按钮.
-     */
-    public static function retire(): Action
-    {
-        return Action::make('流程报废')
-            ->slideOver()
-            ->icon('heroicon-m-archive-box-x-mark')
-            ->form(DeviceForm::retire())
-            ->action(function (array $data, Device $device) {
-                try {
-                    $device_retire_flow = $device->service()->getRetireFlow();
-                    $flow_service = new FlowService($device_retire_flow);
-                    $asset_number = $device->getAttribute('asset_number');
-                    $flow_service->createHasForm(
-                        '设备报废单',
-                        $data['comment'],
-                        $asset_number
-                    );
-                    NotificationUtil::make(true, '已创建表单');
-                } catch (Exception $exception) {
-                    LogUtil::error($exception);
-                    NotificationUtil::make(false, $exception);
-                }
-            })
-            ->closeModalByClickingAway(false);
-    }
-
-    /**
      * 强制报废按钮.
      */
     public static function forceRetire(): Action
@@ -299,6 +275,33 @@ class DeviceAction
                 try {
                     $device->service()->retire();
                     NotificationUtil::make(true, '已报废');
+                } catch (Exception $exception) {
+                    LogUtil::error($exception);
+                    NotificationUtil::make(false, $exception);
+                }
+            })
+            ->closeModalByClickingAway(false);
+    }
+
+    /**
+     * 流程报废按钮.
+     */
+    public static function retire(): Action
+    {
+        return Action::make('流程报废')
+            ->slideOver()
+            ->icon('heroicon-m-archive-box-x-mark')
+            ->form(DeviceForm::retire())
+            ->action(function (array $data, Device $device) {
+                try {
+                    $device_retire_flow = $device->service()->getRetireFlow();
+                    $asset_number = $device->getAttribute('asset_number');
+                    $flow_has_form_service = new FlowHasFormService();
+                    $data['flow_id'] = $device_retire_flow->getKey();
+                    $data['name'] = '设备报废单 - '.$asset_number;
+                    $data['payload'] = $asset_number;
+                    $flow_has_form_service->create($data);
+                    NotificationUtil::make(true, '已创建表单');
                 } catch (Exception $exception) {
                     LogUtil::error($exception);
                     NotificationUtil::make(false, $exception);

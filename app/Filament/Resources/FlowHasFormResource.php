@@ -2,13 +2,13 @@
 
 namespace App\Filament\Resources;
 
+use App\Enums\FlowHasFormEnum;
 use App\Filament\Actions\FlowAction;
 use App\Filament\Resources\FlowHasFormResource\Pages\Create;
 use App\Filament\Resources\FlowHasFormResource\Pages\Form;
 use App\Filament\Resources\FlowHasFormResource\Pages\Index;
 use App\Filament\Resources\FlowHasFormResource\Pages\View;
 use App\Models\FlowHasForm;
-use App\Utils\FlowHasFormUtil;
 use BezhanSalleh\FilamentShield\Contracts\HasShieldPermissions;
 use Filament\Infolists\Components\Group;
 use Filament\Infolists\Components\Section;
@@ -19,9 +19,7 @@ use Filament\Resources\Pages\Page;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class FlowHasFormResource extends Resource implements HasShieldPermissions
 {
@@ -82,26 +80,28 @@ class FlowHasFormResource extends Resource implements HasShieldPermissions
                     ->toggleable()
                     ->searchable()
                     ->label('当前审批'),
-                Tables\Columns\TextColumn::make('formStatusText')
+                Tables\Columns\TextColumn::make('status')
                     ->toggleable()
                     ->searchable()
-                    ->icon(function ($state) {
-                        return FlowHasFormUtil::formStatusTextIcons($state);
+                    ->formatStateUsing(function (string $state) {
+                        return FlowHasFormEnum::statusText($state);
                     })
-                    ->color(function ($state) {
-                        return FlowHasFormUtil::formStatusTextColors($state);
+                    ->icon(function (string $state) {
+                        return FlowHasFormEnum::statusIcons($state);
+                    })
+                    ->iconColor(function (string $state) {
+                        return FlowHasFormEnum::statusColor($state);
+                    })
+                    ->color(function (string $state) {
+                        return FlowHasFormEnum::statusColor($state);
                     })
                     ->label('状态'),
             ])
             ->filters([
-                Tables\Filters\TrashedFilter::make(),
+
             ])
             ->actions([
-                // 查看
-                Tables\Actions\ViewAction::make()
-                    ->visible(function () {
-                        return auth()->user()->can('view_flow::has::form');
-                    }),
+
             ])
             ->bulkActions([
 
@@ -115,7 +115,8 @@ class FlowHasFormResource extends Resource implements HasShieldPermissions
                     ->visible(function () {
                         return auth()->user()->can('create_flow::has::form');
                     }),
-            ]);
+            ])
+            ->heading('表单列表');
     }
 
     public static function getPages(): array
@@ -126,14 +127,6 @@ class FlowHasFormResource extends Resource implements HasShieldPermissions
             'view' => View::route('/{record}'),
             'forms' => Form::route('/{record}/forms'),
         ];
-    }
-
-    public static function getEloquentQuery(): Builder
-    {
-        return parent::getEloquentQuery()
-            ->withoutGlobalScopes([
-                SoftDeletingScope::class,
-            ]);
     }
 
     public static function canCreate(): bool
@@ -161,12 +154,18 @@ class FlowHasFormResource extends Resource implements HasShieldPermissions
             ])->columnSpan(['lg' => 2]),
             Group::make()->schema([
                 Section::make()->schema([
-                    TextEntry::make('formStatusText')
+                    TextEntry::make('status')
+                        ->formatStateUsing(function (string $state) {
+                            return FlowHasFormEnum::statusText($state);
+                        })
                         ->icon(function (string $state) {
-                            return FlowHasFormUtil::formStatusTextIcons($state);
+                            return FlowHasFormEnum::statusIcons($state);
+                        })
+                        ->iconColor(function (string $state) {
+                            return FlowHasFormEnum::statusColor($state);
                         })
                         ->color(function (string $state) {
-                            return FlowHasFormUtil::formStatusTextColors($state);
+                            return FlowHasFormEnum::statusColor($state);
                         })
                         ->label(''),
                 ]),

@@ -2,8 +2,8 @@
 
 namespace App\Filament\Resources\FlowHasFormResource\Pages;
 
+use App\Enums\FlowHasNodeEnum;
 use App\Filament\Resources\FlowHasFormResource;
-use App\Utils\FlowHasFormUtil;
 use Filament\Resources\Pages\ManageRelatedRecords;
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -46,14 +46,16 @@ class Form extends ManageRelatedRecords
                     ->searchable()
                     ->toggleable()
                     ->label('审批时间'),
-                Tables\Columns\TextColumn::make('nodeStatusText')
-                    ->searchable()
+                Tables\Columns\TextColumn::make('status')
                     ->toggleable()
+                    ->formatStateUsing(function (string $state) {
+                        return FlowHasNodeEnum::statusText($state);
+                    })
                     ->icon(function (string $state) {
-                        return FlowHasFormUtil::nodeStatusTextIcons($state);
+                        return FlowHasNodeEnum::statusIcons($state);
                     })
                     ->color(function (string $state) {
-                        return FlowHasFormUtil::nodeStatusTextColors($state);
+                        return FlowHasNodeEnum::statusColor($state);
                     })
                     ->label('状态'),
             ])
@@ -69,7 +71,7 @@ class Form extends ManageRelatedRecords
             ->bulkActions([
 
             ])
-            ->modifyQueryUsing(fn (Builder $query) => $query->orderByDesc('created_at')
+            ->modifyQueryUsing(fn (Builder $query) => $query->orderBy('created_at')
                 ->withoutGlobalScopes([
                     SoftDeletingScope::class,
                 ]));

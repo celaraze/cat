@@ -82,8 +82,6 @@ class TicketCategoryResource extends Resource implements HasShieldPermissions
                 Tables\Filters\TrashedFilter::make(),
             ])
             ->actions([
-                // 详情
-                Tables\Actions\ViewAction::make(),
                 // 删除
                 TicketCategoryAction::delete(),
             ])

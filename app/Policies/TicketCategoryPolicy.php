@@ -63,7 +63,7 @@ class TicketCategoryPolicy
      */
     public function forceDelete(User $user, TicketCategory $ticketCategory): bool
     {
-        return $user->can('force_delete_ticket::category');
+        return $user->can('{{ ForceDelete }}');
     }
 
     /**
@@ -71,7 +71,7 @@ class TicketCategoryPolicy
      */
     public function forceDeleteAny(User $user): bool
     {
-        return $user->can('force_delete_any_ticket::category');
+        return $user->can('{{ ForceDeleteAny }}');
     }
 
     /**
@@ -79,7 +79,7 @@ class TicketCategoryPolicy
      */
     public function restore(User $user, TicketCategory $ticketCategory): bool
     {
-        return $user->can('restore_ticket::category');
+        return $user->can('{{ Restore }}');
     }
 
     /**
@@ -87,7 +87,7 @@ class TicketCategoryPolicy
      */
     public function restoreAny(User $user): bool
     {
-        return $user->can('restore_any_ticket::category');
+        return $user->can('{{ RestoreAny }}');
     }
 
     /**
@@ -95,7 +95,7 @@ class TicketCategoryPolicy
      */
     public function replicate(User $user, TicketCategory $ticketCategory): bool
     {
-        return $user->can('replicate_ticket::category');
+        return $user->can('{{ Replicate }}');
     }
 
     /**
@@ -103,6 +103,6 @@ class TicketCategoryPolicy
      */
     public function reorder(User $user): bool
     {
-        return $user->can('reorder_ticket::category');
+        return $user->can('{{ Reorder }}');
     }
 }

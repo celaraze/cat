@@ -27,25 +27,27 @@ class SoftwareService
      */
     public static function pluckOptions(): Collection
     {
-        return Software::query()->get()->mapWithKeys(function (Software $software) {
-            $title = '';
-            $title .= $software->getAttribute('asset_number');
-            $title .= ' | '.$software->brand()->first()?->getAttribute('name') ?? ' | 未知';
-            $title .= ' | '.$software->getAttribute('name');
-            $title .= ' | '.$software->getAttribute('specification');
-            $title .= ' | '.$software->category()->first()?->getAttribute('name') ?? ' | 闲置';
-            if ($software->getAttribute('max_license_count') == 0) {
-                $title .= ' - 无限制';
-            } else {
-                if ($software->getAttribute('max_license_count') > $software->usedCount()) {
-                    $title .= ' | '.$software->usedCount().'/'.$software->getAttribute('max_license_count').' 已使用';
+        return Software::query()->get()
+            ->whereNotIn('status', [3])
+            ->mapWithKeys(function (Software $software) {
+                $title = '';
+                $title .= $software->getAttribute('asset_number');
+                $title .= ' | '.$software->brand()->first()?->getAttribute('name') ?? ' | 未知品牌';
+                $title .= ' | '.$software->getAttribute('name');
+                $title .= ' | '.$software->getAttribute('specification');
+                $title .= ' | '.$software->category()->first()?->getAttribute('name') ?? ' | 未知分类';
+                if ($software->getAttribute('max_license_count') == 0) {
+                    $title .= ' - 无限制';
                 } else {
-                    $title .= ' | '.$software->usedCount().'/'.$software->getAttribute('max_license_count').' 已使用 | 软件授权数量不足';
+                    if ($software->getAttribute('max_license_count') > $software->usedCount()) {
+                        $title .= ' | '.$software->usedCount().'/'.$software->getAttribute('max_license_count').' 已使用';
+                    } else {
+                        $title .= ' | '.$software->usedCount().'/'.$software->getAttribute('max_license_count').' 已使用 | 软件授权数量不足';
+                    }
                 }
-            }
 
-            return [$software->getKey() => $title];
-        });
+                return [$software->getKey() => $title];
+            });
     }
 
     /**
@@ -57,30 +59,6 @@ class SoftwareService
             ->where('custom_key', 'software_retire_flow_id')
             ->count();
 
-    }
-
-    /**
-     * 创建设备-软件关联.
-     *
-     * @throws Exception
-     */
-    #[ArrayShape([
-        'device_id' => 'int',
-        'user_id' => 'int',
-        'status' => 'int',
-    ])]
-    public function createHasSoftware(array $data): Model
-    {
-        if ($this->software->hasSoftware()->where('device_id', $data['device_id'])->count()) {
-            throw new Exception('软件已经附加到此设备');
-        }
-
-        $max_license_count = $this->software->getAttribute('max_license_count');
-        if ($max_license_count != 0 && $this->software->usedCount() >= $max_license_count) {
-            throw new Exception('软件授权数量不足');
-        }
-
-        return $this->software->hasSoftware()->create($data);
     }
 
     /**
@@ -125,6 +103,7 @@ class SoftwareService
             $this->software->setAttribute('image', $data['image']);
             $this->software->setAttribute('max_license_count', $data['max_license_count']);
             $this->software->setAttribute('description', $data['description']);
+            $this->software->setAttribute('status', 4);
             $this->software->save();
             $this->software->assetNumberTrack()
                 ->create(['asset_number' => $asset_number]);
@@ -147,7 +126,8 @@ class SoftwareService
         try {
             DB::beginTransaction();
             $this->software->hasSoftware()->delete();
-            $this->software->delete();
+            $this->software->setAttribute('status', 3);
+            $this->software->save();
             DB::commit();
         } catch (Exception $exception) {
             DB::rollBack();
@@ -181,7 +161,7 @@ class SoftwareService
      */
     public function isRetired(): bool
     {
-        if ($this->software->getAttribute('deleted_at')) {
+        if ($this->software->getAttribute('status') == 3) {
             return true;
         } else {
             return false;

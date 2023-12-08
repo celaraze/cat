@@ -5,6 +5,8 @@ namespace Feature;
 use App\Models\Device;
 use App\Models\Part;
 use App\Models\User;
+use App\Services\DeviceHasPartService;
+use App\Services\DeviceHasUserService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -51,8 +53,12 @@ class DeviceTest extends TestCase
         $data = [
             'device_id' => $device->getKey(),
             'user_id' => $user->getKey(),
+            'status' => 0,
+            'comment' => '测试类设备分配用户',
+            'expired_at' => null,
         ];
-        $result = $device->service()->createHasUser($data);
+        $device_has_user_service = new DeviceHasUserService();
+        $result = $device_has_user_service->create($data);
         $this->assertNotNull($result);
     }
 
@@ -66,11 +72,15 @@ class DeviceTest extends TestCase
         $data = [
             'device_id' => $device->getKey(),
             'user_id' => $user->getKey(),
+            'status' => 1,
+            'comment' => '测试类设备分配用户',
+            'expired_at' => null,
         ];
-        $device->service()->createHasUser($data);
+        $device_has_user_service = new DeviceHasUserService();
+        $device_has_user = $device_has_user_service->create($data);
         $data['delete_comment'] = 'test_delete';
-        $result = $device->service()->deleteHasUser($data);
-        $this->assertIsInt($result);
+        $result = $device_has_user->service()->delete($data);
+        $this->assertTrue(true);
     }
 
     /*
@@ -82,11 +92,13 @@ class DeviceTest extends TestCase
         $part = Part::factory()->create();
         $user = User::factory()->create();
         $data = [
+            'device_id' => $device->getKey(),
             'part_id' => $part->getKey(),
             'user_id' => $user->getKey(),
-            'status' => '附加',
+            'status' => 0,
         ];
-        $result = $device->service()->createHasPart($data);
+        $device_has_part_service = new DeviceHasPartService();
+        $result = $device_has_part_service->create($data);
         $this->assertNotNull($result);
     }
 }

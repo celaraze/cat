@@ -77,11 +77,6 @@ class SoftwareCategoryResource extends Resource implements HasShieldPermissions
                 Tables\Filters\TrashedFilter::make(),
             ])
             ->actions([
-                // 详情
-                Tables\Actions\ViewAction::make()
-                    ->visible(function () {
-                        return auth()->user()->can('view_software::category');
-                    }),
                 // 删除
                 SoftwareCategoryAction::delete()
                     ->visible(function () {

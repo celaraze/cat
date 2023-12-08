@@ -3,6 +3,8 @@
 namespace App\Filament\Forms;
 
 use App\Services\UserService;
+use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\Radio;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 
@@ -14,19 +16,23 @@ class DeviceHasUserForm
     public static function create(): array
     {
         return [
-            //region 选择 管理者 user_id
+            Radio::make('status')
+                ->options([1 => '使用', 2 => '借用'])
+                ->label('分配方式')
+                ->required(),
+
             Select::make('user_id')
-                ->label('管理者')
+                ->label('使用者')
                 ->options(UserService::pluckOptions())
                 ->searchable()
                 ->required(),
-            //endregion
 
-            //region 文本 说明 comment
             TextInput::make('comment')
                 ->label('说明')
                 ->required(),
-            //endregion
+
+            DatePicker::make('expired_at')
+                ->label('过期时间'),
         ];
     }
 
@@ -36,11 +42,9 @@ class DeviceHasUserForm
     public static function delete(): array
     {
         return [
-            //region 文本 解除说明 delete_comment
             TextInput::make('delete_comment')
                 ->label('解除说明')
                 ->required(),
-            //endregion
         ];
     }
 }

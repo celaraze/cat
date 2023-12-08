@@ -13,7 +13,8 @@ class TicketHasTrackForm
     {
         return [
             RichEditor::make('comment')
-                ->label('评论'),
+                ->label('评论')
+                ->required(),
         ];
     }
 }

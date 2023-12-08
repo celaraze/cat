@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\PartResource\Pages;
 
+use App\Enums\AssetEnum;
 use App\Filament\Actions\PartAction;
 use App\Filament\Resources\PartResource;
 use App\Models\DeviceHasPart;
@@ -41,15 +42,13 @@ class HasPart extends ManageRelatedRecords
                     ->toggleable()
                     ->label('名称'),
                 Tables\Columns\TextColumn::make('status')
-                    ->searchable()
                     ->toggleable()
                     ->badge()
-                    ->color(function (DeviceHasPart $device_has_part) {
-                        if ($device_has_part->getAttribute('status') == '附加') {
-                            return 'success';
-                        } else {
-                            return 'danger';
-                        }
+                    ->formatStateUsing(function ($state) {
+                        return AssetEnum::relationOperationText($state);
+                    })
+                    ->color(function ($state) {
+                        return AssetEnum::relationOperationColor($state);
                     })
                     ->label('状态'),
                 Tables\Columns\TextColumn::make('updated_at')

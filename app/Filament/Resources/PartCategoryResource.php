@@ -77,11 +77,6 @@ class PartCategoryResource extends Resource implements HasShieldPermissions
                 Tables\Filters\TrashedFilter::make(),
             ])
             ->actions([
-                // 查看
-                Tables\Actions\ViewAction::make()
-                    ->visible(function () {
-                        return auth()->user()->can('view_part::category');
-                    }),
                 // 删除
                 PartCategoryAction::delete()
                     ->visible(function () {

@@ -77,8 +77,6 @@ class BrandResource extends Resource implements HasShieldPermissions
                 Tables\Filters\TrashedFilter::make(),
             ])
             ->actions([
-                // 查看
-                Tables\Actions\ViewAction::make(),
                 // 删除
                 Tables\Actions\DeleteAction::make()
                     ->visible(function () {

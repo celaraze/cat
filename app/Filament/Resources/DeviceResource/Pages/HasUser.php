@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\DeviceResource\Pages;
 
+use App\Enums\AssetEnum;
 use App\Filament\Actions\DeviceAction;
 use App\Filament\Resources\DeviceResource;
 use App\Models\Device;
@@ -62,6 +63,11 @@ class HasUser extends ManageRelatedRecords
                     ->searchable()
                     ->toggleable()
                     ->label('解除分配说明'),
+                Tables\Columns\TextColumn::make('expired_at')
+                    ->searchable()
+                    ->toggleable()
+                    ->size(TextColumnSize::ExtraSmall)
+                    ->label('到期时间'),
                 Tables\Columns\TextColumn::make('created_at')
                     ->searchable()
                     ->toggleable()
@@ -72,6 +78,16 @@ class HasUser extends ManageRelatedRecords
                     ->toggleable()
                     ->size(TextColumnSize::ExtraSmall)
                     ->label('解除分配时间'),
+                Tables\Columns\TextColumn::make('status')
+                    ->toggleable()
+                    ->badge()
+                    ->formatStateUsing(function ($state) {
+                        return AssetEnum::statusText($state);
+                    })
+                    ->color(function ($state) {
+                        return AssetEnum::statusColor($state);
+                    })
+                    ->label('状态'),
             ])
             ->filters([
 
@@ -104,7 +120,7 @@ class HasUser extends ManageRelatedRecords
             ->bulkActions([
 
             ])
-            ->modifyQueryUsing(fn (Builder $query) => $query->orderByDesc('deleted_at')
+            ->modifyQueryUsing(fn (Builder $query) => $query->orderByDesc('created_at')
                 ->withoutGlobalScopes([
                     SoftDeletingScope::class,
                 ]));

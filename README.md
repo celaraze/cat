@@ -55,7 +55,7 @@
 
 ### 快速开始
 
-在线演示 [**CAT DEMO**](http://cat.celaraze.com:50080/) ，登录信息 `cat@localhost.com / cat`，用于展示的站点回关闭部分敏感权限。
+在线演示 [**CAT DEMO**](http://cat.celaraze.com:50080/) ，登录信息 `cat@localhost.com / cat`，用于展示的站点会关闭部分敏感权限。
 
 通过访问 [**文档 Wiki**](https://github.com/celaraze/cat/wiki) 来安装和查看更多信息。
 
@@ -65,19 +65,17 @@
 
 2. 为你的计算机安装 `MySQL` 或者 `MariaDB`。
 
-3. 在你想要的地方，执行 `mkdir cat && cd cat`。
+3. 在你的计算机中任意路径下，执行 `git clone https://github.com/celaraze/cat.git` 。
 
-4. 执行 `git clone https://github.com/celaraze/cat.git .`，注意末尾的 `.` 也是需要包含的。
+4. 执行 `cd cat` 进入应用根目录，执行 `cp .env.example .env`。
 
-5. 执行 `cp .env.example .env`。
+5. 根据 `.env` 文件中注释的指引进行配置。
 
-6. 根据 `.env` 文件中注释的指引进行配置。
+6. 执行 `composer install` 安装后端依赖。
 
-7. 执行 `composer install` 安装后端依赖。
+7. 执行 `php artisan cat:install` 根据提示创建管理员账户。
 
-8. 执行 `php artisan cat:install` 根据提示创建管理员账户。
-
-9. 此时可以通过访问 `http://127.0.0.1:8000` 来访问系统。
+8. 此时可以通过访问 `http://127.0.0.1:8000` 来访问系统。
 
 ## 问题反馈
 

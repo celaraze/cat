@@ -2,13 +2,14 @@
 
 namespace App\Filament\Resources;
 
-use App\Enums\Priority;
+use App\Enums\TicketEnum;
 use App\Filament\Actions\TicketAction;
 use App\Filament\Resources\TicketResource\Pages\Edit;
 use App\Filament\Resources\TicketResource\Pages\Index;
 use App\Filament\Resources\TicketResource\Pages\Track;
 use App\Filament\Resources\TicketResource\Pages\View;
 use App\Models\Ticket;
+use App\Services\TicketCategoryService;
 use Filament\Infolists\Components\Grid;
 use Filament\Infolists\Components\Group;
 use Filament\Infolists\Components\Section;
@@ -19,7 +20,7 @@ use Filament\Resources\Pages\Page;
 use Filament\Resources\Resource;
 use Filament\Tables\Actions\ActionGroup;
 use Filament\Tables\Columns\TextColumn;
-use Filament\Tables\Filters\TrashedFilter;
+use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
@@ -70,11 +71,11 @@ class TicketResource extends Resource
                     ->toggleable()
                     ->label('优先级')
                     ->formatStateUsing(function (string $state) {
-                        return Priority::array()[$state];
+                        return TicketEnum::priorityText($state);
                     })
                     ->badge()
                     ->color(function (string $state) {
-                        return Priority::colors()[$state];
+                        return TicketEnum::priorityColor($state);
                     }),
                 TextColumn::make('user.name')
                     ->searchable()
@@ -90,7 +91,14 @@ class TicketResource extends Resource
                     ->label('提交时间'),
             ])
             ->filters([
-                TrashedFilter::make(),
+                SelectFilter::make('category_id')
+                    ->multiple()
+                    ->options(TicketCategoryService::pluckOptions())
+                    ->label('分类'),
+                SelectFilter::make('priority')
+                    ->multiple()
+                    ->options(TicketEnum::allPriorityText())
+                    ->label('优先级'),
             ])
             ->actions([
                 // 抢单
@@ -112,7 +120,8 @@ class TicketResource extends Resource
                     ->label('高级')
                     ->icon('heroicon-m-cog-8-tooth')
                     ->button(),
-            ]);
+            ])
+            ->heading('工单清单');
     }
 
     public static function infolist(Infolist $infolist): Infolist
@@ -140,11 +149,11 @@ class TicketResource extends Resource
                                         TextEntry::make('priority')
                                             ->label('优先级')
                                             ->formatStateUsing(function (string $state) {
-                                                return Priority::array()[$state];
+                                                return TicketEnum::priorityText($state);
                                             })
                                             ->badge()
                                             ->color(function (string $state) {
-                                                return Priority::colors()[$state];
+                                                return TicketEnum::priorityColor($state);
                                             }),
                                         TextEntry::make('assignee.name')
                                             ->label('处理人'),

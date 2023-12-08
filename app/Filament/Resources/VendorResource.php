@@ -89,8 +89,7 @@ class VendorResource extends Resource implements HasShieldPermissions
 
             ])
             ->actions([
-                // 查看
-                Tables\Actions\ViewAction::make(),
+
             ])
             ->bulkActions([
 

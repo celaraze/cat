@@ -2,7 +2,7 @@
 
 namespace App\Filament\Forms;
 
-use App\Enums\Priority;
+use App\Enums\TicketEnum;
 use App\Services\DeviceService;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Select;
@@ -37,7 +37,7 @@ class TicketForm
                 ->required(),
             Select::make('priority')
                 ->label('优先级')
-                ->options(Priority::array())
+                ->options(TicketEnum::allPriorityText())
                 ->searchable()
                 ->preload()
                 ->required(),

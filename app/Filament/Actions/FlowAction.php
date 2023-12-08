@@ -10,7 +10,6 @@ use App\Models\FlowHasForm;
 use App\Models\FlowHasNode;
 use App\Services\FlowHasFormService;
 use App\Services\FlowHasNodeService;
-use App\Services\FlowService;
 use App\Utils\LogUtil;
 use App\Utils\NotificationUtil;
 use Exception;
@@ -26,7 +25,7 @@ class FlowAction
      */
     public static function createHasNode(Model $flow): Action
     {
-        /* @var Flow $flow  */
+        /* @var Flow $flow */
         return Action::make('追加节点')
             ->slideOver()
             ->icon('heroicon-s-user-plus')
@@ -53,71 +52,6 @@ class FlowAction
                         $flow_has_node_service->create($data);
                         NotificationUtil::make(true, '节点追加成功');
                     }
-                }
-            })
-            ->closeModalByClickingAway(false);
-    }
-
-    /**
-     * 删除节点.
-     *
-     * @param  Flow  $flow
-     */
-    public static function deleteHasNode(Model $flow): Action
-    {
-        /* @var Flow $flow  */
-        return Action::make('删除')
-            ->color('danger')
-            ->icon('heroicon-s-trash')
-            ->requiresConfirmation()
-            ->action(function (FlowHasNode $node) use ($flow) {
-                if ($flow->activeForms()) {
-                    NotificationUtil::make(false, '删除失败，仍有此流程的表单没有结束');
-                } else {
-                    $node->delete();
-                    NotificationUtil::make(true, '成功删除节点');
-                }
-            })
-            ->closeModalByClickingAway(false);
-    }
-
-    /**
-     * 删除流程所有节点.
-     */
-    public static function deleteHasNodeWithAll(Model $flow): Action
-    {
-        /* @var Flow $flow  */
-        return Action::make('清空节点')
-            ->color('danger')
-            ->requiresConfirmation()
-            ->action(function () use ($flow) {
-                if ($flow->activeForms()) {
-                    NotificationUtil::make(false, '删除失败，仍有此流程的表单没有结束');
-                } else {
-                    $flow->nodes()->where('parent_node_id', '!=', 0)->delete();
-                    NotificationUtil::make(true, '成功删除所有节点');
-                }
-            })
-            ->closeModalByClickingAway(false);
-    }
-
-    /**
-     * 创建表单按钮.
-     */
-    public static function createHasForm(): Action
-    {
-        return Action::make('发起表单')
-            ->slideOver()
-            ->icon('heroicon-m-plus')
-            ->form(FlowHasFormForm::create())
-            ->action(function (array $data) {
-                try {
-                    $flow = new FlowService($data['flow_id']);
-                    $flow->createHasForm($data['name'], $data['comment']);
-                    NotificationUtil::make(true, '已创建表单');
-                } catch (Exception $exception) {
-                    LogUtil::error($exception);
-                    NotificationUtil::make(false, $exception);
                 }
             })
             ->closeModalByClickingAway(false);
@@ -154,6 +88,71 @@ class FlowAction
                     DB::rollBack();
                     LogUtil::error($exception);
                     NotificationUtil::make(false, '流程创建失败：'.$exception->getMessage());
+                }
+            })
+            ->closeModalByClickingAway(false);
+    }
+
+    /**
+     * 删除节点.
+     *
+     * @param  Flow  $flow
+     */
+    public static function deleteHasNode(Model $flow): Action
+    {
+        /* @var Flow $flow */
+        return Action::make('删除')
+            ->color('danger')
+            ->icon('heroicon-s-trash')
+            ->requiresConfirmation()
+            ->action(function (FlowHasNode $node) use ($flow) {
+                if ($flow->activeForms()) {
+                    NotificationUtil::make(false, '删除失败，仍有此流程的表单没有结束');
+                } else {
+                    $node->delete();
+                    NotificationUtil::make(true, '成功删除节点');
+                }
+            })
+            ->closeModalByClickingAway(false);
+    }
+
+    /**
+     * 删除流程所有节点.
+     */
+    public static function deleteHasNodeWithAll(Model $flow): Action
+    {
+        /* @var Flow $flow */
+        return Action::make('清空节点')
+            ->color('danger')
+            ->requiresConfirmation()
+            ->action(function () use ($flow) {
+                if ($flow->activeForms()) {
+                    NotificationUtil::make(false, '删除失败，仍有此流程的表单没有结束');
+                } else {
+                    $flow->nodes()->where('parent_node_id', '!=', 0)->delete();
+                    NotificationUtil::make(true, '成功删除所有节点');
+                }
+            })
+            ->closeModalByClickingAway(false);
+    }
+
+    /**
+     * 创建表单按钮.
+     */
+    public static function createHasForm(): Action
+    {
+        return Action::make('发起表单')
+            ->slideOver()
+            ->icon('heroicon-m-plus')
+            ->form(FlowHasFormForm::create())
+            ->action(function (array $data) {
+                try {
+                    $flow_has_form_service = new FlowHasFormService();
+                    $flow_has_form_service->create($data);
+                    NotificationUtil::make(true, '已创建表单');
+                } catch (Exception $exception) {
+                    LogUtil::error($exception);
+                    NotificationUtil::make(false, $exception);
                 }
             })
             ->closeModalByClickingAway(false);

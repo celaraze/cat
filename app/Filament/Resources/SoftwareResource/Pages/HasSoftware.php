@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\SoftwareResource\Pages;
 
+use App\Enums\AssetEnum;
 use App\Filament\Actions\SoftwareAction;
 use App\Filament\Resources\SoftwareResource;
 use App\Models\DeviceHasSoftware;
@@ -50,15 +51,13 @@ class HasSoftware extends ManageRelatedRecords
                     ->toggleable()
                     ->label('名称'),
                 Tables\Columns\TextColumn::make('status')
-                    ->searchable()
                     ->toggleable()
                     ->badge()
-                    ->color(function (DeviceHasSoftware $device_has_software) {
-                        if ($device_has_software->getAttribute('status') == '附加') {
-                            return 'success';
-                        } else {
-                            return 'danger';
-                        }
+                    ->formatStateUsing(function ($state) {
+                        return AssetEnum::relationOperationText($state);
+                    })
+                    ->color(function ($state) {
+                        return AssetEnum::relationOperationColor($state);
                     })
                     ->label('状态'),
                 Tables\Columns\TextColumn::make('updated_at')

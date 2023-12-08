@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\Enums\AssetEnum;
 use App\Filament\Actions\SoftwareAction;
 use App\Filament\Forms\SoftwareForm;
 use App\Filament\Imports\SoftwareImporter;
@@ -10,6 +11,7 @@ use App\Filament\Resources\SoftwareResource\Pages\HasSoftware;
 use App\Filament\Resources\SoftwareResource\Pages\Index;
 use App\Filament\Resources\SoftwareResource\Pages\View;
 use App\Models\Software;
+use App\Services\BrandService;
 use App\Services\SoftwareCategoryService;
 use App\Services\SoftwareService;
 use BezhanSalleh\FilamentShield\Contracts\HasShieldPermissions;
@@ -127,26 +129,32 @@ class SoftwareResource extends Resource implements HasShieldPermissions
                     ->searchable()
                     ->toggleable()
                     ->label('规格'),
-                Tables\Columns\TextColumn::make('deleted_at')
-                    ->searchable()
+                Tables\Columns\TextColumn::make('status')
                     ->toggleable()
+                    ->formatStateUsing(function ($state) {
+                        return AssetEnum::statusText($state);
+                    })
                     ->badge()
-                    ->color('danger')
-                    ->label('报废时间'),
+                    ->color(function ($state) {
+                        return AssetEnum::statusColor($state);
+                    })
+                    ->label('状态'),
             ])
             ->filters([
-                Tables\Filters\TrashedFilter::make(),
                 Tables\Filters\SelectFilter::make('category_id')
                     ->multiple()
                     ->options(SoftwareCategoryService::pluckOptions())
                     ->label('分类'),
+                Tables\Filters\SelectFilter::make('brand_id')
+                    ->multiple()
+                    ->options(BrandService::pluckOptions())
+                    ->label('品牌'),
+                Tables\Filters\SelectFilter::make('status')
+                    ->multiple()
+                    ->options(AssetEnum::allStatusText())
+                    ->label('状态'),
             ])
             ->actions([
-                // 查看
-                Tables\Actions\ViewAction::make()
-                    ->visible(function () {
-                        return auth()->user()->can('view_software');
-                    }),
                 Tables\Actions\ActionGroup::make([
                     // 流程报废
                     SoftwareAction::retire()
@@ -208,7 +216,8 @@ class SoftwareResource extends Resource implements HasShieldPermissions
                     ->label('高级')
                     ->icon('heroicon-m-cog-8-tooth')
                     ->button(),
-            ]);
+            ])
+            ->heading('软件清单');
     }
 
     public static function form(Form $form): Form
@@ -250,6 +259,17 @@ class SoftwareResource extends Resource implements HasShieldPermissions
                     ]),
             ])->columnSpan(['lg' => 2]),
             Group::make()->schema([
+                Section::make()
+                    ->schema([
+                        TextEntry::make('status')
+                            ->formatStateUsing(function ($state) {
+                                return AssetEnum::statusText($state);
+                            })
+                            ->color(function ($state) {
+                                return AssetEnum::statusColor($state);
+                            })
+                            ->label(''),
+                    ]),
                 Section::make()
                     ->schema([
                         ImageEntry::make('image')

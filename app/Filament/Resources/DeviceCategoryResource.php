@@ -72,11 +72,6 @@ class DeviceCategoryResource extends Resource implements HasShieldPermissions
                 Tables\Filters\TrashedFilter::make(),
             ])
             ->actions([
-                // 查看
-                Tables\Actions\ViewAction::make()
-                    ->visible(function () {
-                        return auth()->user()->can('view_device::category');
-                    }),
                 // 删除
                 DeviceCategoryAction::delete()
                     ->visible(function () {
