@@ -3,14 +3,14 @@
 namespace App\Filament\Resources\TicketCategoryResource\Pages;
 
 use App\Filament\Resources\TicketCategoryResource;
-use Filament\Resources\Pages\EditRecord;
+use Filament\Resources\Pages\ViewRecord;
 
-class Edit extends EditRecord
+class View extends ViewRecord
 {
     protected static string $resource = TicketCategoryResource::class;
 
     public static function getNavigationLabel(): string
     {
-        return '编辑';
+        return '详情';
     }
 }

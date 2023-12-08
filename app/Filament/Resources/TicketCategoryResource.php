@@ -3,10 +3,14 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Actions\TicketAction;
+use App\Filament\Actions\TicketCategoryAction;
 use App\Filament\Forms\TicketCategoryForm;
-use App\Filament\Resources\TicketCategoryResource\Pages;
+use App\Filament\Resources\TicketCategoryResource\Pages\Edit;
+use App\Filament\Resources\TicketCategoryResource\Pages\Index;
+use App\Filament\Resources\TicketCategoryResource\Pages\View;
 use App\Models\TicketCategory;
 use Filament\Forms\Form;
+use Filament\Resources\Pages\Page;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -20,6 +24,15 @@ class TicketCategoryResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
     protected static ?string $modelLabel = '工单分类';
+
+    public static function getRecordSubNavigation(Page $page): array
+    {
+        return $page->generateNavigationItems([
+            Index::class,
+            View::class,
+            Edit::class,
+        ]);
+    }
 
     public static function shouldRegisterNavigation(): bool
     {
@@ -38,37 +51,37 @@ class TicketCategoryResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('name')
                     ->toggleable()
+                    ->searchable()
                     ->label('名称'),
             ])
             ->filters([
                 Tables\Filters\TrashedFilter::make(),
             ])
             ->actions([
+                // 详情
+                Tables\Actions\ViewAction::make(),
+                // 编辑
                 Tables\Actions\EditAction::make(),
+                // 删除
+                TicketCategoryAction::delete(),
             ])
             ->bulkActions([
 
             ])
             ->headerActions([
                 // 创建
-                TicketAction::createTicketCategory(),
+                TicketCategoryAction::create(),
                 // 前往工单
-                TicketAction::toTicket(),
+                TicketAction::toTickets(),
             ]);
-    }
-
-    public static function getRelations(): array
-    {
-        return [
-            //
-        ];
     }
 
     public static function getPages(): array
     {
         return [
-            'index' => Pages\Index::route('/'),
-            'edit' => Pages\Edit::route('/{record}/edit'),
+            'index' => Index::route('/'),
+            'view' => View::route('/{record}'),
+            'edit' => Edit::route('/{record}/edit'),
         ];
     }
 

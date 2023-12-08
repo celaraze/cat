@@ -2,7 +2,7 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Actions\DeviceAction;
+use App\Filament\Actions\DeviceCategoryAction;
 use App\Filament\Forms\DeviceCategoryForm;
 use App\Filament\Imports\DeviceCategoryImporter;
 use App\Filament\Resources\DeviceCategoryResource\Pages\Device;
@@ -58,6 +58,8 @@ class DeviceCategoryResource extends Resource implements HasShieldPermissions
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('name')
+                    ->searchable()
+                    ->toggleable()
                     ->label('名称'),
             ])
             ->filters([
@@ -75,7 +77,7 @@ class DeviceCategoryResource extends Resource implements HasShieldPermissions
                         return auth()->user()->can('update_device::category');
                     }),
                 // 删除
-                Tables\Actions\DeleteAction::make()
+                DeviceCategoryAction::delete()
                     ->visible(function () {
                         return auth()->user()->can('delete_device::category');
                     }),
@@ -103,11 +105,11 @@ class DeviceCategoryResource extends Resource implements HasShieldPermissions
                         return auth()->user()->can('export_device::category');
                     }),
                 // 创建
-                DeviceAction::createDeviceCategory()
+                DeviceCategoryAction::create()
                     ->visible(function () {
                         return auth()->user()->can('create_device::category');
                     }),
-                DeviceAction::toDevices(),
+                DeviceCategoryAction::toDevices(),
             ]);
     }
 

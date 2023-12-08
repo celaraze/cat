@@ -61,31 +61,35 @@ class FlowHasFormResource extends Resource implements HasShieldPermissions
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('name')
-                    ->label('表单名称')
-                    ->toggleable(),
+                    ->toggleable()
+                    ->searchable()
+                    ->label('表单名称'),
                 Tables\Columns\TextColumn::make('uuid')
-                    ->label('唯一编码')
-                    ->toggleable()
                     ->badge()
-                    ->color('primary'),
+                    ->color('primary')
+                    ->label('唯一编码'),
                 Tables\Columns\TextColumn::make('flow_name')
-                    ->label('流程名称')
-                    ->toggleable(),
-                Tables\Columns\TextColumn::make('applicantUser.name')
-                    ->label('申请人')
-                    ->toggleable(),
-                Tables\Columns\TextColumn::make('type')
-                    ->label('当前审批')
-                    ->toggleable(),
-                Tables\Columns\TextColumn::make('formStatusText')
-                    ->label('状态')
                     ->toggleable()
+                    ->searchable()
+                    ->label('流程名称'),
+                Tables\Columns\TextColumn::make('applicantUser.name')
+                    ->toggleable()
+                    ->searchable()
+                    ->label('申请人'),
+                Tables\Columns\TextColumn::make('type')
+                    ->toggleable()
+                    ->searchable()
+                    ->label('当前审批'),
+                Tables\Columns\TextColumn::make('formStatusText')
+                    ->toggleable()
+                    ->searchable()
                     ->icon(function ($state) {
                         return FlowHasFormUtil::formStatusTextIcons($state);
                     })
                     ->color(function ($state) {
                         return FlowHasFormUtil::formStatusTextColors($state);
-                    }),
+                    })
+                    ->label('状态'),
             ])
             ->filters([
                 Tables\Filters\TrashedFilter::make(),

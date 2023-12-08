@@ -31,13 +31,19 @@ class HasTrack extends ManageRelatedRecords
             ->recordTitleAttribute('asset_number')
             ->columns([
                 Tables\Columns\TextColumn::make('asset_number')
+                    ->searchable()
+                    ->toggleable()
                     ->label('资产编号'),
                 Tables\Columns\TextColumn::make('check')
+                    ->searchable()
+                    ->toggleable()
                     ->formatStateUsing(function (string $state) {
                         return InventoryUtil::mapper($state);
                     })
                     ->label('状态'),
                 Tables\Columns\TextColumn::make('comment')
+                    ->searchable()
+                    ->toggleable()
                     ->label('备忘'),
             ])
             ->filters([

@@ -1,17 +1,27 @@
 <?php
 
-namespace App\Filament\Resources\ImportResource\RelationManagers;
+namespace App\Filament\Resources\ImportResource\Pages;
 
+use App\Filament\Resources\ImportResource;
 use Filament\Forms\Form;
-use Filament\Resources\RelationManagers\RelationManager;
+use Filament\Resources\Pages\ManageRelatedRecords;
 use Filament\Tables;
 use Filament\Tables\Table;
 
-class FailedImportRowRelationManager extends RelationManager
+class FailedImportRows extends ManageRelatedRecords
 {
+    protected static string $resource = ImportResource::class;
+
     protected static string $relationship = 'failedImportRows';
 
-    protected static ?string $title = '失败行';
+    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+
+    protected static ?string $title = '失败行记录';
+
+    public static function getNavigationLabel(): string
+    {
+        return '失败行记录';
+    }
 
     public function form(Form $form): Form
     {
@@ -27,26 +37,29 @@ class FailedImportRowRelationManager extends RelationManager
             ->recordTitleAttribute('import_id')
             ->columns([
                 Tables\Columns\TextColumn::make('created_at')
+                    ->searchable()
+                    ->toggleable()
                     ->label('创建时间'),
                 Tables\Columns\TextColumn::make('data')
+                    ->searchable()
+                    ->toggleable()
                     ->label('数据'),
                 Tables\Columns\TextColumn::make('validation_error')
+                    ->searchable()
+                    ->toggleable()
                     ->label('错误类型'),
             ])
             ->filters([
-                //
+
             ])
             ->headerActions([
-                Tables\Actions\CreateAction::make(),
+
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+
             ])
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
+
             ]);
     }
 }

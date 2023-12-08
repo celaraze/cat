@@ -32,4 +32,12 @@ class TicketCategoryService
 
         return $this->ticket_category;
     }
+
+    /**
+     * 删除工单分类.
+     */
+    public function delete(): ?bool
+    {
+        return $this->ticket_category->delete();
+    }
 }

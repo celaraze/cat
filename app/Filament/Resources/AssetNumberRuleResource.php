@@ -90,7 +90,7 @@ class AssetNumberRuleResource extends Resource implements HasShieldPermissions
             ])
             ->headerActions([
                 // 创建
-                AssetNumberRuleAction::createAssetNumberRule()
+                AssetNumberRuleAction::create()
                     ->visible(function () {
                         return auth()->user()->can('create_asset::number::rule');
                     }),

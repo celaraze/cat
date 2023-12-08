@@ -2,11 +2,9 @@
 
 namespace App\Filament\Actions;
 
-use App\Filament\Forms\TicketCategoryForm;
 use App\Filament\Forms\TicketForm;
 use App\Filament\Forms\TicketHasTrackForm;
 use App\Models\Ticket;
-use App\Services\TicketCategoryService;
 use App\Services\TicketService;
 use App\Utils\LogUtil;
 use App\Utils\NotificationUtil;
@@ -19,7 +17,7 @@ class TicketAction
     /**
      * 创建工单按钮.
      */
-    public static function createTicket(): Action
+    public static function create(): Action
     {
         return Action::make('新增')
             ->slideOver()
@@ -39,31 +37,9 @@ class TicketAction
     }
 
     /**
-     * 创建工单分类按钮.
-     */
-    public static function createTicketCategory(): Action
-    {
-        return Action::make('新增')
-            ->slideOver()
-            ->icon('heroicon-m-plus')
-            ->form(TicketCategoryForm::createOrEdit())
-            ->action(function (array $data) {
-                try {
-                    $ticket_category_service = new TicketCategoryService();
-                    $ticket_category_service->create($data);
-                    NotificationUtil::make(true, '已创建分类');
-                } catch (Exception $exception) {
-                    LogUtil::error($exception);
-                    NotificationUtil::make(false, $exception);
-                }
-            })
-            ->closeModalByClickingAway(false);
-    }
-
-    /**
      * 创建工单记录按钮.
      */
-    public static function createTicketHasTrack(Model $ticket): Action
+    public static function createHasTrack(Model $ticket): Action
     {
         /* @var Ticket $ticket */
         return Action::make('发表评论')
@@ -84,9 +60,9 @@ class TicketAction
     }
 
     /**
-     * 前往设备分类.
+     * 前往工单分类.
      */
-    public static function toTicketCategory(): Action
+    public static function toCategory(): Action
     {
         return Action::make('分类')
             ->icon('heroicon-s-square-3-stack-3d')
@@ -94,9 +70,9 @@ class TicketAction
     }
 
     /**
-     * 前往设备.
+     * 前往工单.
      */
-    public static function toTicket(): Action
+    public static function toTickets(): Action
     {
         return Action::make('返回工单')
             ->icon('heroicon-o-document-text')

@@ -32,9 +32,12 @@ class Node extends ManageRelatedRecords
             ->columns([
                 Tables\Columns\TextColumn::make('id'),
                 Tables\Columns\TextColumn::make('name')
+                    ->searchable()
+                    ->toggleable()
                     ->label('节点名称'),
                 Tables\Columns\TextColumn::make('type')
-                    ->label('审批类型')
+                    ->searchable()
+                    ->toggleable()
                     ->badge()
                     ->color(function (FlowHasNode $node) {
                         if (explode('：', $node->getAttribute('type'))[0] == '用户') {
@@ -42,7 +45,8 @@ class Node extends ManageRelatedRecords
                         } else {
                             return 'success';
                         }
-                    }),
+                    })
+                    ->label('审批类型'),
             ])
             ->filters([
 

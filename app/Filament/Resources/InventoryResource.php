@@ -99,7 +99,7 @@ class InventoryResource extends Resource implements HasShieldPermissions
             ])
             ->headerActions([
                 // 创建
-                InventoryAction::createInventory()
+                InventoryAction::create()
                     ->visible(function () {
                         return auth()->user()->can('create_inventory');
                     }),

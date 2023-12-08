@@ -85,7 +85,7 @@ class UserAction
     /**
      * 创建用户.
      */
-    public static function createUser(): Action
+    public static function create(): Action
     {
         return Action::make('新增')
             ->slideOver()
@@ -109,7 +109,7 @@ class UserAction
     /**
      * 删除用户按钮.
      */
-    public static function deleteUser(): Action
+    public static function delete(): Action
     {
         return Action::make('删除')
             ->color('danger')

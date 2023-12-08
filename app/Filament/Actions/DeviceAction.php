@@ -2,20 +2,17 @@
 
 namespace App\Filament\Actions;
 
-use App\Filament\Forms\DeviceCategoryForm;
 use App\Filament\Forms\DeviceForm;
 use App\Filament\Forms\DeviceHasPartForm;
 use App\Filament\Forms\DeviceHasSoftwareForm;
 use App\Filament\Forms\DeviceHasUserForm;
 use App\Filament\Resources\DeviceCategoryResource;
-use App\Filament\Resources\DeviceResource;
 use App\Filament\Resources\TicketResource;
 use App\Models\Device;
 use App\Models\DeviceHasPart;
 use App\Models\DeviceHasSoftware;
 use App\Models\Ticket;
 use App\Services\AssetNumberRuleService;
-use App\Services\DeviceCategoryService;
 use App\Services\DeviceService;
 use App\Services\FlowService;
 use App\Services\SettingService;
@@ -31,7 +28,7 @@ class DeviceAction
     /**
      * 分配管理者按钮.
      */
-    public static function createDeviceHasUser(?Model $out_device = null): Action
+    public static function createHasUser(?Model $out_device = null): Action
     {
         return Action::make('分配管理者')
             ->slideOver()
@@ -59,7 +56,7 @@ class DeviceAction
     /**
      * 解除管理者按钮.
      */
-    public static function deleteDeviceHasUser(?Model $out_device = null): Action
+    public static function deleteHasUser(?Model $out_device = null): Action
     {
         return Action::make('解除管理者')
             ->slideOver()
@@ -83,7 +80,7 @@ class DeviceAction
     /**
      * 创建设备.
      */
-    public static function createDevice(): Action
+    public static function create(): Action
     {
         return Action::make('新增')
             ->slideOver()
@@ -103,31 +100,9 @@ class DeviceAction
     }
 
     /**
-     * 创建设备分类.
-     */
-    public static function createDeviceCategory(): Action
-    {
-        return Action::make('新增')
-            ->slideOver()
-            ->icon('heroicon-m-plus')
-            ->form(DeviceCategoryForm::createOrEdit())
-            ->action(function (array $data) {
-                try {
-                    $device_category_service = new DeviceCategoryService();
-                    $device_category_service->create($data);
-                    NotificationUtil::make(true, '已创建设备分类');
-                } catch (Exception $exception) {
-                    LogUtil::error($exception);
-                    NotificationUtil::make(false, $exception);
-                }
-            })
-            ->closeModalByClickingAway(false);
-    }
-
-    /**
      * 附加软件按钮.
      */
-    public static function createDeviceHasSoftware(?Model $out_device = null): Action
+    public static function createHasSoftware(?Model $out_device = null): Action
     {
         return Action::make('附加软件')
             ->slideOver()
@@ -156,7 +131,7 @@ class DeviceAction
     /**
      * 创建设备配件按钮.
      */
-    public static function createDeviceHasPart(?Model $out_device = null): Action
+    public static function createHasPart(?Model $out_device = null): Action
     {
         return Action::make('附加配件')
             ->slideOver()
@@ -185,7 +160,7 @@ class DeviceAction
     /**
      * 配件脱离设备按钮.
      */
-    public static function deleteDeviceHasPart(): Action
+    public static function deleteHasPart(): Action
     {
         return Action::make('脱离')
             ->icon('heroicon-s-minus-circle')
@@ -210,7 +185,7 @@ class DeviceAction
     /**
      * 软件脱离设备按钮.
      */
-    public static function deleteDeviceHasSoftware(): Action
+    public static function deleteHasSoftware(): Action
     {
         return Action::make('脱离')
             ->icon('heroicon-s-minus-circle')
@@ -235,7 +210,7 @@ class DeviceAction
     /**
      * 配置设备报废流程.
      */
-    public static function setDeviceRetireFlow(): Action
+    public static function setRetireFlow(): Action
     {
         return Action::make('配置报废流程')
             ->slideOver()
@@ -286,7 +261,7 @@ class DeviceAction
     /**
      * 流程报废按钮.
      */
-    public static function retireDevice(): Action
+    public static function retire(): Action
     {
         return Action::make('流程报废')
             ->slideOver()
@@ -314,7 +289,7 @@ class DeviceAction
     /**
      * 强制报废按钮.
      */
-    public static function forceRetireDevice(): Action
+    public static function forceRetire(): Action
     {
         return Action::make('强制报废')
             ->requiresConfirmation()
@@ -335,33 +310,11 @@ class DeviceAction
     /**
      * 前往设备分类清单.
      */
-    public static function toDeviceCategories(): Action
+    public static function toCategories(): Action
     {
         return Action::make('分类')
             ->icon('heroicon-s-square-3-stack-3d')
             ->url(DeviceCategoryResource::getUrl('index'));
-    }
-
-    /**
-     * 前往设备清单.
-     */
-    public static function toDevices(): Action
-    {
-        return Action::make('返回设备')
-            ->icon('heroicon-s-server')
-            ->url(DeviceResource::getUrl('index'));
-    }
-
-    /**
-     * 前往设备.
-     */
-    public static function toDevice(): Action
-    {
-        return Action::make('前往设备详情')
-            ->icon('heroicon-s-server')
-            ->url(function (Device $device) {
-                return DeviceResource::getUrl('view', ['record' => $device->getKey()]);
-            });
     }
 
     /**

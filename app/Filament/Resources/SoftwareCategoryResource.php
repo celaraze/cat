@@ -2,7 +2,7 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Actions\SoftwareAction;
+use App\Filament\Actions\SoftwareCategoryAction;
 use App\Filament\Forms\SoftwareCategoryForm;
 use App\Filament\Imports\SoftwareCategoryImporter;
 use App\Filament\Resources\SoftwareCategoryResource\Pages\Edit;
@@ -63,6 +63,8 @@ class SoftwareCategoryResource extends Resource implements HasShieldPermissions
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('name')
+                    ->searchable()
+                    ->toggleable()
                     ->label('名称'),
             ])
             ->filters([
@@ -80,7 +82,7 @@ class SoftwareCategoryResource extends Resource implements HasShieldPermissions
                         return auth()->user()->can('update_software::category');
                     }),
                 // 删除
-                Tables\Actions\DeleteAction::make()
+                SoftwareCategoryAction::delete()
                     ->visible(function () {
                         return auth()->user()->can('delete_software::category');
                     }),
@@ -104,12 +106,12 @@ class SoftwareCategoryResource extends Resource implements HasShieldPermissions
                         return auth()->user()->can('export_software::category');
                     }),
                 // 创建
-                SoftwareAction::createSoftwareCategory()
+                SoftwareCategoryAction::create()
                     ->visible(function () {
                         return auth()->user()->can('create_software::category');
                     }),
                 // 前往软件
-                SoftwareAction::toSoftwareIndex(),
+                SoftwareCategoryAction::toSoftwareIndex(),
             ]);
     }
 

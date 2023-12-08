@@ -3,16 +3,13 @@
 namespace App\Filament\Actions;
 
 use App\Filament\Forms\DeviceHasSoftwareForm;
-use App\Filament\Forms\SoftwareCategoryForm;
 use App\Filament\Forms\SoftwareForm;
 use App\Filament\Resources\SoftwareCategoryResource;
-use App\Filament\Resources\SoftwareResource;
 use App\Models\DeviceHasSoftware;
 use App\Models\Software;
 use App\Services\AssetNumberRuleService;
 use App\Services\FlowService;
 use App\Services\SettingService;
-use App\Services\SoftwareCategoryService;
 use App\Services\SoftwareService;
 use App\Utils\LogUtil;
 use App\Utils\NotificationUtil;
@@ -25,7 +22,7 @@ class SoftwareAction
     /**
      * 创建软件.
      */
-    public static function createSoftware(): Action
+    public static function create(): Action
     {
         return Action::make('新增')
             ->slideOver()
@@ -36,28 +33,6 @@ class SoftwareAction
                     $software_service = new SoftwareService();
                     $software_service->create($data);
                     NotificationUtil::make(true, '已新增软件');
-                } catch (Exception $exception) {
-                    LogUtil::error($exception);
-                    NotificationUtil::make(false, $exception);
-                }
-            })
-            ->closeModalByClickingAway(false);
-    }
-
-    /**
-     * 创建软件分类按钮.
-     */
-    public static function createSoftwareCategory(): Action
-    {
-        return Action::make('新增')
-            ->slideOver()
-            ->icon('heroicon-m-plus')
-            ->form(SoftwareCategoryForm::createOrEdit())
-            ->action(function (array $data) {
-                try {
-                    $software_category_service = new SoftwareCategoryService();
-                    $software_category_service->create($data);
-                    NotificationUtil::make(true, '已创建软件分类');
                 } catch (Exception $exception) {
                     LogUtil::error($exception);
                     NotificationUtil::make(false, $exception);
@@ -123,7 +98,7 @@ class SoftwareAction
     /**
      * 配置软件报废流程.
      */
-    public static function setSoftwareRetireFlow(): Action
+    public static function setRetireFlow(): Action
     {
         return Action::make('配置报废流程')
             ->slideOver()
@@ -174,7 +149,7 @@ class SoftwareAction
     /**
      * 流程报废按钮.
      */
-    public static function retireSoftware(): Action
+    public static function retire(): Action
     {
         return Action::make('流程报废')
             ->slideOver()
@@ -202,7 +177,7 @@ class SoftwareAction
     /**
      * 强制报废按钮.
      */
-    public static function forceRetireSoftware(): Action
+    public static function forceRetire(): Action
     {
         return Action::make('强制报废')
             ->requiresConfirmation()
@@ -222,32 +197,10 @@ class SoftwareAction
     /**
      * 前往软件分类清单.
      */
-    public static function toSoftwareCategories(): Action
+    public static function toCategories(): Action
     {
         return Action::make('分类')
             ->icon('heroicon-s-square-3-stack-3d')
             ->url(SoftwareCategoryResource::getUrl('index'));
-    }
-
-    /**
-     * 前往软件清单.
-     */
-    public static function toSoftwareIndex(): Action
-    {
-        return Action::make('返回软件')
-            ->icon('heroicon-m-squares-plus')
-            ->url(SoftwareResource::getUrl('index'));
-    }
-
-    /**
-     * 前往软件.
-     */
-    public static function toSoftware(): Action
-    {
-        return Action::make('前往软件详情')
-            ->icon('heroicon-m-squares-plus')
-            ->url(function (Software $software) {
-                return SoftwareResource::getUrl('view', ['record' => $software->getKey()]);
-            });
     }
 }

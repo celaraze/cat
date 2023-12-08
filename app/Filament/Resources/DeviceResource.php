@@ -103,30 +103,34 @@ class DeviceResource extends Resource implements HasShieldPermissions
         return $table
             ->columns([
                 Tables\Columns\ImageColumn::make('image')
-                    ->label('照片')
                     ->toggleable()
                     ->circular()
-                    ->defaultImageUrl(('/images/default.jpg')),
+                    ->defaultImageUrl(('/images/default.jpg'))
+                    ->label('照片'),
                 Tables\Columns\TextColumn::make('asset_number')
                     ->searchable()
+                    ->toggleable()
                     ->label('资产编号'),
                 Tables\Columns\TextColumn::make('name')
-                    ->label('名称')
-                    ->toggleable(),
+                    ->searchable()
+                    ->toggleable()
+                    ->label('名称'),
                 Tables\Columns\TextColumn::make('brand.name')
-                    ->label('品牌')
-                    ->toggleable(),
+                    ->searchable()
+                    ->toggleable()
+                    ->label('品牌'),
                 Tables\Columns\TextColumn::make('category.name')
-                    ->label('分类')
-                    ->toggleable(),
+                    ->searchable()
+                    ->toggleable()
+                    ->label('分类'),
                 Tables\Columns\TextColumn::make('users.name')
                     ->searchable()
-                    ->label('管理者')
-                    ->toggleable(),
+                    ->toggleable()
+                    ->label('管理者'),
                 Tables\Columns\TextColumn::make('specification')
                     ->searchable()
-                    ->label('规格')
-                    ->toggleable(),
+                    ->toggleable()
+                    ->label('规格'),
             ])
             ->filters([
                 Tables\Filters\TrashedFilter::make(),
@@ -150,28 +154,28 @@ class DeviceResource extends Resource implements HasShieldPermissions
                     // 创建工单
                     DeviceAction::createTicket(),
                     // 分配管理者
-                    DeviceAction::createDeviceHasUser()
+                    DeviceAction::createHasUser()
                         ->visible(function (Device $device) {
                             $can = auth()->user()->can('assign_user_device');
 
-                            return $can && !$device->hasUsers()->count();
+                            return $can && ! $device->hasUsers()->count();
                         }),
                     // 解除管理者
-                    DeviceAction::deleteDeviceHasUser()
+                    DeviceAction::deleteHasUser()
                         ->visible(function (Device $device) {
                             $can = auth()->user()->can('delete_assign_user_device');
 
                             return $can && $device->hasUsers()->count();
                         }),
                     // 流程报废
-                    DeviceAction::retireDevice()
+                    DeviceAction::retire()
                         ->visible(function () {
                             $can = auth()->user()->can('retire_device');
 
                             return $can && DeviceService::isSetRetireFlow();
                         }),
                     // 强制报废
-                    DeviceAction::forceRetireDevice()
+                    DeviceAction::forceRetire()
                         ->visible(function () {
                             return auth()->user()->can('force_retire_device');
                         }),
@@ -196,13 +200,13 @@ class DeviceResource extends Resource implements HasShieldPermissions
                     ->label('导出')
                     ->visible(auth()->user()->can('export_device')),
                 // 创建
-                DeviceAction::createDevice()
+                DeviceAction::create()
                     ->visible(function () {
                         return auth()->user()->can('create_device');
                     }),
                 Tables\Actions\ActionGroup::make([
                     // 前往分类
-                    DeviceAction::toDeviceCategories(),
+                    DeviceAction::toCategories(),
                     // 配置资产编号自动生成规则
                     DeviceAction::setAssetNumberRule()
                         ->visible(function () {
@@ -214,7 +218,7 @@ class DeviceResource extends Resource implements HasShieldPermissions
                             return auth()->user()->can('reset_auto_asset_number_rule_device');
                         }),
                     // 配置设备报废流程
-                    DeviceAction::setDeviceRetireFlow()
+                    DeviceAction::setRetireFlow()
                         ->visible(function () {
                             return auth()->user()->can('set_retire_flow_device');
                         }),

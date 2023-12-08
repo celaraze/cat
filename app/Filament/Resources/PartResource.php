@@ -90,10 +90,10 @@ class PartResource extends Resource implements HasShieldPermissions
         return $table
             ->columns([
                 Tables\Columns\ImageColumn::make('images')
-                    ->label('照片')
                     ->circular()
                     ->toggleable()
-                    ->defaultImageUrl(('/images/default.jpg')),
+                    ->defaultImageUrl(('/images/default.jpg'))
+                    ->label('照片'),
                 Tables\Columns\TextColumn::make('asset_number')
                     ->searchable()
                     ->toggleable()
@@ -131,14 +131,14 @@ class PartResource extends Resource implements HasShieldPermissions
                     }),
                 Tables\Actions\ActionGroup::make([
                     // 流程报废
-                    PartAction::retirePart()
+                    PartAction::retire()
                         ->visible(function () {
                             $can = auth()->user()->can('retire_part');
 
                             return $can && PartService::isSetRetireFlow();
                         }),
                     // 强制报废
-                    PartAction::forceRetirePart()
+                    PartAction::forceRetire()
                         ->visible(function () {
                             return auth()->user()->can('force_retire_part');
                         }),
@@ -164,12 +164,12 @@ class PartResource extends Resource implements HasShieldPermissions
                         return auth()->user()->can('export_part');
                     }),
                 // 创建
-                PartAction::createPart()->visible(function () {
+                PartAction::create()->visible(function () {
                     return auth()->user()->can('create_part');
                 }),
                 Tables\Actions\ActionGroup::make([
                     // 前往配件分类
-                    PartAction::toPartCategories(),
+                    PartAction::toCategories(),
                     // 配置资产编号自动生成
                     PartAction::setAssetNumberRule()
                         ->visible(function () {
@@ -181,7 +181,7 @@ class PartResource extends Resource implements HasShieldPermissions
                             return auth()->user()->can('reset_auto_asset_number_rule_part');
                         }),
                     // 配置配件报废流程
-                    PartAction::setPartRetireFlow()
+                    PartAction::setRetireFlow()
                         ->visible(function () {
                             return auth()->user()->can('set_retire_flow_part');
                         }),

@@ -14,9 +14,9 @@ class AssetNumberRuleAction
     /**
      * 创建资产编号规则。
      */
-    public static function createAssetNumberRule(): Action
+    public static function create(): Action
     {
-        return Action::make('新增规则')
+        return Action::make('新增')
             ->slideOver()
             ->icon('heroicon-m-plus')
             ->form(SettingForm::createOrEdit())

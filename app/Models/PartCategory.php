@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Services\PartCategoryService;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -19,5 +20,13 @@ class PartCategory extends Model
     public function parts(): HasMany
     {
         return $this->hasMany(Part::class, 'category_id', 'id');
+    }
+
+    /**
+     * 模型到服务.
+     */
+    public function service(): PartCategoryService
+    {
+        return new PartCategoryService($this);
     }
 }

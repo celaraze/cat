@@ -2,7 +2,7 @@
 
 namespace App\Filament\Resources\DeviceCategoryResource\Pages;
 
-use App\Filament\Actions\DeviceAction;
+use App\Filament\Actions\DeviceCategoryAction;
 use App\Filament\Resources\DeviceCategoryResource;
 use Filament\Resources\Pages\ManageRelatedRecords;
 use Filament\Tables;
@@ -31,8 +31,9 @@ class Device extends ManageRelatedRecords
             ->recordTitleAttribute('asset_number')
             ->columns([
                 Tables\Columns\TextColumn::make('asset_number')
-                    ->label('资产编号')
-                    ->searchable(),
+                    ->searchable()
+                    ->toggleable()
+                    ->label('资产编号'),
             ])
             ->filters([
                 Tables\Filters\TrashedFilter::make(),
@@ -41,7 +42,8 @@ class Device extends ManageRelatedRecords
 
             ])
             ->actions([
-                DeviceAction::toDevice(),
+                // 前往设备详情
+                DeviceCategoryAction::toDevice(),
             ])
             ->bulkActions([
 

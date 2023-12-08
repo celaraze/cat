@@ -82,7 +82,7 @@ class FlowResource extends Resource implements HasShieldPermissions
             ])
             ->headerActions([
                 // 创建
-                FlowAction::createFlow()
+                FlowAction::create()
                     ->visible(function () {
                         return auth()->user()->can('create_flow');
                     }),

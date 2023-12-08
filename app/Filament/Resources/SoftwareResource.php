@@ -92,10 +92,10 @@ class SoftwareResource extends Resource implements HasShieldPermissions
         return $table
             ->columns([
                 Tables\Columns\ImageColumn::make('images')
-                    ->label('照片')
                     ->circular()
                     ->toggleable()
-                    ->defaultImageUrl(('/images/default.jpg')),
+                    ->defaultImageUrl(('/images/default.jpg'))
+                    ->label('照片'),
                 Tables\Columns\TextColumn::make('asset_number')
                     ->searchable()
                     ->toggleable()
@@ -141,14 +141,14 @@ class SoftwareResource extends Resource implements HasShieldPermissions
                     }),
                 Tables\Actions\ActionGroup::make([
                     // 流程报废
-                    SoftwareAction::retireSoftware()
+                    SoftwareAction::retire()
                         ->visible(function () {
                             $can = auth()->user()->can('retire_software');
 
                             return $can && SoftwareService::isSetRetireFlow();
                         }),
                     // 强制报废
-                    SoftwareAction::forceRetireSoftware()
+                    SoftwareAction::forceRetire()
                         ->visible(function () {
                             return auth()->user()->can('force_retire_software');
                         }),
@@ -174,13 +174,13 @@ class SoftwareResource extends Resource implements HasShieldPermissions
                         return auth()->user()->can('export_software');
                     }),
                 // 创建
-                SoftwareAction::createSoftware()
+                SoftwareAction::create()
                     ->visible(function () {
                         return auth()->user()->can('create_software');
                     }),
                 Tables\Actions\ActionGroup::make([
                     // 前往软件分类
-                    SoftwareAction::toSoftwareCategories(),
+                    SoftwareAction::toCategories(),
                     // 配置资产编号自动生成规则
                     SoftwareAction::setAssetNumberRule()
                         ->visible(function () {
@@ -192,7 +192,7 @@ class SoftwareResource extends Resource implements HasShieldPermissions
                             return auth()->user()->can('reset_auto_asset_number_rule_software');
                         }),
                     // 配置软件报废流程
-                    SoftwareAction::setSoftwareRetireFlow()
+                    SoftwareAction::setRetireFlow()
                         ->visible(function () {
                             return auth()->user()->can('set_retire_flow_software');
                         }),

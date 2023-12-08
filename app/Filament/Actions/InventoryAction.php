@@ -17,7 +17,7 @@ class InventoryAction
     /**
      * 创建盘点.
      */
-    public static function createInventory(): Action
+    public static function create(): Action
     {
         return Action::make('新增')
             ->slideOver()
@@ -39,7 +39,7 @@ class InventoryAction
     /**
      * 删除盘点.
      */
-    public static function deleteInventory(): \Filament\Actions\Action
+    public static function delete(): \Filament\Actions\Action
     {
         return \Filament\Actions\Action::make('放弃')
             ->icon('heroicon-s-trash')

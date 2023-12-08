@@ -77,13 +77,17 @@ class UserResource extends Resource implements HasShieldPermissions
         return $table
             ->columns([
                 Tables\Columns\ImageColumn::make('avatar_url')
-                    ->label('头像')
                     ->toggleable()
                     ->circular()
-                    ->defaultImageUrl(('/images/default.jpg')),
+                    ->defaultImageUrl(('/images/default.jpg'))
+                    ->label('头像'),
                 Tables\Columns\TextColumn::make('name')
+                    ->toggleable()
+                    ->searchable()
                     ->label('名称'),
                 Tables\Columns\TextColumn::make('email')
+                    ->toggleable()
+                    ->searchable()
                     ->label('邮箱'),
             ])
             ->filters([
@@ -110,7 +114,7 @@ class UserResource extends Resource implements HasShieldPermissions
                         return $can && ! $demo_mode;
                     }),
                 // 删除用户
-                UserAction::deleteUser()
+                UserAction::delete()
                     ->visible(function () {
                         return auth()->user()->can('delete_user');
                     }),
@@ -134,7 +138,7 @@ class UserResource extends Resource implements HasShieldPermissions
                     ->label('导出')
                     ->visible(auth()->user()->can('export_user')),
                 // 创建
-                UserAction::createUser()
+                UserAction::create()
                     ->visible(function () {
                         return auth()->user()->can('create_user');
                     }),

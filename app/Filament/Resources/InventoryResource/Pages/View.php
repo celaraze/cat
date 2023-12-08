@@ -19,7 +19,7 @@ class View extends ViewRecord
     {
         return [
             // 放弃盘点
-            InventoryAction::deleteInventory(),
+            InventoryAction::delete(),
         ];
     }
 }

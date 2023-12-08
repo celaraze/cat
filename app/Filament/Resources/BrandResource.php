@@ -107,7 +107,7 @@ class BrandResource extends Resource implements HasShieldPermissions
                         return auth()->user()->can('export_brand');
                     }),
                 // 创建
-                BrandAction::createBrand()
+                BrandAction::create()
                     ->visible(function () {
                         return auth()->user()->can('create_brand');
                     }),

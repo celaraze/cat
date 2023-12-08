@@ -31,21 +31,27 @@ class Track extends ManageRelatedRecords
             ->recordTitleAttribute('name')
             ->columns([
                 Tables\Columns\TextColumn::make('created_at')
+                    ->searchable()
+                    ->toggleable()
                     ->label('创建时间'),
                 Tables\Columns\TextColumn::make('user.name')
+                    ->searchable()
+                    ->toggleable()
                     ->label('用户'),
                 Tables\Columns\TextColumn::make('comment')
-                    ->label('评论')
+                    ->searchable()
+                    ->toggleable()
                     // todo wrap 不起作用？
                     ->wrap()
-                    ->html(),
+                    ->html()
+                    ->label('评论'),
             ])
             ->filters([
 
             ])
             ->headerActions([
                 // 创建
-                TicketAction::createTicketHasTrack($this->getOwnerRecord()),
+                TicketAction::createHasTrack($this->getOwnerRecord()),
             ])
             ->actions([
 

@@ -38,12 +38,15 @@ class Contact extends ManageRelatedRecords
             ->columns([
                 Tables\Columns\TextColumn::make('name')
                     ->searchable()
+                    ->toggleable()
                     ->label('名称'),
                 Tables\Columns\TextColumn::make('phone_number')
                     ->searchable()
+                    ->toggleable()
                     ->label('电话'),
                 Tables\Columns\TextColumn::make('email')
                     ->searchable()
+                    ->toggleable()
                     ->label('邮箱'),
             ])
             ->filters([
@@ -51,7 +54,7 @@ class Contact extends ManageRelatedRecords
             ])
             ->headerActions([
                 // 添加联系人
-                VendorAction::createVendorHasContact($this->getOwnerRecord()),
+                VendorAction::createHasContact($this->getOwnerRecord()),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),

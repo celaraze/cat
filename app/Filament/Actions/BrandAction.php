@@ -14,7 +14,7 @@ class BrandAction
     /**
      * 创建品牌.
      */
-    public static function createBrand(): Action
+    public static function create(): Action
     {
         return Action::make('新增')
             ->slideOver()
@@ -24,7 +24,7 @@ class BrandAction
                 try {
                     $brand_service = new BrandService();
                     $brand_service->create($data);
-                    NotificationUtil::make(true, '已创建品牌');
+                    NotificationUtil::make(true, '已新增品牌');
                 } catch (Exception $exception) {
                     LogUtil::error($exception);
                     NotificationUtil::make(false, $exception);

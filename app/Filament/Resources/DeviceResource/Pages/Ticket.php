@@ -31,14 +31,24 @@ class Ticket extends ManageRelatedRecords
             ->recordTitleAttribute('name')
             ->columns([
                 Tables\Columns\TextColumn::make('subject')
+                    ->searchable()
+                    ->toggleable()
                     ->label('主题'),
                 Tables\Columns\TextColumn::make('created_at')
+                    ->searchable()
+                    ->toggleable()
                     ->label('创建时间'),
                 Tables\Columns\TextColumn::make('user.name')
+                    ->searchable()
+                    ->toggleable()
                     ->label('提交人'),
                 Tables\Columns\TextColumn::make('assignee.name')
+                    ->searchable()
+                    ->toggleable()
                     ->label('处理人'),
                 Tables\Columns\TextColumn::make('deleted_at')
+                    ->searchable()
+                    ->toggleable()
                     ->formatStateUsing(function (string $state) {
                         return $state ? '已处理' : '处理中';
                     })

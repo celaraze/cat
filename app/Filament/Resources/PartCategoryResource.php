@@ -2,7 +2,7 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Actions\PartAction;
+use App\Filament\Actions\PartCategoryAction;
 use App\Filament\Forms\PartCategoryForm;
 use App\Filament\Imports\PartCategoryImporter;
 use App\Filament\Resources\PartCategoryResource\Pages\Edit;
@@ -63,6 +63,8 @@ class PartCategoryResource extends Resource implements HasShieldPermissions
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('name')
+                    ->searchable()
+                    ->toggleable()
                     ->label('名称'),
             ])
             ->filters([
@@ -80,7 +82,7 @@ class PartCategoryResource extends Resource implements HasShieldPermissions
                         return auth()->user()->can('update_part::category');
                     }),
                 // 删除
-                Tables\Actions\DeleteAction::make()
+                PartCategoryAction::delete()
                     ->visible(function () {
                         return auth()->user()->can('delete_part::category');
                     }),
@@ -105,12 +107,12 @@ class PartCategoryResource extends Resource implements HasShieldPermissions
                         return auth()->user()->can('export_part::category');
                     }),
                 // 创建
-                PartAction::createPartCategory()
+                PartCategoryAction::create()
                     ->visible(function () {
                         return auth()->user()->can('create_part::category');
                     }),
                 // 返回配件
-                PartAction::toParts(),
+                PartCategoryAction::toParts(),
             ]);
     }
 

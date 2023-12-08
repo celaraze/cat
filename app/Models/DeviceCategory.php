@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Services\DeviceCategoryService;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -19,5 +20,13 @@ class DeviceCategory extends Model
     public function devices(): HasMany
     {
         return $this->hasMany(Device::class, 'category_id', 'id');
+    }
+
+    /**
+     * 模型到服务.
+     */
+    public function service(): DeviceCategoryService
+    {
+        return new DeviceCategoryService($this);
     }
 }

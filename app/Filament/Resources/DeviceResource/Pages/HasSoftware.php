@@ -32,10 +32,16 @@ class HasSoftware extends ManageRelatedRecords
             ->recordTitleAttribute('name')
             ->columns([
                 Tables\Columns\TextColumn::make('software.category.name')
+                    ->searchable()
+                    ->toggleable()
                     ->label('分类'),
                 Tables\Columns\TextColumn::make('software.asset_number')
+                    ->searchable()
+                    ->toggleable()
                     ->label('资产编号'),
                 Tables\Columns\TextColumn::make('status')
+                    ->searchable()
+                    ->toggleable()
                     ->badge()
                     ->color(function (DeviceHasSoftware $device_has_software) {
                         if ($device_has_software->getAttribute('status') == '附加') {
@@ -46,8 +52,12 @@ class HasSoftware extends ManageRelatedRecords
                     })
                     ->label('状态'),
                 Tables\Columns\TextColumn::make('updated_at')
+                    ->searchable()
+                    ->toggleable()
                     ->label('操作时间'),
                 Tables\Columns\TextColumn::make('user.name')
+                    ->searchable()
+                    ->toggleable()
                     ->label('操作人'),
             ])
             ->filters([
@@ -55,14 +65,14 @@ class HasSoftware extends ManageRelatedRecords
             ])
             ->headerActions([
                 // 创建
-                DeviceAction::createDeviceHasSoftware($this->getOwnerRecord())
+                DeviceAction::createHasSoftware($this->getOwnerRecord())
                     ->visible(function () {
                         return auth()->user()->can('create_has_software_device');
                     }),
             ])
             ->actions([
                 // 删除
-                DeviceAction::deleteDeviceHasSoftware()
+                DeviceAction::deleteHasSoftware()
                     ->visible(function (DeviceHasSoftware $device_has_software) {
                         $can = auth()->user()->can('delete_has_software_device');
 

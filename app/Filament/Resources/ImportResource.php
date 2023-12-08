@@ -2,8 +2,9 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\ImportResource\Pages;
-use App\Filament\Resources\ImportResource\RelationManagers\FailedImportRowRelationManager;
+use App\Filament\Resources\ImportResource\Pages\FailedImportRows;
+use App\Filament\Resources\ImportResource\Pages\Index;
+use App\Filament\Resources\ImportResource\Pages\View;
 use App\Models\Import;
 use Filament\Forms\Form;
 use Filament\Infolists\Components\Grid;
@@ -12,6 +13,7 @@ use Filament\Infolists\Components\Section;
 use Filament\Infolists\Components\Split;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Infolists\Infolist;
+use Filament\Resources\Pages\Page;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -29,11 +31,20 @@ class ImportResource extends Resource
 
     protected static ?string $navigationGroup = '日志';
 
+    public static function getRecordSubNavigation(Page $page): array
+    {
+        return $page->generateNavigationItems([
+            Index::class,
+            View::class,
+            FailedImportRows::class,
+        ]);
+    }
+
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                //
+
             ]);
     }
 
@@ -42,16 +53,28 @@ class ImportResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('completed_at')
+                    ->searchable()
+                    ->toggleable()
                     ->label('完成时间'),
                 Tables\Columns\TextColumn::make('file_name')
+                    ->searchable()
+                    ->toggleable()
                     ->label('文件'),
                 Tables\Columns\TextColumn::make('processed_rows')
+                    ->searchable()
+                    ->toggleable()
                     ->label('已处理行'),
                 Tables\Columns\TextColumn::make('total_rows')
+                    ->searchable()
+                    ->toggleable()
                     ->label('总行'),
                 Tables\Columns\TextColumn::make('successful_rows')
+                    ->searchable()
+                    ->toggleable()
                     ->label('成功行'),
                 Tables\Columns\TextColumn::make('user_id')
+                    ->searchable()
+                    ->toggleable()
                     ->label('执行用户'),
             ])
             ->filters([
@@ -103,19 +126,12 @@ class ImportResource extends Resource
         ])->columns(3);
     }
 
-    public static function getRelations(): array
-    {
-        return [
-            FailedImportRowRelationManager::make(),
-        ];
-    }
-
     public static function getPages(): array
     {
         return [
-            'index' => Pages\Index::route('/'),
-            'create' => Pages\Create::route('/create'),
-            'view' => Pages\View::route('/{record}'),
+            'index' => Index::route('/'),
+            'view' => View::route('/{record}'),
+            'failed_import_rows' => FailedImportRows::route('/{record}/failed_import_rows'),
         ];
     }
 

@@ -29,6 +29,8 @@ class HasUser extends ManageRelatedRecords
             ->recordTitleAttribute('name')
             ->columns([
                 Tables\Columns\TextColumn::make('user.name')
+                    ->searchable()
+                    ->toggleable()
                     ->label('名称'),
             ])
             ->filters([

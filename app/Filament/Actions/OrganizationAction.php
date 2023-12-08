@@ -18,7 +18,7 @@ class OrganizationAction
     /**
      * 创建组织按钮.
      */
-    public static function createOrganization(): Action
+    public static function create(): Action
     {
         return Action::make('新增')
             ->slideOver()

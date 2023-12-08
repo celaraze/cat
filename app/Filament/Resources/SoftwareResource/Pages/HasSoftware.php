@@ -5,7 +5,6 @@ namespace App\Filament\Resources\SoftwareResource\Pages;
 use App\Filament\Actions\SoftwareAction;
 use App\Filament\Resources\SoftwareResource;
 use App\Models\DeviceHasSoftware;
-use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Pages\ManageRelatedRecords;
 use Filament\Tables;
@@ -32,9 +31,7 @@ class HasSoftware extends ManageRelatedRecords
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('name')
-                    ->required()
-                    ->maxLength(255),
+
             ]);
     }
 
@@ -44,10 +41,16 @@ class HasSoftware extends ManageRelatedRecords
             ->recordTitleAttribute('name')
             ->columns([
                 Tables\Columns\TextColumn::make('device.asset_number')
+                    ->searchable()
+                    ->toggleable()
                     ->label('资产编号'),
                 Tables\Columns\TextColumn::make('device.name')
+                    ->searchable()
+                    ->toggleable()
                     ->label('名称'),
                 Tables\Columns\TextColumn::make('status')
+                    ->searchable()
+                    ->toggleable()
                     ->badge()
                     ->color(function (DeviceHasSoftware $device_has_software) {
                         if ($device_has_software->getAttribute('status') == '附加') {
@@ -58,8 +61,12 @@ class HasSoftware extends ManageRelatedRecords
                     })
                     ->label('状态'),
                 Tables\Columns\TextColumn::make('updated_at')
+                    ->searchable()
+                    ->toggleable()
                     ->label('操作时间'),
                 Tables\Columns\TextColumn::make('user.name')
+                    ->searchable()
+                    ->toggleable()
                     ->label('操作人'),
             ])
             ->filters([

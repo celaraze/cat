@@ -35,4 +35,12 @@ class DeviceCategoryService
 
         return $this->device_category;
     }
+
+    /**
+     * 删除设备分类.
+     */
+    public function delete(): ?bool
+    {
+        return $this->device_category->delete();
+    }
 }

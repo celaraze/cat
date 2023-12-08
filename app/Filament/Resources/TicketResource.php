@@ -52,12 +52,20 @@ class TicketResource extends Resource
         return $table
             ->columns([
                 TextColumn::make('asset_number')
+                    ->searchable()
+                    ->toggleable()
                     ->label('资产编号'),
                 TextColumn::make('subject')
+                    ->searchable()
+                    ->toggleable()
                     ->label('主题'),
                 TextColumn::make('category.name')
+                    ->searchable()
+                    ->toggleable()
                     ->label('分类'),
                 TextColumn::make('priority')
+                    ->searchable()
+                    ->toggleable()
                     ->label('优先级')
                     ->formatStateUsing(function (string $state) {
                         return Priority::array()[$state];
@@ -67,10 +75,16 @@ class TicketResource extends Resource
                         return Priority::colors()[$state];
                     }),
                 TextColumn::make('user.name')
+                    ->searchable()
+                    ->toggleable()
                     ->label('提交人'),
                 TextColumn::make('assignee.name')
+                    ->searchable()
+                    ->toggleable()
                     ->label('处理人'),
                 TextColumn::make('created_at')
+                    ->searchable()
+                    ->toggleable()
                     ->label('提交时间'),
             ])
             ->filters([
@@ -88,10 +102,10 @@ class TicketResource extends Resource
             ])
             ->headerActions([
                 // 创建
-                TicketAction::createTicket(),
+                TicketAction::create(),
                 ActionGroup::make([
                     // 前往分类
-                    TicketAction::toTicketCategory(),
+                    TicketAction::toCategory(),
                 ])
                     ->label('高级')
                     ->icon('heroicon-m-cog-8-tooth')

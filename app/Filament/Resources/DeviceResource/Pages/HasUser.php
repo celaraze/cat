@@ -43,6 +43,8 @@ class HasUser extends ManageRelatedRecords
             ->recordTitleAttribute('user.name')
             ->columns([
                 Tables\Columns\TextColumn::make('user.name')
+                    ->searchable()
+                    ->toggleable()
                     ->badge()
                     ->color(function (DeviceHasUser $device_user_track) {
                         if ($device_user_track->getAttribute('deleted_at')) {
@@ -51,26 +53,32 @@ class HasUser extends ManageRelatedRecords
                             return 'success';
                         }
                     })
-                    ->searchable()
                     ->label('管理者'),
                 Tables\Columns\TextColumn::make('comment')
+                    ->searchable()
+                    ->toggleable()
                     ->label('分配说明'),
                 Tables\Columns\TextColumn::make('delete_comment')
+                    ->searchable()
+                    ->toggleable()
                     ->label('解除分配说明'),
                 Tables\Columns\TextColumn::make('created_at')
+                    ->searchable()
+                    ->toggleable()
                     ->size(TextColumnSize::ExtraSmall)
                     ->label('分配时间'),
                 Tables\Columns\TextColumn::make('deleted_at')
+                    ->searchable()
+                    ->toggleable()
                     ->size(TextColumnSize::ExtraSmall)
                     ->label('解除分配时间'),
             ])
-            ->defaultSort('deleted_at', 'desc')
             ->filters([
 
             ])
             ->headerActions([
                 // 分配管理者
-                DeviceAction::createDeviceHasUser($this->getOwnerRecord())
+                DeviceAction::createHasUser($this->getOwnerRecord())
                     ->visible(function () {
                         /* @var Device $device */
                         $device = $this->getOwnerRecord();
@@ -79,7 +87,7 @@ class HasUser extends ManageRelatedRecords
                         return $can && ! $device->service()->isExistHasUser();
                     }),
                 // 解除管理者
-                DeviceAction::deleteDeviceHasUser($this->getOwnerRecord())
+                DeviceAction::deleteHasUser($this->getOwnerRecord())
                     ->visible(function () {
                         /* @var Device $device */
                         $device = $this->getOwnerRecord();
@@ -94,7 +102,7 @@ class HasUser extends ManageRelatedRecords
             ->bulkActions([
 
             ])
-            ->modifyQueryUsing(fn (Builder $query) => $query->orderByDesc('created_at')
+            ->modifyQueryUsing(fn (Builder $query) => $query->orderByDesc('deleted_at')
                 ->withoutGlobalScopes([
                     SoftDeletingScope::class,
                 ]));

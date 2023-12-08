@@ -67,10 +67,16 @@ class VendorResource extends Resource implements HasShieldPermissions
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('name')
+                    ->toggleable()
+                    ->searchable()
                     ->label('名称'),
                 Tables\Columns\TextColumn::make('address')
+                    ->toggleable()
+                    ->searchable()
                     ->label('地址'),
                 Tables\Columns\TextColumn::make('public_phone_number')
+                    ->toggleable()
+                    ->searchable()
                     ->label('对公电话'),
             ])
             ->filters([
@@ -106,7 +112,7 @@ class VendorResource extends Resource implements HasShieldPermissions
                         return auth()->user()->can('export_vendor');
                     }),
                 // 创建
-                VendorAction::createVendor()
+                VendorAction::create()
                     ->visible(function () {
                         return auth()->user()->can('create_vendor');
                     }),

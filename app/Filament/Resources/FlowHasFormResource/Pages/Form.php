@@ -31,21 +31,31 @@ class Form extends ManageRelatedRecords
             ->recordTitleAttribute('uuid')
             ->columns([
                 Tables\Columns\TextColumn::make('node_name')
+                    ->searchable()
+                    ->toggleable()
                     ->label('节点说明'),
                 Tables\Columns\TextColumn::make('approve_comment')
+                    ->searchable()
+                    ->toggleable()
                     ->label('审批意见'),
                 Tables\Columns\TextColumn::make('approve_user_name')
+                    ->searchable()
+                    ->toggleable()
                     ->label('审批人'),
                 Tables\Columns\TextColumn::make('created_at')
+                    ->searchable()
+                    ->toggleable()
                     ->label('审批时间'),
                 Tables\Columns\TextColumn::make('nodeStatusText')
-                    ->label('状态')
+                    ->searchable()
+                    ->toggleable()
                     ->icon(function (string $state) {
                         return FlowHasFormUtil::nodeStatusTextIcons($state);
                     })
                     ->color(function (string $state) {
                         return FlowHasFormUtil::nodeStatusTextColors($state);
-                    }),
+                    })
+                    ->label('状态'),
             ])
             ->filters([
 

@@ -2,7 +2,7 @@
 
 namespace App\Filament\Resources\SoftwareCategoryResource\Pages;
 
-use App\Filament\Actions\SoftwareAction;
+use App\Filament\Actions\SoftwareCategoryAction;
 use App\Filament\Resources\SoftwareCategoryResource;
 use Filament\Resources\Pages\ManageRelatedRecords;
 use Filament\Tables;
@@ -31,8 +31,9 @@ class Software extends ManageRelatedRecords
             ->recordTitleAttribute('asset_number')
             ->columns([
                 Tables\Columns\TextColumn::make('asset_number')
-                    ->label('资产编号')
-                    ->searchable(),
+                    ->searchable()
+                    ->toggleable()
+                    ->label('资产编号'),
             ])
             ->filters([
                 Tables\Filters\TrashedFilter::make(),
@@ -41,7 +42,8 @@ class Software extends ManageRelatedRecords
 
             ])
             ->actions([
-                SoftwareAction::toSoftware(),
+                // 前往软件清单
+                SoftwareCategoryAction::toSoftware(),
             ])
             ->bulkActions([
 

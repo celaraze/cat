@@ -3,15 +3,12 @@
 namespace App\Filament\Actions;
 
 use App\Filament\Forms\DeviceHasPartForm;
-use App\Filament\Forms\PartCategoryForm;
 use App\Filament\Forms\PartForm;
 use App\Filament\Resources\PartCategoryResource;
-use App\Filament\Resources\PartResource;
 use App\Models\DeviceHasPart;
 use App\Models\Part;
 use App\Services\AssetNumberRuleService;
 use App\Services\FlowService;
-use App\Services\PartCategoryService;
 use App\Services\PartService;
 use App\Services\SettingService;
 use App\Utils\LogUtil;
@@ -23,31 +20,9 @@ use Illuminate\Database\Eloquent\Model;
 class PartAction
 {
     /**
-     * 创建设备分类按钮.
-     */
-    public static function createPartCategory(): Action
-    {
-        return Action::make('新增')
-            ->slideOver()
-            ->icon('heroicon-m-plus')
-            ->form(PartCategoryForm::createOrEdit())
-            ->action(function (array $data) {
-                try {
-                    $part_category_service = new PartCategoryService();
-                    $part_category_service->create($data);
-                    NotificationUtil::make(true, '已创建配件分类');
-                } catch (Exception $exception) {
-                    LogUtil::error($exception);
-                    NotificationUtil::make(false, $exception);
-                }
-            })
-            ->closeModalByClickingAway(false);
-    }
-
-    /**
      * 创建配件.
      */
-    public static function createPart(): Action
+    public static function create(): Action
     {
         return Action::make('新增')
             ->slideOver()
@@ -124,7 +99,7 @@ class PartAction
     /**
      * 绑定配件报废流程.
      */
-    public static function setPartRetireFlow(): Action
+    public static function setRetireFlow(): Action
     {
         return Action::make('配置报废流程')
             ->slideOver()
@@ -173,9 +148,29 @@ class PartAction
     }
 
     /**
+     * 强制报废按钮.
+     */
+    public static function forceRetire(): Action
+    {
+        return Action::make('强制报废')
+            ->requiresConfirmation()
+            ->icon('heroicon-m-archive-box-x-mark')
+            ->action(function (Part $part) {
+                try {
+                    $part->service()->retire();
+                    NotificationUtil::make(true, '已报废');
+                } catch (Exception $exception) {
+                    LogUtil::error($exception);
+                    NotificationUtil::make(false, $exception);
+                }
+            })
+            ->closeModalByClickingAway(false);
+    }
+
+    /**
      * 发起配件报废流程表单.
      */
-    public static function retirePart(): Action
+    public static function retire(): Action
     {
         return Action::make('流程报废')
             ->slideOver()
@@ -201,54 +196,12 @@ class PartAction
     }
 
     /**
-     * 强制报废按钮.
-     */
-    public static function forceRetirePart(): Action
-    {
-        return Action::make('强制报废')
-            ->requiresConfirmation()
-            ->icon('heroicon-m-archive-box-x-mark')
-            ->action(function (Part $part) {
-                try {
-                    $part->service()->retire();
-                    NotificationUtil::make(true, '已报废');
-                } catch (Exception $exception) {
-                    LogUtil::error($exception);
-                    NotificationUtil::make(false, $exception);
-                }
-            })
-            ->closeModalByClickingAway(false);
-    }
-
-    /**
      * 前往配件分类清单.
      */
-    public static function toPartCategories(): Action
+    public static function toCategories(): Action
     {
         return Action::make('分类')
             ->icon('heroicon-s-square-3-stack-3d')
             ->url(PartCategoryResource::getUrl('index'));
-    }
-
-    /**
-     * 前往配件清单.
-     */
-    public static function toParts(): Action
-    {
-        return Action::make('返回配件')
-            ->icon('heroicon-m-cpu-chip')
-            ->url(PartResource::getUrl('index'));
-    }
-
-    /**
-     * 前往配件.
-     */
-    public static function toPart(): Action
-    {
-        return Action::make('前往配件详情')
-            ->icon('heroicon-m-cpu-chip')
-            ->url(function (Part $part) {
-                return PartResource::getUrl('view', ['record' => $part->getKey()]);
-            });
     }
 }

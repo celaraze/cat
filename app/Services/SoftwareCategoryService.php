@@ -3,8 +3,6 @@
 namespace App\Services;
 
 use App\Models\SoftwareCategory;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use JetBrains\PhpStorm\ArrayShape;
 
@@ -26,14 +24,6 @@ class SoftwareCategoryService
     }
 
     /**
-     * 通过名称获取模型.
-     */
-    public static function getModelByName(string $category_name): Model|Builder|null
-    {
-        return SoftwareCategory::query()->where('name', $category_name)->first();
-    }
-
-    /**
      * 创建设备分类.
      */
     #[ArrayShape(['name' => 'string'])]
@@ -43,5 +33,13 @@ class SoftwareCategoryService
         $this->software_category->save();
 
         return $this->software_category;
+    }
+
+    /**
+     * 删除软件分类.
+     */
+    public function delete(): ?bool
+    {
+        return $this->software_category->delete();
     }
 }

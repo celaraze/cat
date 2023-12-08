@@ -3,8 +3,6 @@
 namespace App\Services;
 
 use App\Models\PartCategory;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use JetBrains\PhpStorm\ArrayShape;
 
@@ -26,14 +24,6 @@ class PartCategoryService
     }
 
     /**
-     * 通过名称获取模型.
-     */
-    public static function getModelByName(string $category_name): Model|Builder|null
-    {
-        return PartCategory::query()->where('name', $category_name)->first();
-    }
-
-    /**
      * 新增配件分类.
      */
     #[ArrayShape(['name' => 'string'])]
@@ -43,5 +33,13 @@ class PartCategoryService
         $this->part_category->save();
 
         return $this->part_category;
+    }
+
+    /**
+     * 删除配件分类.
+     */
+    public function delete(): ?bool
+    {
+        return $this->part_category->delete();
     }
 }

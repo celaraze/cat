@@ -33,10 +33,16 @@ class HasPart extends ManageRelatedRecords
             ->recordTitleAttribute('name')
             ->columns([
                 Tables\Columns\TextColumn::make('device.asset_number')
+                    ->searchable()
+                    ->toggleable()
                     ->label('资产编号'),
                 Tables\Columns\TextColumn::make('device.name')
+                    ->searchable()
+                    ->toggleable()
                     ->label('名称'),
                 Tables\Columns\TextColumn::make('status')
+                    ->searchable()
+                    ->toggleable()
                     ->badge()
                     ->color(function (DeviceHasPart $device_has_part) {
                         if ($device_has_part->getAttribute('status') == '附加') {
@@ -47,8 +53,12 @@ class HasPart extends ManageRelatedRecords
                     })
                     ->label('状态'),
                 Tables\Columns\TextColumn::make('updated_at')
+                    ->searchable()
+                    ->toggleable()
                     ->label('操作时间'),
                 Tables\Columns\TextColumn::make('user.name')
+                    ->searchable()
+                    ->toggleable()
                     ->label('操作人'),
             ])
             ->filters([

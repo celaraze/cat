@@ -17,7 +17,7 @@ class VendorAction
     /**
      * 创建联系人按钮.
      */
-    public static function createVendorHasContact(?Model $out_vendor = null): Action
+    public static function createHasContact(?Model $out_vendor = null): Action
     {
         return Action::make('添加联系人')
             ->slideOver()
@@ -46,7 +46,7 @@ class VendorAction
     /**
      * 创建厂商.
      */
-    public static function createVendor(): Action
+    public static function create(): Action
     {
         return Action::make('创建厂商')
             ->slideOver()

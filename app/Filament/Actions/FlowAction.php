@@ -126,7 +126,7 @@ class FlowAction
     /**
      * 创建流程按钮.
      */
-    public static function createFlow(): Action
+    public static function create(): Action
     {
         return Action::make('创建流程')
             ->slideOver()

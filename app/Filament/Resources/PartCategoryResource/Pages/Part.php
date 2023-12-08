@@ -2,7 +2,7 @@
 
 namespace App\Filament\Resources\PartCategoryResource\Pages;
 
-use App\Filament\Actions\PartAction;
+use App\Filament\Actions\PartCategoryAction;
 use App\Filament\Resources\PartCategoryResource;
 use Filament\Resources\Pages\ManageRelatedRecords;
 use Filament\Tables;
@@ -31,8 +31,9 @@ class Part extends ManageRelatedRecords
             ->recordTitleAttribute('asset_number')
             ->columns([
                 Tables\Columns\TextColumn::make('asset_number')
-                    ->label('资产编号')
-                    ->searchable(),
+                    ->searchable()
+                    ->toggleable()
+                    ->label('资产编号'),
             ])
             ->filters([
                 Tables\Filters\TrashedFilter::make(),
@@ -41,7 +42,8 @@ class Part extends ManageRelatedRecords
 
             ])
             ->actions([
-                PartAction::toPart(),
+                // 前往配件详情
+                PartCategoryAction::toPart(),
             ])
             ->bulkActions([
 

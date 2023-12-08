@@ -33,10 +33,16 @@ class HasPart extends ManageRelatedRecords
             ->columns(
                 [
                     Tables\Columns\TextColumn::make('part.category.name')
+                        ->searchable()
+                        ->toggleable()
                         ->label('分类'),
                     Tables\Columns\TextColumn::make('part.asset_number')
+                        ->searchable()
+                        ->toggleable()
                         ->label('资产编号'),
                     Tables\Columns\TextColumn::make('status')
+                        ->searchable()
+                        ->toggleable()
                         ->badge()
                         ->color(function (DeviceHasPart $device_has_part) {
                             if ($device_has_part->getAttribute('status') == '附加') {
@@ -47,8 +53,12 @@ class HasPart extends ManageRelatedRecords
                         })
                         ->label('状态'),
                     Tables\Columns\TextColumn::make('updated_at')
+                        ->searchable()
+                        ->toggleable()
                         ->label('操作时间'),
                     Tables\Columns\TextColumn::make('user.name')
+                        ->searchable()
+                        ->toggleable()
                         ->label('操作人'),
                 ]
             )
@@ -57,14 +67,14 @@ class HasPart extends ManageRelatedRecords
             ])
             ->headerActions([
                 // 创建
-                DeviceAction::createDeviceHasPart($this->getOwnerRecord())
+                DeviceAction::createHasPart($this->getOwnerRecord())
                     ->visible(function () {
                         return auth()->user()->can('create_has_part_device');
                     }),
             ])
             ->actions([
                 // 删除
-                DeviceAction::deleteDeviceHasPart()
+                DeviceAction::deleteHasPart()
                     ->visible(function (DeviceHasPart $device_has_part) {
                         $can = auth()->user()->can('delete_has_part_device');
 
