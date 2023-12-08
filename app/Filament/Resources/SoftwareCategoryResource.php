@@ -7,9 +7,12 @@ use App\Filament\Forms\SoftwareCategoryForm;
 use App\Filament\Imports\SoftwareCategoryImporter;
 use App\Filament\Resources\SoftwareCategoryResource\Pages\Edit;
 use App\Filament\Resources\SoftwareCategoryResource\Pages\Index;
+use App\Filament\Resources\SoftwareCategoryResource\Pages\Software;
+use App\Filament\Resources\SoftwareCategoryResource\Pages\View;
 use App\Models\SoftwareCategory;
 use BezhanSalleh\FilamentShield\Contracts\HasShieldPermissions;
 use Filament\Forms\Form;
+use Filament\Resources\Pages\Page;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Actions\ImportAction;
@@ -25,6 +28,16 @@ class SoftwareCategoryResource extends Resource implements HasShieldPermissions
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
     protected static ?string $modelLabel = '软件分类';
+
+    public static function getRecordSubNavigation(Page $page): array
+    {
+        return $page->generateNavigationItems([
+            Index::class,
+            View::class,
+            Edit::class,
+            Software::class,
+        ]);
+    }
 
     public static function getPermissionPrefixes(): array
     {
@@ -56,6 +69,11 @@ class SoftwareCategoryResource extends Resource implements HasShieldPermissions
                 Tables\Filters\TrashedFilter::make(),
             ])
             ->actions([
+                // 详情
+                Tables\Actions\ViewAction::make()
+                    ->visible(function () {
+                        return auth()->user()->can('view_software::category');
+                    }),
                 // 编辑
                 Tables\Actions\EditAction::make()
                     ->visible(function () {
@@ -91,22 +109,17 @@ class SoftwareCategoryResource extends Resource implements HasShieldPermissions
                         return auth()->user()->can('create_software::category');
                     }),
                 // 前往软件
-                SoftwareAction::toSoftware(),
+                SoftwareAction::toSoftwareIndex(),
             ]);
-    }
-
-    public static function getRelations(): array
-    {
-        return [
-            //
-        ];
     }
 
     public static function getPages(): array
     {
         return [
             'index' => Index::route('/'),
+            'view' => View::route('/{record}'),
             'edit' => Edit::route('/{record}/edit'),
+            'software' => Software::route('/{record}/software'),
         ];
     }
 

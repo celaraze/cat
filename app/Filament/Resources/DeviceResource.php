@@ -30,7 +30,9 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Actions\ImportAction;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletingScope;
 use pxlrbt\FilamentExcel\Actions\Tables\ExportAction;
 
 class DeviceResource extends Resource implements HasShieldPermissions
@@ -127,6 +129,7 @@ class DeviceResource extends Resource implements HasShieldPermissions
                     ->toggleable(),
             ])
             ->filters([
+                Tables\Filters\TrashedFilter::make(),
                 Tables\Filters\SelectFilter::make('category_id')
                     ->multiple()
                     ->options(DeviceCategoryService::pluckOptions())
@@ -143,14 +146,15 @@ class DeviceResource extends Resource implements HasShieldPermissions
                     ->visible(function () {
                         return auth()->user()->can('update_device');
                     }),
-                DeviceAction::createTicket(),
                 Tables\Actions\ActionGroup::make([
+                    // 创建工单
+                    DeviceAction::createTicket(),
                     // 分配管理者
                     DeviceAction::createDeviceHasUser()
                         ->visible(function (Device $device) {
                             $can = auth()->user()->can('assign_user_device');
 
-                            return $can && ! $device->hasUsers()->count();
+                            return $can && !$device->hasUsers()->count();
                         }),
                     // 解除管理者
                     DeviceAction::deleteDeviceHasUser()
@@ -198,7 +202,7 @@ class DeviceResource extends Resource implements HasShieldPermissions
                     }),
                 Tables\Actions\ActionGroup::make([
                     // 前往分类
-                    DeviceAction::toDeviceCategory(),
+                    DeviceAction::toDeviceCategories(),
                     // 配置资产编号自动生成规则
                     DeviceAction::setAssetNumberRule()
                         ->visible(function () {
@@ -280,6 +284,14 @@ class DeviceResource extends Resource implements HasShieldPermissions
             'software' => HasSoftware::route('{record}/has_software'),
             'tickets' => Ticket::route('/{record}/has_tickets'),
         ];
+    }
+
+    public static function getEloquentQuery(): Builder
+    {
+        return parent::getEloquentQuery()
+            ->withoutGlobalScopes([
+                SoftDeletingScope::class,
+            ]);
     }
 
     public static function canCreate(): bool

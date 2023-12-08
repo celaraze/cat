@@ -7,6 +7,8 @@ use App\Filament\Forms\DeviceForm;
 use App\Filament\Forms\DeviceHasPartForm;
 use App\Filament\Forms\DeviceHasSoftwareForm;
 use App\Filament\Forms\DeviceHasUserForm;
+use App\Filament\Resources\DeviceCategoryResource;
+use App\Filament\Resources\DeviceResource;
 use App\Filament\Resources\TicketResource;
 use App\Models\Device;
 use App\Models\DeviceHasPart;
@@ -331,13 +333,23 @@ class DeviceAction
     }
 
     /**
-     * 前往设备分类.
+     * 前往设备分类清单.
      */
-    public static function toDeviceCategory(): Action
+    public static function toDeviceCategories(): Action
     {
         return Action::make('分类')
             ->icon('heroicon-s-square-3-stack-3d')
-            ->url('/device-categories');
+            ->url(DeviceCategoryResource::getUrl('index'));
+    }
+
+    /**
+     * 前往设备清单.
+     */
+    public static function toDevices(): Action
+    {
+        return Action::make('返回设备')
+            ->icon('heroicon-s-server')
+            ->url(DeviceResource::getUrl('index'));
     }
 
     /**
@@ -345,9 +357,11 @@ class DeviceAction
      */
     public static function toDevice(): Action
     {
-        return Action::make('返回设备')
+        return Action::make('前往设备详情')
             ->icon('heroicon-s-server')
-            ->url('/devices');
+            ->url(function (Device $device) {
+                return DeviceResource::getUrl('view', ['record' => $device->getKey()]);
+            });
     }
 
     /**

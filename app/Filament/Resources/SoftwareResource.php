@@ -10,6 +10,7 @@ use App\Filament\Resources\SoftwareResource\Pages\HasSoftware;
 use App\Filament\Resources\SoftwareResource\Pages\Index;
 use App\Filament\Resources\SoftwareResource\Pages\View;
 use App\Models\Software;
+use App\Services\SoftwareCategoryService;
 use App\Services\SoftwareService;
 use BezhanSalleh\FilamentShield\Contracts\HasShieldPermissions;
 use Filament\Forms\Form;
@@ -122,6 +123,10 @@ class SoftwareResource extends Resource implements HasShieldPermissions
             ])
             ->filters([
                 Tables\Filters\TrashedFilter::make(),
+                Tables\Filters\SelectFilter::make('category_id')
+                    ->multiple()
+                    ->options(SoftwareCategoryService::pluckOptions())
+                    ->label('分类'),
             ])
             ->actions([
                 // 查看
@@ -175,7 +180,7 @@ class SoftwareResource extends Resource implements HasShieldPermissions
                     }),
                 Tables\Actions\ActionGroup::make([
                     // 前往软件分类
-                    SoftwareAction::toSoftwareCategory(),
+                    SoftwareAction::toSoftwareCategories(),
                     // 配置资产编号自动生成规则
                     SoftwareAction::setAssetNumberRule()
                         ->visible(function () {

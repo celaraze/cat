@@ -7,9 +7,12 @@ use App\Filament\Forms\PartCategoryForm;
 use App\Filament\Imports\PartCategoryImporter;
 use App\Filament\Resources\PartCategoryResource\Pages\Edit;
 use App\Filament\Resources\PartCategoryResource\Pages\Index;
+use App\Filament\Resources\PartCategoryResource\Pages\Part;
+use App\Filament\Resources\PartCategoryResource\Pages\View;
 use App\Models\PartCategory;
 use BezhanSalleh\FilamentShield\Contracts\HasShieldPermissions;
 use Filament\Forms\Form;
+use Filament\Resources\Pages\Page;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Actions\ImportAction;
@@ -25,6 +28,16 @@ class PartCategoryResource extends Resource implements HasShieldPermissions
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
     protected static ?string $modelLabel = '配件分类';
+
+    public static function getRecordSubNavigation(Page $page): array
+    {
+        return $page->generateNavigationItems([
+            Index::class,
+            View::class,
+            Edit::class,
+            Part::class,
+        ]);
+    }
 
     public static function getPermissionPrefixes(): array
     {
@@ -56,6 +69,11 @@ class PartCategoryResource extends Resource implements HasShieldPermissions
                 Tables\Filters\TrashedFilter::make(),
             ])
             ->actions([
+                // 查看
+                Tables\Actions\ViewAction::make()
+                    ->visible(function () {
+                        return auth()->user()->can('view_part::category');
+                    }),
                 // 编辑
                 Tables\Actions\EditAction::make()
                     ->visible(function () {
@@ -92,22 +110,17 @@ class PartCategoryResource extends Resource implements HasShieldPermissions
                         return auth()->user()->can('create_part::category');
                     }),
                 // 返回配件
-                PartAction::toPart(),
+                PartAction::toParts(),
             ]);
-    }
-
-    public static function getRelations(): array
-    {
-        return [
-            //
-        ];
     }
 
     public static function getPages(): array
     {
         return [
             'index' => Index::route('/'),
+            'view' => View::route('/{record}'),
             'edit' => Edit::route('/{record}/edit'),
+            'parts' => Part::route('/{record}/parts'),
         ];
     }
 

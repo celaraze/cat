@@ -5,6 +5,8 @@ namespace App\Filament\Actions;
 use App\Filament\Forms\DeviceHasPartForm;
 use App\Filament\Forms\PartCategoryForm;
 use App\Filament\Forms\PartForm;
+use App\Filament\Resources\PartCategoryResource;
+use App\Filament\Resources\PartResource;
 use App\Models\DeviceHasPart;
 use App\Models\Part;
 use App\Services\AssetNumberRuleService;
@@ -219,13 +221,23 @@ class PartAction
     }
 
     /**
-     * 前往配件分类.
+     * 前往配件分类清单.
      */
-    public static function toPartCategory(): Action
+    public static function toPartCategories(): Action
     {
         return Action::make('分类')
             ->icon('heroicon-s-square-3-stack-3d')
-            ->url('/part-categories');
+            ->url(PartCategoryResource::getUrl('index'));
+    }
+
+    /**
+     * 前往配件清单.
+     */
+    public static function toParts(): Action
+    {
+        return Action::make('返回配件')
+            ->icon('heroicon-m-cpu-chip')
+            ->url(PartResource::getUrl('index'));
     }
 
     /**
@@ -233,8 +245,10 @@ class PartAction
      */
     public static function toPart(): Action
     {
-        return Action::make('返回配件')
-            ->icon('heroicon-s-server')
-            ->url('/parts');
+        return Action::make('前往配件详情')
+            ->icon('heroicon-m-cpu-chip')
+            ->url(function (Part $part) {
+                return PartResource::getUrl('view', ['record' => $part->getKey()]);
+            });
     }
 }

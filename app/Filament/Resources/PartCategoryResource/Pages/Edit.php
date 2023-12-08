@@ -10,18 +10,15 @@ class Edit extends EditRecord
 {
     protected static string $resource = PartCategoryResource::class;
 
+    public static function getNavigationLabel(): string
+    {
+        return '编辑';
+    }
+
     protected function getHeaderActions(): array
     {
         return [
             Actions\DeleteAction::make(),
         ];
-    }
-
-    /**
-     * 保存后返回上一个页面.
-     */
-    protected function getRedirectUrl(): string
-    {
-        return $this->previousUrl;
     }
 }

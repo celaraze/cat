@@ -5,11 +5,14 @@ namespace App\Filament\Resources;
 use App\Filament\Actions\DeviceAction;
 use App\Filament\Forms\DeviceCategoryForm;
 use App\Filament\Imports\DeviceCategoryImporter;
+use App\Filament\Resources\DeviceCategoryResource\Pages\Device;
 use App\Filament\Resources\DeviceCategoryResource\Pages\Edit;
 use App\Filament\Resources\DeviceCategoryResource\Pages\Index;
+use App\Filament\Resources\DeviceCategoryResource\Pages\View;
 use App\Models\DeviceCategory;
 use BezhanSalleh\FilamentShield\Contracts\HasShieldPermissions;
 use Filament\Forms\Form;
+use Filament\Resources\Pages\Page;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Actions\ImportAction;
@@ -25,6 +28,16 @@ class DeviceCategoryResource extends Resource implements HasShieldPermissions
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
     protected static ?string $modelLabel = '设备分类';
+
+    public static function getRecordSubNavigation(Page $page): array
+    {
+        return $page->generateNavigationItems([
+            Index::class,
+            View::class,
+            Edit::class,
+            Device::class,
+        ]);
+    }
 
     public static function getPermissionPrefixes(): array
     {
@@ -51,7 +64,12 @@ class DeviceCategoryResource extends Resource implements HasShieldPermissions
                 Tables\Filters\TrashedFilter::make(),
             ])
             ->actions([
-                // 更新
+                // 查看
+                Tables\Actions\ViewAction::make()
+                    ->visible(function () {
+                        return auth()->user()->can('view_device::category');
+                    }),
+                // 编辑
                 Tables\Actions\EditAction::make()
                     ->visible(function () {
                         return auth()->user()->can('update_device::category');
@@ -89,7 +107,7 @@ class DeviceCategoryResource extends Resource implements HasShieldPermissions
                     ->visible(function () {
                         return auth()->user()->can('create_device::category');
                     }),
-                DeviceAction::toDevice(),
+                DeviceAction::toDevices(),
             ]);
     }
 
@@ -102,7 +120,9 @@ class DeviceCategoryResource extends Resource implements HasShieldPermissions
     {
         return [
             'index' => Index::route('/'),
+            'view' => View::route('/{record}'),
             'edit' => Edit::route('/{record}/edit'),
+            'devices' => Device::route('/{record}/devices'),
         ];
     }
 

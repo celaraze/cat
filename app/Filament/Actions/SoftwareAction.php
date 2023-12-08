@@ -5,6 +5,8 @@ namespace App\Filament\Actions;
 use App\Filament\Forms\DeviceHasSoftwareForm;
 use App\Filament\Forms\SoftwareCategoryForm;
 use App\Filament\Forms\SoftwareForm;
+use App\Filament\Resources\SoftwareCategoryResource;
+use App\Filament\Resources\SoftwareResource;
 use App\Models\DeviceHasSoftware;
 use App\Models\Software;
 use App\Services\AssetNumberRuleService;
@@ -218,13 +220,23 @@ class SoftwareAction
     }
 
     /**
-     * 前往软件分类.
+     * 前往软件分类清单.
      */
-    public static function toSoftwareCategory(): Action
+    public static function toSoftwareCategories(): Action
     {
         return Action::make('分类')
             ->icon('heroicon-s-square-3-stack-3d')
-            ->url('/software-categories');
+            ->url(SoftwareCategoryResource::getUrl('index'));
+    }
+
+    /**
+     * 前往软件清单.
+     */
+    public static function toSoftwareIndex(): Action
+    {
+        return Action::make('返回软件')
+            ->icon('heroicon-m-squares-plus')
+            ->url(SoftwareResource::getUrl('index'));
     }
 
     /**
@@ -232,8 +244,10 @@ class SoftwareAction
      */
     public static function toSoftware(): Action
     {
-        return Action::make('返回软件')
-            ->icon('heroicon-s-server')
-            ->url('/software');
+        return Action::make('前往软件详情')
+            ->icon('heroicon-m-squares-plus')
+            ->url(function (Software $software) {
+                return SoftwareResource::getUrl('view', ['record' => $software->getKey()]);
+            });
     }
 }

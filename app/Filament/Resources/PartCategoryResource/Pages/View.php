@@ -3,20 +3,14 @@
 namespace App\Filament\Resources\PartCategoryResource\Pages;
 
 use App\Filament\Resources\PartCategoryResource;
-use Filament\Actions;
 use Filament\Resources\Pages\ViewRecord;
 
 class View extends ViewRecord
 {
     protected static string $resource = PartCategoryResource::class;
 
-    protected function getActions(): array
+    public static function getNavigationLabel(): string
     {
-        return [
-            Actions\EditAction::make()
-                ->color('warning'),
-            Actions\Action::make('返回')
-                ->url($this->getResource()::getUrl('index')),
-        ];
+        return '详情';
     }
 }

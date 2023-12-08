@@ -26,7 +26,9 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Actions\ImportAction;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletingScope;
 use pxlrbt\FilamentExcel\Actions\Tables\ExportAction;
 
 class PartResource extends Resource implements HasShieldPermissions
@@ -110,14 +112,23 @@ class PartResource extends Resource implements HasShieldPermissions
                     ->label('规格'),
             ])
             ->filters([
+                Tables\Filters\TrashedFilter::make(),
                 Tables\Filters\SelectFilter::make('category_id')
                     ->multiple()
                     ->options(PartCategoryService::pluckOptions())
                     ->label('分类'),
             ])
             ->actions([
-                Tables\Actions\ViewAction::make(),
-                Tables\Actions\EditAction::make(),
+                // 详情
+                Tables\Actions\ViewAction::make()
+                    ->visible(function () {
+                        return auth()->user()->can('view_part');
+                    }),
+                // 编辑
+                Tables\Actions\EditAction::make()
+                    ->visible(function () {
+                        return auth()->user()->can('update_part');
+                    }),
                 Tables\Actions\ActionGroup::make([
                     // 流程报废
                     PartAction::retirePart()
@@ -158,7 +169,7 @@ class PartResource extends Resource implements HasShieldPermissions
                 }),
                 Tables\Actions\ActionGroup::make([
                     // 前往配件分类
-                    PartAction::toPartCategory(),
+                    PartAction::toPartCategories(),
                     // 配置资产编号自动生成
                     PartAction::setAssetNumberRule()
                         ->visible(function () {
@@ -235,6 +246,14 @@ class PartResource extends Resource implements HasShieldPermissions
             'view' => View::route('/{record}'),
             'parts' => HasPart::route('{record}/has_parts'),
         ];
+    }
+
+    public static function getEloquentQuery(): Builder
+    {
+        return parent::getEloquentQuery()
+            ->withoutGlobalScopes([
+                SoftDeletingScope::class,
+            ]);
     }
 
     public static function canCreate(): bool
