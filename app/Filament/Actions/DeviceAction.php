@@ -30,7 +30,7 @@ use Illuminate\Database\Eloquent\Model;
 class DeviceAction
 {
     /**
-     * 分配管理者按钮.
+     * 分配用户按钮.
      */
     public static function createHasUser(?Model $out_device = null): Action
     {
@@ -46,7 +46,7 @@ class DeviceAction
                     $data['device_id'] = $device->getKey();
                     $device_has_user_service = new DeviceHasUserService();
                     $device_has_user_service->create($data);
-                    NotificationUtil::make(true, '设备已归属管理者');
+                    NotificationUtil::make(true, '设备已分配用户');
                 } catch (Exception $exception) {
                     LogUtil::error($exception);
                     NotificationUtil::make(false, $exception);
@@ -78,7 +78,7 @@ class DeviceAction
     }
 
     /**
-     * 解除管理者按钮.
+     * 解除用户按钮.
      */
     public static function deleteHasUser(?Model $out_device = null): Action
     {

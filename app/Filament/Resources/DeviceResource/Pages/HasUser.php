@@ -54,7 +54,7 @@ class HasUser extends ManageRelatedRecords
                             return 'success';
                         }
                     })
-                    ->label('管理者'),
+                    ->label('用户'),
                 Tables\Columns\TextColumn::make('comment')
                     ->searchable()
                     ->toggleable()
@@ -93,7 +93,7 @@ class HasUser extends ManageRelatedRecords
 
             ])
             ->headerActions([
-                // 分配管理者
+                // 分配用户
                 DeviceAction::createHasUser($this->getOwnerRecord())
                     ->visible(function () {
                         /* @var Device $device */
@@ -103,7 +103,7 @@ class HasUser extends ManageRelatedRecords
 
                         return $can && ! $is_retired && ! $device->service()->isExistHasUser();
                     }),
-                // 解除管理者
+                // 解除用户
                 DeviceAction::deleteHasUser($this->getOwnerRecord())
                     ->visible(function () {
                         /* @var Device $device */

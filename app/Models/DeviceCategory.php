@@ -14,17 +14,11 @@ class DeviceCategory extends Model
 
     protected $table = 'device_categories';
 
-    /**
-     * 一对多，设备分类有很多设备.
-     */
     public function devices(): HasMany
     {
         return $this->hasMany(Device::class, 'category_id', 'id');
     }
 
-    /**
-     * 模型到服务.
-     */
     public function service(): DeviceCategoryService
     {
         return new DeviceCategoryService($this);

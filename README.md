@@ -3,11 +3,6 @@
 </p>
 
 <p align="center">
-<a href="http://qm.qq.com/cgi-bin/qm/qr?_wv=1027&k=oSXcaCdY4u5iIEQj43J2GsDk_PygRR2G&authKey=atvXMk1ZoXRwuuNzMLY7852APIHfnBp3cA4fu7oFui7MWRSCrg2EafCAI%2B9akAPa&noverify=0&group_code=1016567640"><img src="https://img.shields.io/badge/QQ-CAT 用户交流群-brown" /></a>
-    <a href="https://pd.qq.com/s/sknbyfnh"><img src="https://img.shields.io/badge/QQ-CAT 用户交流频道-orange" /></a>
-</p>
-
-<p align="center">
     <img src="https://img.shields.io/badge/Latest Release-WIP-orange" />
     <img src="https://img.shields.io/badge/PHP-8.2+-green" />
     <img src="https://img.shields.io/badge/MySQL-8+-blueviolet" />
@@ -24,9 +19,16 @@
 
 ❤ 感谢各位支持。CAT 提倡与各位使用者、开发者一起创建健康生态，让本项目变的更好，欢迎提供 PR 贡献。
 
-<p align="center">
-    <img src="https://s3.bmp.ovh/imgs/2023/12/01/aba4e96303691dcd.png" />
-</p>
+## 交流社区
+
+<a href="http://qm.qq.com/cgi-bin/qm/qr?_wv=1027&k=oSXcaCdY4u5iIEQj43J2GsDk_PygRR2G&authKey=atvXMk1ZoXRwuuNzMLY7852APIHfnBp3cA4fu7oFui7MWRSCrg2EafCAI%2B9akAPa&noverify=0&group_code=1016567640"><img src="https://img.shields.io/badge/QQ-CAT 用户交流群-brown" /></a>
+<a href="https://pd.qq.com/s/sknbyfnh"><img src="https://img.shields.io/badge/QQ-CAT 用户交流频道-orange" /></a>
+
+作者创建的为 CAT 用户交流的社区，作者本身不活跃于交流群。
+
+<a href="https://discord.gg/zSyeGExm"><img src="https://img.shields.io/badge/Discord-CAT 资深使用者社区-lemon" /></a>
+
+作者创建的 CAT 资深使用者社区，使用 Discord 服务器，本社区仅允许技术、开发、模块功能等相关讨论，其它一律禁止。
 
 ## 发行策略
 

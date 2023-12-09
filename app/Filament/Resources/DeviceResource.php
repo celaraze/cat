@@ -55,7 +55,8 @@ class DeviceResource extends Resource implements HasShieldPermissions
     {
         /* @var Device $record */
         return [
-            '用户' => $record->users()->value('name'),
+            '名称' => $record->getAttribute('name'),
+            '用户' => $record->users()->value('name') ?? '无',
         ];
     }
 
@@ -145,7 +146,7 @@ class DeviceResource extends Resource implements HasShieldPermissions
                     ->badge()
                     ->color('success')
                     ->sortable()
-                    ->label('管理者'),
+                    ->label('用户'),
                 Tables\Columns\TextColumn::make('specification')
                     ->searchable()
                     ->toggleable()
@@ -178,7 +179,7 @@ class DeviceResource extends Resource implements HasShieldPermissions
                     ->label('状态'),
             ])
             ->actions([
-                // 分配管理者
+                // 分配用户
                 DeviceAction::createHasUser()
                     ->visible(function (Device $device) {
                         $can = auth()->user()->can('assign_user_device');
@@ -189,7 +190,7 @@ class DeviceResource extends Resource implements HasShieldPermissions
                 Tables\Actions\ActionGroup::make([
                     // 创建工单
                     DeviceAction::createTicket(),
-                    // 解除管理者
+                    // 解除用户
                     DeviceAction::deleteHasUser()
                         ->visible(function (Device $device) {
                             $can = auth()->user()->can('delete_assign_user_device');

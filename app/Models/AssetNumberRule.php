@@ -11,9 +11,6 @@ class AssetNumberRule extends Model
 {
     use HasFactory, SoftDeletes;
 
-    /**
-     * 模型到服务.
-     */
     public function service(): AssetNumberRuleService
     {
         return new AssetNumberRuleService($this);
