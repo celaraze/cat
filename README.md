@@ -26,9 +26,9 @@
 
 作者创建的为 CAT 用户交流的社区，作者本身不活跃于交流群。
 
-<a href="https://discord.gg/zSyeGExm"><img src="https://img.shields.io/badge/Discord-CAT 资深使用者社区-lemon" /></a>
+<a href="https://t.me/+AzKQkJTXI_A0NDZl"><img src="https://img.shields.io/badge/Telegram-CAT 资深使用者社区-lemon" /></a>
 
-作者创建的 CAT 资深使用者社区，使用 Discord 服务器，本社区仅允许技术、开发、模块功能等相关讨论，其它一律禁止。
+作者创建的 CAT 资深使用者社区，本社区仅允许技术、开发、模块功能等相关讨论。
 
 ## 发行策略
 
