@@ -19,3 +19,5 @@ yarn-error.log
 /vendor
 composer.lock
 package-lock.json
+rr
+.rr.yaml
