@@ -22,6 +22,7 @@ class TicketService
         $this->ticket->setAttribute('subject', $data['subject']);
         $this->ticket->setAttribute('description', $data['description']);
         $this->ticket->setAttribute('category_id', $data['category_id']);
+        $this->ticket->setAttribute('status', 0);
         $this->ticket->setAttribute('priority', $data['priority']);
         $this->ticket->setAttribute('user_id', auth()->id());
         $this->ticket->setAttribute('assignee_id', 0);

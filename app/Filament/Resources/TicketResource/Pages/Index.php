@@ -29,7 +29,7 @@ class Index extends ListRecords
             '全部' => Tab::make()
                 ->badge(Ticket::query()->count())
                 ->badgeColor(Color::Slate),
-            '待命' => Tab::make()
+            '空闲' => Tab::make()
                 ->badge(Ticket::query()->where('status', 0)->count())
                 ->badgeColor(TicketEnum::statusColor(0))
                 ->modifyQueryUsing(fn (Builder $query) => $query->where('status', 0)),

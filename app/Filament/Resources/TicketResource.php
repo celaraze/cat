@@ -89,6 +89,16 @@ class TicketResource extends Resource
                     ->searchable()
                     ->toggleable()
                     ->label('提交时间'),
+                TextColumn::make('status')
+                    ->toggleable()
+                    ->badge()
+                    ->formatStateUsing(function (string $state) {
+                        return TicketEnum::statusText($state);
+                    })
+                    ->color(function (string $state) {
+                        return TicketEnum::statusColor($state);
+                    })
+                    ->label('状态'),
             ])
             ->filters([
                 SelectFilter::make('category_id')
@@ -99,6 +109,10 @@ class TicketResource extends Resource
                     ->multiple()
                     ->options(TicketEnum::allPriorityText())
                     ->label('优先级'),
+                SelectFilter::make('status')
+                    ->multiple()
+                    ->options(TicketEnum::allStatusText())
+                    ->label('状态'),
             ])
             ->actions([
                 // 抢单

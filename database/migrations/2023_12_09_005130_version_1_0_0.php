@@ -481,9 +481,9 @@ return new class extends Migration
             $table->integer('category_id')
                 ->comment('分类');
             $table->tinyInteger('priority')->default(0)
-                ->comment('优先级');
+                ->comment('优先级：0低，,1中，2高，3紧急');
             $table->tinyInteger('status')->default(0)
-                ->comment('状态');
+                ->comment('状态：0空闲，1进行，2完成');
             $table->integer('user_id')
                 ->comment('提交人');
             $table->integer('assignee_id')

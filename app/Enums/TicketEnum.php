@@ -34,6 +34,15 @@ class TicketEnum
         ];
     }
 
+    public static function allStatusText(): array
+    {
+        return [
+            0 => '空闲',
+            1 => '进行',
+            2 => '完成',
+        ];
+    }
+
     public static function statusText(int $state): string
     {
         return match ($state) {
