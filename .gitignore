@@ -21,3 +21,6 @@ composer.lock
 package-lock.json
 rr
 .rr.yaml
+server-linux
+server-macos
+server-macos-intel

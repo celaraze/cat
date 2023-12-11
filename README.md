@@ -3,7 +3,7 @@
 </p>
 
 <p align="center">
-    <img src="https://img.shields.io/badge/Latest Release-WIP-orange" />
+    <img src="https://img.shields.io/badge/Latest Release-1.0.0-orange" />
     <img src="https://img.shields.io/badge/PHP-8.1+-green" />
     <img src="https://img.shields.io/badge/MySQL-8+-blueviolet" />
     <img src="https://img.shields.io/badge/License-GPL3.0-blue" />
@@ -42,11 +42,10 @@
 
 ### 更新策略
 
-| 频率 | 内容           |
-|----|--------------|
-| 每日 | 安全更新，紧急漏洞修复。 |
-| 每周 | BUG 修复。      |
-| 每月 | 新功能、新特性迭代。   |
+| 频率       | 内容         |
+|----------|------------|
+| 每周日      | 安全更新，漏洞修复。 |
+| 每月最后一个周日 | 新功能、新特性迭代。 |
 
 ### 分支策略
 
@@ -61,23 +60,7 @@
 
 通过访问 [**文档 Wiki**](https://github.com/celaraze/cat/wiki) 来安装和查看更多信息。
 
-生产环境下为遵守安全策略，非常建议在服务器本地进行部署，暂时不提供相关线上初始化安装的功能。因此，虽然前期部署的步骤较多，但已经为大家自动化处理了很大部分的流程，只需要跟着下面的命令一步步执行，一般是不会有部署问题的。
-
-1. 为你的计算机安装 `PHP8.1` 环境，参考：[PHP官方](https://www.php.net/downloads) 。
-
-2. 为你的计算机安装 `MySQL` 或者 `MariaDB`。
-
-3. 在你的计算机中任意路径下，执行 `git clone https://github.com/celaraze/cat.git` 。
-
-4. 执行 `cd cat` 进入应用根目录，执行 `cp .env.example .env`。
-
-5. 根据 `.env` 文件中注释的指引进行配置。
-
-6. 执行 `composer install` 安装后端依赖。
-
-7. 执行 `php artisan cat:install` 根据提示创建管理员账户。
-
-8. 此时可以通过访问 `http://127.0.0.1:8000` 来访问系统。
+建议通过文档中的一把梭部署模式，快速部署且兼顾性能和灵活的数据存储方式。
 
 ## 问题反馈
 
