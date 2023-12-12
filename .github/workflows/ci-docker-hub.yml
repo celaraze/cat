@@ -2,7 +2,10 @@ name: CI for Docker Hub
 
 on:
   push:
-    branches: [ "main" ]
+    tags:
+      - v*
+    branches:
+      - dev
 
 env:
   # 设置 docker 镜像名
@@ -24,13 +27,16 @@ jobs:
           IMAGE_ID=celaraze/$IMAGE_NAME
 
           # 将所有的大写字母转为小写
-          # IMAGE_ID=$(echo $IMAGE_ID | tr '[A-Z]' '[a-z]')
+          IMAGE_ID=$(echo $IMAGE_ID | tr '[A-Z]' '[a-z]')
 
           # 从 GitHub.ref 中取出版本
-          # VERSION=$(echo "${{ github.ref }}" | sed -e 's,.*/\(.*\),\1,')
+          VERSION=$(echo "${{ github.ref }}" | sed -e 's,.*/\(.*\),\1,')
 
           # 从 tag 名字中替换 v 字符
-          # [[ "${{ github.ref }}" == "refs/tags/"* ]] && VERSION=$(echo $VERSION | sed -e 's/^v//')
+          [[ "${{ github.ref }}" == "refs/tags/"* ]] && VERSION=$(echo $VERSION | sed -e 's/^v//')
+
+          # 如果当前的分支是 dev，那么将镜像标签设置为 dev
+          [[ "${{ github.ref }}" == "refs/heads/dev" ]] && VERSION=dev
 
           # Use Docker `latest` tag convention
           # [ "$VERSION" == "main" ] && VERSION=latest
@@ -38,7 +44,6 @@ jobs:
           echo IMAGE_ID=$IMAGE_ID
           echo VERSION=$VERSION
           # 设置镜像 id 和版本号
-          # docker tag $IMAGE_NAME $IMAGE_ID:$VERSION
-          docker tag $IMAGE_NAME $IMAGE_ID:latest
+          docker tag $IMAGE_NAME $IMAGE_ID:$VERSION
           # 进行 push
-          docker push $IMAGE_ID:latest
+          docker push $IMAGE_ID:$VERSION
