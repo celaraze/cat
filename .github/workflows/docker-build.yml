@@ -1,0 +1,44 @@
+name: Docker
+
+on:
+  push:
+    branches: [ "dev" ]
+
+env:
+  # 设置 docker 镜像名
+  IMAGE_NAME: cat
+
+jobs:
+  push:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Build image
+        run: docker build . --file Dockerfile --tag $IMAGE_NAME
+      - name: Log into registry
+        run: echo "${{ secrets.ACCESS_TOKEN }}" | docker login -u celaraze --password-stdin
+
+      - name: Push image
+        run: |
+          # 拼接镜像 id，这个镜像 id 就是在使用 docker 镜像时 pull 后面的名字。
+          IMAGE_ID=celaraze/$IMAGE_NAME
+
+          # 将所有的大写字母转为小写
+          # IMAGE_ID=$(echo $IMAGE_ID | tr '[A-Z]' '[a-z]')
+
+          # 从 GitHub.ref 中取出版本
+          # VERSION=$(echo "${{ github.ref }}" | sed -e 's,.*/\(.*\),\1,')
+
+          # 从 tag 名字中替换 v 字符
+          # [[ "${{ github.ref }}" == "refs/tags/"* ]] && VERSION=$(echo $VERSION | sed -e 's/^v//')
+
+          # Use Docker `latest` tag convention
+          # [ "$VERSION" == "main" ] && VERSION=latest
+
+          echo IMAGE_ID=$IMAGE_ID
+          echo VERSION=$VERSION
+          # 设置镜像 id 和版本号
+          # docker tag $IMAGE_NAME $IMAGE_ID:$VERSION
+          docker tag $IMAGE_NAME $IMAGE_ID:latest
+          # 进行 push
+          docker push $IMAGE_ID:latest
