@@ -9,10 +9,6 @@
     <img src="https://img.shields.io/badge/License-GPL3.0-blueviolet?logo=apache" />
 </p>
 
-<p align="center">
-    这不是正式版本，目前仍处于开发阶段，请酌情用于生产环境。
-</p>
-
 来一杯咖啡与茶，为 IT 运维从业者减轻管理负担，提升管理效率，从繁重无序的工作中解压出来，利用剩余时间多喝一杯休息一下。
 
 这是一个专为 IT 运维从业者打造的一站式解决方案平台，包含资产管理、工单、工作流、仓储等功能模块。
@@ -23,7 +19,9 @@
 
 请优先使用本代码仓库的 [**讨论区**](https://github.com/celaraze/cat/discussions) 。
 
-同时也为 CAT 用户提供了 [**交流社群**](http://qm.qq.com/cgi-bin/qm/qr?_wv=1027&k=oSXcaCdY4u5iIEQj43J2GsDk_PygRR2G&authKey=atvXMk1ZoXRwuuNzMLY7852APIHfnBp3cA4fu7oFui7MWRSCrg2EafCAI%2B9akAPa&noverify=0&group_code=1016567640) ，但作者本身不活跃交流社群也不提供任何技术支持。另外，交流社群内反馈的问题也不会被优先处理。问题反馈请正确使用
+同时也为 CAT 用户提供了 [**交流社群
+**](http://qm.qq.com/cgi-bin/qm/qr?_wv=1027&k=oSXcaCdY4u5iIEQj43J2GsDk_PygRR2G&authKey=atvXMk1ZoXRwuuNzMLY7852APIHfnBp3cA4fu7oFui7MWRSCrg2EafCAI%2B9akAPa&noverify=0&group_code=1016567640)
+，但作者本身不活跃交流社群也不提供任何技术支持。另外，交流社群内反馈的问题也不会被优先处理。问题反馈请正确使用
 [**Issues**](https://github.com/celaraze/cat/issues)。
 
 ## 发行策略
@@ -60,6 +58,12 @@
 ## 漏洞上报
 
 请直接邮件作者 [celaraze@qq.com](mailto:celaraze@qq.com) ，勿在 Issues 中及其它公开社区提交与安全相关的问题以免被恶意利用。
+
+## 致谢贡献者
+
+<a href="https://github.com/yokaimeow" target="_blank">
+<img style="border-radius: 32px;" src="https://avatars.githubusercontent.com/u/46237037?s=64&v=4" />
+</a>
 
 ## 捐赠
 
