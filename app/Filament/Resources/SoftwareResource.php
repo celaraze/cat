@@ -257,6 +257,10 @@ class SoftwareResource extends Resource implements HasShieldPermissions
                                 ]),
                         ]),
                     ]),
+                Section::make()->schema([
+                    TextEntry::make('description')
+                        ->label('说明'),
+                ]),
             ])->columnSpan(['lg' => 2]),
             Group::make()->schema([
                 Section::make()

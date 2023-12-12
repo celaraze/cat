@@ -12,7 +12,7 @@ RUN apt update && apt -y upgrade && \
 WORKDIR /var/www
 COPY . /var/www/
 RUN composer install -vvv
-RUN rm /var/www/database/data/database.sqlite
+RUN if [ -f /var/www/database/data/database.sqlite ]; then rm /var/www/database/data/database.sqlite; fi
 RUN touch /var/www/database/data/database.sqlite
 RUN cp .env.docker .env
 RUN php artisan cat:install

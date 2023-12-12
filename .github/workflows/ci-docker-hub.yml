@@ -1,8 +1,8 @@
-name: Docker Hub CI
+name: CI for Docker Hub
 
 on:
   push:
-    branches: [ "dev" ]
+    branches: [ "main" ]
 
 env:
   # 设置 docker 镜像名
