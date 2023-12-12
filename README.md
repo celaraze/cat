@@ -3,10 +3,10 @@
 </p>
 
 <p align="center">
-    <img src="https://img.shields.io/badge/Latest Release-1.0.0-orange" />
-    <img src="https://img.shields.io/badge/PHP-8.1+-green" />
-    <img src="https://img.shields.io/badge/MySQL-8+-blueviolet" />
-    <img src="https://img.shields.io/badge/License-GPL3.0-blue" />
+    <img src="https://github.com/celaraze/cat/actions/workflows/ci-laravel-test.yml/badge.svg?branch=main" />
+<img src="https://github.com/celaraze/cat/actions/workflows/ci-docker-hub.yml/badge.svg?branch=main" />
+    <img src="https://img.shields.io/badge/PHP-8.1+-blue?logo=php" />
+    <img src="https://img.shields.io/badge/License-GPL3.0-blueviolet?logo=apache" />
 </p>
 
 <p align="center">
@@ -19,16 +19,12 @@
 
 ❤ 感谢各位支持。CAT 提倡与各位使用者、开发者一起创建健康生态，让本项目变的更好，欢迎提供 PR 贡献。
 
-## 交流社区
+## 社区
 
-<a href="http://qm.qq.com/cgi-bin/qm/qr?_wv=1027&k=oSXcaCdY4u5iIEQj43J2GsDk_PygRR2G&authKey=atvXMk1ZoXRwuuNzMLY7852APIHfnBp3cA4fu7oFui7MWRSCrg2EafCAI%2B9akAPa&noverify=0&group_code=1016567640"><img src="https://img.shields.io/badge/QQ-CAT 用户交流群-brown" /></a>
-<a href="https://pd.qq.com/s/sknbyfnh"><img src="https://img.shields.io/badge/QQ-CAT 用户交流频道-orange" /></a>
+请优先使用本代码仓库的 [**讨论区**](https://github.com/celaraze/cat/discussions) 。
 
-作者创建的为 CAT 用户交流的社区，作者本身不活跃于交流群。
-
-<a href="https://t.me/+AzKQkJTXI_A0NDZl"><img src="https://img.shields.io/badge/Telegram-CAT 资深使用者社区-lemon" /></a>
-
-作者创建的 CAT 资深使用者社区，本社区仅允许技术、开发、模块功能等相关讨论。
+同时也为 CAT 用户提供了 [**交流社群**](http://qm.qq.com/cgi-bin/qm/qr?_wv=1027&k=oSXcaCdY4u5iIEQj43J2GsDk_PygRR2G&authKey=atvXMk1ZoXRwuuNzMLY7852APIHfnBp3cA4fu7oFui7MWRSCrg2EafCAI%2B9akAPa&noverify=0&group_code=1016567640) ，但作者本身不活跃交流社群也不提供任何技术支持。另外，交流社群内反馈的问题也不会被优先处理。问题反馈请正确使用
+[**Issues**](https://github.com/celaraze/cat/issues)。
 
 ## 发行策略
 
@@ -40,13 +36,6 @@
 | 1.x.0 | 模块的新特性、新功能发布，上游依赖较大变动。 | 较低，无或者较少的破坏性变更。   |
 | x.0.0 | 新模块、新功能实装，整体架构变动。      | 中，可能包含适当数量的破坏性变更。 |
 
-### 更新策略
-
-| 频率       | 内容         |
-|----------|------------|
-| 每周日      | 安全更新，漏洞修复。 |
-| 每月最后一个周日 | 新功能、新特性迭代。 |
-
 ### 分支策略
 
 | 分支   | 说明                     |
@@ -56,21 +45,21 @@
 
 ### 快速开始
 
-在线演示 [**CAT DEMO**](http://cat.celaraze.com:50080/) ，登录信息 `cat@localhost.com / cat`，用于展示的站点会关闭部分敏感权限。
+通过访问 [**在线演示**](http://cat.celaraze.com:50080/) ，登录信息 `cat@localhost.com / cat`，用于展示的站点会关闭部分敏感权限。
 
-通过访问 [**文档 Wiki**](https://github.com/celaraze/cat/wiki) 来安装和查看更多信息。
+通过访问 [**官方文档**](https://github.com/celaraze/cat/wiki) 来安装和查看更多信息。
 
 建议通过文档中的一把梭部署模式，快速部署且兼顾性能和灵活的数据存储方式。
 
 ## 问题反馈
 
-最好的反馈方式是在本代码仓库中提交 Issues，我们在空余时间检查并解决。
+最好的反馈方式是在本代码仓库中提交 [**Issues**](https://github.com/celaraze/cat/issues) ，我们在空余时间检查并解决。
 
 请随时牢记，这是一个开源项目，作者有自己的生活、自己的工作。
 
 ## 漏洞上报
 
-请直接邮件作者 [celaraze@qq.com](mailto:celaraze@qq.com)，勿在 Issues 中及其它公开社区提交与安全相关的问题以免被恶意利用。
+请直接邮件作者 [celaraze@qq.com](mailto:celaraze@qq.com) ，勿在 Issues 中及其它公开社区提交与安全相关的问题以免被恶意利用。
 
 ## 捐赠
 
