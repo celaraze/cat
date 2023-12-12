@@ -1,8 +1,9 @@
 FROM php:latest
 RUN apt update && apt -y upgrade && \
-    apt install -y sqlite3 wget libnss3-tools
+    apt install -y sqlite3 wget libnss3-tools composer
 WORKDIR /var/www
 COPY . /var/www/
+RUN composer install -vvv
 RUN rm /var/www/database/data/database.sqlite
 RUN touch /var/www/database/data/database.sqlite
 RUN cp .env.docker .env
