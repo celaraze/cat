@@ -1,6 +1,14 @@
 FROM php:latest
+COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+
 RUN apt update && apt -y upgrade && \
-    apt install -y sqlite3 wget libnss3-tools composer
+    apt install -y sqlite3 wget libnss3-tools libfreetype-dev libjpeg62-turbo-dev libpng-dev libicu-dev zlib1g-dev libzip-dev \
+    && docker-php-ext-configure gd --with-freetype --with-jpeg \
+    && docker-php-ext-install -j$(nproc) gd \
+    && docker-php-ext-configure intl \
+    && docker-php-ext-install intl \
+    && docker-php-ext-install zip
+
 WORKDIR /var/www
 COPY . /var/www/
 RUN composer install -vvv
