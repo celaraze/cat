@@ -31,11 +31,11 @@ class Install extends Command
         $this->call('storage:link');
         $this->warn('正在配置APP密钥');
         $this->call('key:generate');
-        $this->call('migrate');
+        $this->call('migrate', ['--force']);
         $this->warn('正在初始化基础数据');
         $this->call('db:seed');
         $this->warn('请创建超级管理员账户');
-        $this->call('make:filament-user');
+        $this->call('make:filament-user', ['--name' => 'admin', '--email' => 'admin@localhost.com', '--password' => 'admin']);
         $this->warn('正在同步刷新权限，请耐心等待');
         $this->call('shield:generate', ['--all' => null]);
         $this->call('shield:super-admin');
