@@ -19,8 +19,7 @@
 
 请优先使用本代码仓库的 [**讨论区**](https://github.com/celaraze/cat/discussions) 。
 
-同时也为 CAT 用户提供了 [**交流社群
-**](http://qm.qq.com/cgi-bin/qm/qr?_wv=1027&k=oSXcaCdY4u5iIEQj43J2GsDk_PygRR2G&authKey=atvXMk1ZoXRwuuNzMLY7852APIHfnBp3cA4fu7oFui7MWRSCrg2EafCAI%2B9akAPa&noverify=0&group_code=1016567640)
+同时也为 CAT 用户提供了 [**交流社群**](http://qm.qq.com/cgi-bin/qm/qr?_wv=1027&k=oSXcaCdY4u5iIEQj43J2GsDk_PygRR2G&authKey=atvXMk1ZoXRwuuNzMLY7852APIHfnBp3cA4fu7oFui7MWRSCrg2EafCAI%2B9akAPa&noverify=0&group_code=1016567640)
 ，但作者本身不活跃交流社群也不提供任何技术支持。另外，交流社群内反馈的问题也不会被优先处理。问题反馈请正确使用
 [**Issues**](https://github.com/celaraze/cat/issues)。
 
@@ -61,9 +60,7 @@
 
 ## 致谢贡献者
 
-<a href="https://github.com/yokaimeow" target="_blank">
-<img style="border-radius: 32px;" src="https://avatars.githubusercontent.com/u/46237037?s=64&v=4" />
-</a>
+![https://github.com/yokaimeow](https://avatars.githubusercontent.com/u/46237037?s=64&v=4)
 
 ## 捐赠
 
