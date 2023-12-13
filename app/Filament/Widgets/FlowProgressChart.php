@@ -16,9 +16,9 @@ class FlowProgressChart extends ApexChartWidget
 
     protected function getOptions(): array
     {
-        $form_id = UrlUtil::getRecordId();
+        $flow_has_form_id = UrlUtil::getRecordId();
         $flow_has_form_service = new FlowHasFormService();
-        $flow_has_form_service->setFlowHasFormByFormId($form_id);
+        $flow_has_form_service->setFlowHasFormById((int) $flow_has_form_id);
         $nodes = $flow_has_form_service->getNodes();
 
         return [

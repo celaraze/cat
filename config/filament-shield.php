@@ -74,6 +74,7 @@ return [
             'FlowProgressChart',
             'ChangePassword',
             'ChangeAvatar',
+            'TicketHasTrackMinutePie',
         ],
 
         'resources' => [],

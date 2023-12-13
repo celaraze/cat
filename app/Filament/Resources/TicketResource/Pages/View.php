@@ -4,6 +4,7 @@ namespace App\Filament\Resources\TicketResource\Pages;
 
 use App\Filament\Actions\TicketAction;
 use App\Filament\Resources\TicketResource;
+use App\Filament\Widgets\TicketHasTrackMinutePie;
 use Filament\Resources\Pages\ViewRecord;
 
 class View extends ViewRecord
@@ -23,6 +24,13 @@ class View extends ViewRecord
                 ->visible(function () {
                     return $this->record->getAttribute('user_id') == auth()->id();
                 }),
+        ];
+    }
+
+    protected function getFooterWidgets(): array
+    {
+        return [
+            TicketHasTrackMinutePie::make(),
         ];
     }
 }

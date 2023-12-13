@@ -5,7 +5,7 @@
 }
 
 # The domain name of your server
-localhost:80 {
+:80 {
 	# Set the webroot to the public/ dir
 	root * public/
 	# Enable compression (optional)

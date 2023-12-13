@@ -184,15 +184,12 @@ class FlowHasFormService
     /**
      * 通过form_id获取FlowHasForm模型并赋值给当前类.
      */
-    public function setFlowHasFormByFormId(string $form_id): void
+    public function setFlowHasFormById(string $flow_has_form_id): void
     {
-        $flow_has_form = FlowHasForm::query()
-            ->where('id', $form_id)
-            ->first()
-            ->toArray();
-        // 子类映射，上述方法获取到的结果类型是Model，需要转换为FlowHasForm类型
-        $flow_has_form = new FlowHasForm($flow_has_form);
+        /* @var FlowHasForm $flow_has_form */
+        $flow_has_form = FlowHasForm::query()->where('id', $flow_has_form_id)->first();
         $this->flow_has_form = $flow_has_form;
+
     }
 
     /**
@@ -204,7 +201,7 @@ class FlowHasFormService
         'name' => 'string',
         'flow_id' => 'int',
         'comment' => 'string',
-        'payload' => 'string',
+        'payload' => '?string',
     ])]
     public function create(array $data): bool
     {
@@ -228,7 +225,7 @@ class FlowHasFormService
         $this->flow_has_form->setAttribute('comment', $data['comment']);
         $this->flow_has_form->setAttribute('node_id', $first_node->getKey());
         $this->flow_has_form->setAttribute('node_name', $first_node->getAttribute('name'));
-        if ($data['payload']) {
+        if (isset($data['payload'])) {
             $this->flow_has_form->setAttribute('payload', $data['payload']);
         }
 

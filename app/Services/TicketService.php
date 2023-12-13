@@ -60,8 +60,29 @@ class TicketService
         return $this->ticket->getAttribute('assignee_id');
     }
 
-    public function minutes()
+    /**
+     * 详情页的工时饼图数据.
+     */
+    public function minutePie(): array
     {
-        $this->ticket->tracks()->get();
+        $tracks = $this->ticket->tracks()
+            ->with('user')
+            ->selectRaw('user_id,SUM(minutes) as minutes')
+            ->groupBy('user_id')
+            ->get();
+        $names = $tracks->pluck('user.name')->toArray();
+        $minutes = $tracks->pluck('minutes')->toArray();
+
+        return [
+            'names' => $names,
+            'minutes' => $minutes,
+        ];
+    }
+
+    public function setTicketById(int $ticket_id): void
+    {
+        /* @var Ticket $ticket */
+        $ticket = Ticket::query()->where('id', $ticket_id)->first();
+        $this->ticket = $ticket;
     }
 }
