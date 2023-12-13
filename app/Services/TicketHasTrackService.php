@@ -27,6 +27,7 @@ class TicketHasTrackService
         $this->ticket_has_track->setAttribute('ticket_id', $data['ticket_id']);
         $this->ticket_has_track->setAttribute('comment', $data['comment']);
         $this->ticket_has_track->setAttribute('user_id', $data['user_id']);
+        $this->ticket_has_track->setAttribute('minutes', $data['minutes'] ?? 0);
         $this->ticket_has_track->save();
     }
 }

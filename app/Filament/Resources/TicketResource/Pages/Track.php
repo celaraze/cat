@@ -45,6 +45,12 @@ class Track extends ManageRelatedRecords
                     ->wrap()
                     ->html()
                     ->label('评论'),
+                Tables\Columns\TextColumn::make('minutes')
+                    ->searchable()
+                    ->toggleable()
+                    ->alignRight()
+                    ->badge()
+                    ->label('工时（分钟）'),
             ])
             ->filters([
 

@@ -59,4 +59,9 @@ class TicketService
     {
         return $this->ticket->getAttribute('assignee_id');
     }
+
+    public function minutes()
+    {
+        $this->ticket->tracks()->get();
+    }
 }

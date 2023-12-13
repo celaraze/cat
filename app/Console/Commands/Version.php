@@ -25,6 +25,6 @@ class Version extends Command
      */
     public function handle(): void
     {
-        $this->info('1.0.0-pre');
+        $this->info('1.0.0');
     }
 }
