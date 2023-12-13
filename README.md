@@ -60,7 +60,7 @@
 
 ## 致谢贡献者
 
-![https://github.com/yokaimeow](https://avatars.githubusercontent.com/u/46237037?s=64&v=4)
+[![](https://avatars.githubusercontent.com/u/46237037?s=64&v=4)](https://github.com/yokaimeow)
 
 ## 捐赠
 
