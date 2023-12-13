@@ -21,7 +21,9 @@ class HasSoftware extends ManageRelatedRecords
 
     protected static ?string $navigationIcon = 'heroicon-m-squares-plus';
 
-    protected static ?string $title = '软件';
+    protected static ?string $breadcrumb = '软件';
+
+    protected ?string $heading = ' ';
 
     public static function getNavigationLabel(): string
     {
@@ -88,7 +90,11 @@ class HasSoftware extends ManageRelatedRecords
                     }),
             ])
             ->bulkActions([
-
+                // 批量脱离软件
+                DeviceAction::batchDeleteHasSoftware()
+                    ->visible(function () {
+                        return auth()->user()->can('batch_delete_has_software_device');
+                    }),
             ])
             ->modifyQueryUsing(fn (Builder $query) => $query->orderByDesc('created_at')
                 ->withoutGlobalScopes([

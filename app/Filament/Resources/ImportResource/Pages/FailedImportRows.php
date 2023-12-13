@@ -16,7 +16,9 @@ class FailedImportRows extends ManageRelatedRecords
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
-    protected static ?string $title = '失败行记录';
+    protected static ?string $breadcrumb = '失败行记录';
+
+    protected ?string $heading = ' ';
 
     public static function getNavigationLabel(): string
     {

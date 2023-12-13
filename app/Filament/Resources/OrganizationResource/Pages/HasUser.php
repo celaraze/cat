@@ -16,7 +16,7 @@ class HasUser extends ManageRelatedRecords
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
-    protected static ?string $title = '成员';
+    protected ?string $heading = '';
 
     public static function getNavigationLabel(): string
     {

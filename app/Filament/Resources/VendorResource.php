@@ -33,6 +33,8 @@ class VendorResource extends Resource implements HasShieldPermissions
 
     protected static ?string $navigationGroup = '基础数据';
 
+    protected static ?string $recordTitleAttribute = 'name';
+
     public static function getRecordSubNavigation(Page $page): array
     {
         $navigation_items = [
@@ -89,7 +91,10 @@ class VendorResource extends Resource implements HasShieldPermissions
 
             ])
             ->actions([
-
+                VendorAction::delete()
+                    ->visible(function () {
+                        return auth()->user()->can('delete_vendor');
+                    }),
             ])
             ->bulkActions([
 
@@ -118,7 +123,8 @@ class VendorResource extends Resource implements HasShieldPermissions
                     ->visible(function () {
                         return auth()->user()->can('create_vendor');
                     }),
-            ]);
+            ])
+            ->heading('厂商');
     }
 
     public static function getPages(): array

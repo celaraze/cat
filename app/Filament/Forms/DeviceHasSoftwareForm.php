@@ -15,11 +15,12 @@ class DeviceHasSoftwareForm
     public static function create(): array
     {
         return [
-            Select::make('software_id')
-                ->label('软件')
+            Select::make('software_ids')
                 ->options(SoftwareService::pluckOptions())
+                ->multiple()
                 ->searchable()
-                ->preload(),
+                ->preload()
+                ->label('软件'),
         ];
     }
 
@@ -31,8 +32,9 @@ class DeviceHasSoftwareForm
         $device_ids = $software->hasSoftware()->pluck('device_id')->toArray();
 
         return [
-            Select::make('device_id')
+            Select::make('device_ids')
                 ->options(DeviceService::pluckOptions('id', $device_ids))
+                ->multiple()
                 ->searchable()
                 ->label('设备'),
         ];

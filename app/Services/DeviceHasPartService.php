@@ -37,23 +37,25 @@ class DeviceHasPartService
     #[ArrayShape(['user_id' => 'int', 'status' => 'int'])]
     public function delete(array $data): void
     {
-        try {
-            DB::beginTransaction();
-            $new_device_has_part = $this->device_has_part->replicate();
-            $new_device_has_part->save();
-            $new_device_has_part->setAttribute('user_id', $data['user_id']);
-            $new_device_has_part->setAttribute('status', $data['status']);
-            $new_device_has_part->save();
-            $new_device_has_part->delete();
-            /* @var Part $part */
-            $part = $this->device_has_part->part()->first();
-            $part->setAttribute('status', 0);
-            $part->save();
-            $this->device_has_part->delete();
-            DB::commit();
-        } catch (Exception $exception) {
-            DB::rollBack();
-            throw $exception;
+        if ($this->device_has_part->getAttribute('deleted_at') == null) {
+            try {
+                DB::beginTransaction();
+                $new_device_has_part = $this->device_has_part->replicate();
+                $new_device_has_part->save();
+                $new_device_has_part->setAttribute('user_id', $data['user_id']);
+                $new_device_has_part->setAttribute('status', $data['status']);
+                $new_device_has_part->save();
+                $new_device_has_part->delete();
+                /* @var Part $part */
+                $part = $this->device_has_part->part()->first();
+                $part->setAttribute('status', 0);
+                $part->save();
+                $this->device_has_part->delete();
+                DB::commit();
+            } catch (Exception $exception) {
+                DB::rollBack();
+                throw $exception;
+            }
         }
     }
 

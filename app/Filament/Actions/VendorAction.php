@@ -64,4 +64,26 @@ class VendorAction
             })
             ->closeModalByClickingAway(false);
     }
+
+    /**
+     * 删除.
+     */
+    public static function delete(): Action
+    {
+        return Action::make('删除')
+            ->icon('heroicon-m-trash')
+            ->color('danger')
+            ->requiresConfirmation()
+            ->form(VendorForm::delete())
+            ->action(function (Vendor $vendor) {
+                try {
+                    $vendor->service()->delete();
+                    NotificationUtil::make(true, '已删除厂商');
+                } catch (Exception $exception) {
+                    LogUtil::error($exception);
+                    NotificationUtil::make(false, $exception);
+                }
+            })
+            ->closeModalByClickingAway(false);
+    }
 }

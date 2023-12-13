@@ -32,6 +32,8 @@ class BrandResource extends Resource implements HasShieldPermissions
 
     protected static ?string $navigationGroup = '基础数据';
 
+    protected static ?string $recordTitleAttribute = 'name';
+
     public static function getRecordSubNavigation(Page $page): array
     {
         $navigation = [
@@ -78,7 +80,7 @@ class BrandResource extends Resource implements HasShieldPermissions
             ])
             ->actions([
                 // 删除
-                Tables\Actions\DeleteAction::make()
+                BrandAction::delete()
                     ->visible(function () {
                         return auth()->user()->can('delete_brand');
                     }),
@@ -110,7 +112,8 @@ class BrandResource extends Resource implements HasShieldPermissions
                     ->visible(function () {
                         return auth()->user()->can('create_brand');
                     }),
-            ]);
+            ])
+            ->heading('品牌');
     }
 
     public static function getPages(): array

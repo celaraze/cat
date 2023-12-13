@@ -19,7 +19,9 @@ class Ticket extends ManageRelatedRecords
 
     protected static ?string $navigationIcon = 'heroicon-o-document-text';
 
-    protected static ?string $title = '工单';
+    protected static ?string $breadcrumb = '工单';
+
+    protected ?string $heading = ' ';
 
     public static function getNavigationLabel(): string
     {

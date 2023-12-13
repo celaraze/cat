@@ -10,6 +10,8 @@ class Edit extends EditRecord
 {
     protected static string $resource = OrganizationResource::class;
 
+    protected ?string $heading = '';
+
     public static function getNavigationLabel(): string
     {
         return '编辑';

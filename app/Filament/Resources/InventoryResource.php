@@ -35,6 +35,8 @@ class InventoryResource extends Resource implements HasShieldPermissions
 
     protected static ?int $navigationSort = 3;
 
+    protected static ?string $recordTitleAttribute = 'name';
+
     public static function getRecordSubNavigation(Page $page): array
     {
         $navigation_items = [
@@ -105,7 +107,8 @@ class InventoryResource extends Resource implements HasShieldPermissions
                     ->visible(function () {
                         return auth()->user()->can('create_inventory');
                     }),
-            ]);
+            ])
+            ->heading('盘点');
     }
 
     public static function infolist(Infolist $infolist): Infolist

@@ -31,6 +31,8 @@ class FlowResource extends Resource implements HasShieldPermissions
 
     protected static ?string $navigationGroup = '工作流';
 
+    protected static ?string $recordTitleAttribute = 'name';
+
     public static function getRecordSubNavigation(Page $page): array
     {
         $navigation_items = [
@@ -78,7 +80,11 @@ class FlowResource extends Resource implements HasShieldPermissions
                 Tables\Filters\TrashedFilter::make(),
             ])
             ->actions([
-
+                // 删除流程
+                FlowAction::delete()
+                    ->visible(function () {
+                        return auth()->user()->can('delete_flow');
+                    }),
             ])
             ->bulkActions([
 
@@ -92,7 +98,8 @@ class FlowResource extends Resource implements HasShieldPermissions
                     ->visible(function () {
                         return auth()->user()->can('create_flow');
                     }),
-            ]);
+            ])
+            ->heading('流程');
     }
 
     public static function getPages(): array

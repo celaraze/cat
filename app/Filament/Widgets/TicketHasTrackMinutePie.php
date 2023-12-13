@@ -12,6 +12,8 @@ class TicketHasTrackMinutePie extends ApexChartWidget
 
     protected static ?string $heading = '工时构成（分钟）';
 
+    protected int|string|array $columnStart = 2;
+
     protected function getOptions(): array
     {
         $ticket_id = UrlUtil::getRecordId();

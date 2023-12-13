@@ -26,25 +26,27 @@ class DeviceHasSoftwareService
     #[ArrayShape(['user_id' => 'int', 'status' => 'string'])]
     public function delete(array $data): void
     {
-        try {
-            DB::beginTransaction();
-            $new_device_has_software = $this->device_has_software->replicate();
-            $new_device_has_software->save();
-            $new_device_has_software->setAttribute('user_id', $data['user_id']);
-            $new_device_has_software->setAttribute('status', $data['status']);
-            $new_device_has_software->save();
-            $new_device_has_software->delete();
-            /* @var Software $software */
-            $software = $this->device_has_software->software()->first();
-            $this->device_has_software->delete();
-            if (! $software->hasSoftware()->count()) {
-                $software->setAttribute('status', 0);
-                $software->save();
+        if ($this->device_has_software->getAttribute('deleted_at') == null) {
+            try {
+                DB::beginTransaction();
+                $new_device_has_software = $this->device_has_software->replicate();
+                $new_device_has_software->save();
+                $new_device_has_software->setAttribute('user_id', $data['user_id']);
+                $new_device_has_software->setAttribute('status', $data['status']);
+                $new_device_has_software->save();
+                $new_device_has_software->delete();
+                /* @var Software $software */
+                $software = $this->device_has_software->software()->first();
+                $this->device_has_software->delete();
+                if (! $software->hasSoftware()->count()) {
+                    $software->setAttribute('status', 0);
+                    $software->save();
+                }
+                DB::commit();
+            } catch (Exception $exception) {
+                DB::rollBack();
+                throw $exception;
             }
-            DB::commit();
-        } catch (Exception $exception) {
-            DB::rollBack();
-            throw $exception;
         }
     }
 

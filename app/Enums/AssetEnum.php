@@ -52,4 +52,12 @@ class AssetEnum
             1 => 'danger',
         };
     }
+
+    public static function allRelationOperationText(): array
+    {
+        return [
+            0 => '附加',
+            1 => '脱离',
+        ];
+    }
 }

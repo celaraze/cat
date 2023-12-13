@@ -7,7 +7,6 @@ use App\Filament\Actions\DeviceAction;
 use App\Filament\Resources\DeviceResource;
 use App\Models\Device;
 use App\Models\DeviceHasUser;
-use Filament\Forms\Form;
 use Filament\Resources\Pages\ManageRelatedRecords;
 use Filament\Tables;
 use Filament\Tables\Columns\TextColumn\TextColumnSize;
@@ -23,19 +22,13 @@ class HasUser extends ManageRelatedRecords
 
     protected static ?string $navigationIcon = 'heroicon-o-user';
 
-    protected static ?string $title = '用户';
+    protected static ?string $breadcrumb = '用户';
+
+    protected ?string $heading = ' ';
 
     public static function getNavigationLabel(): string
     {
         return '用户';
-    }
-
-    public function form(Form $form): Form
-    {
-        return $form
-            ->schema([
-
-            ]);
     }
 
     public function table(Table $table): Table

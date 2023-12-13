@@ -31,6 +31,8 @@ class ImportResource extends Resource
 
     protected static ?string $navigationGroup = '日志';
 
+    protected static ?string $recordTitleAttribute = 'file_name';
+
     public static function getRecordSubNavigation(Page $page): array
     {
         $navigation_items = [
@@ -87,7 +89,8 @@ class ImportResource extends Resource
             ])
             ->bulkActions([
 
-            ]);
+            ])
+            ->heading('导入日志');
     }
 
     public static function infolist(Infolist $infolist): Infolist

@@ -9,6 +9,8 @@ class View extends ViewRecord
 {
     protected static string $resource = UserResource::class;
 
+    protected ?string $heading = ' ';
+
     public static function getNavigationLabel(): string
     {
         return '详情';

@@ -64,7 +64,7 @@ class AdminPanelProvider extends PanelProvider
             ->authMiddleware([
                 Authenticate::class,
             ])
-            ->breadcrumbs(false)
+            ->breadcrumbs(true)
             ->plugins([
                 FilamentShieldPlugin::make(),
                 ThemesPlugin::make(),

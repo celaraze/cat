@@ -18,7 +18,9 @@ class Contact extends ManageRelatedRecords
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
-    protected static ?string $title = '联系人';
+    protected static ?string $breadcrumb = '联系人';
+
+    protected ?string $heading = ' ';
 
     public static function getNavigationLabel(): string
     {

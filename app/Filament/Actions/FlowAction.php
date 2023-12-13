@@ -117,6 +117,27 @@ class FlowAction
     }
 
     /**
+     * 删除流程.
+     */
+    public static function delete(): Action
+    {
+        return Action::make('删除')
+            ->requiresConfirmation()
+            ->color('danger')
+            ->icon('heroicon-s-trash')
+            ->action(function (Flow $flow) {
+                try {
+                    $flow->service()->delete();
+                    NotificationUtil::make(true, '已删除流程');
+                } catch (Exception $exception) {
+                    LogUtil::error($exception);
+                    NotificationUtil::make(false, $exception);
+                }
+            })
+            ->closeModalByClickingAway(false);
+    }
+
+    /**
      * 删除流程所有节点.
      */
     public static function deleteHasNodeWithAll(Model $flow): Action
@@ -161,9 +182,9 @@ class FlowAction
     /**
      * 流程表单审批按钮.
      */
-    public static function approve(): \Filament\Actions\Action
+    public static function approve(): \Filament\Infolists\Components\Actions\Action
     {
-        return \Filament\Actions\Action::make('审批')
+        return \Filament\Infolists\Components\Actions\Action::make('审批')
             ->slideOver()
             ->icon('heroicon-o-shield-exclamation')
             ->form(FlowHasFormForm::approve())

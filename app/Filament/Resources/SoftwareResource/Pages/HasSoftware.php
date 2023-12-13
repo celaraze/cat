@@ -22,7 +22,9 @@ class HasSoftware extends ManageRelatedRecords
 
     protected static ?string $icon = 'heroicon-o-cube';
 
-    protected static ?string $title = '附属记录';
+    protected static ?string $breadcrumb = '附属记录';
+
+    protected ?string $heading = ' ';
 
     public static function getNavigationLabel(): string
     {
@@ -46,6 +48,10 @@ class HasSoftware extends ManageRelatedRecords
                     ->searchable()
                     ->toggleable()
                     ->label('资产编号'),
+                Tables\Columns\TextColumn::make('device.category.name')
+                    ->searchable()
+                    ->toggleable()
+                    ->label('分类'),
                 Tables\Columns\TextColumn::make('device.name')
                     ->searchable()
                     ->toggleable()
@@ -70,7 +76,10 @@ class HasSoftware extends ManageRelatedRecords
                     ->label('操作人'),
             ])
             ->filters([
-
+                Tables\Filters\SelectFilter::make('status')
+                    ->multiple()
+                    ->options(AssetEnum::allRelationOperationText())
+                    ->label('状态'),
             ])
             ->headerActions([
                 // 创建
@@ -95,7 +104,11 @@ class HasSoftware extends ManageRelatedRecords
                     }),
             ])
             ->bulkActions([
-
+                // 批量脱离软件
+                SoftwareAction::batchDeleteDeviceHasSoftware()
+                    ->visible(function () {
+                        return auth()->user()->can('delete_has_software_software');
+                    }),
             ])
             ->modifyQueryUsing(fn (Builder $query) => $query->orderByDesc('id')
                 ->withoutGlobalScopes([

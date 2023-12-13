@@ -16,6 +16,8 @@ use App\Utils\LogUtil;
 use App\Utils\NotificationUtil;
 use Exception;
 use Filament\Tables\Actions\Action;
+use Filament\Tables\Actions\BulkAction;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 
 class SoftwareAction
@@ -35,11 +37,14 @@ class SoftwareAction
                     if ($out_software) {
                         $software = $out_software;
                     }
-                    $data['software_id'] = $software->getKey();
-                    $data['user_id'] = auth()->id();
-                    $data['status'] = 0;
-                    $device_has_software_service = new DeviceHasSoftwareService();
-                    $device_has_software_service->create($data);
+                    foreach ($data['device_ids'] as $device_id) {
+                        $data['device_id'] = $device_id;
+                        $data['software_id'] = $software->getKey();
+                        $data['user_id'] = auth()->id();
+                        $data['status'] = 0;
+                        $device_has_software_service = new DeviceHasSoftwareService();
+                        $device_has_software_service->create($data);
+                    }
                     NotificationUtil::make(true, '软件已附加到设备');
                 } catch (Exception $exception) {
                     LogUtil::error($exception);
@@ -201,5 +206,28 @@ class SoftwareAction
         return Action::make('分类')
             ->icon('heroicon-s-square-3-stack-3d')
             ->url(SoftwareCategoryResource::getUrl('index'));
+    }
+
+    /**
+     * 批量脱离软件按钮.
+     */
+    public static function batchDeleteDeviceHasSoftware(): BulkAction
+    {
+        return BulkAction::make('批量脱离')
+            ->requiresConfirmation()
+            ->icon('heroicon-m-minus-circle')
+            ->color('danger')
+            ->action(function (Collection $device_has_software) {
+                $data = [
+                    'user_id' => auth()->id(),
+                    'status' => 1,
+                ];
+                /* @var DeviceHasSoftware $item */
+                foreach ($device_has_software as $item) {
+                    $item->service()->delete($data);
+                }
+                NotificationUtil::make(true, '已批量脱离');
+            })
+            ->closeModalByClickingAway(false);
     }
 }

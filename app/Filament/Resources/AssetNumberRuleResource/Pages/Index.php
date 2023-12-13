@@ -3,7 +3,6 @@
 namespace App\Filament\Resources\AssetNumberRuleResource\Pages;
 
 use App\Filament\Resources\AssetNumberRuleResource;
-use Filament\Actions;
 use Filament\Resources\Pages\ListRecords;
 
 class Index extends ListRecords
@@ -12,15 +11,10 @@ class Index extends ListRecords
 
     protected static ?string $navigationIcon = 'heroicon-m-arrow-uturn-left';
 
+    protected ?string $heading = '';
+
     public static function getNavigationLabel(): string
     {
         return '返回列表';
-    }
-
-    protected function getHeaderActions(): array
-    {
-        return [
-            Actions\CreateAction::make(),
-        ];
     }
 }

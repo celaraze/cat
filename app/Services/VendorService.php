@@ -3,7 +3,9 @@
 namespace App\Services;
 
 use App\Models\Vendor;
+use Exception;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 use JetBrains\PhpStorm\ArrayShape;
 
 class VendorService
@@ -42,5 +44,23 @@ class VendorService
         $this->vendor->save();
 
         return $this->vendor;
+    }
+
+    /**
+     * 删除.
+     *
+     * @throws Exception
+     */
+    public function delete(): void
+    {
+        try {
+            DB::beginTransaction();
+            $this->vendor->contacts()->delete();
+            $this->vendor->delete();
+            DB::commit();
+        } catch (Exception $exception) {
+            DB::rollBack();
+            throw $exception;
+        }
     }
 }

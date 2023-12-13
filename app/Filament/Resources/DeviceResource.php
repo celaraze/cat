@@ -102,6 +102,8 @@ class DeviceResource extends Resource implements HasShieldPermissions
             'delete_has_part',
             'create_has_software',
             'delete_has_software',
+            'batch_delete_has_part',
+            'batch_delete_has_software',
         ];
     }
 
@@ -179,6 +181,7 @@ class DeviceResource extends Resource implements HasShieldPermissions
                     ->label('状态'),
             ])
             ->actions([
+                DeviceAction::summary(),
                 // 分配用户
                 DeviceAction::createHasUser()
                     ->visible(function (Device $device) {
@@ -260,7 +263,7 @@ class DeviceResource extends Resource implements HasShieldPermissions
                     ->icon('heroicon-m-cog-8-tooth')
                     ->button(),
             ])
-            ->heading('设备清单');
+            ->heading('设备');
     }
 
     public static function form(Form $form): Form

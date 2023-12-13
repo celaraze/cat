@@ -17,12 +17,12 @@
 
 ## 社区
 
-请优先使用本代码仓库的 [**讨论区**](https://github.com/celaraze/cat/discussions) 。
+请优先使用本代码仓库的 [讨论区](https://github.com/celaraze/cat/discussions) 。
 
-同时也为 CAT 用户提供了 [**交流社群
-**](http://qm.qq.com/cgi-bin/qm/qr?_wv=1027&k=oSXcaCdY4u5iIEQj43J2GsDk_PygRR2G&authKey=atvXMk1ZoXRwuuNzMLY7852APIHfnBp3cA4fu7oFui7MWRSCrg2EafCAI%2B9akAPa&noverify=0&group_code=1016567640)
+同时也为 CAT
+用户提供了 [交流社群](http://qm.qq.com/cgi-bin/qm/qr?_wv=1027&k=oSXcaCdY4u5iIEQj43J2GsDk_PygRR2G&authKey=atvXMk1ZoXRwuuNzMLY7852APIHfnBp3cA4fu7oFui7MWRSCrg2EafCAI%2B9akAPa&noverify=0&group_code=1016567640)
 ，但作者本身不活跃交流社群也不提供任何技术支持。另外，交流社群内反馈的问题也不会被优先处理。问题反馈请正确使用
-[**Issues**](https://github.com/celaraze/cat/issues)。
+[Issues](https://github.com/celaraze/cat/issues) 。
 
 ## 发行策略
 
@@ -36,15 +36,15 @@
 
 ### 快速开始
 
-通过访问 [**在线演示**](http://cat.celaraze.com:50080/) ，登录信息 `cat@localhost.com / cat`，用于展示的站点会关闭部分敏感权限。
+通过访问 [在线演示](http://cat.celaraze.com:50080/) 站点来体验，登录信息 `cat@localhost.com / cat`，用于展示的站点会关闭部分敏感权限。
 
-通过访问 [**官方文档**](https://github.com/celaraze/cat/wiki) 来安装和查看更多信息。
+通过访问 [官方文档](https://github.com/celaraze/cat/wiki) 来安装和查看更多信息。
 
 建议通过文档中的一把梭部署模式，快速部署且兼顾性能和灵活的数据存储方式。
 
 ## 问题反馈
 
-最好的反馈方式是在本代码仓库中提交 [**Issues**](https://github.com/celaraze/cat/issues) ，我们在空余时间检查并解决。
+最好的反馈方式是在本代码仓库中提交 [Issues](https://github.com/celaraze/cat/issues) ，我们在空余时间检查并解决。
 
 请随时牢记，这是一个开源项目，作者有自己的生活、自己的工作。
 

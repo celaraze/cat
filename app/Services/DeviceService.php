@@ -176,4 +176,11 @@ class DeviceService
             return false;
         }
     }
+
+    public function setDeviceById(int $device_id): void
+    {
+        /* @var Device $device */
+        $device = Device::query()->where('id', $device_id)->first();
+        $this->device = $device;
+    }
 }

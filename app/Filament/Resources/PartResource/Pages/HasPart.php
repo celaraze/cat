@@ -21,7 +21,9 @@ class HasPart extends ManageRelatedRecords
 
     protected static ?string $navigationIcon = 'heroicon-m-cpu-chip';
 
-    protected static ?string $title = '附属记录';
+    protected static ?string $breadcrumb = '附属记录';
+
+    protected ?string $heading = ' ';
 
     public static function getNavigationLabel(): string
     {
@@ -37,6 +39,10 @@ class HasPart extends ManageRelatedRecords
                     ->searchable()
                     ->toggleable()
                     ->label('资产编号'),
+                Tables\Columns\TextColumn::make('device.category.name')
+                    ->searchable()
+                    ->toggleable()
+                    ->label('分类'),
                 Tables\Columns\TextColumn::make('device.name')
                     ->searchable()
                     ->toggleable()
@@ -61,7 +67,10 @@ class HasPart extends ManageRelatedRecords
                     ->label('操作人'),
             ])
             ->filters([
-
+                Tables\Filters\SelectFilter::make('status')
+                    ->multiple()
+                    ->options(AssetEnum::allRelationOperationText())
+                    ->label('状态'),
             ])
             ->headerActions([
                 // 创建

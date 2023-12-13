@@ -135,7 +135,7 @@ class TicketResource extends Resource
                     ->icon('heroicon-m-cog-8-tooth')
                     ->button(),
             ])
-            ->heading('工单清单');
+            ->heading('工单');
     }
 
     public static function infolist(Infolist $infolist): Infolist
@@ -144,18 +144,39 @@ class TicketResource extends Resource
             Group::make()->schema([
                 Section::make()
                     ->schema([
+                        TextEntry::make('asset_number')
+                            ->badge()
+                            ->color('primary')
+                            ->hintActions([
+                                TicketAction::finish()
+                                    ->visible(function (Ticket $ticket) {
+                                        $is_finished = $ticket->getAttribute('status') == 2;
+
+                                        return ! $is_finished && $ticket->getAttribute('user_id') == auth()->id();
+                                    }),
+                            ])
+                            ->label('资产编号'),
+                    ]),
+                Section::make()
+                    ->schema([
+                        TextEntry::make('description')
+                            ->html()
+                            ->label('描述'),
+                    ]),
+            ])->columnSpan(['lg' => 1]),
+            Group::make()->schema([
+                Section::make()
+                    ->schema([
                         Split::make([
                             Grid::make()
                                 ->schema([
                                     Group::make([
-                                        TextEntry::make('asset_number')
-                                            ->label('资产编号')
-                                            ->badge()
-                                            ->color('primary'),
                                         TextEntry::make('category.name')
                                             ->label('分类'),
                                         TextEntry::make('user.name')
                                             ->label('提交人'),
+                                        TextEntry::make('assignee.name')
+                                            ->label('处理人'),
                                     ]),
                                     Group::make([
                                         TextEntry::make('subject')
@@ -169,22 +190,12 @@ class TicketResource extends Resource
                                             ->color(function (string $state) {
                                                 return TicketEnum::priorityColor($state);
                                             }),
-                                        TextEntry::make('assignee.name')
-                                            ->label('处理人'),
                                     ]),
                                 ]),
                         ]),
                     ]),
-            ])->columnSpan(['lg' => 2]),
-            Group::make()->schema([
-                Section::make()
-                    ->schema([
-                        TextEntry::make('description')
-                            ->html()
-                            ->label('描述'),
-                    ]),
-            ])->columnSpan(['lg' => 2]),
-        ])->columns(4);
+            ]),
+        ]);
     }
 
     public static function getPages(): array

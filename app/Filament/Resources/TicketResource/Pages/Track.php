@@ -18,7 +18,9 @@ class Track extends ManageRelatedRecords
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
-    protected static ?string $title = '记录';
+    protected static ?string $breadcrumb = '记录';
+
+    protected ?string $heading = ' ';
 
     public static function getNavigationLabel(): string
     {

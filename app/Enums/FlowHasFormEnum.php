@@ -8,8 +8,8 @@ class FlowHasFormEnum
     {
         return match ($state) {
             0 => '草稿',
-            1, 3 => '在途',
-            2 => '驳回',
+            1, 2 => '在途',
+            3 => '驳回',
             4 => '通过',
         };
     }
@@ -18,8 +18,8 @@ class FlowHasFormEnum
     {
         return match ($state) {
             0 => 'gray',
-            1, 3 => 'warning',
-            2 => 'danger',
+            1, 2 => 'warning',
+            3 => 'danger',
             4 => 'success',
         };
     }
@@ -28,8 +28,8 @@ class FlowHasFormEnum
     {
         return match ($state) {
             0 => 'heroicon-o-ellipsis-horizontal-circle',
-            1, 3 => 'heroicon-o-check-circle',
-            2 => 'heroicon-o-x-circle',
+            1, 2 => 'heroicon-o-check-circle',
+            3 => 'heroicon-o-x-circle',
             4 => 'heroicon-m-check-circle'
         };
     }

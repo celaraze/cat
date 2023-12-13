@@ -34,4 +34,12 @@ class BrandService
 
         return $this->brand;
     }
+
+    /**
+     * 删除.
+     */
+    public function delete(): void
+    {
+        $this->brand->delete();
+    }
 }

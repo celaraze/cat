@@ -173,7 +173,9 @@ class FlowHasFormService
         if ($status == 3 || $status == 4) {
             $nodes = json_decode($this->flow_has_form->getAttribute('flow_progress'), true);
         } else {
-            $nodes = $this->flow_has_form->flow->service()->sortNodes();
+            /* @var Flow $flow */
+            $flow = $this->flow_has_form->flow()->first();
+            $nodes = $flow->service()->sortNodes();
         }
         $key = array_search($this->flow_has_form->getAttribute('node_id'), $nodes['id']);
         $nodes['name'][$key] = '🚩'.$nodes['name'][$key];
@@ -230,5 +232,26 @@ class FlowHasFormService
         }
 
         return $this->flow_has_form->save();
+    }
+
+    /**
+     * 表单所属流程是否存在.
+     */
+    public function isExistFlow(): int
+    {
+        return $this->flow_has_form->flow()->count();
+    }
+
+    /**
+     * 表单是否结案.
+     */
+    public function isFinished(): bool
+    {
+        $status = $this->flow_has_form->getAttribute('status');
+        if ($status == 3 or $status == 4) {
+            return true;
+        }
+
+        return false;
     }
 }

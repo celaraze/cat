@@ -21,7 +21,9 @@ class HasPart extends ManageRelatedRecords
 
     protected static ?string $navigationIcon = 'heroicon-m-cpu-chip';
 
-    protected static ?string $title = '配件';
+    protected static ?string $breadcrumb = '配件';
+
+    protected ?string $heading = ' ';
 
     public static function getNavigationLabel(): string
     {
@@ -90,7 +92,11 @@ class HasPart extends ManageRelatedRecords
                     }),
             ])
             ->bulkActions([
-
+                // 批量脱离配件
+                DeviceAction::batchDeleteHasPart()
+                    ->visible(function () {
+                        return auth()->user()->can('batch_delete_has_part_device');
+                    }),
             ])
             ->modifyQueryUsing(fn (Builder $query) => $query->orderByDesc('created_at')
                 ->withoutGlobalScopes([

@@ -29,6 +29,8 @@ class AssetNumberRuleResource extends Resource implements HasShieldPermissions
 
     protected static ?string $navigationIcon = 'heroicon-o-calculator';
 
+    protected static ?string $recordTitleAttribute = 'name';
+
     public static function getRecordSubNavigation(Page $page): array
     {
         $navigation_items = [
@@ -94,7 +96,8 @@ class AssetNumberRuleResource extends Resource implements HasShieldPermissions
                     ->visible(function () {
                         return auth()->user()->can('create_asset::number::rule');
                     }),
-            ]);
+            ])
+            ->heading('资产编号规则');
     }
 
     public static function getPages(): array

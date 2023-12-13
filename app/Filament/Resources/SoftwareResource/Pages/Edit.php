@@ -9,6 +9,8 @@ class Edit extends EditRecord
 {
     protected static string $resource = SoftwareResource::class;
 
+    protected ?string $heading = ' ';
+
     public static function getNavigationLabel(): string
     {
         return '编辑';

@@ -25,6 +25,8 @@ use App\Utils\LogUtil;
 use App\Utils\NotificationUtil;
 use Exception;
 use Filament\Tables\Actions\Action;
+use Filament\Tables\Actions\BulkAction;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 
 class DeviceAction
@@ -119,11 +121,14 @@ class DeviceAction
                     if ($out_device) {
                         $device = $out_device;
                     }
-                    $data['device_id'] = $device->getKey();
-                    $data['user_id'] = auth()->id();
-                    $data['status'] = 0;
-                    $device_has_software_service = new DeviceHasSoftwareService();
-                    $device_has_software_service->create($data);
+                    foreach ($data['software_ids'] as $software_id) {
+                        $data['software_id'] = $software_id;
+                        $data['device_id'] = $device->getKey();
+                        $data['user_id'] = auth()->id();
+                        $data['status'] = 0;
+                        $device_has_software_service = new DeviceHasSoftwareService();
+                        $device_has_software_service->create($data);
+                    }
                     NotificationUtil::make(true, '设备已附加软件');
                 } catch (Exception $exception) {
                     LogUtil::error($exception);
@@ -147,11 +152,14 @@ class DeviceAction
                     if ($out_device) {
                         $device = $out_device;
                     }
-                    $data['device_id'] = $device->getKey();
-                    $data['user_id'] = auth()->id();
-                    $data['status'] = 0;
-                    $device_has_part_service = new DeviceHasPartService();
-                    $device_has_part_service->create($data);
+                    foreach ($data['part_ids'] as $part_id) {
+                        $data['part_id'] = $part_id;
+                        $data['device_id'] = $device->getKey();
+                        $data['user_id'] = auth()->id();
+                        $data['status'] = 0;
+                        $device_has_part_service = new DeviceHasPartService();
+                        $device_has_part_service->create($data);
+                    }
                     NotificationUtil::make(true, '设备已附加配件');
                 } catch (Exception $exception) {
                     LogUtil::error($exception);
@@ -364,5 +372,67 @@ class DeviceAction
             ->url(function (Ticket $ticket) {
                 return TicketResource::getUrl('view', ['record' => $ticket->getKey()]);
             });
+    }
+
+    /**
+     * 资产总览.
+     */
+    public static function summary(): Action
+    {
+        return Action::make('速览')
+            ->icon('heroicon-o-presentation-chart-bar')
+            ->modalContent(function (Device $device) {
+                return view('filament.actions.devices.summary', ['device' => $device]);
+            })
+            ->modalHeading(false)
+            ->modalCancelAction(false)
+            ->modalSubmitAction(false)
+            ->link();
+    }
+
+    /**
+     * 批量脱离配件按钮.
+     */
+    public static function batchDeleteHasPart(): BulkAction
+    {
+        return BulkAction::make('批量脱离')
+            ->requiresConfirmation()
+            ->color('danger')
+            ->icon('heroicon-s-minus-circle')
+            ->action(function (Collection $device_has_parts) {
+                $data = [
+                    'user_id' => auth()->id(),
+                    'status' => 1,
+                ];
+                /* @var DeviceHasPart $device_has_part */
+                foreach ($device_has_parts as $device_has_part) {
+                    $device_has_part->service()->delete($data);
+                }
+                NotificationUtil::make(true, '已批量脱离');
+            })
+            ->closeModalByClickingAway(false);
+    }
+
+    /**
+     * 批量脱离软件按钮.
+     */
+    public static function batchDeleteHasSoftware(): BulkAction
+    {
+        return BulkAction::make('批量脱离')
+            ->requiresConfirmation()
+            ->color('danger')
+            ->icon('heroicon-s-minus-circle')
+            ->action(function (Collection $device_has_software) {
+                $data = [
+                    'user_id' => auth()->id(),
+                    'status' => 1,
+                ];
+                /* @var DeviceHasSoftware $item */
+                foreach ($device_has_software as $item) {
+                    $item->service()->delete($data);
+                }
+                NotificationUtil::make(true, '已批量脱离');
+            })
+            ->closeModalByClickingAway(false);
     }
 }

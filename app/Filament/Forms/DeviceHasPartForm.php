@@ -15,12 +15,13 @@ class DeviceHasPartForm
     public static function create(): array
     {
         return [
-            Select::make('part_id')
-                ->label('配件')
+            Select::make('part_ids')
                 ->options(PartService::pluckOptions())
+                ->multiple()
                 ->searchable()
                 ->preload()
-                ->required(),
+                ->required()
+                ->label('配件'),
         ];
     }
 

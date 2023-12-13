@@ -138,7 +138,8 @@ class UserResource extends Resource implements HasShieldPermissions
                     ->visible(function () {
                         return auth()->user()->can('create_user');
                     }),
-            ]);
+            ])
+            ->heading('用户');
     }
 
     public static function getEloquentQuery(): Builder

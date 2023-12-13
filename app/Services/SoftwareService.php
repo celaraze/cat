@@ -167,4 +167,11 @@ class SoftwareService
             return false;
         }
     }
+
+    public function setSoftwareById(int $software_id): void
+    {
+        /* @var Software $software */
+        $software = Software::query()->where('id', $software_id)->first();
+        $this->software = $software;
+    }
 }

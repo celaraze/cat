@@ -206,7 +206,7 @@ class PartResource extends Resource implements HasShieldPermissions
                     ->icon('heroicon-m-cog-8-tooth')
                     ->button(),
             ])
-            ->heading('配件清单');
+            ->heading('配件');
     }
 
     public static function form(Form $form): Form

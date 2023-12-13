@@ -3,7 +3,9 @@
 namespace App\Services;
 
 use App\Models\Flow;
+use Exception;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
 
 class FlowService
 {
@@ -41,7 +43,8 @@ class FlowService
     {
         $array['id'] = [];
         $array['name'] = [];
-        $first_node = $this->flow->nodes->where('parent_node_id', 0)
+        $first_node = $this->flow->nodes()
+            ->where('parent_node_id', 0)
             ->first();
         while (true) {
             if ($first_node) {
@@ -54,5 +57,26 @@ class FlowService
         }
 
         return $array;
+    }
+
+    /**
+     * 删除节点.
+     *
+     * @throws Exception
+     */
+    public function delete(): void
+    {
+        if ($this->flow->activeForms()) {
+            throw new Exception('此流程仍有未结案表单，请先处理表单');
+        }
+        try {
+            DB::beginTransaction();
+            $this->flow->nodes()->delete();
+            $this->flow->delete();
+            DB::commit();
+        } catch (Exception $exception) {
+            DB::rollBack();
+            throw $exception;
+        }
     }
 }

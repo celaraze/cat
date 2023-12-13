@@ -18,7 +18,9 @@ class Node extends ManageRelatedRecords
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
-    protected static ?string $title = '节点';
+    protected static ?string $breadcrumb = '节点';
+
+    protected ?string $heading = ' ';
 
     public static function getNavigationLabel(): string
     {

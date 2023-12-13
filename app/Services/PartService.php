@@ -181,4 +181,11 @@ class PartService
             return false;
         }
     }
+
+    public function setPartById(int $part_id): void
+    {
+        /* @var Part $part */
+        $part = Part::query()->where('id', $part_id)->first();
+        $this->part = $part;
+    }
 }

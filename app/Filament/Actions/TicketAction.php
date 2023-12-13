@@ -85,14 +85,14 @@ class TicketAction
     /**
      * 标记完成.
      */
-    public static function finish(Model $ticket): \Filament\Actions\Action
+    public static function finish(): \Filament\Infolists\Components\Actions\Action
     {
         /* @var Ticket $ticket */
-        return \Filament\Actions\Action::make('标记完成')
+        return \Filament\Infolists\Components\Actions\Action::make('标记完成')
             ->color('success')
             ->icon('heroicon-o-check-circle')
             ->requiresConfirmation()
-            ->action(function () use ($ticket) {
+            ->action(function (Ticket $ticket) {
                 try {
                     $ticket->service()->finish();
                     NotificationUtil::make(true, '已标记完成');

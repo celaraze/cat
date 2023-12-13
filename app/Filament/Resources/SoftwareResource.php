@@ -93,6 +93,7 @@ class SoftwareResource extends Resource implements HasShieldPermissions
             'set_retire_flow',
             'create_has_software',
             'delete_has_software',
+            'batch_delete_has_software',
         ];
     }
 
@@ -217,7 +218,7 @@ class SoftwareResource extends Resource implements HasShieldPermissions
                     ->icon('heroicon-m-cog-8-tooth')
                     ->button(),
             ])
-            ->heading('软件清单');
+            ->heading('软件');
     }
 
     public static function form(Form $form): Form
