@@ -19,7 +19,6 @@ class UserForm
         return [
             TextInput::make('name')
                 ->label('名称')
-                ->unique()
                 ->required(),
             TextInput::make('email')
                 ->label('邮箱')
@@ -39,7 +38,6 @@ class UserForm
         return [
             TextInput::make('name')
                 ->label('名称')
-                ->unique()
                 ->required(),
             TextInput::make('email')
                 ->label('邮箱')
