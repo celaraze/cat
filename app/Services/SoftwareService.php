@@ -6,6 +6,7 @@ use App\Models\AssetNumberRule;
 use App\Models\Flow;
 use App\Models\Setting;
 use App\Models\Software;
+use App\Traits\HasFootprint;
 use Exception;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
@@ -15,11 +16,13 @@ use JetBrains\PhpStorm\ArrayShape;
 
 class SoftwareService
 {
-    public Software $software;
+    use HasFootprint;
+
+    public Software $model;
 
     public function __construct(?Software $software = null)
     {
-        $this->software = $software ?? new Software();
+        $this->model = $software ?? new Software();
     }
 
     /**
@@ -94,19 +97,19 @@ class SoftwareService
                     $asset_number_rule_service->addAutoIncrementCount();
                 }
             }
-            $this->software->setAttribute('asset_number', $asset_number);
-            $this->software->setAttribute('name', $data['name']);
-            $this->software->setAttribute('category_id', $data['category_id']);
-            $this->software->setAttribute('brand_id', $data['brand_id']);
-            $this->software->setAttribute('sn', $data['sn'] ?? '无');
-            $this->software->setAttribute('specification', $data['specification'] ?? '无');
-            $this->software->setAttribute('image', $data['image']);
-            $this->software->setAttribute('max_license_count', $data['max_license_count']);
-            $this->software->setAttribute('description', $data['description']);
-            $this->software->setAttribute('additional', $data['additional']);
-            $this->software->setAttribute('status', 4);
-            $this->software->save();
-            $this->software->assetNumberTrack()
+            $this->model->setAttribute('asset_number', $asset_number);
+            $this->model->setAttribute('name', $data['name']);
+            $this->model->setAttribute('category_id', $data['category_id']);
+            $this->model->setAttribute('brand_id', $data['brand_id']);
+            $this->model->setAttribute('sn', $data['sn'] ?? '无');
+            $this->model->setAttribute('specification', $data['specification'] ?? '无');
+            $this->model->setAttribute('image', $data['image']);
+            $this->model->setAttribute('max_license_count', $data['max_license_count']);
+            $this->model->setAttribute('description', $data['description']);
+            $this->model->setAttribute('additional', json_encode($data['additional']));
+            $this->model->setAttribute('status', 4);
+            $this->model->save();
+            $this->model->assetNumberTrack()
                 ->create(['asset_number' => $asset_number]);
             // 写入事务
             DB::commit();
@@ -126,9 +129,9 @@ class SoftwareService
     {
         try {
             DB::beginTransaction();
-            $this->software->hasSoftware()->delete();
-            $this->software->setAttribute('status', 3);
-            $this->software->save();
+            $this->model->hasSoftware()->delete();
+            $this->model->setAttribute('status', 3);
+            $this->model->save();
             DB::commit();
         } catch (Exception $exception) {
             DB::rollBack();
@@ -162,7 +165,7 @@ class SoftwareService
      */
     public function isRetired(): bool
     {
-        if ($this->software->getAttribute('status') == 3) {
+        if ($this->model->getAttribute('status') == 3) {
             return true;
         } else {
             return false;
@@ -173,6 +176,6 @@ class SoftwareService
     {
         /* @var Software $software */
         $software = Software::query()->where('id', $software_id)->first();
-        $this->software = $software;
+        $this->model = $software;
     }
 }

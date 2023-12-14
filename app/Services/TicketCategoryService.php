@@ -3,15 +3,18 @@
 namespace App\Services;
 
 use App\Models\TicketCategory;
+use App\Traits\HasFootprint;
 use Illuminate\Support\Collection;
 
 class TicketCategoryService
 {
-    public TicketCategory $ticket_category;
+    use HasFootprint;
+
+    public TicketCategory $model;
 
     public function __construct(?TicketCategory $ticket_category = null)
     {
-        $this->ticket_category = $ticket_category ?? new TicketCategory();
+        $this->model = $ticket_category ?? new TicketCategory();
     }
 
     /**
@@ -27,10 +30,10 @@ class TicketCategoryService
      */
     public function create(array $data): TicketCategory
     {
-        $this->ticket_category->setAttribute('name', $data['name']);
-        $this->ticket_category->save();
+        $this->model->setAttribute('name', $data['name']);
+        $this->model->save();
 
-        return $this->ticket_category;
+        return $this->model;
     }
 
     /**
@@ -38,6 +41,6 @@ class TicketCategoryService
      */
     public function delete(): ?bool
     {
-        return $this->ticket_category->delete();
+        return $this->model->delete();
     }
 }

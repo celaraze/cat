@@ -3,16 +3,19 @@
 namespace App\Services;
 
 use App\Models\DeviceCategory;
+use App\Traits\HasFootprint;
 use Illuminate\Support\Collection;
 use JetBrains\PhpStorm\ArrayShape;
 
 class DeviceCategoryService
 {
-    public DeviceCategory $device_category;
+    use HasFootprint;
+
+    public DeviceCategory $model;
 
     public function __construct(?DeviceCategory $device_category = null)
     {
-        $this->device_category = $device_category ?? new DeviceCategory();
+        $this->model = $device_category ?? new DeviceCategory();
     }
 
     /**
@@ -30,10 +33,10 @@ class DeviceCategoryService
     #[ArrayShape(['name' => 'string'])]
     public function create(array $data): DeviceCategory
     {
-        $this->device_category->setAttribute('name', $data['name']);
-        $this->device_category->save();
+        $this->model->setAttribute('name', $data['name']);
+        $this->model->save();
 
-        return $this->device_category;
+        return $this->model;
     }
 
     /**
@@ -41,6 +44,6 @@ class DeviceCategoryService
      */
     public function delete(): ?bool
     {
-        return $this->device_category->delete();
+        return $this->model->delete();
     }
 }

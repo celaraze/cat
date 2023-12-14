@@ -3,17 +3,20 @@
 namespace App\Services;
 
 use App\Models\Inventory;
+use App\Traits\HasFootprint;
 use Exception;
 use Illuminate\Support\Facades\DB;
 use JetBrains\PhpStorm\ArrayShape;
 
 class InventoryService
 {
-    public Inventory $inventory;
+    use HasFootprint;
+
+    public Inventory $model;
 
     public function __construct(?Inventory $inventory = null)
     {
-        $this->inventory = $inventory ?? new Inventory();
+        $this->model = $inventory ?? new Inventory();
     }
 
     /**
@@ -35,18 +38,18 @@ class InventoryService
             if (! count($model_ids)) {
                 $model_ids = $model::query()->pluck('id')->toArray();
             }
-            $this->inventory->setAttribute('name', $data['name']);
-            $this->inventory->setAttribute('class_name', $model);
-            $this->inventory->setAttribute('user_id', auth()->id());
-            $this->inventory->save();
+            $this->model->setAttribute('name', $data['name']);
+            $this->model->setAttribute('class_name', $model);
+            $this->model->setAttribute('operator_id', auth()->id());
+            $this->model->save();
             foreach ($model_ids as $model_id) {
                 $model = $model::query()->where('id', $model_id)->first();
                 $data = [
                     'asset_number' => $model->getAttribute('asset_number'),
-                    'inventory_id' => $this->inventory->getKey(),
-                    'user_id' => auth()->id(),
+                    'inventory_id' => $this->model->getKey(),
+                    'operator_id' => auth()->id(),
                 ];
-                $this->inventory->hasTracks()->create($data);
+                $this->model->hasTracks()->create($data);
             }
             DB::commit();
         } catch (Exception $exception) {
@@ -64,8 +67,8 @@ class InventoryService
     {
         try {
             DB::beginTransaction();
-            $this->inventory->hasTracks()->delete();
-            $this->inventory->delete();
+            $this->model->hasTracks()->delete();
+            $this->model->delete();
             DB::commit();
         } catch (Exception $exception) {
             DB::rollBack();

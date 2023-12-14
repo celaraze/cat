@@ -5,17 +5,20 @@ namespace App\Services;
 use App\Models\DeviceHasSoftware;
 use App\Models\Part;
 use App\Models\Software;
+use App\Traits\HasFootprint;
 use Exception;
 use Illuminate\Support\Facades\DB;
 use JetBrains\PhpStorm\ArrayShape;
 
 class DeviceHasSoftwareService
 {
-    public DeviceHasSoftware $device_has_software;
+    use HasFootprint;
+
+    public DeviceHasSoftware $model;
 
     public function __construct(?DeviceHasSoftware $device_has_software = null)
     {
-        $this->device_has_software = $device_has_software ?? new DeviceHasSoftware();
+        $this->model = $device_has_software ?? new DeviceHasSoftware();
     }
 
     /**
@@ -23,21 +26,21 @@ class DeviceHasSoftwareService
      *
      * @throws Exception
      */
-    #[ArrayShape(['user_id' => 'int', 'status' => 'string'])]
+    #[ArrayShape(['operator_id' => 'int', 'status' => 'string'])]
     public function delete(array $data): void
     {
-        if ($this->device_has_software->getAttribute('deleted_at') == null) {
+        if ($this->model->getAttribute('deleted_at') == null) {
             try {
                 DB::beginTransaction();
-                $new_device_has_software = $this->device_has_software->replicate();
+                $new_device_has_software = $this->model->replicate();
                 $new_device_has_software->save();
-                $new_device_has_software->setAttribute('user_id', $data['user_id']);
+                $new_device_has_software->setAttribute('operator_id', $data['operator_id']);
                 $new_device_has_software->setAttribute('status', $data['status']);
                 $new_device_has_software->save();
                 $new_device_has_software->delete();
                 /* @var Software $software */
-                $software = $this->device_has_software->software()->first();
-                $this->device_has_software->delete();
+                $software = $this->model->software()->first();
+                $this->model->delete();
                 if (! $software->hasSoftware()->count()) {
                     $software->setAttribute('status', 0);
                     $software->save();
@@ -55,7 +58,7 @@ class DeviceHasSoftwareService
      */
     public function isDeleted(): bool
     {
-        if ($this->device_has_software->getAttribute('deleted_at')) {
+        if ($this->model->getAttribute('deleted_at')) {
             return true;
         }
 
@@ -70,7 +73,7 @@ class DeviceHasSoftwareService
     #[ArrayShape([
         'device_id' => 'int',
         'software_id' => 'int',
-        'user_id' => 'int',
+        'operator_id' => 'int',
         'status' => 'string',
     ])]
     public function create(array $data): DeviceHasSoftware
@@ -94,18 +97,18 @@ class DeviceHasSoftwareService
 
         try {
             DB::beginTransaction();
-            $this->device_has_software->setAttribute('device_id', $data['device_id']);
-            $this->device_has_software->setAttribute('software_id', $data['software_id']);
-            $this->device_has_software->setAttribute('user_id', $data['user_id']);
-            $this->device_has_software->setAttribute('status', $data['status']);
-            $this->device_has_software->save();
+            $this->model->setAttribute('device_id', $data['device_id']);
+            $this->model->setAttribute('software_id', $data['software_id']);
+            $this->model->setAttribute('operator_id', $data['operator_id']);
+            $this->model->setAttribute('status', $data['status']);
+            $this->model->save();
             /* @var Part $part */
-            $software = $this->device_has_software->software()->first();
+            $software = $this->model->software()->first();
             $software->setAttribute('status', 1);
             $software->save();
             DB::commit();
 
-            return $this->device_has_software;
+            return $this->model;
         } catch (Exception $exception) {
             DB::rollBack();
             throw $exception;

@@ -9,6 +9,7 @@ use App\Models\FlowHasNode;
 use App\Models\Part;
 use App\Models\Setting;
 use App\Models\Software;
+use App\Traits\HasFootprint;
 use Exception;
 use Illuminate\Support\Facades\DB;
 use JetBrains\PhpStorm\ArrayShape;
@@ -16,11 +17,13 @@ use Ramsey\Uuid\Uuid;
 
 class FlowHasFormService
 {
-    public FlowHasForm $flow_has_form;
+    use HasFootprint;
+
+    public FlowHasForm $model;
 
     public function __construct(?FlowHasForm $flow_has_form = null)
     {
-        $this->flow_has_form = $flow_has_form ?? new FlowHasForm();
+        $this->model = $flow_has_form ?? new FlowHasForm();
     }
 
     /**
@@ -34,25 +37,25 @@ class FlowHasFormService
         // 开始数据库事务
         DB::beginTransaction();
         // 先判断表单状态是否是已驳回状态
-        if ($this->flow_has_form->getAttribute('status') == 3) {
+        if ($this->model->getAttribute('status') == 3) {
             throw new Exception('表单已经被驳回，请重新提交申请');
         }
         // 无论如何，生成一条新记录，同时表单顺序计数+1，然后删除旧记录
-        $new_form = $this->flow_has_form->replicate();
-        $new_form->setAttribute('stage', $this->flow_has_form->getAttribute('stage') + 1);
-        $this->flow_has_form->delete();
+        $new_form = $this->model->replicate();
+        $new_form->setAttribute('stage', $this->model->getAttribute('stage') + 1);
+        $this->model->delete();
         $next_node = null;
         // 如果审批是同意
         if ($status == 1) {
             // 如果这是新表单，从第一个节点开始走流程，也就是 parent_node_id == 0
             // 否则执行流程节点顺序
-            if (! $this->flow_has_form->getAttribute('node_id')) {
+            if (! $this->model->getAttribute('node_id')) {
                 $parent_node_id = 0;
             } else {
-                $parent_node_id = $this->flow_has_form->getAttribute('node_id');
+                $parent_node_id = $this->model->getAttribute('node_id');
             }
             $next_node = FlowHasNode::query()
-                ->where('flow_id', $this->flow_has_form->getAttribute('flow_id'))
+                ->where('flow_id', $this->model->getAttribute('flow_id'))
                 ->where('parent_node_id', $parent_node_id)
                 ->first();
             $next_next_node = $next_node->childNode;
@@ -63,13 +66,13 @@ class FlowHasFormService
         }
         // 如果审批是退回
         if ($status == 2) {
-            if (! $this->flow_has_form->getAttribute('node_id')) {
+            if (! $this->model->getAttribute('node_id')) {
                 // 数据库事务回滚
                 DB::rollBack();
                 throw new Exception('表单已在最初始阶段，无法退回');
             }
             $current_node = FlowHasNode::query()
-                ->where('id', $this->flow_has_form->getAttribute('node_id'))
+                ->where('id', $this->model->getAttribute('node_id'))
                 ->first();
             /* @var FlowHasNodeService $prev_node 这里 $next_node 实际上是 $prev_node */
             $next_node = $current_node->parentNode;
@@ -105,7 +108,7 @@ class FlowHasFormService
         // 如果表单流程结束，将经历的节点信息快照方式保存
         if ($status == 3 || $status == 4) {
             /* @var Flow $flow */
-            $flow = $this->flow_has_form->flow()->first();
+            $flow = $this->model->flow()->first();
 
             $flow_progress = $flow->service()->sortNodes();
             $new_form->setAttribute('flow_progress', json_encode($flow_progress));
@@ -120,7 +123,7 @@ class FlowHasFormService
                 if ($device_delete_flow_id == $flow->getKey()) {
                     /* @var Device $device */
                     $device = Device::query()
-                        ->where('asset_number', $this->flow_has_form->getAttribute('payload'))
+                        ->where('asset_number', $this->model->getAttribute('payload'))
                         ->first();
                     if (! $device) {
                         throw new Exception('未找到报废流程中所指的设备资产');
@@ -134,7 +137,7 @@ class FlowHasFormService
                 if ($part_delete_flow_id == $flow->getKey()) {
                     /* @var Part $part */
                     $part = Part::query()
-                        ->where('asset_number', $this->flow_has_form->getAttribute('payload'))
+                        ->where('asset_number', $this->model->getAttribute('payload'))
                         ->first();
                     if (! $part) {
                         throw new Exception('未找到报废流程中所指的配件资产');
@@ -148,7 +151,7 @@ class FlowHasFormService
                 if ($software_delete_flow_id == $flow->getKey()) {
                     /* @var  Software $software */
                     $software = Software::query()
-                        ->where('asset_number', $this->flow_has_form->getAttribute('payload'))
+                        ->where('asset_number', $this->model->getAttribute('payload'))
                         ->first();
                     if (! $software) {
                         throw new Exception('未找到报废流程中所指的软件资产');
@@ -169,15 +172,15 @@ class FlowHasFormService
      */
     public function getNodes(): mixed
     {
-        $status = $this->flow_has_form->getAttribute('status');
+        $status = $this->model->getAttribute('status');
         if ($status == 3 || $status == 4) {
-            $nodes = json_decode($this->flow_has_form->getAttribute('flow_progress'), true);
+            $nodes = json_decode($this->model->getAttribute('flow_progress'), true);
         } else {
             /* @var Flow $flow */
-            $flow = $this->flow_has_form->flow()->first();
+            $flow = $this->model->flow()->first();
             $nodes = $flow->service()->sortNodes();
         }
-        $key = array_search($this->flow_has_form->getAttribute('node_id'), $nodes['id']);
+        $key = array_search($this->model->getAttribute('node_id'), $nodes['id']);
         $nodes['name'][$key] = '🚩'.$nodes['name'][$key];
 
         return $nodes;
@@ -190,7 +193,7 @@ class FlowHasFormService
     {
         /* @var FlowHasForm $flow_has_form */
         $flow_has_form = FlowHasForm::query()->where('id', $flow_has_form_id)->first();
-        $this->flow_has_form = $flow_has_form;
+        $this->model = $flow_has_form;
 
     }
 
@@ -218,20 +221,20 @@ class FlowHasFormService
         $first_node = $flow->nodes()
             ->where('parent_node_id', 0)
             ->first();
-        $this->flow_has_form->setAttribute('name', $data['name']);
-        $this->flow_has_form->setAttribute('flow_name', $flow->getAttribute('name'));
-        $this->flow_has_form->setAttribute('uuid', Uuid::uuid4());
-        $this->flow_has_form->setAttribute('flow_id', $flow->getKey());
-        $this->flow_has_form->setAttribute('applicant_user_id', auth()->id());
-        $this->flow_has_form->setAttribute('current_approve_user_id', $this->flow_has_form->getAttribute('applicant_user_id'));
-        $this->flow_has_form->setAttribute('comment', $data['comment']);
-        $this->flow_has_form->setAttribute('node_id', $first_node->getKey());
-        $this->flow_has_form->setAttribute('node_name', $first_node->getAttribute('name'));
+        $this->model->setAttribute('name', $data['name']);
+        $this->model->setAttribute('flow_name', $flow->getAttribute('name'));
+        $this->model->setAttribute('uuid', Uuid::uuid4());
+        $this->model->setAttribute('flow_id', $flow->getKey());
+        $this->model->setAttribute('applicant_user_id', auth()->id());
+        $this->model->setAttribute('current_approve_user_id', $this->model->getAttribute('applicant_user_id'));
+        $this->model->setAttribute('comment', $data['comment']);
+        $this->model->setAttribute('node_id', $first_node->getKey());
+        $this->model->setAttribute('node_name', $first_node->getAttribute('name'));
         if (isset($data['payload'])) {
-            $this->flow_has_form->setAttribute('payload', $data['payload']);
+            $this->model->setAttribute('payload', $data['payload']);
         }
 
-        return $this->flow_has_form->save();
+        return $this->model->save();
     }
 
     /**
@@ -239,7 +242,7 @@ class FlowHasFormService
      */
     public function isExistFlow(): int
     {
-        return $this->flow_has_form->flow()->count();
+        return $this->model->flow()->count();
     }
 
     /**
@@ -247,7 +250,7 @@ class FlowHasFormService
      */
     public function isFinished(): bool
     {
-        $status = $this->flow_has_form->getAttribute('status');
+        $status = $this->model->getAttribute('status');
         if ($status == 3 or $status == 4) {
             return true;
         }

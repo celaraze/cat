@@ -31,6 +31,8 @@ class VendorHasContactForm
             //region 文本 邮箱 email
             TextInput::make('email')
                 ->maxLength(255)
+                ->required()
+                ->rules(['email'])
                 ->label('邮箱'),
             //endregion
 

@@ -3,16 +3,19 @@
 namespace App\Services;
 
 use App\Models\PartCategory;
+use App\Traits\HasFootprint;
 use Illuminate\Support\Collection;
 use JetBrains\PhpStorm\ArrayShape;
 
 class PartCategoryService
 {
-    public PartCategory $part_category;
+    use HasFootprint;
+
+    public PartCategory $model;
 
     public function __construct(?PartCategory $part_category = null)
     {
-        $this->part_category = $part_category ?? new PartCategory();
+        $this->model = $part_category ?? new PartCategory();
     }
 
     /**
@@ -29,10 +32,10 @@ class PartCategoryService
     #[ArrayShape(['name' => 'string'])]
     public function create(array $data): PartCategory
     {
-        $this->part_category->setAttribute('name', $data['name']);
-        $this->part_category->save();
+        $this->model->setAttribute('name', $data['name']);
+        $this->model->save();
 
-        return $this->part_category;
+        return $this->model;
     }
 
     /**
@@ -40,6 +43,6 @@ class PartCategoryService
      */
     public function delete(): ?bool
     {
-        return $this->part_category->delete();
+        return $this->model->delete();
     }
 }

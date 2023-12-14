@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Services\VendorHasContactService;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -28,5 +29,13 @@ class VendorHasContact extends Model
         return Attribute::make(
             get: fn (?string $value) => json_decode($value, true),
         );
+    }
+
+    /**
+     * 模型到服务.
+     */
+    public function service(): VendorHasContactService
+    {
+        return new VendorHasContactService($this);
     }
 }

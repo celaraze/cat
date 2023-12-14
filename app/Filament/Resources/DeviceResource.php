@@ -332,9 +332,9 @@ class DeviceResource extends Resource implements HasShieldPermissions
                     ->schema([
                         ImageEntry::make('image')
                             ->disk('public')
-                            ->label('照片')
                             ->height(300)
-                            ->defaultImageUrl(('/images/default.jpg')),
+                            ->defaultImageUrl(('/images/default.jpg'))
+                            ->label('照片'),
                     ]),
             ])->columnSpan(['lg' => 1]),
         ])->columns(3);

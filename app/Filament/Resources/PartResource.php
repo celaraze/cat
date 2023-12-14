@@ -19,6 +19,7 @@ use Filament\Forms\Form;
 use Filament\Infolists\Components\Grid;
 use Filament\Infolists\Components\Group;
 use Filament\Infolists\Components\ImageEntry;
+use Filament\Infolists\Components\RepeatableEntry;
 use Filament\Infolists\Components\Section;
 use Filament\Infolists\Components\Split;
 use Filament\Infolists\Components\TextEntry;
@@ -225,9 +226,15 @@ class PartResource extends Resource implements HasShieldPermissions
                                 ->schema([
                                     Group::make([
                                         TextEntry::make('asset_number')
-                                            ->label('资产编号')
                                             ->badge()
-                                            ->color('primary'),
+                                            ->color('primary')
+                                            ->hint(function (Part $part) {
+                                                return AssetEnum::statusText($part->getAttribute('status'));
+                                            })
+                                            ->hintColor(function (Part $part) {
+                                                return AssetEnum::statusColor($part->getAttribute('status'));
+                                            })
+                                            ->label('资产编号'),
                                         TextEntry::make('category.name')
                                             ->label('分类'),
                                     ]),
@@ -246,25 +253,29 @@ class PartResource extends Resource implements HasShieldPermissions
                     TextEntry::make('description')
                         ->label('说明'),
                 ]),
+                Section::make()->schema([
+                    RepeatableEntry::make('additional')
+                        ->schema([
+                            TextEntry::make('name')
+                                ->columnSpan(1)
+                                ->hiddenLabel(),
+                            TextEntry::make('text')
+                                ->columnSpan(1)
+                                ->hiddenLabel(),
+                        ])
+                        ->grid()
+                        ->columns()
+                        ->label('额外信息'),
+                ]),
             ])->columnSpan(['lg' => 2]),
             Group::make()->schema([
                 Section::make()
                     ->schema([
-                        TextEntry::make('status')
-                            ->formatStateUsing(function ($state) {
-                                return AssetEnum::statusText($state);
-                            })
-                            ->color(function ($state) {
-                                return AssetEnum::statusColor($state);
-                            })
-                            ->label(''),
-                    ]),
-                Section::make()
-                    ->schema([
                         ImageEntry::make('image')
                             ->disk('public')
-                            ->label('照片')
-                            ->defaultImageUrl(('/images/default.jpg')),
+                            ->height(300)
+                            ->defaultImageUrl(('/images/default.jpg'))
+                            ->label('照片'),
                     ]),
             ])->columnSpan(['lg' => 1]),
         ])->columns(3);

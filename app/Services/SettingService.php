@@ -3,14 +3,17 @@
 namespace App\Services;
 
 use App\Models\Setting;
+use App\Traits\HasFootprint;
 
 class SettingService
 {
-    public Setting $setting;
+    use HasFootprint;
+
+    public Setting $model;
 
     public function __construct(?Setting $setting = null)
     {
-        $this->setting = $setting ?? new Setting();
+        $this->model = $setting ?? new Setting();
     }
 
     /**
@@ -21,10 +24,10 @@ class SettingService
         /* @var Setting $exist  */
         $exist = Setting::query()->where('custom_key', $key)->first();
         if ($exist) {
-            $this->setting = $exist;
+            $this->model = $exist;
         }
-        $this->setting->setAttribute('custom_key', $key);
-        $this->setting->setAttribute('custom_value', $value);
-        $this->setting->save();
+        $this->model->setAttribute('custom_key', $key);
+        $this->model->setAttribute('custom_value', $value);
+        $this->model->save();
     }
 }

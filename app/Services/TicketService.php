@@ -3,14 +3,17 @@
 namespace App\Services;
 
 use App\Models\Ticket;
+use App\Traits\HasFootprint;
 
 class TicketService
 {
-    public Ticket $ticket;
+    use HasFootprint;
+
+    public Ticket $model;
 
     public function __construct(?Ticket $ticket = null)
     {
-        $this->ticket = $ticket ?? new Ticket();
+        $this->model = $ticket ?? new Ticket();
     }
 
     /**
@@ -18,17 +21,17 @@ class TicketService
      */
     public function create(array $data): Ticket
     {
-        $this->ticket->setAttribute('asset_number', $data['asset_number']);
-        $this->ticket->setAttribute('subject', $data['subject']);
-        $this->ticket->setAttribute('description', $data['description']);
-        $this->ticket->setAttribute('category_id', $data['category_id']);
-        $this->ticket->setAttribute('status', 0);
-        $this->ticket->setAttribute('priority', $data['priority']);
-        $this->ticket->setAttribute('user_id', auth()->id());
-        $this->ticket->setAttribute('assignee_id', 0);
-        $this->ticket->save();
+        $this->model->setAttribute('asset_number', $data['asset_number']);
+        $this->model->setAttribute('subject', $data['subject']);
+        $this->model->setAttribute('description', $data['description']);
+        $this->model->setAttribute('category_id', $data['category_id']);
+        $this->model->setAttribute('status', 0);
+        $this->model->setAttribute('priority', $data['priority']);
+        $this->model->setAttribute('user_id', auth()->id());
+        $this->model->setAttribute('assignee_id', 0);
+        $this->model->save();
 
-        return $this->ticket;
+        return $this->model;
     }
 
     /**
@@ -36,9 +39,9 @@ class TicketService
      */
     public function finish(): bool
     {
-        $this->ticket->setAttribute('status', 2);
+        $this->model->setAttribute('status', 2);
 
-        return $this->ticket->save();
+        return $this->model->save();
     }
 
     /**
@@ -46,10 +49,10 @@ class TicketService
      */
     public function setAssignee(int $user_id): bool
     {
-        $this->ticket->setAttribute('assignee_id', $user_id);
-        $this->ticket->setAttribute('status', 1);
+        $this->model->setAttribute('assignee_id', $user_id);
+        $this->model->setAttribute('status', 1);
 
-        return $this->ticket->save();
+        return $this->model->save();
     }
 
     /**
@@ -57,7 +60,7 @@ class TicketService
      */
     public function isSetAssignee(): bool
     {
-        return $this->ticket->getAttribute('assignee_id');
+        return $this->model->getAttribute('assignee_id');
     }
 
     /**
@@ -65,7 +68,7 @@ class TicketService
      */
     public function minutePie(): array
     {
-        $tracks = $this->ticket->tracks()
+        $tracks = $this->model->tracks()
             ->with('user')
             ->selectRaw('user_id,SUM(minutes) as minutes')
             ->groupBy('user_id')
@@ -83,6 +86,6 @@ class TicketService
     {
         /* @var Ticket $ticket */
         $ticket = Ticket::query()->where('id', $ticket_id)->first();
-        $this->ticket = $ticket;
+        $this->model = $ticket;
     }
 }

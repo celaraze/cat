@@ -27,4 +27,12 @@ class InventoryHasTrack extends Model
     {
         return $this->belongsTo(Inventory::class, 'inventory_id', 'id');
     }
+
+    /**
+     * 一对一，盘点任务有一个实际盘点人.
+     */
+    public function operator(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'operator_id', 'id');
+    }
 }

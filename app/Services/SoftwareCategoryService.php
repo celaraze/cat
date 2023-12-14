@@ -3,16 +3,19 @@
 namespace App\Services;
 
 use App\Models\SoftwareCategory;
+use App\Traits\HasFootprint;
 use Illuminate\Support\Collection;
 use JetBrains\PhpStorm\ArrayShape;
 
 class SoftwareCategoryService
 {
-    public SoftwareCategory $software_category;
+    use HasFootprint;
+
+    public SoftwareCategory $model;
 
     public function __construct(?SoftwareCategory $software_category = null)
     {
-        $this->software_category = $software_category ?? new SoftwareCategory();
+        $this->model = $software_category ?? new SoftwareCategory();
     }
 
     /**
@@ -29,10 +32,10 @@ class SoftwareCategoryService
     #[ArrayShape(['name' => 'string'])]
     public function create(array $data): SoftwareCategory
     {
-        $this->software_category->setAttribute('name', $data['name']);
-        $this->software_category->save();
+        $this->model->setAttribute('name', $data['name']);
+        $this->model->save();
 
-        return $this->software_category;
+        return $this->model;
     }
 
     /**
@@ -40,6 +43,6 @@ class SoftwareCategoryService
      */
     public function delete(): ?bool
     {
-        return $this->software_category->delete();
+        return $this->model->delete();
     }
 }

@@ -46,6 +46,7 @@ class DeviceAction
                         $device = $out_device;
                     }
                     $data['device_id'] = $device->getKey();
+                    $data['operator_id'] = auth()->id();
                     $device_has_user_service = new DeviceHasUserService();
                     $device_has_user_service->create($data);
                     NotificationUtil::make(true, '设备已分配用户');
@@ -124,7 +125,7 @@ class DeviceAction
                     foreach ($data['software_ids'] as $software_id) {
                         $data['software_id'] = $software_id;
                         $data['device_id'] = $device->getKey();
-                        $data['user_id'] = auth()->id();
+                        $data['operator_id'] = auth()->id();
                         $data['status'] = 0;
                         $device_has_software_service = new DeviceHasSoftwareService();
                         $device_has_software_service->create($data);
@@ -155,7 +156,7 @@ class DeviceAction
                     foreach ($data['part_ids'] as $part_id) {
                         $data['part_id'] = $part_id;
                         $data['device_id'] = $device->getKey();
-                        $data['user_id'] = auth()->id();
+                        $data['operator_id'] = auth()->id();
                         $data['status'] = 0;
                         $device_has_part_service = new DeviceHasPartService();
                         $device_has_part_service->create($data);
@@ -181,7 +182,7 @@ class DeviceAction
             ->action(function (DeviceHasPart $device_has_part) {
                 try {
                     $data = [
-                        'user_id' => auth()->id(),
+                        'operator_id' => auth()->id(),
                         'status' => 1,
                     ];
                     $device_has_part->service()->delete($data);
@@ -206,7 +207,7 @@ class DeviceAction
             ->action(function (DeviceHasSoftware $device_has_software) {
                 try {
                     $data = [
-                        'user_id' => auth()->id(),
+                        'operator_id' => auth()->id(),
                         'status' => 1,
                     ];
                     $device_has_software->service()->delete($data);
@@ -401,7 +402,7 @@ class DeviceAction
             ->icon('heroicon-s-minus-circle')
             ->action(function (Collection $device_has_parts) {
                 $data = [
-                    'user_id' => auth()->id(),
+                    'operator_id' => auth()->id(),
                     'status' => 1,
                 ];
                 /* @var DeviceHasPart $device_has_part */
@@ -424,7 +425,7 @@ class DeviceAction
             ->icon('heroicon-s-minus-circle')
             ->action(function (Collection $device_has_software) {
                 $data = [
-                    'user_id' => auth()->id(),
+                    'operator_id' => auth()->id(),
                     'status' => 1,
                 ];
                 /* @var DeviceHasSoftware $item */

@@ -23,6 +23,14 @@ class DeviceHasUser extends Model
     }
 
     /**
+     * 一对一，用户管理记录有一个操作人.
+     */
+    public function operator(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'operator_id', 'id');
+    }
+
+    /**
      * 一对一，用户管理记录有一个设备.
      */
     public function device(): BelongsTo

@@ -6,6 +6,7 @@ use App\Models\AssetNumberRule;
 use App\Models\Flow;
 use App\Models\Part;
 use App\Models\Setting;
+use App\Traits\HasFootprint;
 use Exception;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
@@ -15,11 +16,13 @@ use JetBrains\PhpStorm\ArrayShape;
 
 class PartService
 {
-    public Part $part;
+    use HasFootprint;
+
+    public Part $model;
 
     public function __construct(?Part $part = null)
     {
-        $this->part = $part ?? new Part();
+        $this->model = $part ?? new Part();
     }
 
     /**
@@ -71,7 +74,7 @@ class PartService
         try {
             $asset_number = $data['asset_number'];
             $asset_number_rule = AssetNumberRule::query()
-                ->where('class_name', $this->part::class)
+                ->where('class_name', $this->model::class)
                 ->first();
             /* @var AssetNumberRule $asset_number_rule */
             if ($asset_number_rule) {
@@ -82,16 +85,16 @@ class PartService
                     $asset_number_rule_service->addAutoIncrementCount();
                 }
             }
-            $this->part->setAttribute('asset_number', $asset_number);
-            $this->part->setAttribute('category_id', $data['category_id']);
-            $this->part->setAttribute('brand_id', $data['brand_id']);
-            $this->part->setAttribute('sn', $data['sn'] ?? '无');
-            $this->part->setAttribute('specification', $data['specification'] ?? '无');
-            $this->part->setAttribute('image', $data['image']);
-            $this->part->setAttribute('description', $data['description']);
-            $this->part->setAttribute('additional', $data['additional']);
-            $this->part->save();
-            $this->part->assetNumberTrack()
+            $this->model->setAttribute('asset_number', $asset_number);
+            $this->model->setAttribute('category_id', $data['category_id']);
+            $this->model->setAttribute('brand_id', $data['brand_id']);
+            $this->model->setAttribute('sn', $data['sn'] ?? '无');
+            $this->model->setAttribute('specification', $data['specification'] ?? '无');
+            $this->model->setAttribute('image', $data['image']);
+            $this->model->setAttribute('description', $data['description']);
+            $this->model->setAttribute('additional', json_encode($data['additional']));
+            $this->model->save();
+            $this->model->assetNumberTrack()
                 ->create(['asset_number' => $asset_number]);
             // 写入事务
             DB::commit();
@@ -111,9 +114,9 @@ class PartService
     {
         try {
             DB::beginTransaction();
-            $this->part->hasParts()->delete();
-            $this->part->setAttribute('status', 3);
-            $this->part->save();
+            $this->model->hasParts()->delete();
+            $this->model->setAttribute('status', 3);
+            $this->model->save();
             DB::commit();
         } catch (Exception $exception) {
             DB::rollBack();
@@ -149,7 +152,7 @@ class PartService
      */
     public function isRetired(): bool
     {
-        if ($this->part->getAttribute('status') == 3) {
+        if ($this->model->getAttribute('status') == 3) {
             return true;
         } else {
             return false;
@@ -160,6 +163,6 @@ class PartService
     {
         /* @var Part $part */
         $part = Part::query()->where('id', $part_id)->first();
-        $this->part = $part;
+        $this->model = $part;
     }
 }

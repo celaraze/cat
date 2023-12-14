@@ -7,6 +7,7 @@ use App\Models\Device;
 use App\Models\Flow;
 use App\Models\Part;
 use App\Models\Setting;
+use App\Traits\HasFootprint;
 use Exception;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
@@ -16,11 +17,13 @@ use JetBrains\PhpStorm\ArrayShape;
 
 class DeviceService
 {
-    public Model $device;
+    use HasFootprint;
+
+    public Model $model;
 
     public function __construct(?Model $device = null)
     {
-        $this->device = $device ?? new Device();
+        $this->model = $device ?? new Device();
     }
 
     /**
@@ -60,7 +63,7 @@ class DeviceService
      */
     public function isExistHasUser(): bool
     {
-        return $this->device->hasUsers()->count();
+        return $this->model->hasUsers()->count();
     }
 
     /**
@@ -84,7 +87,7 @@ class DeviceService
         try {
             $asset_number = $data['asset_number'];
             $asset_number_rule = AssetNumberRule::query()
-                ->where('class_name', $this->device::class)
+                ->where('class_name', $this->model::class)
                 ->first();
             /* @var AssetNumberRule $asset_number_rule */
             if ($asset_number_rule) {
@@ -95,17 +98,17 @@ class DeviceService
                     $asset_number_rule_service->addAutoIncrementCount();
                 }
             }
-            $this->device->setAttribute('asset_number', $asset_number);
-            $this->device->setAttribute('category_id', $data['category_id']);
-            $this->device->setAttribute('name', $data['name']);
-            $this->device->setAttribute('brand_id', $data['brand_id']);
-            $this->device->setAttribute('sn', $data['sn'] ?? '无');
-            $this->device->setAttribute('specification', $data['specification'] ?? '无');
-            $this->device->setAttribute('image', $data['image']);
-            $this->device->setAttribute('description', $data['description']);
-            $this->device->setAttribute('additional', $data['additional']);
-            $this->device->save();
-            $this->device->assetNumberTrack()
+            $this->model->setAttribute('asset_number', $asset_number);
+            $this->model->setAttribute('category_id', $data['category_id']);
+            $this->model->setAttribute('name', $data['name']);
+            $this->model->setAttribute('brand_id', $data['brand_id']);
+            $this->model->setAttribute('sn', $data['sn'] ?? '无');
+            $this->model->setAttribute('specification', $data['specification'] ?? '无');
+            $this->model->setAttribute('image', $data['image']);
+            $this->model->setAttribute('description', $data['description']);
+            $this->model->setAttribute('additional', json_encode($data['additional']));
+            $this->model->save();
+            $this->model->assetNumberTrack()
                 ->create(['asset_number' => $asset_number]);
             // 写入事务
             DB::commit();
@@ -125,17 +128,17 @@ class DeviceService
     {
         try {
             DB::beginTransaction();
-            $this->device->hasUsers()->delete();
-            $this->device->hasParts()->delete();
-            $this->device->hasSoftware()->delete();
+            $this->model->hasUsers()->delete();
+            $this->model->hasParts()->delete();
+            $this->model->hasSoftware()->delete();
             // 设备报废会携带所含配件全部报废
-            foreach ($this->device->parts()->get() as $part) {
+            foreach ($this->model->parts()->get() as $part) {
                 /* @var Part $part */
                 $part->setAttribute('status', 3);
                 $part->save();
             }
-            $this->device->setAttribute('status', 3);
-            $this->device->save();
+            $this->model->setAttribute('status', 3);
+            $this->model->save();
             DB::commit();
         } catch (Exception $exception) {
             DB::rollBack();
@@ -171,7 +174,7 @@ class DeviceService
      */
     public function isRetired(): bool
     {
-        if ($this->device->getAttribute('status') == 3) {
+        if ($this->model->getAttribute('status') == 3) {
             return true;
         } else {
             return false;
@@ -182,6 +185,6 @@ class DeviceService
     {
         /* @var Device $device */
         $device = Device::query()->where('id', $device_id)->first();
-        $this->device = $device;
+        $this->model = $device;
     }
 }

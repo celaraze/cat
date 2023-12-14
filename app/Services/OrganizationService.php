@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\Organization;
 use App\Models\OrganizationHasUser;
+use App\Traits\HasFootprint;
 use Exception;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
@@ -11,11 +12,13 @@ use JetBrains\PhpStorm\ArrayShape;
 
 class OrganizationService
 {
-    public Organization $organization;
+    use HasFootprint;
+
+    public Organization $model;
 
     public function __construct(?Organization $organization = null)
     {
-        $this->organization = $organization ?? new Organization();
+        $this->model = $organization ?? new Organization();
     }
 
     /**
@@ -24,9 +27,9 @@ class OrganizationService
     #[ArrayShape(['name' => 'string'])]
     public function update(array $data): Organization
     {
-        $this->organization->update($data);
+        $this->model->update($data);
 
-        return $this->organization;
+        return $this->model;
     }
 
     /**
@@ -38,7 +41,7 @@ class OrganizationService
     {
         try {
             DB::beginTransaction();
-            $this->organization->delete();
+            $this->model->delete();
             DB::commit();
         } catch (Exception $exception) {
             DB::rollBack();
@@ -87,7 +90,7 @@ class OrganizationService
             throw new Exception('成员记录已存在');
         }
 
-        return $this->organization->hasUsers()->create($data);
+        return $this->model->hasUsers()->create($data);
     }
 
     /**
@@ -96,9 +99,9 @@ class OrganizationService
     #[ArrayShape(['name' => 'string'])]
     public function create(array $data): Organization
     {
-        $this->organization->setAttribute('name', $data['name']);
-        $this->organization->save();
+        $this->model->setAttribute('name', $data['name']);
+        $this->model->save();
 
-        return $this->organization;
+        return $this->model;
     }
 }

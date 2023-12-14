@@ -3,15 +3,18 @@
 namespace App\Services;
 
 use App\Models\InventoryHasTrack;
+use App\Traits\HasFootprint;
 use JetBrains\PhpStorm\ArrayShape;
 
 class InventoryHasTrackService
 {
-    public InventoryHasTrack $inventory_has_track;
+    use HasFootprint;
+
+    public InventoryHasTrack $model;
 
     public function __construct(?InventoryHasTrack $inventory_has_track = null)
     {
-        $this->inventory_has_track = $inventory_has_track ?? new InventoryHasTrack();
+        $this->model = $inventory_has_track ?? new InventoryHasTrack();
     }
 
     /**
@@ -19,17 +22,17 @@ class InventoryHasTrackService
      */
     #[ArrayShape([
         'check' => 'string',
-        'user_id' => 'int',
+        'operator_id' => 'int',
         'comment' => 'string',
     ])]
     public function check(array $data): InventoryHasTrack
     {
-        $this->inventory_has_track->setAttribute('check', $data['check']);
-        $this->inventory_has_track->setAttribute('user_id', auth()->id());
-        $this->inventory_has_track->setAttribute('comment', $data['comment'] ?? '无');
-        $this->inventory_has_track->save();
+        $this->model->setAttribute('check', $data['check']);
+        $this->model->setAttribute('operator_id', auth()->id());
+        $this->model->setAttribute('comment', $data['comment'] ?? '无');
+        $this->model->save();
 
-        return $this->inventory_has_track;
+        return $this->model;
     }
 
     /**
@@ -37,6 +40,6 @@ class InventoryHasTrackService
      */
     public function isChecked(): mixed
     {
-        return $this->inventory_has_track->getAttribute('check');
+        return $this->model->getAttribute('check');
     }
 }

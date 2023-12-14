@@ -47,6 +47,10 @@ class HasTrack extends ManageRelatedRecords
                     ->searchable()
                     ->toggleable()
                     ->label('备忘'),
+                Tables\Columns\TextColumn::make('operator.name')
+                    ->searchable()
+                    ->toggleable()
+                    ->label('操作人'),
             ])
             ->filters([
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace Feature;
+namespace Tests\Feature;
 
 use App\Models\Device;
 use App\Models\Part;
@@ -53,6 +53,7 @@ class DeviceTest extends TestCase
         $data = [
             'device_id' => $device->getKey(),
             'user_id' => $user->getKey(),
+            'operator_id' => $user->getKey(),
             'status' => 0,
             'comment' => '测试类设备分配用户',
             'expired_at' => null,
@@ -72,6 +73,7 @@ class DeviceTest extends TestCase
         $data = [
             'device_id' => $device->getKey(),
             'user_id' => $user->getKey(),
+            'operator_id' => $user->getKey(),
             'status' => 1,
             'comment' => '测试类设备分配用户',
             'expired_at' => null,
@@ -86,7 +88,7 @@ class DeviceTest extends TestCase
     /*
      * 创建设备配件.
      */
-    public function test_create_device_has_part()
+    public function test_create_has_part()
     {
         $device = Device::factory()->create();
         $part = Part::factory()->create();
@@ -94,7 +96,7 @@ class DeviceTest extends TestCase
         $data = [
             'device_id' => $device->getKey(),
             'part_id' => $part->getKey(),
-            'user_id' => $user->getKey(),
+            'operator_id' => $user->getKey(),
             'status' => 0,
         ];
         $device_has_part_service = new DeviceHasPartService();

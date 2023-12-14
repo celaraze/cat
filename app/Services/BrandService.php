@@ -3,16 +3,19 @@
 namespace App\Services;
 
 use App\Models\Brand;
+use App\Traits\HasFootprint;
 use Illuminate\Support\Collection;
 use JetBrains\PhpStorm\ArrayShape;
 
 class BrandService
 {
-    public Brand $brand;
+    use HasFootprint;
+
+    public Brand $model;
 
     public function __construct(?Brand $brand = null)
     {
-        $this->brand = $brand ?? new Brand();
+        $this->model = $brand ?? new Brand();
     }
 
     /**
@@ -29,10 +32,10 @@ class BrandService
     #[ArrayShape(['name' => 'string'])]
     public function create(array $data): Brand
     {
-        $this->brand->setAttribute('name', $data['name']);
-        $this->brand->save();
+        $this->model->setAttribute('name', $data['name']);
+        $this->model->save();
 
-        return $this->brand;
+        return $this->model;
     }
 
     /**
@@ -40,6 +43,6 @@ class BrandService
      */
     public function delete(): void
     {
-        $this->brand->delete();
+        $this->model->delete();
     }
 }

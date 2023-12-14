@@ -2,11 +2,21 @@
 
 namespace App\Services;
 
+use App\Models\Role;
+use App\Traits\HasFootprint;
 use Illuminate\Support\Collection;
-use Spatie\Permission\Models\Role;
 
 class RoleService
 {
+    use HasFootprint;
+
+    public Role $model;
+
+    public function __construct(?Role $role = null)
+    {
+        return $this->model = $role ?? new Role();
+    }
+
     /**
      * 选单.
      */

@@ -115,8 +115,8 @@ class TicketAction
             ->requiresConfirmation()
             ->action(function (Ticket $ticket) {
                 try {
-                    $user_id = auth()->id();
-                    $ticket->service()->setAssignee($user_id);
+                    $assignee_id = auth()->id();
+                    $ticket->service()->setAssignee($assignee_id);
                     NotificationUtil::make(true, '已接单');
                 } catch (Exception $exception) {
                     LogUtil::error($exception);

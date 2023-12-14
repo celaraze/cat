@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Services\FlowHasNodeService;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -36,6 +37,14 @@ class FlowHasNode extends Model
     public function childNode(): HasOne
     {
         return $this->hasOne($this, 'parent_node_id', 'id');
+    }
+
+    /**
+     * 模型到服务.
+     */
+    public function service(): FlowHasNodeService
+    {
+        return new FlowHasNodeService($this);
     }
 
     /**

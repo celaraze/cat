@@ -58,7 +58,7 @@ class HasPart extends ManageRelatedRecords
                         ->searchable()
                         ->toggleable()
                         ->label('操作时间'),
-                    Tables\Columns\TextColumn::make('user.name')
+                    Tables\Columns\TextColumn::make('operator.name')
                         ->searchable()
                         ->toggleable()
                         ->label('操作人'),

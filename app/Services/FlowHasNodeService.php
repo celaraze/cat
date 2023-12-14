@@ -3,15 +3,18 @@
 namespace App\Services;
 
 use App\Models\FlowHasNode;
+use App\Traits\HasFootprint;
 use JetBrains\PhpStorm\ArrayShape;
 
 class FlowHasNodeService
 {
-    public FlowHasNode $flow_has_node;
+    use HasFootprint;
+
+    public FlowHasNode $model;
 
     public function __construct(?FlowHasNode $flow_has_node = null)
     {
-        $this->flow_has_node = $flow_has_node ?? new FlowHasNode();
+        $this->model = $flow_has_node ?? new FlowHasNode();
     }
 
     /**
@@ -19,7 +22,7 @@ class FlowHasNodeService
      */
     public function isExistParentNode(): bool
     {
-        return $this->flow_has_node->parentNode()->count();
+        return $this->model->parentNode()->count();
     }
 
     /**
@@ -27,7 +30,7 @@ class FlowHasNodeService
      */
     public function isFirstNode(): bool
     {
-        return ! $this->flow_has_node->getAttribute('parent_node_id');
+        return ! $this->model->getAttribute('parent_node_id');
     }
 
     /**
@@ -35,7 +38,7 @@ class FlowHasNodeService
      */
     public function isExistChildNode(): bool
     {
-        return $this->flow_has_node->childNode()->count();
+        return $this->model->childNode()->count();
     }
 
     /**
@@ -44,7 +47,7 @@ class FlowHasNodeService
     public function isLastNode(): bool
     {
         return ! FlowHasNode::query()
-            ->where('parent_node_id', $this->flow_has_node->getKey())
+            ->where('parent_node_id', $this->model->getKey())
             ->count();
     }
 
@@ -60,13 +63,13 @@ class FlowHasNodeService
     ])]
     public function create(array $data): FlowHasNode
     {
-        $this->flow_has_node->setAttribute('name', $data['name']);
-        $this->flow_has_node->setAttribute('flow_id', $data['flow_id']);
-        $this->flow_has_node->setAttribute('user_id', $data['user_id'] ?? 0);
-        $this->flow_has_node->setAttribute('role_id', $data['role_id'] ?? 0);
-        $this->flow_has_node->setAttribute('parent_node_id', $data['parent_node_id']);
-        $this->flow_has_node->save();
+        $this->model->setAttribute('name', $data['name']);
+        $this->model->setAttribute('flow_id', $data['flow_id']);
+        $this->model->setAttribute('user_id', $data['user_id'] ?? 0);
+        $this->model->setAttribute('role_id', $data['role_id'] ?? 0);
+        $this->model->setAttribute('parent_node_id', $data['parent_node_id']);
+        $this->model->save();
 
-        return $this->flow_has_node;
+        return $this->model;
     }
 }

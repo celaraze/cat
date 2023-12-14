@@ -4,17 +4,20 @@ namespace App\Services;
 
 use App\Models\OrganizationHasUser;
 use App\Models\User;
+use App\Traits\HasFootprint;
 use Exception;
 use Illuminate\Support\Collection;
 use JetBrains\PhpStorm\ArrayShape;
 
 class UserService
 {
-    public User $user;
+    use HasFootprint;
+
+    public User $model;
 
     public function __construct(?User $user = null)
     {
-        $this->user = $user ?? new User();
+        $this->model = $user ?? new User();
     }
 
     /**
@@ -46,15 +49,15 @@ class UserService
     #[ArrayShape(['name' => 'mixed', 'email' => 'mixed', 'password' => 'string', 'password_verify' => 'mixed'])]
     public function create(array $data): User
     {
-        $this->user->setAttribute('name', $data['name']);
-        $this->user->setAttribute('email', $data['email']);
+        $this->model->setAttribute('name', $data['name']);
+        $this->model->setAttribute('email', $data['email']);
         if ($data['password'] != $data['password_verify']) {
             throw new Exception('密码不一致');
         }
-        $this->user->setAttribute('password', bcrypt($data['password']));
-        $this->user->save();
+        $this->model->setAttribute('password', bcrypt($data['password']));
+        $this->model->save();
 
-        return $this->user;
+        return $this->model;
     }
 
     /**
@@ -62,10 +65,10 @@ class UserService
      */
     public function changePassword(string $password): User
     {
-        $this->user->setAttribute('password', bcrypt($password));
-        $this->user->save();
+        $this->model->setAttribute('password', bcrypt($password));
+        $this->model->save();
 
-        return $this->user;
+        return $this->model;
     }
 
     /**
@@ -73,10 +76,10 @@ class UserService
      */
     public function changeAvatar(string $avatar_url): User
     {
-        $this->user->setAttribute('avatar_url', $avatar_url);
-        $this->user->save();
+        $this->model->setAttribute('avatar_url', $avatar_url);
+        $this->model->save();
 
-        return $this->user;
+        return $this->model;
     }
 
     /**
@@ -86,22 +89,22 @@ class UserService
      */
     public function delete(): ?bool
     {
-        if ($this->user->approvalNodes()->count()) {
+        if ($this->model->approvalNodes()->count()) {
             throw new Exception('请先在流程中删除以此用户审批的节点');
         }
-        if ($this->user->deviceHasUsers()->count()) {
+        if ($this->model->deviceHasUsers()->count()) {
             throw new Exception('请先删除设备分配记录');
         }
-        if ($this->user->applicantForms()->whereNotIn('status', [3, 4])->count()) {
+        if ($this->model->applicantForms()->whereNotIn('status', [3, 4])->count()) {
             throw new Exception('请先结案此用户的申请表单');
         }
-        if ($this->user->approvalForms()->whereNotIn('status', [3, 4])->count()) {
+        if ($this->model->approvalForms()->whereNotIn('status', [3, 4])->count()) {
             throw new Exception('请先结案以此用户审批的申请表单');
         }
-        if ($this->user->getKey() == auth()->id()) {
+        if ($this->model->getKey() == auth()->id()) {
             throw new Exception('不能删除自己');
         }
 
-        return $this->user->delete();
+        return $this->model->delete();
     }
 }

@@ -3,14 +3,17 @@
 namespace App\Services;
 
 use App\Models\OrganizationHasUser;
+use App\Traits\HasFootprint;
 
 class OrganizationHasUserService
 {
-    public OrganizationHasUser $organization_has_user;
+    use HasFootprint;
+
+    public OrganizationHasUser $model;
 
     public function __construct(?OrganizationHasUser $organization_has_user = null)
     {
-        $this->organization_has_user = $organization_has_user ?? new OrganizationHasUser();
+        $this->model = $organization_has_user ?? new OrganizationHasUser();
     }
 
     /**
@@ -18,6 +21,6 @@ class OrganizationHasUserService
      */
     public function delete(): void
     {
-        $this->organization_has_user->delete();
+        $this->model->delete();
     }
 }

@@ -19,7 +19,7 @@ class DeviceHasPart extends Model
      */
     public function user(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'user_id', 'id');
+        return $this->belongsTo(User::class, 'operator_id', 'id');
     }
 
     /**

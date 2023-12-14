@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\AssetNumberRule;
+use App\Traits\HasFootprint;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
@@ -11,11 +12,13 @@ use JetBrains\PhpStorm\ArrayShape;
 
 class AssetNumberRuleService
 {
-    public AssetNumberRule $asset_number_rule;
+    use HasFootprint;
+
+    public AssetNumberRule $model;
 
     public function __construct(?AssetNumberRule $asset_number_rule = null)
     {
-        $this->asset_number_rule = $asset_number_rule ?? new AssetNumberRule();
+        $this->model = $asset_number_rule ?? new AssetNumberRule();
     }
 
     /**
@@ -77,12 +80,12 @@ class AssetNumberRuleService
     #[ArrayShape(['name' => 'string', 'formula' => 'string', 'auto_increment_length' => 'int'])]
     public function create(array $data): AssetNumberRule
     {
-        $this->asset_number_rule->setAttribute('name', $data['name']);
-        $this->asset_number_rule->setAttribute('formula', $data['formula']);
-        $this->asset_number_rule->setAttribute('auto_increment_length', $data['auto_increment_length']);
-        $this->asset_number_rule->save();
+        $this->model->setAttribute('name', $data['name']);
+        $this->model->setAttribute('formula', $data['formula']);
+        $this->model->setAttribute('auto_increment_length', $data['auto_increment_length']);
+        $this->model->save();
 
-        return $this->asset_number_rule;
+        return $this->model;
     }
 
     /**
@@ -90,7 +93,7 @@ class AssetNumberRuleService
      */
     public function generate(): string
     {
-        $formula = $this->asset_number_rule->getAttribute('formula');
+        $formula = $this->model->getAttribute('formula');
         foreach ($this->formula() as $key => $value) {
             $formula = str_replace($key, $value, $formula);
         }
@@ -103,8 +106,8 @@ class AssetNumberRuleService
      */
     protected function formula(): array
     {
-        $auto_increment_length = $this->asset_number_rule->getAttribute('auto_increment_length');
-        $auto_increment_count = $this->asset_number_rule->getAttribute('auto_increment_count') + 1;
+        $auto_increment_length = $this->model->getAttribute('auto_increment_length');
+        $auto_increment_count = $this->model->getAttribute('auto_increment_count') + 1;
         for ($i = strlen($auto_increment_count); $i < $auto_increment_length; $i++) {
             $auto_increment_count = '0'.$auto_increment_count;
         }
@@ -122,8 +125,8 @@ class AssetNumberRuleService
      */
     public function addAutoIncrementCount(): void
     {
-        $auto_increment_count = (int) $this->asset_number_rule->getAttribute('auto_increment_count');
-        $this->asset_number_rule->setAttribute('auto_increment_count', $auto_increment_count + 1);
-        $this->asset_number_rule->save();
+        $auto_increment_count = (int) $this->model->getAttribute('auto_increment_count');
+        $this->model->setAttribute('auto_increment_count', $auto_increment_count + 1);
+        $this->model->save();
     }
 }

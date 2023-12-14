@@ -22,7 +22,7 @@ class DeviceHasUserForm
                 ->required(),
 
             Select::make('user_id')
-                ->label('使用者')
+                ->label('用户')
                 ->options(UserService::pluckOptions())
                 ->searchable()
                 ->required(),

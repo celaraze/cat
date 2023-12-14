@@ -3,15 +3,18 @@
 namespace App\Services;
 
 use App\Models\TicketHasTrack;
+use App\Traits\HasFootprint;
 use JetBrains\PhpStorm\ArrayShape;
 
 class TicketHasTrackService
 {
-    public TicketHasTrack $ticket_has_track;
+    use HasFootprint;
+
+    public TicketHasTrack $model;
 
     public function __construct(?TicketHasTrack $ticket_has_track = null)
     {
-        return $this->ticket_has_track = $ticket_has_track ?? new TicketHasTrack();
+        return $this->model = $ticket_has_track ?? new TicketHasTrack();
     }
 
     /**
@@ -24,10 +27,10 @@ class TicketHasTrackService
     ])]
     public function create(array $data): void
     {
-        $this->ticket_has_track->setAttribute('ticket_id', $data['ticket_id']);
-        $this->ticket_has_track->setAttribute('comment', $data['comment']);
-        $this->ticket_has_track->setAttribute('user_id', $data['user_id']);
-        $this->ticket_has_track->setAttribute('minutes', $data['minutes'] ?? 0);
-        $this->ticket_has_track->save();
+        $this->model->setAttribute('ticket_id', $data['ticket_id']);
+        $this->model->setAttribute('comment', $data['comment']);
+        $this->model->setAttribute('user_id', $data['user_id']);
+        $this->model->setAttribute('minutes', $data['minutes'] ?? 0);
+        $this->model->save();
     }
 }

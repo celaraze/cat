@@ -71,6 +71,10 @@ class HasUser extends ManageRelatedRecords
                     ->toggleable()
                     ->size(TextColumnSize::ExtraSmall)
                     ->label('解除分配时间'),
+                Tables\Columns\TextColumn::make('operator.name')
+                    ->searchable()
+                    ->toggleable()
+                    ->label('操作人'),
                 Tables\Columns\TextColumn::make('status')
                     ->toggleable()
                     ->badge()

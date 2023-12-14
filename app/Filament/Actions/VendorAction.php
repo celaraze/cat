@@ -5,6 +5,7 @@ namespace App\Filament\Actions;
 use App\Filament\Forms\VendorForm;
 use App\Filament\Forms\VendorHasContactForm;
 use App\Models\Vendor;
+use App\Services\VendorHasContactService;
 use App\Services\VendorService;
 use App\Utils\LogUtil;
 use App\Utils\NotificationUtil;
@@ -28,12 +29,9 @@ class VendorAction
                     if ($out_vendor) {
                         $vendor = $out_vendor;
                     }
-                    $data = [
-                        'name' => $data['name'],
-                        'phone_number' => $data['phone_number'],
-                        'email' => $data['email'],
-                    ];
-                    $vendor->service()->createHasContacts($data);
+                    $data['vendor_id'] = $vendor->getKey();
+                    $vendor_has_contact_service = new VendorHasContactService();
+                    $vendor_has_contact_service->create($data);
                     NotificationUtil::make(true, '已添加联系人');
                 } catch (Exception $exception) {
                     LogUtil::error($exception);

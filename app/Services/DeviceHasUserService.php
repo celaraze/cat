@@ -4,17 +4,20 @@ namespace App\Services;
 
 use App\Models\Device;
 use App\Models\DeviceHasUser;
+use App\Traits\HasFootprint;
 use Exception;
 use Illuminate\Support\Facades\DB;
 use JetBrains\PhpStorm\ArrayShape;
 
 class DeviceHasUserService
 {
-    public DeviceHasUser $device_has_user;
+    use HasFootprint;
+
+    public DeviceHasUser $model;
 
     public function __construct(?DeviceHasUser $device_has_user = null)
     {
-        $this->device_has_user = $device_has_user ?? new DeviceHasUser();
+        $this->model = $device_has_user ?? new DeviceHasUser();
     }
 
     /**
@@ -28,24 +31,26 @@ class DeviceHasUserService
         'status' => 'int',
         'comment' => 'string',
         'expired_at' => 'string',
+        'operator_id' => 'int',
     ])]
     public function create(array $data): DeviceHasUser
     {
         try {
             DB::beginTransaction();
-            $this->device_has_user->setAttribute('device_id', $data['device_id']);
-            $this->device_has_user->setAttribute('user_id', $data['user_id']);
-            $this->device_has_user->setAttribute('status', $data['status']);
-            $this->device_has_user->setAttribute('comment', $data['comment']);
-            $this->device_has_user->setAttribute('expired_at', $data['expired_at']);
-            $this->device_has_user->save();
+            $this->model->setAttribute('device_id', $data['device_id']);
+            $this->model->setAttribute('user_id', $data['user_id']);
+            $this->model->setAttribute('status', $data['status']);
+            $this->model->setAttribute('comment', $data['comment']);
+            $this->model->setAttribute('expired_at', $data['expired_at']);
+            $this->model->setAttribute('operator_id', $data['operator_id']);
+            $this->model->save();
             /* @var Device $device */
-            $device = $this->device_has_user->device()->first();
+            $device = $this->model->device()->first();
             $device->setAttribute('status', $data['status']);
             $device->save();
             DB::commit();
 
-            return $this->device_has_user;
+            return $this->model;
         } catch (Exception $exception) {
             DB::rollBack();
             throw $exception;
@@ -64,11 +69,11 @@ class DeviceHasUserService
     {
         try {
             DB::beginTransaction();
-            $this->device_has_user->setAttribute('delete_comment', $data['delete_comment']);
-            $this->device_has_user->save();
-            $this->device_has_user->delete();
+            $this->model->setAttribute('delete_comment', $data['delete_comment']);
+            $this->model->save();
+            $this->model->delete();
             /* @var Device $device */
-            $device = $this->device_has_user->device()->first();
+            $device = $this->model->device()->first();
             $device->setAttribute('status', 0);
             $device->save();
             DB::commit();

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Services\TicketHasTrackService;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -25,5 +26,13 @@ class TicketHasTrack extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class, 'user_id', 'id');
+    }
+
+    /**
+     * 模型到服务.
+     */
+    public function service(): TicketHasTrackService
+    {
+        return new TicketHasTrackService($this);
     }
 }

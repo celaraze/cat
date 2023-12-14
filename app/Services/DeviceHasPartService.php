@@ -4,17 +4,20 @@ namespace App\Services;
 
 use App\Models\DeviceHasPart;
 use App\Models\Part;
+use App\Traits\HasFootprint;
 use Exception;
 use Illuminate\Support\Facades\DB;
 use JetBrains\PhpStorm\ArrayShape;
 
 class DeviceHasPartService
 {
-    public DeviceHasPart $device_has_part;
+    use HasFootprint;
+
+    public DeviceHasPart $model;
 
     public function __construct(?DeviceHasPart $device_has_part = null)
     {
-        $this->device_has_part = $device_has_part ?? new DeviceHasPart();
+        $this->model = $device_has_part ?? new DeviceHasPart();
     }
 
     /**
@@ -22,7 +25,7 @@ class DeviceHasPartService
      */
     public function isDeleted(): bool
     {
-        if ($this->device_has_part->getAttribute('deleted_at')) {
+        if ($this->model->getAttribute('deleted_at')) {
             return true;
         }
 
@@ -34,23 +37,23 @@ class DeviceHasPartService
      *
      * @throws Exception
      */
-    #[ArrayShape(['user_id' => 'int', 'status' => 'int'])]
+    #[ArrayShape(['operator_id' => 'int', 'status' => 'int'])]
     public function delete(array $data): void
     {
-        if ($this->device_has_part->getAttribute('deleted_at') == null) {
+        if ($this->model->getAttribute('deleted_at') == null) {
             try {
                 DB::beginTransaction();
-                $new_device_has_part = $this->device_has_part->replicate();
+                $new_device_has_part = $this->model->replicate();
                 $new_device_has_part->save();
-                $new_device_has_part->setAttribute('user_id', $data['user_id']);
+                $new_device_has_part->setAttribute('operator_id', $data['operator_id']);
                 $new_device_has_part->setAttribute('status', $data['status']);
                 $new_device_has_part->save();
                 $new_device_has_part->delete();
                 /* @var Part $part */
-                $part = $this->device_has_part->part()->first();
+                $part = $this->model->part()->first();
                 $part->setAttribute('status', 0);
                 $part->save();
-                $this->device_has_part->delete();
+                $this->model->delete();
                 DB::commit();
             } catch (Exception $exception) {
                 DB::rollBack();
@@ -67,7 +70,7 @@ class DeviceHasPartService
     #[ArrayShape([
         'device_id' => 'int',
         'part_id' => 'int',
-        'user_id' => 'int',
+        'operator_id' => 'int',
         'status' => 'int',
     ])]
     public function create(array $data): DeviceHasPart
@@ -81,18 +84,18 @@ class DeviceHasPartService
         }
         try {
             DB::beginTransaction();
-            $this->device_has_part->setAttribute('device_id', $data['device_id']);
-            $this->device_has_part->setAttribute('part_id', $data['part_id']);
-            $this->device_has_part->setAttribute('user_id', $data['user_id']);
-            $this->device_has_part->setAttribute('status', $data['status']);
-            $this->device_has_part->save();
+            $this->model->setAttribute('device_id', $data['device_id']);
+            $this->model->setAttribute('part_id', $data['part_id']);
+            $this->model->setAttribute('operator_id', $data['operator_id']);
+            $this->model->setAttribute('status', $data['status']);
+            $this->model->save();
             /* @var Part $part */
-            $part = $this->device_has_part->part()->first();
+            $part = $this->model->part()->first();
             $part->setAttribute('status', 1);
             $part->save();
             DB::commit();
 
-            return $this->device_has_part;
+            return $this->model;
         } catch (Exception $exception) {
             DB::rollBack();
             throw $exception;

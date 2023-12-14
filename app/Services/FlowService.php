@@ -3,28 +3,31 @@
 namespace App\Services;
 
 use App\Models\Flow;
+use App\Traits\HasFootprint;
 use Exception;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 
 class FlowService
 {
-    public Flow $flow;
+    use HasFootprint;
+
+    public Flow $model;
 
     public function __construct(Flow|string|null $flow_or_id = null)
     {
         if ($flow_or_id) {
             if (is_object($flow_or_id)) {
-                $this->flow = $flow_or_id;
+                $this->model = $flow_or_id;
             } else {
                 $flow = Flow::query()
                     ->where('id', $flow_or_id)
                     ->first()
                     ->toArray();
-                $this->flow = new Flow($flow);
+                $this->model = new Flow($flow);
             }
         } else {
-            $this->flow = new Flow();
+            $this->model = new Flow();
         }
     }
 
@@ -43,7 +46,7 @@ class FlowService
     {
         $array['id'] = [];
         $array['name'] = [];
-        $first_node = $this->flow->nodes()
+        $first_node = $this->model->nodes()
             ->where('parent_node_id', 0)
             ->first();
         while (true) {
@@ -66,13 +69,13 @@ class FlowService
      */
     public function delete(): void
     {
-        if ($this->flow->activeForms()) {
+        if ($this->model->activeForms()) {
             throw new Exception('此流程仍有未结案表单，请先处理表单');
         }
         try {
             DB::beginTransaction();
-            $this->flow->nodes()->delete();
-            $this->flow->delete();
+            $this->model->nodes()->delete();
+            $this->model->delete();
             DB::commit();
         } catch (Exception $exception) {
             DB::rollBack();

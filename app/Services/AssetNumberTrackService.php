@@ -3,15 +3,18 @@
 namespace App\Services;
 
 use App\Models\AssetNumberTrack;
+use App\Traits\HasFootprint;
 use Illuminate\Support\Collection;
 
 class AssetNumberTrackService
 {
-    public AssetNumberTrack $asset_number_track;
+    use HasFootprint;
+
+    public AssetNumberTrack $model;
 
     public function __construct(?AssetNumberTrack $asset_number_track = null)
     {
-        $this->asset_number_track = $asset_number_track ?? new AssetNumberTrack();
+        $this->model = $asset_number_track ?? new AssetNumberTrack();
 
     }
 
