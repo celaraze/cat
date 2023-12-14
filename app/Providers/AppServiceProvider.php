@@ -43,6 +43,7 @@ use App\Observers\InventoryObserver;
 use App\Observers\OrganizationHasUserObserver;
 use App\Observers\OrganizationObserver;
 use App\Observers\PartCategoryObserver;
+use App\Observers\PartObserver;
 use App\Observers\RoleObserver;
 use App\Observers\SettingObserver;
 use App\Observers\SoftwareCategoryObserver;
@@ -89,7 +90,7 @@ class AppServiceProvider extends ServiceProvider
         OrganizationHasUser::observe(OrganizationHasUserObserver::class);
         Organization::observe(OrganizationObserver::class);
         PartCategory::observe(PartCategoryObserver::class);
-        Part::observe(PartCategoryObserver::class);
+        Part::observe(PartObserver::class);
         Role::observe(RoleObserver::class);
         Setting::observe(SettingObserver::class);
         SoftwareCategory::observe(SoftwareCategoryObserver::class);

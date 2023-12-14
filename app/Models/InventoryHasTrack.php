@@ -31,8 +31,8 @@ class InventoryHasTrack extends Model
     /**
      * 一对一，盘点任务有一个实际盘点人.
      */
-    public function operator(): BelongsTo
+    public function creator(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'operator_id', 'id');
+        return $this->belongsTo(User::class, 'creator_id', 'id');
     }
 }

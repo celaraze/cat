@@ -26,7 +26,7 @@ class DeviceHasSoftwareService
      *
      * @throws Exception
      */
-    #[ArrayShape(['operator_id' => 'int', 'status' => 'string'])]
+    #[ArrayShape(['creator_id' => 'int', 'status' => 'string'])]
     public function delete(array $data): void
     {
         if ($this->model->getAttribute('deleted_at') == null) {
@@ -34,7 +34,7 @@ class DeviceHasSoftwareService
                 DB::beginTransaction();
                 $new_device_has_software = $this->model->replicate();
                 $new_device_has_software->save();
-                $new_device_has_software->setAttribute('operator_id', $data['operator_id']);
+                $new_device_has_software->setAttribute('creator_id', $data['creator_id']);
                 $new_device_has_software->setAttribute('status', $data['status']);
                 $new_device_has_software->save();
                 $new_device_has_software->delete();
@@ -73,7 +73,7 @@ class DeviceHasSoftwareService
     #[ArrayShape([
         'device_id' => 'int',
         'software_id' => 'int',
-        'operator_id' => 'int',
+        'creator_id' => 'int',
         'status' => 'string',
     ])]
     public function create(array $data): DeviceHasSoftware
@@ -99,7 +99,7 @@ class DeviceHasSoftwareService
             DB::beginTransaction();
             $this->model->setAttribute('device_id', $data['device_id']);
             $this->model->setAttribute('software_id', $data['software_id']);
-            $this->model->setAttribute('operator_id', $data['operator_id']);
+            $this->model->setAttribute('creator_id', $data['creator_id']);
             $this->model->setAttribute('status', $data['status']);
             $this->model->save();
             /* @var Part $part */

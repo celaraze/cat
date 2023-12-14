@@ -37,7 +37,7 @@ class DeviceHasPartService
      *
      * @throws Exception
      */
-    #[ArrayShape(['operator_id' => 'int', 'status' => 'int'])]
+    #[ArrayShape(['creator_id' => 'int', 'status' => 'int'])]
     public function delete(array $data): void
     {
         if ($this->model->getAttribute('deleted_at') == null) {
@@ -45,7 +45,7 @@ class DeviceHasPartService
                 DB::beginTransaction();
                 $new_device_has_part = $this->model->replicate();
                 $new_device_has_part->save();
-                $new_device_has_part->setAttribute('operator_id', $data['operator_id']);
+                $new_device_has_part->setAttribute('creator_id', $data['creator_id']);
                 $new_device_has_part->setAttribute('status', $data['status']);
                 $new_device_has_part->save();
                 $new_device_has_part->delete();
@@ -70,7 +70,7 @@ class DeviceHasPartService
     #[ArrayShape([
         'device_id' => 'int',
         'part_id' => 'int',
-        'operator_id' => 'int',
+        'creator_id' => 'int',
         'status' => 'int',
     ])]
     public function create(array $data): DeviceHasPart
@@ -86,7 +86,7 @@ class DeviceHasPartService
             DB::beginTransaction();
             $this->model->setAttribute('device_id', $data['device_id']);
             $this->model->setAttribute('part_id', $data['part_id']);
-            $this->model->setAttribute('operator_id', $data['operator_id']);
+            $this->model->setAttribute('creator_id', $data['creator_id']);
             $this->model->setAttribute('status', $data['status']);
             $this->model->save();
             /* @var Part $part */

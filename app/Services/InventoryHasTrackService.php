@@ -22,13 +22,13 @@ class InventoryHasTrackService
      */
     #[ArrayShape([
         'check' => 'string',
-        'operator_id' => 'int',
+        'creator_id' => 'int',
         'comment' => 'string',
     ])]
     public function check(array $data): InventoryHasTrack
     {
         $this->model->setAttribute('check', $data['check']);
-        $this->model->setAttribute('operator_id', auth()->id());
+        $this->model->setAttribute('creator_id', auth()->id());
         $this->model->setAttribute('comment', $data['comment'] ?? '无');
         $this->model->save();
 

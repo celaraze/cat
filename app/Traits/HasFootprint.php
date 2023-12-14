@@ -13,9 +13,9 @@ trait HasFootprint
         $model = $this->model;
         Footprint::query()->create([
             'action' => $action,
-            'creator_id' => auth()->id(),
+            'creator_id' => auth()->id() ?? 0,
             'model_class' => get_class($model),
-            'model_id' => $model->getKey(),
+            'model_id' => $model->getKey() ?? 0,
             'before' => json_encode($model->getOriginal()),
             'after' => json_encode($model->getDirty()),
         ]);

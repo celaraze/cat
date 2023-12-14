@@ -72,7 +72,7 @@ class InventoryResource extends Resource implements HasShieldPermissions
                         return AssetUtil::mapper($state);
                     })
                     ->label('资产'),
-                Tables\Columns\TextColumn::make('operator.name')
+                Tables\Columns\TextColumn::make('creator.name')
                     ->label('创建人'),
                 Tables\Columns\TextColumn::make('hasTracks.check')
                     ->label('已盘点数量')
@@ -138,7 +138,7 @@ class InventoryResource extends Resource implements HasShieldPermissions
             Group::make()->schema([
                 Section::make()
                     ->schema([
-                        TextEntry::make('operator.name')
+                        TextEntry::make('creator.name')
                             ->label('创建人'),
                     ]),
             ])->columnSpan(['lg' => 1]),

@@ -40,14 +40,14 @@ class InventoryService
             }
             $this->model->setAttribute('name', $data['name']);
             $this->model->setAttribute('class_name', $model);
-            $this->model->setAttribute('operator_id', auth()->id());
+            $this->model->setAttribute('creator_id', auth()->id());
             $this->model->save();
             foreach ($model_ids as $model_id) {
                 $model = $model::query()->where('id', $model_id)->first();
                 $data = [
                     'asset_number' => $model->getAttribute('asset_number'),
                     'inventory_id' => $this->model->getKey(),
-                    'operator_id' => auth()->id(),
+                    'creator_id' => auth()->id(),
                 ];
                 $this->model->hasTracks()->create($data);
             }

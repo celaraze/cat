@@ -17,9 +17,9 @@ class DeviceHasPart extends Model
     /**
      * 一对一，配件记录有一个创建人.
      */
-    public function user(): BelongsTo
+    public function creator(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'operator_id', 'id');
+        return $this->belongsTo(User::class, 'creator_id', 'id');
     }
 
     /**

@@ -40,7 +40,7 @@ class SoftwareAction
                     foreach ($data['device_ids'] as $device_id) {
                         $data['device_id'] = $device_id;
                         $data['software_id'] = $software->getKey();
-                        $data['operator_id'] = auth()->id();
+                        $data['creator_id'] = auth()->id();
                         $data['status'] = 0;
                         $device_has_software_service = new DeviceHasSoftwareService();
                         $device_has_software_service->create($data);
@@ -87,7 +87,7 @@ class SoftwareAction
             ->action(function (DeviceHasSoftware $device_has_software) {
                 try {
                     $data = [
-                        'operator_id' => auth()->id(),
+                        'creator_id' => auth()->id(),
                         'status' => 1,
                     ];
                     $device_has_software->service()->delete($data);
@@ -219,7 +219,7 @@ class SoftwareAction
             ->color('danger')
             ->action(function (Collection $device_has_software) {
                 $data = [
-                    'operator_id' => auth()->id(),
+                    'creator_id' => auth()->id(),
                     'status' => 1,
                 ];
                 /* @var DeviceHasSoftware $item */

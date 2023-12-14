@@ -31,7 +31,7 @@ class DeviceHasUserService
         'status' => 'int',
         'comment' => 'string',
         'expired_at' => 'string',
-        'operator_id' => 'int',
+        'creator_id' => 'int',
     ])]
     public function create(array $data): DeviceHasUser
     {
@@ -42,7 +42,7 @@ class DeviceHasUserService
             $this->model->setAttribute('status', $data['status']);
             $this->model->setAttribute('comment', $data['comment']);
             $this->model->setAttribute('expired_at', $data['expired_at']);
-            $this->model->setAttribute('operator_id', $data['operator_id']);
+            $this->model->setAttribute('creator_id', $data['creator_id']);
             $this->model->save();
             /* @var Device $device */
             $device = $this->model->device()->first();

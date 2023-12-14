@@ -36,7 +36,7 @@ class PartAction
                         $part = $out_part;
                     }
                     $data['part_id'] = $part->getKey();
-                    $data['operator_id'] = auth()->id();
+                    $data['creator_id'] = auth()->id();
                     $data['status'] = 0;
                     $device_has_part_service = new DeviceHasPartService();
                     $device_has_part_service->create($data);
@@ -83,7 +83,7 @@ class PartAction
             ->action(function (DeviceHasPart $device_has_part) {
                 try {
                     $data = [
-                        'operator_id' => auth()->id(),
+                        'creator_id' => auth()->id(),
                         'status' => 1,
                     ];
                     $device_has_part->service()->delete($data);

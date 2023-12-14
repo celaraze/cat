@@ -32,8 +32,8 @@ class Inventory extends Model
     /**
      * 一对一，盘点有一个创建人.
      */
-    public function operator(): BelongsTo
+    public function creator(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'operator_id', 'id');
+        return $this->belongsTo(User::class, 'creator_id', 'id');
     }
 }
