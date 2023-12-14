@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Services\DeviceService;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -91,5 +92,15 @@ class Device extends Model
     public function service(): DeviceService
     {
         return new DeviceService($this);
+    }
+
+    /**
+     * 访问器，额外信息.
+     */
+    public function additional(): Attribute
+    {
+        return Attribute::make(
+            get: fn (?string $value) => json_decode($value, true),
+        );
     }
 }

@@ -103,6 +103,7 @@ class DeviceService
             $this->device->setAttribute('specification', $data['specification'] ?? '无');
             $this->device->setAttribute('image', $data['image']);
             $this->device->setAttribute('description', $data['description']);
+            $this->device->setAttribute('additional', $data['additional']);
             $this->device->save();
             $this->device->assetNumberTrack()
                 ->create(['asset_number' => $asset_number]);

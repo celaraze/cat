@@ -76,6 +76,7 @@ class AdminPanelProvider extends PanelProvider
             ->favicon(asset('images/logo.png'))
             ->topNavigation()
             ->maxContentWidth('full')
+            ->viteTheme('resources/css/filament/admin/theme.css')
             ->userMenuItems([
                 MenuItem::make()
                     ->label('个人档')

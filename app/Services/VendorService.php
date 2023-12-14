@@ -20,7 +20,11 @@ class VendorService
     /**
      * 创建厂商联系人.
      */
-    #[ArrayShape(['name' => 'string', 'phone_number' => 'string', 'email' => 'string'])]
+    #[ArrayShape([
+        'name' => 'string',
+        'phone_number' => 'string',
+        'email' => 'string',
+    ])]
     public function createHasContacts(array $data): Model
     {
         return $this->vendor->contacts()->create($data);

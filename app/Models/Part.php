@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Services\PartService;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -69,6 +70,16 @@ class Part extends Model
             'id',   // 远程表对中间表的关联字段
             'id',   // 主表对中间表的关联字段
             'device_id' // 中间表对远程表的关联字段
+        );
+    }
+
+    /**
+     * 访问器，额外信息.
+     */
+    public function additional(): Attribute
+    {
+        return Attribute::make(
+            get: fn (?string $value) => json_decode($value, true),
         );
     }
 }

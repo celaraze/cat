@@ -103,6 +103,7 @@ class SoftwareService
             $this->software->setAttribute('image', $data['image']);
             $this->software->setAttribute('max_license_count', $data['max_license_count']);
             $this->software->setAttribute('description', $data['description']);
+            $this->software->setAttribute('additional', $data['additional']);
             $this->software->setAttribute('status', 4);
             $this->software->save();
             $this->software->assetNumberTrack()

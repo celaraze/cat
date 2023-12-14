@@ -12,6 +12,7 @@ use Awcodes\Shout\Components\Shout;
 use Filament\Forms\Components\Actions\Action;
 use Filament\Forms\Components\Checkbox;
 use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
@@ -48,7 +49,7 @@ class DeviceForm
                 ->required(),
             Select::make('priority')
                 ->label('优先级')
-                ->options(TicketEnum::array())
+                ->options(TicketEnum::allPriorityText())
                 ->searchable()
                 ->preload()
                 ->required(),
@@ -134,6 +135,18 @@ class DeviceForm
             //region 文本 说明 description
             Textarea::make('description')
                 ->label('说明'),
+            //endregion
+
+            //region 数组 额外信息 additional
+            Repeater::make('additional')
+                ->schema([
+                    TextInput::make('name')
+                        ->label('名称'),
+                    TextInput::make('text')
+                        ->label('值'),
+                ])
+                ->defaultItems(0)
+                ->label('额外信息'),
             //endregion
         ];
     }

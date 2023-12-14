@@ -52,33 +52,6 @@ class PartService
     }
 
     /**
-     * 创建设备-配件关联.
-     *
-     * @throws Exception
-     */
-    #[ArrayShape([
-        'device_id' => 'int',
-        'user_id' => 'int',
-        'status' => 'int',
-    ])]
-    public function createHasPart(array $data): void
-    {
-        if ($this->part->hasParts()->count()) {
-            throw new Exception('配件已经附加到设备');
-        }
-        try {
-            DB::beginTransaction();
-            $this->part->setAttribute('status', 1);
-            $this->part->save();
-            $this->part->hasParts()->create($data);
-            DB::commit();
-        } catch (Exception $exception) {
-            DB::rollBack();
-            throw $exception;
-        }
-    }
-
-    /**
      * 新增配件.
      *
      * @throws Exception
@@ -116,6 +89,7 @@ class PartService
             $this->part->setAttribute('specification', $data['specification'] ?? '无');
             $this->part->setAttribute('image', $data['image']);
             $this->part->setAttribute('description', $data['description']);
+            $this->part->setAttribute('additional', $data['additional']);
             $this->part->save();
             $this->part->assetNumberTrack()
                 ->create(['asset_number' => $asset_number]);
