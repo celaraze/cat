@@ -15,9 +15,9 @@ class BrandImporter extends Importer
     {
         return [
             ImportColumn::make('name')
-                ->label('名称')
                 ->requiredMapping()
-                ->example('示例品牌'),
+                ->example('示例品牌')
+                ->label('名称'),
         ];
     }
 

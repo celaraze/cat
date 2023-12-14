@@ -15,50 +15,49 @@ class SoftwareImporter extends Importer
     {
         return [
             ImportColumn::make('asset_number')
-                ->label('资产编号')
                 ->requiredMapping()
-                ->rules(['required'])
-                ->example('Example001'),
+                ->example('Example001')
+                ->label('资产编号'),
             ImportColumn::make('category')
                 ->relationship(resolveUsing: 'name')
-                ->label('分类')
                 ->requiredMapping()
-                ->rules(['required'])
-                ->example('操作系统'),
+                ->example('操作系统')
+                ->label('分类'),
             ImportColumn::make('name')
-                ->label('名称')
                 ->requiredMapping()
-                ->example('Windows 10 Pro'),
+                ->example('Windows 10 Pro')
+                ->label('名称'),
             ImportColumn::make('sn')
-                ->label('序列号')
-                ->example('AAAAAAA'),
+                ->example('AAAAAAA')
+                ->label('序列号'),
             ImportColumn::make('specification')
-                ->label('规格')
-                ->example('LTSC'),
+                ->example('LTSC')
+                ->label('规格'),
             ImportColumn::make('max_license_count')
-                ->label('授权数量')
                 ->requiredMapping()
                 ->rules(['numeric', 'min:0'])
-                ->example('LTSC'),
+                ->example('LTSC')
+                ->label('授权数量'),
             ImportColumn::make('image')
-                ->label('照片')
-                ->requiredMapping()
-                ->example('https://test.com/logo.png'),
+                ->example('https://test.com/logo.png')
+                ->label('照片'),
             ImportColumn::make('brand')
                 ->relationship(resolveUsing: 'name')
-                ->label('品牌')
                 ->requiredMapping()
-                ->rules(['required'])
-                ->example('微软 Microsoft'),
+                ->example('微软 Microsoft')
+                ->label('品牌'),
+            ImportColumn::make('description')
+                ->example('这是一个操作系统软件')
+                ->label('说明'),
         ];
     }
 
     public static function getCompletedNotificationBody(Import $import): string
     {
-        $body = '你的软件导入已完成并有 ' . number_format($import->successful_rows) . ' 行记录被导入。';
+        $body = '你的软件导入已完成并有 '.number_format($import->successful_rows).' 行记录被导入。';
 
         if ($failedRowsCount = $import->getFailedRowsCount()) {
-            $body .= ' ' . number_format($failedRowsCount) . '行导入失败。';
+            $body .= ' '.number_format($failedRowsCount).'行导入失败。';
         }
 
         return $body;

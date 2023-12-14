@@ -20,6 +20,7 @@ class Site extends Page implements HasForms
     protected static ?string $navigationIcon = 'heroicon-m-globe-asia-australia';
 
     protected static string $view = 'filament.pages.site';
+
     protected static ?string $navigationLabel = '站点';
 
     protected static ?string $navigationGroup = '系统设置';
@@ -65,8 +66,8 @@ class Site extends Page implements HasForms
             $data = $this->form->getState();
             foreach ($data as $key => $datum) {
                 Setting::query()->updateOrCreate(
-                    ['custom_key' => $key,],
-                    ['custom_key' => $key, 'custom_value' => $datum,]
+                    ['custom_key' => $key],
+                    ['custom_key' => $key, 'custom_value' => $datum]
                 );
             }
             NotificationUtil::make(true, '已保存');

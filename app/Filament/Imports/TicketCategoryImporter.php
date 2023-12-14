@@ -15,9 +15,9 @@ class TicketCategoryImporter extends Importer
     {
         return [
             ImportColumn::make('name')
-                ->label('名称')
                 ->requiredMapping()
-                ->example('示例工单分类'),
+                ->example('示例工单分类')
+                ->label('名称'),
         ];
     }
 

@@ -66,7 +66,7 @@ class DeviceForm
                 ->maxLength(255)
                 ->label('资产编号')
                 ->required(function () {
-                    return !AssetNumberRuleService::isAuto(Device::class);
+                    return ! AssetNumberRuleService::isAuto(Device::class);
                 })
                 ->readOnly(function () {
                     return AssetNumberRuleService::isAuto(Device::class);
@@ -125,7 +125,7 @@ class DeviceForm
                 ->visibility('public')
                 ->getUploadedFileNameForStorageUsing(
                     function (TemporaryUploadedFile $file) {
-                        return Uuid::uuid4() . '.' . $file->getClientOriginalExtension();
+                        return Uuid::uuid4().'.'.$file->getClientOriginalExtension();
                     }
                 )
                 ->image(),

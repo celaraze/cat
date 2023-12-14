@@ -16,13 +16,13 @@ class UserImporter extends Importer
     {
         return [
             ImportColumn::make('name')
-                ->label('名称')
                 ->requiredMapping()
-                ->example('张三'),
+                ->example('张三')
+                ->label('名称'),
             ImportColumn::make('email')
-                ->label('邮箱')
                 ->requiredMapping()
-                ->example('zhangsan@local.com'),
+                ->example('zhangsan@local.com')
+                ->label('邮箱'),
         ];
     }
 
