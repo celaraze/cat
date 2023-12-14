@@ -8,7 +8,6 @@ on:
 env:
   REGISTRY: ghcr.io
   DOCKERHUB_REGISTRY: docker.io
-  IMAGE_NAME: celaraze/cat
   DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
   DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
 
@@ -42,12 +41,13 @@ jobs:
         uses: docker/metadata-action@9ec57ed1fcdbf14dcef7dfbe97b2010124a938b7
         with:
           images: |
-            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
-            ${{ env.DOCKERHUB_REGISTRY }}/${{ env.DOCKERHUB_USERNAME }}/${{ env.IMAGE_NAME }}
+            ${{ env.REGISTRY }}/celaraze/cat
+            ${{ env.DOCKERHUB_REGISTRY }}/celaraze/cat
           tags: |
             type=ref,event=tag
             type=semver,pattern={{version}}
             type=semver,pattern={{major}}.{{minor}}
+            type=raw,value=latest
 
       - name: Build and push Docker image
         uses: docker/build-push-action@f2a1d5e99d037542a71f64918e516c093c6f3fc4
