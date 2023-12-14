@@ -28,10 +28,10 @@
         @foreach($device->parts()->get() as $part)
             <tr>
                 <td class="px-4 py-2 text-xs whitespace-nowrap">
-                    {{ $part->category->name }}
+                    {{ $part->category?->name }}
                 </td>
                 <td class="px-4 py-2 text-xs whitespace-nowrap">
-                    {{ $part->brand->name }}
+                    {{ $part->brand?->name }}
                 </td>
                 <td class="px-4 py-2 text-xs whitespace-nowrap">
 
@@ -47,10 +47,10 @@
         @foreach($device->software()->get() as $software)
             <tr>
                 <td class="px-4 py-2 text-xs whitespace-nowrap">
-                    {{ $software->category->name }}
+                    {{ $software->category?->name }}
                 </td>
                 <td class="px-4 py-2 text-xs whitespace-nowrap">
-                    {{ $software->brand->name }}
+                    {{ $software->brand?->name }}
                 </td>
                 <td class="px-4 py-2 text-xs whitespace-nowrap">
                     {{ $software->name }}

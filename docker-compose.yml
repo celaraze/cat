@@ -7,7 +7,6 @@ services:
     restart: unless-stopped
     ports:
       - "80:80"
-      - "443:443"
     volumes:
       - cat_database:/var/www/database/data
 

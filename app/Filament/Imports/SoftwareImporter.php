@@ -31,11 +31,14 @@ class SoftwareImporter extends Importer
                 ->example('Windows 10 Pro'),
             ImportColumn::make('sn')
                 ->label('序列号')
-                ->requiredMapping()
                 ->example('AAAAAAA'),
             ImportColumn::make('specification')
                 ->label('规格')
+                ->example('LTSC'),
+            ImportColumn::make('max_license_count')
+                ->label('授权数量')
                 ->requiredMapping()
+                ->rules(['numeric', 'min:0'])
                 ->example('LTSC'),
             ImportColumn::make('image')
                 ->label('照片')
@@ -52,10 +55,10 @@ class SoftwareImporter extends Importer
 
     public static function getCompletedNotificationBody(Import $import): string
     {
-        $body = '你的软件导入已完成并有 '.number_format($import->successful_rows).' 行记录被导入。';
+        $body = '你的软件导入已完成并有 ' . number_format($import->successful_rows) . ' 行记录被导入。';
 
         if ($failedRowsCount = $import->getFailedRowsCount()) {
-            $body .= ' '.number_format($failedRowsCount).'行导入失败。';
+            $body .= ' ' . number_format($failedRowsCount) . '行导入失败。';
         }
 
         return $body;

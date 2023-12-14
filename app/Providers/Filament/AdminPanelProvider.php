@@ -45,6 +45,8 @@ class AdminPanelProvider extends PanelProvider
                 '资产',
                 '工作流',
                 '基础数据',
+                '日志',
+                '系统设置',
             ])
             ->widgets([
                 StatsOverviewWidget::class,

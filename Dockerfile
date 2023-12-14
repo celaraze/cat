@@ -18,8 +18,8 @@ RUN composer install -vvv \
     && if [ -f /var/www/database/data/database.sqlite ]; then rm /var/www/database/data/database.sqlite; fi \
     && touch /var/www/database/data/database.sqlite \
     && cp .env.docker .env \
-    && php artisan cat:install \
-    && wget https://github.com/dunglas/frankenphp/releases/download/v1.0.0/frankenphp-linux-x86_64 -O /var/www/cat \
-    && chmod +x ./cat
+    && php artisan cat:install
+#    && wget https://github.com/dunglas/frankenphp/releases/download/v1.0.0/frankenphp-linux-x86_64 -O /var/www/cat \
+#    && chmod +x ./cat
 
-CMD [ "./cat","run" ]
+CMD [ "php","artisan","serve","--host=0.0.0.0" ]

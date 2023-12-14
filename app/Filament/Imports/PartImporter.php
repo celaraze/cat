@@ -27,15 +27,12 @@ class PartImporter extends Importer
                 ->example('硬盘'),
             ImportColumn::make('sn')
                 ->label('序列号')
-                ->requiredMapping()
                 ->example('AAAAAAA'),
             ImportColumn::make('specification')
                 ->label('规格')
-                ->requiredMapping()
                 ->example('500GB'),
             ImportColumn::make('image')
                 ->label('照片')
-                ->requiredMapping()
                 ->example('https://test.com/logo.png'),
             ImportColumn::make('brand')
                 ->relationship(resolveUsing: 'name')

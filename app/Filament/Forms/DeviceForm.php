@@ -66,7 +66,7 @@ class DeviceForm
                 ->maxLength(255)
                 ->label('资产编号')
                 ->required(function () {
-                    return ! AssetNumberRuleService::isAuto(Device::class);
+                    return !AssetNumberRuleService::isAuto(Device::class);
                 })
                 ->readOnly(function () {
                     return AssetNumberRuleService::isAuto(Device::class);
@@ -122,15 +122,19 @@ class DeviceForm
             FileUpload::make('image')
                 ->label('照片')
                 ->directory('devices')
+                ->visibility('public')
                 ->getUploadedFileNameForStorageUsing(
                     function (TemporaryUploadedFile $file) {
-                        return Uuid::uuid4().'.'.$file->getClientOriginalExtension();
+                        return Uuid::uuid4() . '.' . $file->getClientOriginalExtension();
                     }
-                ),
+                )
+                ->image(),
             //endregion
 
+            //region 文本 说明 description
             Textarea::make('description')
                 ->label('说明'),
+            //endregion
         ];
     }
 

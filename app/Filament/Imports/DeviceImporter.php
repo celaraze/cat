@@ -27,19 +27,15 @@ class DeviceImporter extends Importer
                 ->example('台式机'),
             ImportColumn::make('name')
                 ->label('名称')
-                ->requiredMapping()
                 ->example('工作站 A 组 1 号机'),
             ImportColumn::make('sn')
                 ->label('序列号')
-                ->requiredMapping()
                 ->example('AAAAAAA'),
             ImportColumn::make('specification')
                 ->label('规格')
-                ->requiredMapping()
                 ->example('1U 2C 4GB'),
             ImportColumn::make('image')
                 ->label('照片')
-                ->requiredMapping()
                 ->example('https://test.com/logo.png'),
             ImportColumn::make('brand')
                 ->relationship(resolveUsing: 'name')
