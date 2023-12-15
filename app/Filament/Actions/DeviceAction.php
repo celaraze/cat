@@ -4,17 +4,20 @@ namespace App\Filament\Actions;
 
 use App\Filament\Forms\DeviceForm;
 use App\Filament\Forms\DeviceHasPartForm;
+use App\Filament\Forms\DeviceHasSecretForm;
 use App\Filament\Forms\DeviceHasSoftwareForm;
 use App\Filament\Forms\DeviceHasUserForm;
 use App\Filament\Resources\DeviceCategoryResource;
 use App\Filament\Resources\TicketResource;
 use App\Models\Device;
 use App\Models\DeviceHasPart;
+use App\Models\DeviceHasSecret;
 use App\Models\DeviceHasSoftware;
 use App\Models\DeviceHasUser;
 use App\Models\Ticket;
 use App\Services\AssetNumberRuleService;
 use App\Services\DeviceHasPartService;
+use App\Services\DeviceHasSecretService;
 use App\Services\DeviceHasSoftwareService;
 use App\Services\DeviceHasUserService;
 use App\Services\DeviceService;
@@ -171,6 +174,37 @@ class DeviceAction
     }
 
     /**
+     * 创建设备密钥按钮.
+     */
+    public static function createHasSecret(?Model $out_device = null): Action
+    {
+        return Action::make('附加密钥')
+            ->slideOver()
+            ->icon('heroicon-m-plus-circle')
+            ->form(DeviceHasSecretForm::create())
+            ->action(function (array $data, Device $device) use ($out_device): void {
+                try {
+                    if ($out_device) {
+                        $device = $out_device;
+                    }
+                    foreach ($data['secret_ids'] as $secret_id) {
+                        $data['secret_id'] = $secret_id;
+                        $data['device_id'] = $device->getKey();
+                        $data['creator_id'] = auth()->id();
+                        $data['status'] = 0;
+                        $device_has_secret_service = new DeviceHasSecretService();
+                        $device_has_secret_service->create($data);
+                    }
+                    NotificationUtil::make(true, '设备已附加密钥');
+                } catch (Exception $exception) {
+                    LogUtil::error($exception);
+                    NotificationUtil::make(false, $exception);
+                }
+            })
+            ->closeModalByClickingAway(false);
+    }
+
+    /**
      * 配件脱离设备按钮.
      */
     public static function deleteHasPart(): Action
@@ -186,6 +220,31 @@ class DeviceAction
                         'status' => 1,
                     ];
                     $device_has_part->service()->delete($data);
+                    NotificationUtil::make(true, '已脱离设备');
+                } catch (Exception $exception) {
+                    LogUtil::error($exception);
+                    NotificationUtil::make(false, $exception);
+                }
+            })
+            ->closeModalByClickingAway(false);
+    }
+
+    /**
+     * 密钥脱离设备按钮.
+     */
+    public static function deleteHasSecret(): Action
+    {
+        return Action::make('脱离')
+            ->icon('heroicon-s-minus-circle')
+            ->requiresConfirmation()
+            ->color('danger')
+            ->action(function (DeviceHasSecret $device_has_secret) {
+                try {
+                    $data = [
+                        'creator_id' => auth()->id(),
+                        'status' => 1,
+                    ];
+                    $device_has_secret->service()->delete($data);
                     NotificationUtil::make(true, '已脱离设备');
                 } catch (Exception $exception) {
                     LogUtil::error($exception);
@@ -408,6 +467,29 @@ class DeviceAction
                 /* @var DeviceHasPart $device_has_part */
                 foreach ($device_has_parts as $device_has_part) {
                     $device_has_part->service()->delete($data);
+                }
+                NotificationUtil::make(true, '已批量脱离');
+            })
+            ->closeModalByClickingAway(false);
+    }
+
+    /**
+     * 批量脱离密钥按钮.
+     */
+    public static function batchDeleteHasSecret(): BulkAction
+    {
+        return BulkAction::make('批量脱离')
+            ->requiresConfirmation()
+            ->color('danger')
+            ->icon('heroicon-s-minus-circle')
+            ->action(function (Collection $device_has_secrets) {
+                $data = [
+                    'creator_id' => auth()->id(),
+                    'status' => 1,
+                ];
+                /* @var DeviceHasSecret $device_has_secret */
+                foreach ($device_has_secrets as $device_has_secret) {
+                    $device_has_secret->service()->delete($data);
                 }
                 NotificationUtil::make(true, '已批量脱离');
             })

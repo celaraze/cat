@@ -6,6 +6,7 @@ use App\Enums\FootprintEnum;
 use App\Filament\Resources\FootprintResource\Pages\Index;
 use App\Filament\Resources\FootprintResource\Pages\View;
 use App\Models\Footprint;
+use BezhanSalleh\FilamentShield\Contracts\HasShieldPermissions;
 use Filament\Forms\Form;
 use Filament\Infolists\Components\Grid;
 use Filament\Infolists\Components\Group;
@@ -21,7 +22,7 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
-class FootprintResource extends Resource
+class FootprintResource extends Resource implements HasShieldPermissions
 {
     protected static ?string $model = Footprint::class;
 

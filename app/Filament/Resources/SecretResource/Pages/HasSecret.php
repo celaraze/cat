@@ -1,23 +1,23 @@
 <?php
 
-namespace App\Filament\Resources\PartResource\Pages;
+namespace App\Filament\Resources\SecretResource\Pages;
 
 use App\Enums\AssetEnum;
-use App\Filament\Actions\PartAction;
-use App\Filament\Resources\PartResource;
-use App\Models\DeviceHasPart;
-use App\Models\Part;
+use App\Filament\Actions\SecretAction;
+use App\Filament\Resources\SecretResource;
+use App\Models\DeviceHasSecret;
+use App\Models\Secret;
 use Filament\Resources\Pages\ManageRelatedRecords;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class HasPart extends ManageRelatedRecords
+class HasSecret extends ManageRelatedRecords
 {
-    protected static string $resource = PartResource::class;
+    protected static string $resource = SecretResource::class;
 
-    protected static string $relationship = 'hasParts';
+    protected static string $relationship = 'hasSecrets';
 
     protected static ?string $navigationIcon = 'heroicon-s-server';
 
@@ -35,18 +35,14 @@ class HasPart extends ManageRelatedRecords
         return $table
             ->recordTitleAttribute('name')
             ->columns([
-                Tables\Columns\TextColumn::make('device.asset_number')
-                    ->searchable()
-                    ->toggleable()
-                    ->label('资产编号'),
-                Tables\Columns\TextColumn::make('device.category.name')
-                    ->searchable()
-                    ->toggleable()
-                    ->label('分类'),
-                Tables\Columns\TextColumn::make('device.name')
+                Tables\Columns\TextColumn::make('secret.name')
                     ->searchable()
                     ->toggleable()
                     ->label('名称'),
+                Tables\Columns\TextColumn::make('secret.username')
+                    ->searchable()
+                    ->toggleable()
+                    ->label('账户'),
                 Tables\Columns\TextColumn::make('status')
                     ->toggleable()
                     ->badge()
@@ -74,24 +70,22 @@ class HasPart extends ManageRelatedRecords
             ])
             ->headerActions([
                 // 创建
-                PartAction::createDeviceHasPart($this->getOwnerRecord())
+                SecretAction::createDeviceHasSecret($this->getOwnerRecord())
                     ->visible(function () {
-                        /* @var Part $part */
-                        $part = $this->getOwnerRecord();
-                        $can = auth()->user()->can('create_has_part_part');
-                        $is_retired = $part->service()->isRetired();
+                        /* @var Secret $secret */
+                        $secret = $this->getOwnerRecord();
+                        $can = auth()->user()->can('create_has_secret_secret');
 
-                        return $can && ! $is_retired && ! $part->hasParts()->count();
+                        return $can && ! $secret->hasSecrets()->count();
                     }),
             ])
             ->actions([
                 // 删除
-                PartAction::deleteDeviceHasPart()
-                    ->visible(function (DeviceHasPart $device_has_part) {
-                        $can = auth()->user()->can('delete_has_part_part');
-                        $is_retired = $device_has_part->part()->first()?->service()->isRetired() ?? false;
+                SecretAction::deleteDeviceHasSecret()
+                    ->visible(function (DeviceHasSecret $device_has_secret) {
+                        $can = auth()->user()->can('delete_has_secret_secret');
 
-                        return $can && ! $is_retired && ! $device_has_part->service()->isDeleted();
+                        return $can && ! $device_has_secret->service()->isDeleted();
                     }),
             ])
             ->bulkActions([

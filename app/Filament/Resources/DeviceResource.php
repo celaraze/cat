@@ -8,6 +8,7 @@ use App\Filament\Forms\DeviceForm;
 use App\Filament\Imports\DeviceImporter;
 use App\Filament\Resources\DeviceResource\Pages\Edit;
 use App\Filament\Resources\DeviceResource\Pages\HasPart;
+use App\Filament\Resources\DeviceResource\Pages\HasSecret;
 use App\Filament\Resources\DeviceResource\Pages\HasSoftware;
 use App\Filament\Resources\DeviceResource\Pages\HasUser;
 use App\Filament\Resources\DeviceResource\Pages\Index;
@@ -71,6 +72,7 @@ class DeviceResource extends Resource implements HasShieldPermissions
             HasPart::class,
             HasSoftware::class,
             Ticket::class,
+            HasSecret::class,
         ];
         $device_service = $page->getWidgetData()['record']->service();
         $can_update_device = auth()->user()->can('update_device');
@@ -103,8 +105,11 @@ class DeviceResource extends Resource implements HasShieldPermissions
             'delete_has_part',
             'create_has_software',
             'delete_has_software',
+            'create_has_secret',
+            'delete_has_secret',
             'batch_delete_has_part',
             'batch_delete_has_software',
+            'batch_delete_has_secret',
         ];
     }
 
@@ -350,6 +355,7 @@ class DeviceResource extends Resource implements HasShieldPermissions
             'parts' => HasPart::route('/{record}/has_parts'),
             'software' => HasSoftware::route('{record}/has_software'),
             'tickets' => Ticket::route('/{record}/has_tickets'),
+            'secrets' => HasSecret::route('/{record}/has_secrets'),
         ];
     }
 

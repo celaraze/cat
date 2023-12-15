@@ -7,7 +7,7 @@ use Filament\Notifications\Notification;
 
 class NotificationUtil
 {
-    public static function make(bool $result, string|Exception $body): void
+    public static function make(bool $result, string|Exception $body, bool $always = false): void
     {
         if (is_object($body)) {
             $body = $body->getMessage();
@@ -20,6 +20,9 @@ class NotificationUtil
         } else {
             $notification->title('失败');
             $notification->danger();
+        }
+        if ($always) {
+            $notification->persistent();
         }
         $notification->send();
     }

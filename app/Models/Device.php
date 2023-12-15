@@ -45,6 +45,18 @@ class Device extends Model
         );
     }
 
+    public function secrets(): HasManyThrough
+    {
+        return $this->hasManyThrough(
+            Secret::class,
+            DeviceHasSecret::class,
+            'device_id',
+            'id',
+            'id',
+            'secret_id'
+        );
+    }
+
     public function parts(): HasManyThrough
     {
         return $this->hasManyThrough(
@@ -87,6 +99,11 @@ class Device extends Model
     public function hasUsers(): HasMany
     {
         return $this->hasMany(DeviceHasUser::class, 'device_id', 'id');
+    }
+
+    public function hasSecrets(): HasMany
+    {
+        return $this->hasMany(DeviceHasSecret::class, 'device_id', 'id');
     }
 
     public function service(): DeviceService
