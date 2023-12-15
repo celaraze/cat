@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('device_has_users', function (Blueprint $table) {
-            $table->json('creator_id')->default(0)->after('user_id')
+            $table->integer('creator_id')->default(0)->after('user_id')
                 ->comment('操作人');
         });
 
