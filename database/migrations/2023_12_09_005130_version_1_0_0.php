@@ -4,11 +4,12 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
+/**
+ * v1.0.0 更新涉及
+ * 初次发布，创建基础表
+ */
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
         Schema::create('failed_jobs', function (Blueprint $table) {
@@ -612,9 +613,6 @@ return new class extends Migration
             ->forget(config('permission.cache.key'));
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropAllTables();
