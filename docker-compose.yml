@@ -6,9 +6,11 @@ services:
     container_name: cat
     restart: unless-stopped
     ports:
-      - "80:80"
+      - "8000:8000"
     volumes:
       - cat_database:/var/www/database/data
+      - cat_storage:/var/www/storage/app/public
 
 volumes:
   cat_database:
+  cat_storage:

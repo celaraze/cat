@@ -2,19 +2,19 @@
 
 namespace App\Models;
 
-use App\Services\FootprintService;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Footprint extends Model
 {
     use HasFactory;
 
     /**
-     * 模型到服务.
+     * 一对一，脚印有一个操作人.
      */
-    public function service(): FootprintService
+    public function creator(): BelongsTo
     {
-        return new FootprintService($this);
+        return $this->belongsTo(User::class, 'creator_id', 'id');
     }
 }
