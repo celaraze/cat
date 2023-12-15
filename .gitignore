@@ -1,6 +1,5 @@
 /.phpunit.cache
 /node_modules
-/public/build
 /public/hot
 /public/storage
 /storage/*.key
@@ -19,8 +18,6 @@ yarn-error.log
 /vendor
 composer.lock
 package-lock.json
-rr
-.rr.yaml
 cat-macos
 cat-macos-intel
 cat-linux
