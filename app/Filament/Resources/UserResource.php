@@ -102,12 +102,14 @@ class UserResource extends Resource implements HasShieldPermissions
             ->actions([
                 // 清除密码
                 UserAction::resetPassword()
-                    ->visible(function () {
+                    ->visible(function (User $user) {
                         $can = auth()->user()->can('reset_password_user');
                         // DEMO 模式不允许清除密码
                         $demo_mode = config('app.demo_mode');
+                        // 有重置密码权限的用户不能互相重置，权限冲突
+                        $is_conflict = $user->can('reset_password_user');
 
-                        return $can && ! $demo_mode;
+                        return $can && ! $demo_mode && ! $is_conflict;
                     }),
                 // 删除用户
                 UserAction::delete()

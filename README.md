@@ -15,9 +15,15 @@
 
 ❤ 感谢各位支持。CAT 提倡与各位使用者、开发者一起创建健康生态，让本项目变的更好，欢迎提供 PR 贡献。
 
+> [!IMPORTANT]
+> 
+> [官方文档](https://github.com/celaraze/cat/wiki) 中包含了更多详细的信息，包括安装、使用、开发等。
+
 ## 社区
 
-请优先使用本代码仓库的 [讨论区](https://github.com/celaraze/cat/discussions) 。
+> [!NOTE]
+> 
+> 请优先使用本代码仓库的 [讨论区](https://github.com/celaraze/cat/discussions) 。
 
 同时也为 CAT
 用户提供了 [交流社群](http://qm.qq.com/cgi-bin/qm/qr?_wv=1027&k=oSXcaCdY4u5iIEQj43J2GsDk_PygRR2G&authKey=atvXMk1ZoXRwuuNzMLY7852APIHfnBp3cA4fu7oFui7MWRSCrg2EafCAI%2B9akAPa&noverify=0&group_code=1016567640)
@@ -44,7 +50,11 @@
 
 ## 问题反馈
 
-最好的反馈方式是在本代码仓库中提交 [Issues](https://github.com/celaraze/cat/issues) ，我们在空余时间检查并解决。
+> [!NOTE] 
+> 
+> 最好的反馈方式是在本代码仓库中提交 [Issues](https://github.com/celaraze/cat/issues) ，我们在空余时间检查并解决。
+
+除此之外，可以和交流社区中的其他用户探讨。
 
 请随时牢记，这是一个开源项目，作者有自己的生活、自己的工作。
 
