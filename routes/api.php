@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AssetController;
 use App\Http\Controllers\InventoryController;
 use App\Http\Controllers\SanctumController;
 use Illuminate\Support\Facades\Route;
@@ -16,6 +17,9 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::post('/auth/login', [SanctumController::class, 'login']);
+
+Route::middleware('auth:sanctum')
+    ->resource('/assets', AssetController::class);
 
 Route::middleware('auth:sanctum')
     ->post('/inventory/check', [InventoryController::class, 'check']);

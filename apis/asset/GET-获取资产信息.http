@@ -1,0 +1,9 @@
+# curl --location --request GET 'http://localhost:8000/api/assets/DEVICE-20231214-00002'
+#--header 'User-Agent: Apifox/1.0.0 (https://apifox.com)'
+#--header 'Authorization: Bearer 3|AIUCbT86LrpUupkMzp27zAPzyKdMscYZN5ddl9JU955bf202'
+GET http://localhost:8000/api/assets/DEVICE-20231214-00002
+User-Agent: Apifox/1.0.0 (https://apifox.com)
+Authorization: Bearer 3|AIUCbT86LrpUupkMzp27zAPzyKdMscYZN5ddl9JU955bf202
+
+###
+

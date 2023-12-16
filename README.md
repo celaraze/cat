@@ -3,42 +3,28 @@
 </p>
 
 <p align="center">
-    <img src="https://github.com/celaraze/cat/actions/workflows/ci-laravel-test.yml/badge.svg?branch=main" />
-<img src="https://github.com/celaraze/cat/actions/workflows/ci-docker-hub.yml/badge.svg?branch=main" />
     <img src="https://img.shields.io/badge/PHP-8.1+-blue?logo=php" />
     <img src="https://img.shields.io/badge/License-GPL3.0-blueviolet?logo=apache" />
 </p>
 
-来一杯咖啡与茶，为 IT 运维从业者减轻管理负担，提升管理效率，从繁重无序的工作中解压出来，利用剩余时间多喝一杯休息一下。
+来一杯咖啡与茶，为 IT 运维从业者减轻管理负担，提升管理效率，从繁重无序的工作中解压出来，利用剩余时间多喝一杯休息一下。 这是一个专为
+IT 运维从业者打造的一站式解决方案平台，包含资产管理、工单、工作流、仓储等功能模块。 ❤ 感谢各位支持。CAT
+提倡与各位使用者、开发者一起创建健康生态，让本项目变的更好，欢迎提供 PR 贡献。
 
-这是一个专为 IT 运维从业者打造的一站式解决方案平台，包含资产管理、工单、工作流、仓储等功能模块。
+## 项目全貌
 
-❤ 感谢各位支持。CAT 提倡与各位使用者、开发者一起创建健康生态，让本项目变的更好，欢迎提供 PR 贡献。
+| 名称                                                                                      | 说明                                          | 发行            | 技术栈         |
+|-----------------------------------------------------------------------------------------|---------------------------------------------|---------------|-------------|
+| CAT                                                                                     | CAT 一站式 IT 运维管理平台主服务端。                      | ☕️正式版         | Laravel     |
+| [CAT-Uniapp](https://github.com/celaraze/cat-uniapp)                                    | 配套的官方移动端一个应用程序，覆盖了简单场景的功能。                  | 💻开发版         | Uniapp(Vue) |
+| [CAT 官方文档](https://github.com/celaraze/cat/wiki)                                        | CAT 官方文档。                                   |               |             |
+| [CAT 演示站点](http://cat.celaraze.com:50080/)                                              | CAT 官方演示站点，登录信息 `cat@localhost.com / cat` 。 |               |             |
+| [docker.io/celaraze/cat](https://hub.docker.com/repository/docker/celaraze/cat/general) | CAT 官方发布的容器镜像。                              | 🤖正式版，自动化集成编译 |             |
+| [ghcr.io/celaraze/cat](https://github.com/celaraze/cat/pkgs/container/cat)              | CAT 官方发布的容器镜像，托管于 Github。                   | 🤖正式版，自动化集成编译 |             |
 
 > [!IMPORTANT]
-> 
-> [官方文档](https://github.com/celaraze/cat/wiki) 中包含了更多详细的信息，包括安装、使用、开发等。
-
-## 社区
-
-> [!NOTE]
-> 
-> 请优先使用本代码仓库的 [讨论区](https://github.com/celaraze/cat/discussions) 。
-
-同时也为 CAT
-用户提供了 [交流社群](http://qm.qq.com/cgi-bin/qm/qr?_wv=1027&k=oSXcaCdY4u5iIEQj43J2GsDk_PygRR2G&authKey=atvXMk1ZoXRwuuNzMLY7852APIHfnBp3cA4fu7oFui7MWRSCrg2EafCAI%2B9akAPa&noverify=0&group_code=1016567640)
-，但作者本身不活跃交流社群也不提供任何技术支持。另外，交流社群内反馈的问题也不会被优先处理。问题反馈请正确使用
-[Issues](https://github.com/celaraze/cat/issues) 。
-
-## 发行策略
-
-### 版本策略
-
-| 版本示例  | 说明                        | 维护难度              |
-|-------|---------------------------|-------------------|
-| 1.0.x | 小型功能特性，漏洞修复、BUG 修复、安全更新等。 | 低，无破坏性变更。         |
-| 1.x.0 | 模块的新特性、新功能发布，上游依赖较大变动。    | 较低，无或者较少的破坏性变更。   |
-| x.0.0 | 新模块、新功能实装，整体架构变动。         | 中，可能包含适当数量的破坏性变更。 |
+>
+> 在提问之前，请务必阅读文档内容。
 
 ### 快速开始
 
@@ -46,15 +32,16 @@
 
 通过访问 [官方文档](https://github.com/celaraze/cat/wiki) 来安装和查看更多信息。
 
-建议通过文档中的一把梭部署模式，快速部署且兼顾性能和灵活的数据存储方式。
+建议通过文档中的 Docker 部署模式，此方案部署且兼顾性能和灵活的数据存储方式。
 
 ## 问题反馈
 
-> [!NOTE] 
-> 
+> [!NOTE]
+>
 > 最好的反馈方式是在本代码仓库中提交 [Issues](https://github.com/celaraze/cat/issues) ，我们在空余时间检查并解决。
 
-除此之外，可以和交流社区中的其他用户探讨。
+除此之外，可以和 [交流社群](http://qm.qq.com/cgi-bin/qm/qr?_wv=1027&k=oSXcaCdY4u5iIEQj43J2GsDk_PygRR2G&authKey=atvXMk1ZoXRwuuNzMLY7852APIHfnBp3cA4fu7oFui7MWRSCrg2EafCAI%2B9akAPa&noverify=0&group_code=1016567640)
+中的其他用户探讨，交流社群内反馈的问题也不会被优先处理。
 
 请随时牢记，这是一个开源项目，作者有自己的生活、自己的工作。
 
