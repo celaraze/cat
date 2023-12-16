@@ -77,7 +77,9 @@ IT 运维从业者打造的一站式解决方案平台，包含资产管理、�
 
 ### 捐赠渠道
 
-通过支付宝付款，捐赠后请通过 `celaraze@qq.com` 联系作者。
+支持 [爱发电](https://afdian.net/a/celaraze) 进行捐赠。
+
+通过支付宝一次性捐赠，捐赠后请通过 `celaraze@qq.com` 联系作者。
 
 <img height="300" src="https://p.ipic.vip/jcx3h0.png"/>
 
