@@ -58,6 +58,11 @@ class UserResource extends Resource implements HasShieldPermissions
         ];
     }
 
+    public static function getGlobalSearchResultUrl(Model $record): string
+    {
+        return self::getUrl('view', ['record' => $record]);
+    }
+
     public static function getPermissionPrefixes(): array
     {
         return [

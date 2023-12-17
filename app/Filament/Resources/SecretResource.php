@@ -49,8 +49,9 @@ class SecretResource extends Resource implements HasShieldPermissions
             Edit::class,
             HasSecret::class,
         ];
+        $secret_service = $page->getWidgetData()['record']->service();
         $can_update_secret = auth()->user()->can('update_secret');
-        if (! $can_update_secret) {
+        if ($secret_service->isRetired() || ! $can_update_secret) {
             unset($navigation_items[2]);
         }
 
@@ -68,8 +69,10 @@ class SecretResource extends Resource implements HasShieldPermissions
             'delete_any',
             'import',
             'export',
+            'retire',
             'create_has_secret',
             'delete_has_secret',
+            'view_token',
         ];
     }
 
@@ -115,13 +118,19 @@ class SecretResource extends Resource implements HasShieldPermissions
                 //
             ])
             ->actions([
+                // 查看密码
                 SecretAction::token(),
-                SecretAction::delete(),
+                // 弃用
+                SecretAction::retire()
+                    ->visible(function (Secret $secret) {
+                        return ! $secret->service()->isRetired();
+                    }),
             ])
             ->bulkActions([
 
             ])
             ->headerActions([
+                // 新增
                 SecretAction::create(),
             ])
             ->heading('密钥');

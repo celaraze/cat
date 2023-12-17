@@ -40,7 +40,7 @@ IT 运维从业者打造的一站式解决方案平台，包含资产管理、�
 >
 > 最好的反馈方式是在本代码仓库中提交 [Issues](https://github.com/celaraze/cat/issues) ，我们在空余时间检查并解决。
 
-除此之外，可以和 [交流社群](http://qm.qq.com/cgi-bin/qm/qr?_wv=1027&k=oSXcaCdY4u5iIEQj43J2GsDk_PygRR2G&authKey=atvXMk1ZoXRwuuNzMLY7852APIHfnBp3cA4fu7oFui7MWRSCrg2EafCAI%2B9akAPa&noverify=0&group_code=1016567640)
+除此之外，可以和 [交流社群（QQ 频道）](https://pd.qq.com/s/sknbyfnh)
 中的其他用户探讨，交流社群内反馈的问题也不会被优先处理。
 
 请随时牢记，这是一个开源项目，作者有自己的生活、自己的工作。

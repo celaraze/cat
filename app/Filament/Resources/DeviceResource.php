@@ -83,6 +83,11 @@ class DeviceResource extends Resource implements HasShieldPermissions
         return $page->generateNavigationItems($navigation_items);
     }
 
+    public static function getGlobalSearchResultUrl(Model $record): string
+    {
+        return self::getUrl('view', ['record' => $record]);
+    }
+
     public static function getPermissionPrefixes(): array
     {
         return [

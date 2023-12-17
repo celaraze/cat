@@ -2,6 +2,7 @@
 
 namespace App\Filament\Forms;
 
+use App\Models\DeviceHasSecret;
 use App\Models\Secret;
 use App\Services\DeviceService;
 use App\Services\SecretService;
@@ -29,9 +30,13 @@ class DeviceHasSecretForm
      */
     public static function create(): array
     {
+        $secret_ids = DeviceHasSecret::query()
+            ->pluck('secret_id')->toArray();
+        $secret_ids = array_unique($secret_ids);
+
         return [
             Select::make('secret_ids')
-                ->options(SecretService::pluckOptions())
+                ->options(SecretService::pluckOptions('id', $secret_ids))
                 ->multiple()
                 ->searchable()
                 ->preload()

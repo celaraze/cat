@@ -74,18 +74,22 @@ class HasSecret extends ManageRelatedRecords
                     ->visible(function () {
                         /* @var Secret $secret */
                         $secret = $this->getOwnerRecord();
+                        $is_retired = $secret->service()->isRetired();
                         $can = auth()->user()->can('create_has_secret_secret');
 
-                        return $can && ! $secret->hasSecrets()->count();
+                        return $can && ! $is_retired && ! $secret->hasSecrets()->count();
                     }),
             ])
             ->actions([
                 // 删除
                 SecretAction::deleteDeviceHasSecret()
                     ->visible(function (DeviceHasSecret $device_has_secret) {
+                        /* @var Secret $secret */
+                        $secret = $this->getOwnerRecord();
+                        $is_retired = $secret->service()->isRetired();
                         $can = auth()->user()->can('delete_has_secret_secret');
 
-                        return $can && ! $device_has_secret->service()->isDeleted();
+                        return $can && ! $is_retired && ! $device_has_secret->service()->isDeleted();
                     }),
             ])
             ->bulkActions([

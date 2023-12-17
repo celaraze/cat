@@ -12,6 +12,7 @@ class AssetEnum
             2 => '借用',
             3 => '报废',
             4 => '正常',
+            5 => '弃用',
         };
     }
 
@@ -23,6 +24,7 @@ class AssetEnum
             2 => '借用',
             3 => '报废',
             4 => '正常',
+            5 => '弃用',
         ];
     }
 
@@ -32,7 +34,7 @@ class AssetEnum
             0 => 'gray',
             1 => 'primary',
             2 => 'warning',
-            3 => 'danger',
+            3, 5 => 'danger',
             4 => 'success',
         };
     }

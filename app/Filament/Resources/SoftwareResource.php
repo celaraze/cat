@@ -59,6 +59,11 @@ class SoftwareResource extends Resource implements HasShieldPermissions
         ];
     }
 
+    public static function getGlobalSearchResultUrl(Model $record): string
+    {
+        return self::getUrl('view', ['record' => $record]);
+    }
+
     public static function getRecordSubNavigation(Page $page): array
     {
         $navigation_items = [

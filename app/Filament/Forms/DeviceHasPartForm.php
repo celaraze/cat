@@ -2,6 +2,7 @@
 
 namespace App\Filament\Forms;
 
+use App\Models\DeviceHasPart;
 use App\Models\Part;
 use App\Services\DeviceService;
 use App\Services\PartService;
@@ -14,9 +15,13 @@ class DeviceHasPartForm
      */
     public static function create(): array
     {
+        $part_ids = DeviceHasPart::query()
+            ->pluck('part_id')->toArray();
+        $part_ids = array_unique($part_ids);
+
         return [
             Select::make('part_ids')
-                ->options(PartService::pluckOptions())
+                ->options(PartService::pluckOptions('id', $part_ids))
                 ->multiple()
                 ->searchable()
                 ->preload()

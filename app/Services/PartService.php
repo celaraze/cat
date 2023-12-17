@@ -28,10 +28,12 @@ class PartService
     /**
      * 选单.
      */
-    public static function pluckOptions(): Collection
+    public static function pluckOptions(string $key_column = 'id', array $exclude_ids = []): Collection
     {
-        return Part::query()->get()
+        return Part::query()
+            ->whereNotIn($key_column, $exclude_ids)
             ->whereNotIn('status', [3])
+            ->get()
             ->mapWithKeys(function (Part $part) {
                 $title = '';
                 $title .= $part->getAttribute('asset_number');

@@ -30,8 +30,9 @@ class SoftwareService
      */
     public static function pluckOptions(): Collection
     {
-        return Software::query()->get()
+        return Software::query()
             ->whereNotIn('status', [3])
+            ->get()
             ->mapWithKeys(function (Software $software) {
                 $title = '';
                 $title .= $software->getAttribute('asset_number');

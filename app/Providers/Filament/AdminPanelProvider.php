@@ -94,7 +94,7 @@ class AdminPanelProvider extends PanelProvider
                     ->icon('heroicon-o-book-open'),
                 MenuItem::make()
                     ->label('官方用户群')
-                    ->url('http://qm.qq.com/cgi-bin/qm/qr?_wv=1027&k=oSXcaCdY4u5iIEQj43J2GsDk_PygRR2G&authKey=atvXMk1ZoXRwuuNzMLY7852APIHfnBp3cA4fu7oFui7MWRSCrg2EafCAI%2B9akAPa&noverify=0&group_code=1016567640')
+                    ->url('https://pd.qq.com/s/sknbyfnh')
                     ->openUrlInNewTab()
                     ->icon('heroicon-s-user-group'),
             ]);
