@@ -99,6 +99,8 @@ class UserResource extends Resource implements HasShieldPermissions
                 Tables\Columns\TextColumn::make('email')
                     ->toggleable()
                     ->searchable()
+                    ->badge()
+                    ->icon('heroicon-s-envelope')
                     ->label('邮箱'),
             ])
             ->filters([

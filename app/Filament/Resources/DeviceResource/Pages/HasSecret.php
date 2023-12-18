@@ -80,6 +80,11 @@ class HasSecret extends ManageRelatedRecords
                     }),
             ])
             ->actions([
+                // 查看密码
+                DeviceAction::viewToken()
+                    ->visible(function () {
+                        return auth()->user()->can('view_token_device');
+                    }),
                 // 删除
                 DeviceAction::deleteHasSecret()
                     ->visible(function (DeviceHasSecret $device_has_secret) {

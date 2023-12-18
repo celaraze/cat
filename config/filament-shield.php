@@ -65,6 +65,7 @@ return [
         'pages' => [
             'Dashboard',
             'Profile',
+            'Site',
         ],
 
         'widgets' => [
@@ -75,6 +76,8 @@ return [
             'ChangePassword',
             'ChangeAvatar',
             'TicketHasTrackMinutePie',
+            'AssetOverview',
+            'TicketOverview',
         ],
 
         'resources' => [],

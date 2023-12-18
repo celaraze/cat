@@ -6,6 +6,8 @@ use App\Services\RoleService;
 
 class Role extends \Spatie\Permission\Models\Role
 {
+    const SUPER_ADMIN_ID = 1;
+
     /**
      * 模型到服务.
      */

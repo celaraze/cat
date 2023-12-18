@@ -115,6 +115,7 @@ class DeviceResource extends Resource implements HasShieldPermissions
             'batch_delete_has_part',
             'batch_delete_has_software',
             'batch_delete_has_secret',
+            'view_token',
         ];
     }
 

@@ -119,7 +119,10 @@ class SecretResource extends Resource implements HasShieldPermissions
             ])
             ->actions([
                 // 查看密码
-                SecretAction::token(),
+                SecretAction::viewToken()
+                    ->visible(function () {
+                        return auth()->user()->can('view_token_secret');
+                    }),
                 // 弃用
                 SecretAction::retire()
                     ->visible(function (Secret $secret) {

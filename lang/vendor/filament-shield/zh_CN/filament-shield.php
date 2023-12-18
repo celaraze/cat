@@ -91,5 +91,11 @@ return [
         'delete_has_software' => '脱离软件',
         'check' => '盘点',
         'reset_password' => '重置密码',
+        'create_has_secret' => '附加密钥',
+        'delete_has_secret' => '脱离密钥',
+        'view_token' => '查看密码',
+        'batch_delete_has_part' => '批量脱离配件',
+        'batch_delete_has_software' => '批量脱离软件',
+        'batch_delete_has_secret' => '批量脱离密钥',
     ],
 ];

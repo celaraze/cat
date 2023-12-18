@@ -7,6 +7,7 @@ use App\Filament\Forms\DeviceHasPartForm;
 use App\Filament\Forms\DeviceHasSecretForm;
 use App\Filament\Forms\DeviceHasSoftwareForm;
 use App\Filament\Forms\DeviceHasUserForm;
+use App\Filament\Forms\SecretForm;
 use App\Filament\Resources\DeviceCategoryResource;
 use App\Filament\Resources\TicketResource;
 use App\Models\Device;
@@ -517,5 +518,31 @@ class DeviceAction
                 NotificationUtil::make(true, '已批量脱离');
             })
             ->closeModalByClickingAway(false);
+    }
+
+    /**
+     * 查看密码.
+     */
+    public static function viewToken(): Action
+    {
+        return Action::make('查看密码')
+            ->icon('heroicon-m-key')
+            ->color('warning')
+            ->requiresConfirmation()
+            ->modalDescription('请验证您的身份，通过后密码将以通知形式展示在右上角。您可以查看并复制密码，并自行关闭消息。')
+            ->form(SecretForm::viewToken())
+            ->action(function (array $data, DeviceHasSecret $device_has_secret) {
+                try {
+                    $secret = $device_has_secret->secret()->first();
+                    if (auth()->attempt(['email' => auth()->user()->email, 'password' => $data['password']])) {
+                        NotificationUtil::make(true, '密码：'.decrypt($secret->getAttribute('token')), true);
+                    } else {
+                        NotificationUtil::make(false, '密码错误');
+                    }
+                } catch (Exception $exception) {
+                    LogUtil::error($exception);
+                    NotificationUtil::make(false, $exception);
+                }
+            });
     }
 }

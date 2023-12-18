@@ -26,5 +26,6 @@ class Update extends Command
     public function handle(): void
     {
         $this->call('migrate');
+        $this->call('shield:generate', ['--all' => null]);
     }
 }

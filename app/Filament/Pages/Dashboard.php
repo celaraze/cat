@@ -6,7 +6,7 @@ use App\Filament\Widgets\AssetOverview;
 use App\Filament\Widgets\TicketOverview;
 use Filament\Pages\Page;
 
-class DashBoard extends Page
+class Dashboard extends Page
 {
     protected static ?string $navigationIcon = 'heroicon-s-chart-pie';
 

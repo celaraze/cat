@@ -19,7 +19,7 @@ class SecretAction
     /**
      * 查看密码.
      */
-    public static function token(): Action
+    public static function viewToken(): Action
     {
         return Action::make('查看密码')
             ->icon('heroicon-m-key')
@@ -28,10 +28,15 @@ class SecretAction
             ->modalDescription('请验证您的身份，通过后密码将以通知形式展示在右上角。您可以查看并复制密码，并自行关闭消息。')
             ->form(SecretForm::viewToken())
             ->action(function (array $data, Secret $secret) {
-                if (auth()->attempt(['email' => auth()->user()->email, 'password' => $data['password']])) {
-                    NotificationUtil::make(true, '密码：'.decrypt($secret->getAttribute('token')), true);
-                } else {
-                    NotificationUtil::make(false, '密码错误');
+                try {
+                    if (auth()->attempt(['email' => auth()->user()->email, 'password' => $data['password']])) {
+                        NotificationUtil::make(true, '密码：'.decrypt($secret->getAttribute('token')), true);
+                    } else {
+                        NotificationUtil::make(false, '密码错误');
+                    }
+                } catch (Exception $exception) {
+                    LogUtil::error($exception);
+                    NotificationUtil::make(false, $exception);
                 }
             });
     }
