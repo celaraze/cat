@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\Role;
+use App\Models\User;
 use App\Traits\HasFootprint;
 use Illuminate\Support\Collection;
 
@@ -22,6 +23,13 @@ class RoleService
      */
     public static function pluckOptions(): Collection
     {
-        return Role::query()->pluck('name', 'id');
+        $roles = Role::query();
+        /* @var User $auth_user */
+        $auth_user = auth()->user();
+        if ($auth_user->is_super_admin()) {
+            $roles = $roles->whereNotIn('id', [1]);
+        }
+
+        return $roles->pluck('name', 'id');
     }
 }

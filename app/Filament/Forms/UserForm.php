@@ -2,10 +2,13 @@
 
 namespace App\Filament\Forms;
 
+use App\Models\User;
+use App\Services\RoleService;
 use Awcodes\Shout\Components\Shout;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
+use Illuminate\Database\Eloquent\Builder;
 use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 use Ramsey\Uuid\Uuid;
 
@@ -24,6 +27,12 @@ class UserForm
                 ->label('邮箱')
                 ->rules(['email'])
                 ->required(),
+            Select::make('roles')
+                ->label('角色')
+                ->multiple()
+                ->options(RoleService::pluckOptions())
+                ->searchable()
+                ->preload(),
             Shout::make('')
                 ->color('warning')
                 ->content('新建用户的默认密码为 cat ，请提醒用户及时修改密码。'),
@@ -37,18 +46,30 @@ class UserForm
     {
         return [
             TextInput::make('name')
-                ->label('名称')
-                ->required(),
+                ->required()
+                ->label('名称'),
             TextInput::make('email')
-                ->label('邮箱')
                 ->rules(['email'])
-                ->required(),
+                ->required()
+                ->label('邮箱'),
+            // 排除超级管理员角色
             Select::make('roles')
-                ->label('角色')
                 ->multiple()
-                ->relationship('roles', 'name')
+                ->relationship(
+                    name: 'roles',
+                    titleAttribute: 'name',
+                    modifyQueryUsing: function (Builder $query) {
+                        /* @var User $auth_user */
+                        $auth_user = auth()->user();
+                        if (! $auth_user->is_super_admin()) {
+                            return $query->where('id', '!=', 1);
+                        }
+                    },
+                )
                 ->searchable()
-                ->preload(),
+                ->preload()
+                ->default('roles')
+                ->label('角色'),
         ];
     }
 

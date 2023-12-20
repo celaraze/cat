@@ -42,8 +42,19 @@ class UserResource extends Resource implements HasShieldPermissions
             View::class,
             Edit::class,
         ];
-        $can_update_user = auth()->user()->can('update_user');
-        if (! $can_update_user) {
+        /* @var User $user */
+        $user = $page->getWidgetData()['record'];
+        /* @var User $auth_user */
+        $auth_user = auth()->user();
+        $can_update_user = $auth_user->can('update_user');
+        $is_deleted = $user->service()->isDeleted();
+        // 先判断权限符合以及是否是已删除用户
+        if (! $can_update_user || $is_deleted) {
+            unset($navigation_items[2]);
+        }
+
+        // 再判断如果当前被编辑的用户是超级管理员，并且当前登录用户不是操作管理员，则不允许修改
+        if (isset($navigation_items[2]) && $user->is_super_admin() && ! $auth_user->is_super_admin()) {
             unset($navigation_items[2]);
         }
 
@@ -72,6 +83,7 @@ class UserResource extends Resource implements HasShieldPermissions
             'update',
             'delete',
             'delete_any',
+            'force_delete',
             'import',
             'export',
             'reset_password',
@@ -110,18 +122,50 @@ class UserResource extends Resource implements HasShieldPermissions
                 // 清除密码
                 UserAction::resetPassword()
                     ->visible(function (User $user) {
-                        $can = auth()->user()->can('reset_password_user');
                         // DEMO 模式不允许清除密码
                         $demo_mode = config('app.demo_mode');
-                        // 有重置密码权限的用户不能互相重置，权限冲突
-                        $is_conflict = $user->can('reset_password_user');
+                        if ($demo_mode) {
+                            return false;
+                        }
+                        /* @var User $auth_user */
+                        $auth_user = auth()->user();
+                        if ($auth_user->is_super_admin()) {
+                            return true;
+                        } else {
+                            $can = auth()->user()->can('reset_password_user');
 
-                        return $can && ! $demo_mode && ! $is_conflict;
+                            // 有重置密码权限的用户不能互相重置，权限冲突
+                            $is_conflict = $user->can('reset_password_user');
+
+                            return $can && ! $is_conflict;
+                        }
                     }),
                 // 删除用户
                 UserAction::delete()
-                    ->visible(function () {
-                        return auth()->user()->can('delete_user');
+                    ->visible(function (User $user) {
+                        if ($user->service()->isDeleted()) {
+                            return false;
+                        }
+                        /* @var User $auth_user */
+                        $auth_user = auth()->user();
+                        // 超级管理员不允许删除自己，只能由其它超级管理员删除
+                        if ($auth_user->is_super_admin() && $user->getKey() != $auth_user->getKey()) {
+                            return true;
+                        } else {
+                            $can = auth()->user()->can('reset_password_user');
+
+                            // 有重置密码权限的用户不能互相重置，权限冲突
+                            $is_conflict = $user->can('reset_password_user');
+
+                            return $can && ! $is_conflict;
+                        }
+                    }),
+                // 永久删除.
+                UserAction::forceDelete()
+                    ->visible(function (User $user) {
+                        $can = auth()->user()->can('force_delete_user');
+
+                        return $can && $user->service()->isDeleted();
                     }),
             ])
             ->bulkActions([

@@ -85,4 +85,12 @@ class User extends Authenticatable implements FilamentUser, HasAvatar
     {
         return $this->hasMany(FlowHasNode::class, 'user_id', 'id');
     }
+
+    /**
+     * 当前用户是否是超级管理员.
+     */
+    public function is_super_admin(): bool
+    {
+        return $this->hasRole(1);
+    }
 }

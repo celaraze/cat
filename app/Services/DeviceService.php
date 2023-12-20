@@ -100,7 +100,7 @@ class DeviceService
             }
             $this->model->setAttribute('asset_number', $asset_number);
             $this->model->setAttribute('category_id', $data['category_id']);
-            $this->model->setAttribute('name', $data['name']);
+            $this->model->setAttribute('name', $data['name'] ?? '无');
             $this->model->setAttribute('brand_id', $data['brand_id']);
             $this->model->setAttribute('sn', $data['sn'] ?? '无');
             $this->model->setAttribute('specification', $data['specification'] ?? '无');

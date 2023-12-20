@@ -86,7 +86,7 @@ class AdminPanelProvider extends PanelProvider
                     ->label('去 Github 为作者点赞 🌟')
                     ->url('https://github.com/celaraze/cat')
                     ->openUrlInNewTab()
-                    ->icon('heroicon-s-code-square'),
+                    ->icon('heroicon-s-star'),
                 MenuItem::make()
                     ->label('官方文档')
                     ->url('https://github.com/celaraze/cat/wiki')

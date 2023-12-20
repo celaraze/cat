@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Traits\HasFootprint;
 use Exception;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
 use JetBrains\PhpStorm\ArrayShape;
 
 class UserService
@@ -46,18 +47,33 @@ class UserService
      *
      * @throws Exception
      */
-    #[ArrayShape(['name' => 'mixed', 'email' => 'mixed', 'password' => 'string', 'password_verify' => 'mixed'])]
+    #[ArrayShape([
+        'name' => 'mixed',
+        'email' => 'mixed',
+        'password' => 'string',
+        'password_verify' => 'mixed',
+    ])]
     public function create(array $data): User
     {
-        $this->model->setAttribute('name', $data['name']);
-        $this->model->setAttribute('email', $data['email']);
-        if ($data['password'] != $data['password_verify']) {
-            throw new Exception('密码不一致');
-        }
-        $this->model->setAttribute('password', bcrypt($data['password']));
-        $this->model->save();
+        try {
+            DB::beginTransaction();
+            $this->model->setAttribute('name', $data['name']);
+            $this->model->setAttribute('email', $data['email']);
+            if ($data['password'] != $data['password_verify']) {
+                throw new Exception('密码不一致');
+            }
+            $this->model->setAttribute('password', bcrypt($data['password']));
+            $this->model->save();
+            // 将 role_ids 转为 int 类型，才能被正确 assign
+            $roles = array_map('intval', $data['roles']);
+            $this->model->assignRole($roles);
+            DB::commit();
 
-        return $this->model;
+            return $this->model;
+        } catch (Exception $exception) {
+            DB::rollBack();
+            throw $exception;
+        }
     }
 
     /**
@@ -106,5 +122,62 @@ class UserService
         }
 
         return $this->model->delete();
+    }
+
+    /**
+     * 永久删除.
+     *
+     * @throws Exception
+     */
+    public function forceDelete(): ?bool
+    {
+        if (! $this->model->service()->isDeleted()) {
+            throw new Exception('用户未删除，无法永久删除');
+        }
+
+        return $this->model->forceDelete();
+    }
+
+    /**
+     * 是否删除.
+     */
+    public function isDeleted(): bool
+    {
+        if ($this->model->getAttribute('deleted_at') != null) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * 编辑.
+     *
+     * @throws Exception
+     */
+    public function update(array $data): User
+    {
+        $is_exist = User::query()->where('email', $data['email'])
+            ->where('id', '!=', $this->model->getKey())
+            ->exists();
+        if ($is_exist) {
+            throw new Exception('邮箱已存在');
+        }
+
+        try {
+            DB::beginTransaction();
+            $this->model->setAttribute('name', $data['name']);
+            $this->model->setAttribute('email', $data['email']);
+            $this->model->save();
+            // 将 role_ids 转为 int 类型，才能被正确 sync
+            $roles = array_map('intval', $data['roles']);
+            $this->model->syncRoles($roles);
+            DB::commit();
+
+            return $this->model;
+        } catch (Exception $exception) {
+            DB::rollBack();
+            throw $exception;
+        }
     }
 }

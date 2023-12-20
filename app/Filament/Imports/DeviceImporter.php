@@ -27,10 +27,12 @@ class DeviceImporter extends Importer
                 ->example('工作站 A 组 1 号机')
                 ->label('名称'),
             ImportColumn::make('sn')
-                ->example('AAAAAAA')
+                ->requiredMapping()
+                ->example('如果没有序列号，请直接填写：无。但不能留空或缺少本字段。')
                 ->label('序列号'),
             ImportColumn::make('specification')
-                ->example('1U 2C 4GB')
+                ->requiredMapping()
+                ->example('如果没有规格，请直接填写：无。但不能留空或缺少本字段。')
                 ->label('规格'),
             ImportColumn::make('image')
                 ->example('https://test.com/logo.png')

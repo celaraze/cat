@@ -133,4 +133,26 @@ class UserAction
                 }
             });
     }
+
+    /**
+     * 永久删除按钮.
+     */
+    public static function forceDelete(): Action
+    {
+        return Action::make('永久删除')
+            ->icon('heroicon-s-trash')
+            ->color('danger')
+            ->requiresConfirmation()
+            ->modalDescription('永久删除后无法恢复！')
+            ->action(function (User $user) {
+                try {
+                    $user->service()->forceDelete();
+                    NotificationUtil::make(true, '已永久删除用户');
+                } catch (Exception $exception) {
+                    LogUtil::error($exception);
+                    NotificationUtil::make(false, $exception);
+                }
+            })
+            ->closeModalByClickingAway(false);
+    }
 }
