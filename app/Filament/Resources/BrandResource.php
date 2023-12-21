@@ -24,15 +24,21 @@ class BrandResource extends Resource implements HasShieldPermissions
 {
     protected static ?string $model = Brand::class;
 
-    protected static ?string $modelLabel = '品牌';
-
     protected static ?string $navigationIcon = 'heroicon-s-tag';
 
     protected static ?int $navigationSort = 1;
 
-    protected static ?string $navigationGroup = '基础数据';
-
     protected static ?string $recordTitleAttribute = 'name';
+
+    public static function getNavigationGroup(): ?string
+    {
+        return __('cat.basic_data');
+    }
+
+    public static function getModelLabel(): string
+    {
+        return __('cat.brand');
+    }
 
     public static function getRecordSubNavigation(Page $page): array
     {
@@ -42,7 +48,7 @@ class BrandResource extends Resource implements HasShieldPermissions
             Edit::class,
         ];
         $can_update_brand = auth()->user()->can('update_brand');
-        if (! $can_update_brand) {
+        if (!$can_update_brand) {
             unset($navigation[2]);
         }
 
@@ -73,7 +79,7 @@ class BrandResource extends Resource implements HasShieldPermissions
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('name')
-                    ->label('名称'),
+                    ->label(__('cat.name')),
             ])
             ->filters([
                 Tables\Filters\TrashedFilter::make(),
@@ -97,13 +103,13 @@ class BrandResource extends Resource implements HasShieldPermissions
                     ->importer(BrandImporter::class)
                     ->icon('heroicon-o-arrow-up-tray')
                     ->color('primary')
-                    ->label('导入')
+                    ->label(__('cat.action.import'))
                     ->visible(function () {
                         return auth()->user()->can('import_brand');
                     }),
                 // 导出
                 ExportAction::make()
-                    ->label('导出')
+                    ->label(__('cat.action.export'))
                     ->visible(function () {
                         return auth()->user()->can('export_brand');
                     }),
@@ -113,7 +119,7 @@ class BrandResource extends Resource implements HasShieldPermissions
                         return auth()->user()->can('create_brand');
                     }),
             ])
-            ->heading('品牌');
+            ->heading(__('cat.brand'));
     }
 
     public static function getPages(): array

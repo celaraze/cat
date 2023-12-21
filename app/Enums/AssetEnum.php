@@ -75,4 +75,13 @@ class AssetEnum
             Software::class => __('cat.software'),
         ];
     }
+
+    public static function assetTypeText(string $state): string
+    {
+        return match ($state) {
+            Device::class => __('cat.device'),
+            Part::class => __('cat.part'),
+            Software::class => __('cat.software'),
+        };
+    }
 }

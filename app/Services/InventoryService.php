@@ -28,6 +28,7 @@ class InventoryService
         'name' => 'string',
         'class_name' => 'string',
         'model_ids' => 'array',
+        'creator_id' => 'int',
     ])]
     public function create(array $data): void
     {
@@ -35,12 +36,12 @@ class InventoryService
             DB::beginTransaction();
             $model = $data['class_name'];
             $model_ids = $data['model_ids'];
-            if (! count($model_ids)) {
+            if (!count($model_ids)) {
                 $model_ids = $model::query()->pluck('id')->toArray();
             }
             $this->model->setAttribute('name', $data['name']);
             $this->model->setAttribute('class_name', $model);
-            $this->model->setAttribute('creator_id', auth()->id());
+            $this->model->setAttribute('creator_id', $data['creator_id']);
             $this->model->save();
             foreach ($model_ids as $model_id) {
                 $model = $model::query()->where('id', $model_id)->first();

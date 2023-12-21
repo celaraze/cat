@@ -25,13 +25,19 @@ class ImportResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
-    protected static ?string $modelLabel = '导入日志';
-
     protected static ?int $navigationSort = 1;
 
-    protected static ?string $navigationGroup = '日志';
-
     protected static ?string $recordTitleAttribute = 'file_name';
+
+    public static function getNavigationGroup(): ?string
+    {
+        return __('cat.log');
+    }
+
+    public static function getModelLabel(): string
+    {
+        return __('cat.import_log');
+    }
 
     public static function getRecordSubNavigation(Page $page): array
     {
@@ -59,27 +65,27 @@ class ImportResource extends Resource
                 Tables\Columns\TextColumn::make('completed_at')
                     ->searchable()
                     ->toggleable()
-                    ->label('完成时间'),
+                    ->label(__('cat.completed_at')),
                 Tables\Columns\TextColumn::make('file_name')
                     ->searchable()
                     ->toggleable()
-                    ->label('文件'),
+                    ->label(__('cat.file_name')),
                 Tables\Columns\TextColumn::make('processed_rows')
                     ->searchable()
                     ->toggleable()
-                    ->label('已处理行'),
+                    ->label(__('cat.processed_rows')),
                 Tables\Columns\TextColumn::make('total_rows')
                     ->searchable()
                     ->toggleable()
-                    ->label('总行'),
+                    ->label(__('cat.total_rows')),
                 Tables\Columns\TextColumn::make('successful_rows')
                     ->searchable()
                     ->toggleable()
-                    ->label('成功行'),
+                    ->label(__('cat.successful_rows')),
                 Tables\Columns\TextColumn::make('user_id')
                     ->searchable()
                     ->toggleable()
-                    ->label('执行用户'),
+                    ->label(__('cat.user_id')),
             ])
             ->filters([
 
@@ -90,7 +96,7 @@ class ImportResource extends Resource
             ->bulkActions([
 
             ])
-            ->heading('导入日志');
+            ->heading(__('cat.import_log'));
     }
 
     public static function infolist(Infolist $infolist): Infolist
@@ -104,25 +110,25 @@ class ImportResource extends Resource
                                 ->schema([
                                     Group::make([
                                         TextEntry::make('completed_at')
-                                            ->label('完成时间')
+                                            ->label(__('cat.completed_at'))
                                             ->badge()
                                             ->color('primary'),
                                         TextEntry::make('file_name')
-                                            ->label('文件'),
+                                            ->label(__('cat.file_name')),
                                         TextEntry::make('file_path')
-                                            ->label('文件路径'),
+                                            ->label(__('cat.file_path')),
                                         TextEntry::make('importer')
-                                            ->label('导入器'),
+                                            ->label(__('cat.importer')),
                                     ]),
                                     Group::make([
                                         TextEntry::make('user_id')
-                                            ->label('执行用户'),
+                                            ->label(__('cat.user_id')),
                                         TextEntry::make('total_rows')
-                                            ->label('总行'),
+                                            ->label(__('cat.total_rows')),
                                         TextEntry::make('processed_rows')
-                                            ->label('已处理行'),
+                                            ->label(__('cat.processed_rows')),
                                         TextEntry::make('successful_rows')
-                                            ->label('成功行'),
+                                            ->label(__('cat.successful_rows')),
                                     ]),
                                 ]),
                         ]),

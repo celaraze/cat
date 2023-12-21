@@ -41,7 +41,7 @@ class DeviceHasSecretForm
                 ->searchable()
                 ->preload()
                 ->required()
-                ->label(__('cat.secrets')),
+                ->label(__('cat.secret')),
         ];
     }
 }

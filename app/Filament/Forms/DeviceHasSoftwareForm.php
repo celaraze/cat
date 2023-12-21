@@ -36,7 +36,7 @@ class DeviceHasSoftwareForm
                 ->options(DeviceService::pluckOptions('id', $device_ids))
                 ->multiple()
                 ->searchable()
-                ->label(__('cat.devices')),
+                ->label(__('cat.device')),
         ];
     }
 }

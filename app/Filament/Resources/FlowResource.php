@@ -25,13 +25,19 @@ class FlowResource extends Resource implements HasShieldPermissions
 
     protected static ?string $navigationIcon = 'heroicon-m-bars-arrow-down';
 
-    protected static ?string $modelLabel = '流程';
-
     protected static ?int $navigationSort = 2;
 
-    protected static ?string $navigationGroup = '工作流';
-
     protected static ?string $recordTitleAttribute = 'name';
+
+    public static function getNavigationGroup(): ?string
+    {
+        return __('cat.workflow');
+    }
+
+    public static function getModelLabel(): string
+    {
+        return __('cat.flow');
+    }
 
     public static function getRecordSubNavigation(Page $page): array
     {
@@ -42,7 +48,7 @@ class FlowResource extends Resource implements HasShieldPermissions
             Node::class,
         ];
         $can_update_flow = auth()->user()->can('update_flow');
-        if (! $can_update_flow) {
+        if (!$can_update_flow) {
             unset($navigation_items[2]);
         }
 
@@ -72,9 +78,9 @@ class FlowResource extends Resource implements HasShieldPermissions
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('name')
-                    ->label('名称'),
+                    ->label(__('cat.name')),
                 Tables\Columns\TextColumn::make('tag')
-                    ->label('唯一标识'),
+                    ->label(__('cat.tag')),
             ])
             ->filters([
                 Tables\Filters\TrashedFilter::make(),
@@ -99,7 +105,7 @@ class FlowResource extends Resource implements HasShieldPermissions
                         return auth()->user()->can('create_flow');
                     }),
             ])
-            ->heading('流程');
+            ->heading(__('cat.flow'));
     }
 
     public static function getPages(): array

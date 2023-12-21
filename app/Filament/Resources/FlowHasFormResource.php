@@ -28,13 +28,19 @@ class FlowHasFormResource extends Resource implements HasShieldPermissions
 
     protected static ?string $navigationIcon = 'heroicon-s-document-text';
 
-    protected static ?string $modelLabel = '表单';
-
     protected static ?int $navigationSort = 1;
 
-    protected static ?string $navigationGroup = '工作流';
-
     protected static ?string $recordTitleAttribute = 'uuid';
+
+    public static function getNavigationGroup(): ?string
+    {
+        return __('cat.workflow');
+    }
+
+    public static function getModelLabel(): string
+    {
+        return __('cat.flow_has_form');
+    }
 
     public static function getRecordSubNavigation(Page $page): array
     {
@@ -66,23 +72,23 @@ class FlowHasFormResource extends Resource implements HasShieldPermissions
                 Tables\Columns\TextColumn::make('name')
                     ->toggleable()
                     ->searchable()
-                    ->label('表单名称'),
+                    ->label(__('cat.name')),
                 Tables\Columns\TextColumn::make('uuid')
                     ->badge()
                     ->color('primary')
-                    ->label('唯一编码'),
+                    ->label(__('cat.uuid')),
                 Tables\Columns\TextColumn::make('flow_name')
                     ->toggleable()
                     ->searchable()
-                    ->label('流程名称'),
+                    ->label(__('cat.flow_name')),
                 Tables\Columns\TextColumn::make('applicantUser.name')
                     ->toggleable()
                     ->searchable()
-                    ->label('申请人'),
+                    ->label(__('cat.applicant')),
                 Tables\Columns\TextColumn::make('type')
                     ->toggleable()
                     ->searchable()
-                    ->label('当前审批'),
+                    ->label(__('cat.flow_has_form_type')),
                 Tables\Columns\TextColumn::make('status')
                     ->toggleable()
                     ->searchable()
@@ -98,7 +104,7 @@ class FlowHasFormResource extends Resource implements HasShieldPermissions
                     ->color(function (string $state) {
                         return FlowHasFormEnum::statusColor($state);
                     })
-                    ->label('状态'),
+                    ->label(__('cat.status')),
             ])
             ->filters([
 
@@ -119,7 +125,7 @@ class FlowHasFormResource extends Resource implements HasShieldPermissions
                         return auth()->user()->can('create_flow::has::form');
                     }),
             ])
-            ->heading('表单');
+            ->heading(__('cat.flow_has_form'));
     }
 
     public static function getPages(): array
@@ -148,7 +154,7 @@ class FlowHasFormResource extends Resource implements HasShieldPermissions
                 Section::make()->schema([
                     TextEntry::make('uuid')
                         ->hintActions([
-                            Action::make('此表单内容为快照')
+                            Action::make(__('cat.action.flow_has_form_snapshot'))
                                 ->icon('heroicon-s-camera')
                                 ->color('warning')
                                 ->visible(function (FlowHasForm $form_has_form) {
@@ -159,7 +165,7 @@ class FlowHasFormResource extends Resource implements HasShieldPermissions
                                     // 根据表单状态判断是否显示审批按钮
                                     $current_approve_user_id = $flow_has_form->getAttribute('current_approve_user_id');
                                     $current_approve_role_id = $flow_has_form->getAttribute('current_approve_role_id');
-                                    if (! $flow_has_form->service()->isFinished()) {
+                                    if (!$flow_has_form->service()->isFinished()) {
                                         // 根据表单当前审批人判断是否显示审批按钮
                                         if ($current_approve_user_id == auth()->id()) {
                                             return true;
@@ -176,7 +182,7 @@ class FlowHasFormResource extends Resource implements HasShieldPermissions
                                 }),
                         ])
                         ->badge()
-                        ->label('唯一编码'),
+                        ->label(__('cat.uuid')),
                     TextEntry::make('status')
                         ->formatStateUsing(function (string $state) {
                             return FlowHasFormEnum::statusText($state);
@@ -190,21 +196,21 @@ class FlowHasFormResource extends Resource implements HasShieldPermissions
                         ->color(function (string $state) {
                             return FlowHasFormEnum::statusColor($state);
                         })
-                        ->label('状态'),
+                        ->label(__('cat.status')),
                     TextEntry::make('type')
-                        ->label('当前审核人'),
+                        ->label(__('cat.flow_has_form_type')),
                     TextEntry::make('flow_name')
                         ->hintActions([
-                            Action::make('流程已被删除')
+                            Action::make(__('cat.action.flow_has_form.flow_deleted'))
                                 ->icon('heroicon-m-information-circle')
                                 ->color('warning')
                                 ->visible(function (FlowHasForm $flow_has_form) {
-                                    return ! $flow_has_form->service()->isExistFlow();
+                                    return !$flow_has_form->service()->isExistFlow();
                                 }),
                         ])
-                        ->label('流程名称'),
+                        ->label(__('cat.flow_name')),
                     TextEntry::make('name')
-                        ->label('表单名称'),
+                        ->label(__('cat.name')),
                 ]),
             ])->columnSpan(['lg' => 1]),
             Group::make()->schema([

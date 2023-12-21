@@ -22,6 +22,7 @@ class InventoryAction
             ->form(InventoryForm::create())
             ->action(function (array $data) {
                 try {
+                    $data['creator_id'] = auth()->id();
                     $inventory_service = new InventoryService();
                     $inventory_service->create($data);
                     NotificationUtil::make(true, __('cat.action.created'));
@@ -60,6 +61,7 @@ class InventoryAction
             ->form(InventoryForm::check())
             ->action(function (array $data, InventoryHasTrack $inventory_has_track) {
                 try {
+                    $data['creator_id'] = auth()->id();
                     $inventory_has_track->service()->check($data);
                     NotificationUtil::make(true, __('cat.action.inventory_check_success'));
                 } catch (Exception $exception) {

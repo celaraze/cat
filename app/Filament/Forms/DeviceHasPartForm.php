@@ -26,7 +26,7 @@ class DeviceHasPartForm
                 ->searchable()
                 ->preload()
                 ->required()
-                ->label(__('cat.parts')),
+                ->label(__('cat.part')),
         ];
     }
 

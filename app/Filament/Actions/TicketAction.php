@@ -45,6 +45,7 @@ class TicketAction
             ->form(TicketForm::create())
             ->action(function (array $data) {
                 try {
+                    $data['user_id'] = auth()->id();
                     $ticket_service = new TicketService();
                     $ticket_service->create($data);
                     NotificationUtil::make(true, __('cat.action.create_success'));

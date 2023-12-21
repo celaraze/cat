@@ -63,7 +63,7 @@ class AssetNumberRuleService
     {
         return AssetNumberRule::query()
             ->where('class_name', $class_name)
-            ->update(['class_name' => '无']);
+            ->update(['class_name' => null]);
     }
 
     /**
@@ -109,7 +109,7 @@ class AssetNumberRuleService
         $auto_increment_length = $this->model->getAttribute('auto_increment_length');
         $auto_increment_count = $this->model->getAttribute('auto_increment_count') + 1;
         for ($i = strlen($auto_increment_count); $i < $auto_increment_length; $i++) {
-            $auto_increment_count = '0'.$auto_increment_count;
+            $auto_increment_count = '0' . $auto_increment_count;
         }
 
         return [
@@ -125,7 +125,7 @@ class AssetNumberRuleService
      */
     public function addAutoIncrementCount(): void
     {
-        $auto_increment_count = (int) $this->model->getAttribute('auto_increment_count');
+        $auto_increment_count = (int)$this->model->getAttribute('auto_increment_count');
         $this->model->setAttribute('auto_increment_count', $auto_increment_count + 1);
         $this->model->save();
     }

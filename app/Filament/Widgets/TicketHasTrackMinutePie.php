@@ -12,7 +12,7 @@ class TicketHasTrackMinutePie extends ApexChartWidget
 
     protected int|string|array $columnStart = 2;
 
-    public static function getHeading(): ?string
+    protected function getHeading(): ?string
     {
         return __('cat.widget.ticket_has_track_minute_pie_heading');
     }
@@ -21,7 +21,7 @@ class TicketHasTrackMinutePie extends ApexChartWidget
     {
         $ticket_id = UrlUtil::getRecordId();
         $ticket_service = new TicketService();
-        $ticket_service->setTicketById((int) $ticket_id);
+        $ticket_service->setTicketById((int)$ticket_id);
         $data = $ticket_service->minutePie();
 
         return [

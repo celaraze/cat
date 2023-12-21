@@ -27,7 +27,7 @@ class BrandService
     }
 
     /**
-     * 创建信息资产品牌.
+     * 创建.
      */
     #[ArrayShape(['name' => 'string'])]
     public function create(array $data): Brand

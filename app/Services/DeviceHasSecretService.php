@@ -71,7 +71,7 @@ class DeviceHasSecretService
             ->where('secret_id', $data['secret_id'])
             ->count();
         if ($exist) {
-            throw new Exception('密钥已经附加到此设备');
+            throw new Exception(__('cat.device_has_secret_exist'));
         }
         try {
             DB::beginTransaction();

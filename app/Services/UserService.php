@@ -60,7 +60,7 @@ class UserService
             $this->model->setAttribute('name', $data['name']);
             $this->model->setAttribute('email', $data['email']);
             if ($data['password'] != $data['password_verify']) {
-                throw new Exception('密码不一致');
+                throw new Exception(__('cat.password_not_match'));
             }
             $this->model->setAttribute('password', bcrypt($data['password']));
             $this->model->save();
@@ -106,19 +106,19 @@ class UserService
     public function delete(): ?bool
     {
         if ($this->model->approvalNodes()->count()) {
-            throw new Exception('请先在流程中删除以此用户审批的节点');
+            throw new Exception(__('cat.user_delete_failure_approval_node'));
         }
         if ($this->model->deviceHasUsers()->count()) {
-            throw new Exception('请先删除设备分配记录');
+            throw new Exception(__('cat.user_delete_failure_device_has_user'));
         }
         if ($this->model->applicantForms()->whereNotIn('status', [3, 4])->count()) {
-            throw new Exception('请先结案此用户的申请表单');
+            throw new Exception(__('cat.user_delete_failure_applicant_form'));
         }
         if ($this->model->approvalForms()->whereNotIn('status', [3, 4])->count()) {
-            throw new Exception('请先结案以此用户审批的申请表单');
+            throw new Exception(__('cat.user_delete_failure_approval_form'));
         }
         if ($this->model->getKey() == auth()->id()) {
-            throw new Exception('不能删除自己');
+            throw new Exception(__('cat.user_delete_failure_self'));
         }
 
         return $this->model->delete();
@@ -131,8 +131,8 @@ class UserService
      */
     public function forceDelete(): ?bool
     {
-        if (! $this->model->service()->isDeleted()) {
-            throw new Exception('用户未删除，无法永久删除');
+        if (!$this->model->service()->isDeleted()) {
+            throw new Exception(__('cat.user_force_delete_failure_not_deleted'));
         }
 
         return $this->model->forceDelete();
@@ -161,7 +161,7 @@ class UserService
             ->where('id', '!=', $this->model->getKey())
             ->exists();
         if ($is_exist) {
-            throw new Exception('邮箱已存在');
+            throw new Exception(__('cat.email_already_exist'));
         }
 
         try {

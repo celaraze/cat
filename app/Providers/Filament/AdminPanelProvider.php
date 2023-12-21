@@ -78,21 +78,21 @@ class AdminPanelProvider extends PanelProvider
             ->viteTheme('resources/css/filament/admin/theme.css')
             ->userMenuItems([
                 MenuItem::make()
-                    ->label('个人档')
+                    ->label(__('cat.profile'))
                     ->url('/profile')
                     ->icon('heroicon-m-identification'),
                 MenuItem::make()
-                    ->label('去 Github 为作者点赞 🌟')
+                    ->label(__('cat.menu.github_helper'))
                     ->url('https://github.com/celaraze/cat')
                     ->openUrlInNewTab()
                     ->icon('heroicon-s-star'),
                 MenuItem::make()
-                    ->label('官方文档')
+                    ->label(__('cat.menu.official_docs'))
                     ->url('https://github.com/celaraze/cat/wiki')
                     ->openUrlInNewTab()
                     ->icon('heroicon-o-book-open'),
                 MenuItem::make()
-                    ->label('官方用户群')
+                    ->label(__('cat.menu.official_community'))
                     ->url('https://pd.qq.com/s/sknbyfnh')
                     ->openUrlInNewTab()
                     ->icon('heroicon-s-user-group'),

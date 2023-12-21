@@ -70,7 +70,7 @@ class FlowService
     public function delete(): void
     {
         if ($this->model->activeForms()) {
-            throw new Exception('此流程仍有未结案表单，请先处理表单');
+            throw new Exception(__('cat.flow_has_active_forms'));
         }
         try {
             DB::beginTransaction();

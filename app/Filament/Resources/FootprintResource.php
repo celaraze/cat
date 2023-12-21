@@ -28,13 +28,18 @@ class FootprintResource extends Resource implements HasShieldPermissions
 
     protected static ?string $navigationIcon = 'heroicon-m-document-text';
 
-    protected static ?string $navigationGroup = '日志';
-
     protected static ?int $navigationSort = 2;
-
-    protected static ?string $modelLabel = '脚印';
-
     protected static ?string $recordTitleAttribute = 'id';
+
+    public static function getNavigationGroup(): ?string
+    {
+        return __('cat.log');
+    }
+
+    public static function getModelLabel(): string
+    {
+        return __('cat.footprint');
+    }
 
     public static function getRecordSubNavigation(Page $page): array
     {
@@ -75,7 +80,7 @@ class FootprintResource extends Resource implements HasShieldPermissions
                     ->toggleable()
                     ->badge()
                     ->color('gray')
-                    ->label('操作人'),
+                    ->label(__('cat.creator')),
                 TextColumn::make('action')
                     ->formatStateUsing(function ($state) {
                         return FootprintEnum::actionText($state);
@@ -84,24 +89,24 @@ class FootprintResource extends Resource implements HasShieldPermissions
                     ->color(function ($state) {
                         return FootprintEnum::actionColor($state);
                     })
-                    ->label('操作'),
+                    ->label(__('cat.action')),
                 TextColumn::make('model_class')
                     ->searchable()
                     ->toggleable()
-                    ->label('模型'),
+                    ->label(__('cat.model_class')),
                 TextColumn::make('model_id')
                     ->searchable()
                     ->toggleable()
-                    ->label('记录 ID'),
+                    ->label(__('cat.model_id')),
                 TextColumn::make('created_at')
                     ->alignRight()
-                    ->label('时间'),
+                    ->label(__('cat.created_at')),
             ])
             ->filters([
                 SelectFilter::make('action')
                     ->multiple()
                     ->options(FootprintEnum::allActionText())
-                    ->label('操作'),
+                    ->label(__('cat.action')),
             ])
             ->actions([
 
@@ -122,12 +127,12 @@ class FootprintResource extends Resource implements HasShieldPermissions
                                 ->schema([
                                     Group::make([
                                         TextEntry::make('creator.name')
-                                            ->label('操作人')
+                                            ->label(__('cat.creator'))
                                             ->badge(),
                                         TextEntry::make('model_class')
-                                            ->label('模型'),
+                                            ->label(__('cat.model_class')),
                                         TextEntry::make('created_at')
-                                            ->label('时间'),
+                                            ->label(__('cat.created_at')),
                                     ]),
                                     Group::make([
                                         TextEntry::make('action')
@@ -138,9 +143,9 @@ class FootprintResource extends Resource implements HasShieldPermissions
                                             ->color(function ($state) {
                                                 return FootprintEnum::actionColor($state);
                                             })
-                                            ->label('操作'),
+                                            ->label(__('cat.action')),
                                         TextEntry::make('model_id')
-                                            ->label('模型 ID'),
+                                            ->label(__('cat.model_id')),
                                     ]),
                                 ]),
                         ]),
@@ -163,7 +168,7 @@ $state
 EOF;
                                         })
                                         ->markdown()
-                                        ->label('原始值'),
+                                        ->label(__('cat.before')),
                                 ]),
                             ]),
                     ]),
@@ -186,11 +191,11 @@ $state
 EOF;
                                         })
                                         ->markdown()
-                                        ->label('修改内容')]),
+                                        ->label(__('cat.after'))]),
                             ]),
                     ]),
             ])
-                ->columnSpan(1), ]);
+                ->columnSpan(1),]);
     }
 
     public static function getEloquentQuery(): Builder

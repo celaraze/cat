@@ -362,6 +362,7 @@ class DeviceAction
                         $asset_number = $device->getAttribute('asset_number');
                     }
                     $data['asset_number'] = $asset_number;
+                    $data['user_id'] = auth()->id();
                     $ticket_service = new TicketService();
                     $ticket_service->create($data);
                     NotificationUtil::make(true, __('cat.action.created_ticket_success'));

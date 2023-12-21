@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\InventoryResource\Pages;
 
+use App\Enums\InventoryEnum;
 use App\Filament\Actions\InventoryAction;
 use App\Filament\Resources\InventoryResource;
 use App\Models\InventoryHasTrack;
@@ -40,7 +41,7 @@ class HasTrack extends ManageRelatedRecords
                     ->searchable()
                     ->toggleable()
                     ->formatStateUsing(function (string $state) {
-                        return InventoryUtil::mapper($state);
+                        return InventoryEnum::checkText($state);
                     })
                     ->label('状态'),
                 Tables\Columns\TextColumn::make('comment')

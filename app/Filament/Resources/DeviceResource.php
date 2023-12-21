@@ -45,20 +45,26 @@ class DeviceResource extends Resource implements HasShieldPermissions
 
     protected static ?string $navigationIcon = 'heroicon-s-server';
 
-    protected static ?string $modelLabel = '设备';
-
     protected static ?int $navigationSort = 1;
 
-    protected static ?string $navigationGroup = '资产';
-
     protected static ?string $recordTitleAttribute = 'asset_number';
+
+    public static function getNavigationGroup(): ?string
+    {
+        return __('cat.asset');
+    }
+
+    public static function getModelLabel(): string
+    {
+        return __('cat.device');
+    }
 
     public static function getGlobalSearchResultDetails(Model $record): array
     {
         /* @var Device $record */
         return [
             '名称' => $record->getAttribute('name'),
-            '用户' => $record->users()->value('name') ?? '无',
+            '用户' => $record->users()->value('name') ?? __('cat.none'),
         ];
     }
 
@@ -76,7 +82,7 @@ class DeviceResource extends Resource implements HasShieldPermissions
         ];
         $device_service = $page->getWidgetData()['record']->service();
         $can_update_device = auth()->user()->can('update_device');
-        if ($device_service->isRetired() || ! $can_update_device) {
+        if ($device_service->isRetired() || !$can_update_device) {
             unset($navigation_items[2]);
         }
 
@@ -187,15 +193,15 @@ class DeviceResource extends Resource implements HasShieldPermissions
                 Tables\Filters\SelectFilter::make('category_id')
                     ->multiple()
                     ->options(DeviceCategoryService::pluckOptions())
-                    ->label('分类'),
+                    ->label(__('cat.category')),
                 Tables\Filters\SelectFilter::make('brand_id')
                     ->multiple()
                     ->options(BrandService::pluckOptions())
-                    ->label('品牌'),
+                    ->label(__('cat.brand')),
                 Tables\Filters\SelectFilter::make('status')
                     ->multiple()
                     ->options(AssetEnum::allStatusText())
-                    ->label('状态'),
+                    ->label(__('cat.status')),
             ])
             ->actions([
                 DeviceAction::summary(),
@@ -205,7 +211,7 @@ class DeviceResource extends Resource implements HasShieldPermissions
                         $can = auth()->user()->can('assign_user_device');
                         $is_retired = $device->service()->isRetired();
 
-                        return $can && ! $is_retired && ! $device->hasUsers()->count();
+                        return $can && !$is_retired && !$device->hasUsers()->count();
                     }),
                 Tables\Actions\ActionGroup::make([
                     // 创建工单
@@ -231,7 +237,7 @@ class DeviceResource extends Resource implements HasShieldPermissions
                         }),
                 ])
                     ->visible(function (Device $device) {
-                        return ! $device->service()->isRetired();
+                        return !$device->service()->isRetired();
                     }),
             ])
             ->bulkActions([
@@ -246,11 +252,11 @@ class DeviceResource extends Resource implements HasShieldPermissions
                     ->importer(DeviceImporter::class)
                     ->icon('heroicon-o-arrow-up-tray')
                     ->color('primary')
-                    ->label('导入')
+                    ->label(__('cat.action.import'))
                     ->visible(auth()->user()->can('import_device')),
                 // 导出
                 ExportAction::make()
-                    ->label('导出')
+                    ->label(__('cat.action.export'))
                     ->visible(auth()->user()->can('export_device')),
                 // 创建
                 DeviceAction::create()
@@ -276,11 +282,11 @@ class DeviceResource extends Resource implements HasShieldPermissions
                             return auth()->user()->can('set_retire_flow_device');
                         }),
                 ])
-                    ->label('高级')
+                    ->label(__('cat.action.advance'))
                     ->icon('heroicon-m-cog-8-tooth')
                     ->button(),
             ])
-            ->heading('设备');
+            ->heading(__('cat.device'));
     }
 
     public static function form(Form $form): Form
@@ -299,28 +305,28 @@ class DeviceResource extends Resource implements HasShieldPermissions
                                 ->schema([
                                     Group::make([
                                         TextEntry::make('asset_number')
-                                            ->label('资产编号')
+                                            ->label(__('cat.asset_number'))
                                             ->badge()
                                             ->color('primary'),
                                         TextEntry::make('name')
-                                            ->label('名称'),
+                                            ->label(__('cat.name')),
                                         TextEntry::make('category.name')
-                                            ->label('分类'),
+                                            ->label(__('cat.category')),
                                     ]),
                                     Group::make([
                                         TextEntry::make('sn')
-                                            ->label('序列号'),
+                                            ->label(__('cat.sn')),
                                         TextEntry::make('brand.name')
-                                            ->label('品牌'),
+                                            ->label(__('cat.brand')),
                                         TextEntry::make('specification')
-                                            ->label('规格'),
+                                            ->label(__('cat.specification')),
                                     ]),
                                 ]),
                         ]),
                     ]),
                 Section::make()->schema([
                     TextEntry::make('description')
-                        ->label('说明'),
+                        ->label(__('cat.description')),
                 ]),
                 Section::make()->schema([
                     RepeatableEntry::make('additional')
@@ -334,7 +340,7 @@ class DeviceResource extends Resource implements HasShieldPermissions
                         ])
                         ->grid()
                         ->columns()
-                        ->label('额外信息'),
+                        ->label(__('cat.additional')),
                 ]),
             ])->columnSpan(['lg' => 2]),
             Group::make()->schema([
@@ -344,7 +350,7 @@ class DeviceResource extends Resource implements HasShieldPermissions
                             ->disk('public')
                             ->height(300)
                             ->defaultImageUrl(('/images/default.jpg'))
-                            ->label('照片'),
+                            ->label(__('cat.image')),
                     ]),
             ])->columnSpan(['lg' => 1]),
         ])->columns(3);

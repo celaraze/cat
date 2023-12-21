@@ -80,7 +80,7 @@ class DeviceHasPartService
             ->where('part_id', $data['part_id'])
             ->count();
         if ($exist) {
-            throw new Exception('配件已经附加到此设备');
+            throw new Exception(__('cat.device_has_part_exist'));
         }
         try {
             DB::beginTransaction();

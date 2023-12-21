@@ -36,17 +36,17 @@ class SoftwareService
             ->mapWithKeys(function (Software $software) {
                 $title = '';
                 $title .= $software->getAttribute('asset_number');
-                $title .= ' | '.$software->brand()->first()?->getAttribute('name') ?? ' | 未知品牌';
-                $title .= ' | '.$software->getAttribute('name');
-                $title .= ' | '.$software->getAttribute('specification');
-                $title .= ' | '.$software->category()->first()?->getAttribute('name') ?? ' | 未知分类';
+                $title .= ' | ' . $software->brand()->first()?->getAttribute('name') ?? ' | ' . __('cat.unknown_brand');
+                $title .= ' | ' . $software->getAttribute('name');
+                $title .= ' | ' . $software->getAttribute('specification');
+                $title .= ' | ' . $software->category()->first()?->getAttribute('name') ?? ' | ' . __('cat.unknown_category');
                 if ($software->getAttribute('max_license_count') == 0) {
                     $title .= ' - 无限制';
                 } else {
                     if ($software->getAttribute('max_license_count') > $software->usedCount()) {
-                        $title .= ' | '.$software->usedCount().'/'.$software->getAttribute('max_license_count').' 已使用';
+                        $title .= ' | ' . $software->usedCount() . '/' . $software->getAttribute('max_license_count') . __('cat.used');
                     } else {
-                        $title .= ' | '.$software->usedCount().'/'.$software->getAttribute('max_license_count').' 已使用 | 软件授权数量不足';
+                        $title .= ' | ' . $software->usedCount() . '/' . $software->getAttribute('max_license_count') . __('cat.used') . ' | ' . __('cat.software_license_exhausted');
                     }
                 }
 
@@ -102,8 +102,8 @@ class SoftwareService
             $this->model->setAttribute('name', $data['name']);
             $this->model->setAttribute('category_id', $data['category_id']);
             $this->model->setAttribute('brand_id', $data['brand_id']);
-            $this->model->setAttribute('sn', $data['sn'] ?? '无');
-            $this->model->setAttribute('specification', $data['specification'] ?? '无');
+            $this->model->setAttribute('sn', $data['sn']);
+            $this->model->setAttribute('specification', $data['specification']);
             $this->model->setAttribute('image', $data['image']);
             $this->model->setAttribute('max_license_count', $data['max_license_count']);
             $this->model->setAttribute('description', $data['description']);
@@ -150,12 +150,12 @@ class SoftwareService
         $flow_id = Setting::query()
             ->where('custom_key', 'software_retire_flow_id')
             ->value('custom_value');
-        if (! $flow_id) {
-            throw new Exception('还未配置软件报废流程');
+        if (!$flow_id) {
+            throw new Exception(__('cat.software_retire_flow_not_set'));
         }
         $flow = Flow::query()->where('id', $flow_id)->first();
-        if (! $flow) {
-            throw new Exception('未找到已配置的软件报废流程');
+        if (!$flow) {
+            throw new Exception(__('cat.software_retire_flow_not_found'));
         }
 
         return $flow;

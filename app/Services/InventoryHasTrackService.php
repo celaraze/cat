@@ -28,8 +28,8 @@ class InventoryHasTrackService
     public function check(array $data): InventoryHasTrack
     {
         $this->model->setAttribute('check', $data['check']);
-        $this->model->setAttribute('creator_id', auth()->id());
-        $this->model->setAttribute('comment', $data['comment'] ?? '无');
+        $this->model->setAttribute('creator_id', $data['creator_id']);
+        $this->model->setAttribute('comment', $data['comment']);
         $this->model->save();
 
         return $this->model;

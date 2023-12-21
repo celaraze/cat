@@ -37,9 +37,9 @@ class PartService
             ->mapWithKeys(function (Part $part) {
                 $title = '';
                 $title .= $part->getAttribute('asset_number');
-                $title .= ' | '.$part->brand()->first()?->getAttribute('name') ?? '未知品牌';
-                $title .= ' | '.$part->getAttribute('specification');
-                $title .= ' | '.$part->category()->first()?->getAttribute('name') ?? '未知分类';
+                $title .= ' | ' . $part->brand()->first()?->getAttribute('name') ?? __('cat.unknown_brand');
+                $title .= ' | ' . $part->getAttribute('specification');
+                $title .= ' | ' . $part->category()->first()?->getAttribute('name') ?? __('cat.unknown_category');
 
                 return [$part->getKey() => $title];
             });
@@ -90,8 +90,8 @@ class PartService
             $this->model->setAttribute('asset_number', $asset_number);
             $this->model->setAttribute('category_id', $data['category_id']);
             $this->model->setAttribute('brand_id', $data['brand_id']);
-            $this->model->setAttribute('sn', $data['sn'] ?? '无');
-            $this->model->setAttribute('specification', $data['specification'] ?? '无');
+            $this->model->setAttribute('sn', $data['sn']);
+            $this->model->setAttribute('specification', $data['specification']);
             $this->model->setAttribute('image', $data['image']);
             $this->model->setAttribute('description', $data['description']);
             $this->model->setAttribute('additional', json_encode($data['additional']));
@@ -136,14 +136,14 @@ class PartService
         $flow_id = Setting::query()
             ->where('custom_key', 'part_retire_flow_id')
             ->value('custom_value');
-        if (! $flow_id) {
-            throw new Exception('还未配置配件报废流程');
+        if (!$flow_id) {
+            throw new Exception(__('cat.part_retire_flow_not_set'));
         }
         $flow = Flow::query()
             ->where('id', $flow_id)
             ->first();
-        if (! $flow) {
-            throw new Exception('未找到已配置的配件报废流程');
+        if (!$flow) {
+            throw new Exception(__('cat.part_retire_flow_not_found'));
         }
 
         return $flow;

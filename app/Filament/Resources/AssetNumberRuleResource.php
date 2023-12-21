@@ -23,13 +23,19 @@ class AssetNumberRuleResource extends Resource implements HasShieldPermissions
 
     protected static ?int $navigationSort = 3;
 
-    protected static ?string $navigationGroup = '基础数据';
-
-    protected static ?string $modelLabel = '资产编号规则';
-
     protected static ?string $navigationIcon = 'heroicon-o-calculator';
 
     protected static ?string $recordTitleAttribute = 'name';
+
+    public static function getNavigationGroup(): ?string
+    {
+        return __('cat.basic_data');
+    }
+
+    public static function getModelLabel(): string
+    {
+        return __('cat.asset_number_rule');
+    }
 
     public static function getRecordSubNavigation(Page $page): array
     {
@@ -39,7 +45,7 @@ class AssetNumberRuleResource extends Resource implements HasShieldPermissions
             Edit::class,
         ];
         $can_update_device = auth()->user()->can('update_asset::number::rule');
-        if (! $can_update_device) {
+        if (!$can_update_device) {
             unset($navigation_items[2]);
         }
 
@@ -68,13 +74,13 @@ class AssetNumberRuleResource extends Resource implements HasShieldPermissions
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('name')
-                    ->label('名称'),
+                    ->label(__('cat.name')),
                 Tables\Columns\TextColumn::make('formula')
-                    ->label('公式')
+                    ->label(__('cat.formula'))
                     ->badge()
                     ->color('success'),
                 Tables\Columns\TextColumn::make('auto_increment_length')
-                    ->label('自增长度'),
+                    ->label(__('cat.auto_increment_length')),
             ])
             ->filters([
                 Tables\Filters\TrashedFilter::make(),
@@ -97,7 +103,7 @@ class AssetNumberRuleResource extends Resource implements HasShieldPermissions
                         return auth()->user()->can('create_asset::number::rule');
                     }),
             ])
-            ->heading('资产编号规则');
+            ->heading(__('cat.asset_number_rule'));
     }
 
     public static function getPages(): array

@@ -12,7 +12,7 @@ class FlowProgressChart extends ApexChartWidget
 
     protected static ?string $pollingInterval = null;
 
-    public static function getHeading(): ?string
+    protected function getHeading(): ?string
     {
         return __('cat.widget.flow_progress_chart_heading');
     }
@@ -21,7 +21,7 @@ class FlowProgressChart extends ApexChartWidget
     {
         $flow_has_form_id = UrlUtil::getRecordId();
         $flow_has_form_service = new FlowHasFormService();
-        $flow_has_form_service->setFlowHasFormById((int) $flow_has_form_id);
+        $flow_has_form_service->setFlowHasFormById((int)$flow_has_form_id);
         $nodes = $flow_has_form_service->getNodes();
 
         return [

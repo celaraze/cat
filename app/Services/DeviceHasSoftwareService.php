@@ -41,7 +41,7 @@ class DeviceHasSoftwareService
                 /* @var Software $software */
                 $software = $this->model->software()->first();
                 $this->model->delete();
-                if (! $software->hasSoftware()->count()) {
+                if (!$software->hasSoftware()->count()) {
                     $software->setAttribute('status', 0);
                     $software->save();
                 }
@@ -83,16 +83,16 @@ class DeviceHasSoftwareService
             ->where('software_id', $data['software_id'])
             ->count();
         if ($exist) {
-            throw new Exception('软件已经附加到此设备');
+            throw new Exception(__('cat.device_has_software_exist'));
         }
         $software = Software::query()->where('id', $data['software_id'])->first();
-        if (! $software) {
-            throw new Exception('软件不存在');
+        if (!$software) {
+            throw new Exception(__('cat.software_not_found'));
         }
         /* @var Software $software */
         $max_license_count = $software->getAttribute('max_license_count');
         if ($max_license_count != 0 && $software->usedCount() >= $max_license_count) {
-            throw new Exception('软件授权数量不足');
+            throw new Exception(__('cat.software_license_exhausted'));
         }
 
         try {

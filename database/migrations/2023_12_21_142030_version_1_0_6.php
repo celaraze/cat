@@ -4,8 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     public function up(): void
     {
         Schema::create('consumable', function (Blueprint $table) {
@@ -20,7 +19,7 @@ return new class extends Migration
             $table->string('unit_id')
                 ->comment('单位');
             $table->string('specification')
-                ->default('无')
+                ->nullable()
                 ->comment('规格');
             $table->string('description')->nullable()
                 ->comment('说明');
@@ -55,6 +54,52 @@ return new class extends Migration
             $table->softDeletes();
             $table->timestamps();
         });
+
+        Schema::table('asset_number_rules', function (Blueprint $table) {
+            $table->string('class_name')->nullable()->default(null)->change();
+        });
+
+        Schema::table('device_has_users', function (Blueprint $table) {
+            $table->string('comment')->default(null)->change();
+            $table->string('delete_comment')->default(null)->change();
+            $table->integer('creator_id')->default(null)->change();
+        });
+
+        Schema::table('devices', function (Blueprint $table) {
+            $table->string('name')->nullable()->default(null)->change();
+            $table->string('sn')->nullable()->default(null)->change();
+            $table->string('specification')->nullable()->default(null)->change();
+        });
+
+        Schema::table('flow_has_forms', function (Blueprint $table) {
+            $table->string('approve_user_name')->nullable()->default(null)->change();
+            $table->string('comment')->nullable()->default(null)->change();
+            $table->string('approve_comment')->nullable()->default(null)->change();
+            $table->string('payload')->nullable()->default(null)->change();
+        });
+
+        Schema::table('inventory_has_tracks', function (Blueprint $table) {
+            $table->string('comment')->nullable()->default(null)->change();
+        });
+
+        Schema::table('parts', function (Blueprint $table) {
+            $table->string('sn')->default(null)->change();
+            $table->string('specification')->default(null)->change();
+        });
+
+        Schema::table('software', function (Blueprint $table) {
+            $table->string('sn')->default(null)->change();
+            $table->string('specification')->default(null)->change();
+        });
+
+        Schema::table('vendor_has_contacts', function (Blueprint $table) {
+            $table->string('email')->default(null)->change();
+        });
+
+        Schema::table('vendors', function (Blueprint $table) {
+            $table->string('public_phone_number')->default(null)->change();
+            $table->string('referrer')->default(null)->change();
+        });
     }
 
     public function down(): void
@@ -62,5 +107,51 @@ return new class extends Migration
         Schema::dropIfExists('consumable');
         Schema::dropIfExists('consumable_categories');
         Schema::dropIfExists('consumable_units');
+
+        Schema::table('asset_number_rules', function (Blueprint $table) {
+            $table->string('class_name')->default('无')->change();
+        });
+
+        Schema::table('device_has_users', function (Blueprint $table) {
+            $table->string('comment')->default('无')->change();
+            $table->string('delete_comment')->default('无')->change();
+            $table->string('creator_id')->default(0)->change();
+        });
+
+        Schema::table('devices', function (Blueprint $table) {
+            $table->string('name')->default('无')->change();
+            $table->string('sn')->default('无')->change();
+            $table->string('specification')->default('无')->change();
+        });
+
+        Schema::table('flow_has_forms', function (Blueprint $table) {
+            $table->string('approve_user_name')->default('无')->change();
+            $table->string('comment')->default('无')->change();
+            $table->string('approve_comment')->default('无')->change();
+            $table->string('payload')->default('无')->change();
+        });
+
+        Schema::table('inventory_has_tracks', function (Blueprint $table) {
+            $table->string('comment')->default('无')->change();
+        });
+
+        Schema::table('parts', function (Blueprint $table) {
+            $table->string('sn')->nullable()->default('无')->change();
+            $table->string('specification')->nullable()->default('无')->change();
+        });
+
+        Schema::table('software', function (Blueprint $table) {
+            $table->string('sn')->nullable()->default('无')->change();
+            $table->string('specification')->nullable()->default('无')->change();
+        });
+
+        Schema::table('vendor_has_contacts', function (Blueprint $table) {
+            $table->string('email')->default('无')->change();
+        });
+
+        Schema::table('vendors', function (Blueprint $table) {
+            $table->string('public_phone_number')->default('无')->change();
+            $table->string('referrer')->default('无')->change();
+        });
     }
 };

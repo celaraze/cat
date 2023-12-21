@@ -16,7 +16,7 @@ class UrlUtil
     {
         try {
             // 如果没有传入 uri，就从 request 中获取
-            if (! $uri) {
+            if (!$uri) {
                 $uri = request()->getRequestUri();
             }
 
@@ -33,7 +33,7 @@ class UrlUtil
                 return $matches[1];
             }
         } catch (Exception $exception) {
-            throw new Exception('URL 解析错误。');
+            throw new Exception(__('cat.error_getting_record_id'));
         }
     }
 }

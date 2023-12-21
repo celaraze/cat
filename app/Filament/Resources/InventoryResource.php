@@ -2,12 +2,12 @@
 
 namespace App\Filament\Resources;
 
+use App\Enums\AssetEnum;
 use App\Filament\Actions\InventoryAction;
 use App\Filament\Resources\InventoryResource\Pages\HasTrack;
 use App\Filament\Resources\InventoryResource\Pages\Index;
 use App\Filament\Resources\InventoryResource\Pages\View;
 use App\Models\Inventory;
-use App\Utils\AssetUtil;
 use BezhanSalleh\FilamentShield\Contracts\HasShieldPermissions;
 use Filament\Infolists\Components\Grid;
 use Filament\Infolists\Components\Group;
@@ -29,13 +29,19 @@ class InventoryResource extends Resource implements HasShieldPermissions
 
     protected static ?string $navigationIcon = 'heroicon-o-magnifying-glass';
 
-    protected static ?string $navigationGroup = '工作流';
-
-    protected static ?string $modelLabel = '盘点';
-
     protected static ?int $navigationSort = 3;
 
     protected static ?string $recordTitleAttribute = 'name';
+
+    public static function getNavigationGroup(): ?string
+    {
+        return __('cat.workflow');
+    }
+
+    public static function getModelLabel(): string
+    {
+        return __('cat.inventory');
+    }
 
     public static function getRecordSubNavigation(Page $page): array
     {
@@ -69,7 +75,7 @@ class InventoryResource extends Resource implements HasShieldPermissions
                     ->label('名称'),
                 Tables\Columns\TextColumn::make('class_name')
                     ->formatStateUsing(function (string $state) {
-                        return AssetUtil::mapper($state);
+                        return AssetEnum::assetTypeText($state);
                     })
                     ->label('资产'),
                 Tables\Columns\TextColumn::make('creator.name')
@@ -127,7 +133,7 @@ class InventoryResource extends Resource implements HasShieldPermissions
                                     Group::make([
                                         TextEntry::make('class_name')
                                             ->formatStateUsing(function (string $state) {
-                                                return AssetUtil::mapper($state);
+                                                return AssetEnum::assetTypeText($state);
                                             })
                                             ->label('资产'),
                                     ]),

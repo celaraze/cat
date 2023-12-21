@@ -38,10 +38,10 @@ class DeviceService
             ->mapWithKeys(function (Device $device) use ($key_column) {
                 $title = '';
                 $title .= $device->getAttribute('asset_number');
-                $title .= ' | '.$device->getAttribute('name');
+                $title .= ' | ' . $device->getAttribute('name');
                 $user = $device->users()->first();
-                $user_name = $user?->getAttribute('name') ?? '无人使用';
-                $title .= ' | '.$user_name;
+                $user_name = $user?->getAttribute('name') ?? __('cat.no_user');
+                $title .= ' | ' . $user_name;
 
                 return [$device->getAttribute($key_column) => $title];
             });
@@ -100,10 +100,10 @@ class DeviceService
             }
             $this->model->setAttribute('asset_number', $asset_number);
             $this->model->setAttribute('category_id', $data['category_id']);
-            $this->model->setAttribute('name', $data['name'] ?? '无');
+            $this->model->setAttribute('name', $data['name']);
             $this->model->setAttribute('brand_id', $data['brand_id']);
-            $this->model->setAttribute('sn', $data['sn'] ?? '无');
-            $this->model->setAttribute('specification', $data['specification'] ?? '无');
+            $this->model->setAttribute('sn', $data['sn']);
+            $this->model->setAttribute('specification', $data['specification']);
             $this->model->setAttribute('image', $data['image']);
             $this->model->setAttribute('description', $data['description']);
             $this->model->setAttribute('additional', json_encode($data['additional']));
@@ -156,14 +156,14 @@ class DeviceService
         $flow_id = Setting::query()
             ->where('custom_key', 'device_retire_flow_id')
             ->value('custom_value');
-        if (! $flow_id) {
-            throw new Exception('还未配置设备报废流程');
+        if (!$flow_id) {
+            throw new Exception(__('cat.device_retire_flow_not_set'));
         }
         $flow = Flow::query()
             ->where('id', $flow_id)
             ->first();
-        if (! $flow) {
-            throw new Exception('未找到已配置的设备报废流程');
+        if (!$flow) {
+            throw new Exception(__('cat.device_retire_flow_not_found'));
         }
 
         return $flow;
