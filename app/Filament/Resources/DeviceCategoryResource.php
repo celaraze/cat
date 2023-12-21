@@ -105,7 +105,7 @@ class DeviceCategoryResource extends Resource implements HasShieldPermissions
                     ->visible(function () {
                         return auth()->user()->can('create_device::category');
                     }),
-                DeviceCategoryAction::toDevices(),
+                DeviceCategoryAction::backToDevice(),
             ]);
     }
 

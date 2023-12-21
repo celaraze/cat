@@ -43,7 +43,7 @@ class Software extends ManageRelatedRecords
             ])
             ->actions([
                 // 前往软件清单
-                SoftwareCategoryAction::toSoftware(),
+                SoftwareCategoryAction::toSoftwareView(),
             ])
             ->bulkActions([
 

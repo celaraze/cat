@@ -16,8 +16,8 @@ class SoftwareCategoryImporter extends Importer
         return [
             ImportColumn::make('name')
                 ->requiredMapping()
-                ->example('示例软件分类')
-                ->label('名称'),
+                ->example(__('cat.example_software_category'))
+                ->label(__('cat.name')),
         ];
     }
 

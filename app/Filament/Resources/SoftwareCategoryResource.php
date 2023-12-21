@@ -107,7 +107,7 @@ class SoftwareCategoryResource extends Resource implements HasShieldPermissions
                         return auth()->user()->can('create_software::category');
                     }),
                 // 前往软件
-                SoftwareCategoryAction::toSoftwareIndex(),
+                SoftwareCategoryAction::backToSoftware(),
             ]);
     }
 

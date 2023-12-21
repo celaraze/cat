@@ -43,7 +43,7 @@ class Part extends ManageRelatedRecords
             ])
             ->actions([
                 // 前往配件详情
-                PartCategoryAction::toPart(),
+                PartCategoryAction::toPartView(),
             ])
             ->bulkActions([
 

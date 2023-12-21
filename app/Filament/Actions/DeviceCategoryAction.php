@@ -14,12 +14,9 @@ use Filament\Tables\Actions\Action;
 
 class DeviceCategoryAction
 {
-    /**
-     * 创建设备分类.
-     */
     public static function create(): Action
     {
-        return Action::make('新增')
+        return Action::make(__('cat.action.create'))
             ->slideOver()
             ->icon('heroicon-m-plus')
             ->form(DeviceCategoryForm::createOrEdit())
@@ -27,7 +24,7 @@ class DeviceCategoryAction
                 try {
                     $device_category_service = new DeviceCategoryService();
                     $device_category_service->create($data);
-                    NotificationUtil::make(true, '已创建设备分类');
+                    NotificationUtil::make(true, __('cat.action.create_success'));
                 } catch (Exception $exception) {
                     LogUtil::error($exception);
                     NotificationUtil::make(false, $exception);
@@ -36,34 +33,25 @@ class DeviceCategoryAction
             ->closeModalByClickingAway(false);
     }
 
-    /**
-     * 前往设备清单.
-     */
-    public static function toDevices(): Action
+    public static function backToDevice(): Action
     {
-        return Action::make('返回设备')
+        return Action::make(__('cat.action.back_to_device'))
             ->icon('heroicon-s-server')
             ->url(DeviceResource::getUrl('index'));
     }
 
-    /**
-     * 前往设备.
-     */
-    public static function toDevice(): Action
+    public static function toDeviceView(): Action
     {
-        return Action::make('前往设备详情')
+        return Action::make(__('cat.action.to_device_view'))
             ->icon('heroicon-s-server')
             ->url(function (Device $device) {
                 return DeviceResource::getUrl('view', ['record' => $device->getKey()]);
             });
     }
 
-    /**
-     * 删除设备分类.
-     */
     public static function delete(): Action
     {
-        return Action::make('删除')
+        return Action::make(__('cat.action.delete'))
             ->icon('heroicon-s-trash')
             ->color('danger')
             ->requiresConfirmation()
@@ -71,7 +59,7 @@ class DeviceCategoryAction
             ->action(function (DeviceCategory $device_category) {
                 try {
                     $device_category->service()->delete();
-                    NotificationUtil::make(true, '已删除设备分类');
+                    NotificationUtil::make(true, __('cat.action.delete_success'));
                 } catch (Exception $exception) {
                     LogUtil::error($exception);
                     NotificationUtil::make(false, $exception);

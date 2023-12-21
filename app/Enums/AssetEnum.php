@@ -7,24 +7,24 @@ class AssetEnum
     public static function statusText(int $state): string
     {
         return match ($state) {
-            0 => '闲置',
-            1 => '使用',
-            2 => '借用',
-            3 => '报废',
-            4 => '正常',
-            5 => '弃用',
+            0 => __('cat.asset.status.idle'),
+            1 => __('cat.asset.status.using'),
+            2 => __('cat.asset.status.borrowing'),
+            3 => __('cat.asset.status.retired'),
+            4 => __('cat.asset.status.normal'),
+            5 => __('cat.asset.status.deprecated'),
         };
     }
 
     public static function allStatusText(): array
     {
         return [
-            0 => '闲置',
-            1 => '使用',
-            2 => '借用',
-            3 => '报废',
-            4 => '正常',
-            5 => '弃用',
+            0 => __('cat.asset.status.idle'),
+            1 => __('cat.asset.status.using'),
+            2 => __('cat.asset.status.borrowing'),
+            3 => __('cat.asset.status.retired'),
+            4 => __('cat.asset.status.normal'),
+            5 => __('cat.asset.status.deprecated'),
         ];
     }
 
@@ -42,8 +42,8 @@ class AssetEnum
     public static function relationOperationText(int $state): string
     {
         return match ($state) {
-            0 => '附加',
-            1 => '脱离',
+            0 => __('cat.asset.relation_operation.attach'),
+            1 => __('cat.asset.relation_operation.detach'),
         };
     }
 
@@ -58,8 +58,8 @@ class AssetEnum
     public static function allRelationOperationText(): array
     {
         return [
-            0 => '附加',
-            1 => '脱离',
+            0 => __('cat.asset.relation_operation.attach'),
+            1 => __('cat.asset.relation_operation.detach'),
         ];
     }
 }

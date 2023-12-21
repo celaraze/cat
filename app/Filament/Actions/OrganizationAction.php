@@ -15,31 +15,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class OrganizationAction
 {
-    /**
-     * 创建组织按钮.
-     */
-    public static function create(): Action
-    {
-        return Action::make('新增')
-            ->slideOver()
-            ->icon('heroicon-m-plus')
-            ->form(OrganizationForm::createOrEdit())
-            ->action(function (array $data) {
-                try {
-                    $organization_service = new OrganizationService();
-                    $organization_service->create($data);
-                    NotificationUtil::make(true, '已创建组织');
-                } catch (Exception $exception) {
-                    LogUtil::error($exception);
-                    NotificationUtil::make(false, $exception);
-                }
-            })
-            ->closeModalByClickingAway(false);
-    }
-
-    /**
-     * 新增组织用户记录.
-     */
     public static function createHasUser(?Model $out_organization = null): \Filament\Tables\Actions\Action
     {
         return \Filament\Tables\Actions\Action::make('新增成员')
@@ -62,19 +37,35 @@ class OrganizationAction
             ->closeModalByClickingAway(false);
     }
 
-    /**
-     * 删除组织用户记录.
-     */
+    public static function create(): Action
+    {
+        return Action::make(__('cat.action.create'))
+            ->slideOver()
+            ->icon('heroicon-m-plus')
+            ->form(OrganizationForm::createOrEdit())
+            ->action(function (array $data) {
+                try {
+                    $organization_service = new OrganizationService();
+                    $organization_service->create($data);
+                    NotificationUtil::make(true, __('cat.action.created'));
+                } catch (Exception $exception) {
+                    LogUtil::error($exception);
+                    NotificationUtil::make(false, $exception);
+                }
+            })
+            ->closeModalByClickingAway(false);
+    }
+
     public static function deleteHasUser(): \Filament\Tables\Actions\Action
     {
-        return \Filament\Tables\Actions\Action::make('删除')
+        return \Filament\Tables\Actions\Action::make(__('cat.action.delete'))
             ->requiresConfirmation()
             ->icon('heroicon-s-trash')
             ->color('danger')
             ->action(function (OrganizationHasUser $organization_has_user) {
                 try {
                     $organization_has_user->service()->delete();
-                    NotificationUtil::make(true, '已删除用户记录');
+                    NotificationUtil::make(true, __('cat.action.delete_success'));
                 } catch (Exception $exception) {
                     LogUtil::error($exception);
                     NotificationUtil::make(false, $exception);

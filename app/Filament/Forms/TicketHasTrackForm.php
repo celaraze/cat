@@ -15,12 +15,12 @@ class TicketHasTrackForm
         return [
             RichEditor::make('comment')
                 ->required()
-                ->label('评论'),
+                ->label(__('cat.comment')),
             TextInput::make('minutes')
                 ->numeric()
                 ->minValue(1)
-                ->hint('单位：分钟')
-                ->label('工时'),
+                ->hint(__('cat.ticket.minutes'))
+                ->label(__('cat.ticket.minutes')),
         ];
     }
 }

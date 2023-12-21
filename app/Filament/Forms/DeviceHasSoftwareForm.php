@@ -20,7 +20,7 @@ class DeviceHasSoftwareForm
                 ->multiple()
                 ->searchable()
                 ->preload()
-                ->label('软件'),
+                ->label(__('cat.software')),
         ];
     }
 
@@ -36,7 +36,7 @@ class DeviceHasSoftwareForm
                 ->options(DeviceService::pluckOptions('id', $device_ids))
                 ->multiple()
                 ->searchable()
-                ->label('设备'),
+                ->label(__('cat.devices')),
         ];
     }
 }

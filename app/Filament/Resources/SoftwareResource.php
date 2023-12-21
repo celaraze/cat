@@ -210,7 +210,7 @@ class SoftwareResource extends Resource implements HasShieldPermissions
                     }),
                 Tables\Actions\ActionGroup::make([
                     // 前往软件分类
-                    SoftwareAction::toCategories(),
+                    SoftwareAction::toCategory(),
                     // 配置资产编号自动生成规则
                     SoftwareAction::setAssetNumberRule()
                         ->visible(function () {

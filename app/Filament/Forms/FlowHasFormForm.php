@@ -16,15 +16,15 @@ class FlowHasFormForm
     {
         return [
             Radio::make('status')
-                ->label('审批类型')
+                ->label(__('cat.flow_has_form.status'))
                 ->options([
-                    1 => '同意，表单进入下一个审核。',
-                    2 => '退回，表单回到上一个审核。',
-                    3 => '驳回，表单直接结束流程。',
+                    1 => __('cat.flow_has_form.approve'),
+                    2 => __('cat.flow_has_form.back'),
+                    3 => __('cat.flow_has_form.reject'),
                 ])
                 ->required(),
             TextInput::make('approve_comment')
-                ->label('审批意见')
+                ->label(__('cat.approve_comment'))
                 ->required(),
         ];
     }
@@ -37,14 +37,14 @@ class FlowHasFormForm
         return [
             Select::make('flow_id')
                 ->options(FlowService::pluckOptions())
-                ->label('选择流程')
+                ->label(__('cat.flow'))
                 ->required(),
             TextInput::make('name')
-                ->label('表单名称')
-                ->helperText('申请表单的主题，例如某某某申请某资产一台。')
+                ->label(__('cat.name'))
+                ->helperText(__('cat.name_helper'))
                 ->required(),
             TextInput::make('comment')
-                ->label('申请意见')
+                ->label(__('cat.comment'))
                 ->required(),
         ];
     }

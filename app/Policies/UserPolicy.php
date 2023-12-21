@@ -62,7 +62,7 @@ class UserPolicy
      */
     public function forceDelete(User $user): bool
     {
-        return $user->can('{{ ForceDelete }}');
+        return $user->can('force_delete_user');
     }
 
     /**

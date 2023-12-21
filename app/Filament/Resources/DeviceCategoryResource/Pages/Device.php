@@ -43,7 +43,7 @@ class Device extends ManageRelatedRecords
             ])
             ->actions([
                 // 前往设备详情
-                DeviceCategoryAction::toDevice(),
+                DeviceCategoryAction::toDeviceView(),
             ])
             ->bulkActions([
 

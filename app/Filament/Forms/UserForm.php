@@ -21,14 +21,14 @@ class UserForm
     {
         return [
             TextInput::make('name')
-                ->label('名称')
+                ->label(__('cat.name'))
                 ->required(),
             TextInput::make('email')
-                ->label('邮箱')
+                ->label(__('cat.email'))
                 ->rules(['email'])
                 ->required(),
             Select::make('roles')
-                ->label('角色')
+                ->label(__('cat.roles'))
                 ->multiple()
                 ->options(RoleService::pluckOptions())
                 ->searchable()
@@ -47,11 +47,11 @@ class UserForm
         return [
             TextInput::make('name')
                 ->required()
-                ->label('名称'),
+                ->label(__('cat.name')),
             TextInput::make('email')
                 ->rules(['email'])
                 ->required()
-                ->label('邮箱'),
+                ->label(__('cat.email')),
             // 排除超级管理员角色
             Select::make('roles')
                 ->multiple()
@@ -69,7 +69,7 @@ class UserForm
                 ->searchable()
                 ->preload()
                 ->default('roles')
-                ->label('角色'),
+                ->label(__('cat.roles')),
         ];
     }
 
@@ -80,11 +80,11 @@ class UserForm
     {
         return [
             TextInput::make('password')
-                ->label('新密码')
+                ->label(__('cat.new_password'))
                 ->password()
                 ->required(),
             TextInput::make('password-verify')
-                ->label('确认密码')
+                ->label(__('cat.new_password_verify'))
                 ->password()
                 ->required(),
         ];
@@ -97,7 +97,7 @@ class UserForm
     {
         return [
             FileUpload::make('avatar')
-                ->label('照片')
+                ->label(__('cat.image'))
                 ->directory('avatars')
                 ->getUploadedFileNameForStorageUsing(
                     function (TemporaryUploadedFile $file) {

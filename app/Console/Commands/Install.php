@@ -6,23 +6,10 @@ use Illuminate\Console\Command;
 
 class Install extends Command
 {
-    /**
-     * The name and signature of the console command.
-     *
-     * @var string
-     */
     protected $signature = 'cat:install';
 
-    /**
-     * The console command description.
-     *
-     * @var string
-     */
     protected $description = '应用安装脚本';
 
-    /**
-     * Execute the console command.
-     */
     public function handle(): void
     {
         $this->info('欢迎使用 CAT 一站式运维平台');

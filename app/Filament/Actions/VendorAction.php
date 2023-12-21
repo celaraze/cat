@@ -15,12 +15,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class VendorAction
 {
-    /**
-     * 创建联系人按钮.
-     */
     public static function createHasContact(?Model $out_vendor = null): Action
     {
-        return Action::make('添加联系人')
+        return Action::make(__('cat.action.create_vendor_has_contact'))
             ->slideOver()
             ->icon('heroicon-m-plus-circle')
             ->form(VendorHasContactForm::createOrEdit())
@@ -32,7 +29,7 @@ class VendorAction
                     $data['vendor_id'] = $vendor->getKey();
                     $vendor_has_contact_service = new VendorHasContactService();
                     $vendor_has_contact_service->create($data);
-                    NotificationUtil::make(true, '已添加联系人');
+                    NotificationUtil::make(true, __('cat.action.create_vendor_has_contact_success'));
                 } catch (Exception $exception) {
                     LogUtil::error($exception);
                     NotificationUtil::make(false, $exception);
@@ -41,12 +38,9 @@ class VendorAction
             ->closeModalByClickingAway(false);
     }
 
-    /**
-     * 创建厂商.
-     */
     public static function create(): Action
     {
-        return Action::make('创建厂商')
+        return Action::make(__('cat.action.create'))
             ->slideOver()
             ->icon('heroicon-m-plus')
             ->form(VendorForm::createOrEdit())
@@ -54,7 +48,7 @@ class VendorAction
                 try {
                     $vendor_service = new VendorService();
                     $vendor_service->create($data);
-                    NotificationUtil::make(true, '已创建厂商');
+                    NotificationUtil::make(true, __('cat.action.create_success'));
                 } catch (Exception $exception) {
                     LogUtil::error($exception);
                     NotificationUtil::make(false, $exception);
@@ -63,12 +57,9 @@ class VendorAction
             ->closeModalByClickingAway(false);
     }
 
-    /**
-     * 删除.
-     */
     public static function delete(): Action
     {
-        return Action::make('删除')
+        return Action::make(__('cat.action.delete'))
             ->icon('heroicon-m-trash')
             ->color('danger')
             ->requiresConfirmation()
@@ -76,7 +67,7 @@ class VendorAction
             ->action(function (Vendor $vendor) {
                 try {
                     $vendor->service()->delete();
-                    NotificationUtil::make(true, '已删除厂商');
+                    NotificationUtil::make(true, __('cat.action.delete_success'));
                 } catch (Exception $exception) {
                     LogUtil::error($exception);
                     NotificationUtil::make(false, $exception);

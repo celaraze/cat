@@ -201,7 +201,7 @@ class PartResource extends Resource implements HasShieldPermissions
                 }),
                 Tables\Actions\ActionGroup::make([
                     // 前往配件分类
-                    PartAction::toCategories(),
+                    PartAction::toCategory(),
                     // 配置资产编号自动生成
                     PartAction::setAssetNumberRule()
                         ->visible(function () {

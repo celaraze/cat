@@ -18,14 +18,14 @@ class VendorHasContactForm
             TextInput::make('name')
                 ->maxLength(255)
                 ->required()
-                ->label('名称'),
+                ->label(__('cat.name')),
             //endregion
 
             //region 文本 电话 phone_number
             TextInput::make('phone_number')
                 ->maxLength(255)
                 ->required()
-                ->label('电话'),
+                ->label(__('cat.phone_number')),
             //endregion
 
             //region 文本 邮箱 email
@@ -33,19 +33,19 @@ class VendorHasContactForm
                 ->maxLength(255)
                 ->required()
                 ->rules(['email'])
-                ->label('邮箱'),
+                ->label(__('cat.email')),
             //endregion
 
             //region 数组 额外信息 additional
             Repeater::make('additional')
                 ->schema([
                     TextInput::make('name')
-                        ->label('名称'),
+                        ->label(__('cat.name')),
                     TextInput::make('text')
-                        ->label('值'),
+                        ->label(__('cat.text')),
                 ])
                 ->defaultItems(0)
-                ->label('额外信息'),
+                ->label(__('cat.additional')),
             //endregion
         ];
     }

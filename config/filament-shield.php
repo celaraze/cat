@@ -7,7 +7,7 @@ return [
         'navigation_sort' => -1,
         'navigation_badge' => true,
         'navigation_group' => true,
-        'is_globally_searchable' => false,
+        'is_globally_searchable' => true,
         'show_model_path' => false,
         'is_scoped_to_tenant' => true,
     ],
@@ -49,8 +49,8 @@ return [
     ],
 
     'entities' => [
-        'pages' => true,
-        'widgets' => true,
+        'pages' => false,
+        'widgets' => false,
         'resources' => true,
         'custom_permissions' => false,
     ],
@@ -63,21 +63,11 @@ return [
         'enabled' => true,
 
         'pages' => [
-            'Dashboard',
-            'Profile',
-            'Site',
+
         ],
 
         'widgets' => [
-            'AccountWidget',
-            'FilamentInfoWidget',
-            'StatsOverviewWidget',
-            'FlowProgressChart',
-            'ChangePassword',
-            'ChangeAvatar',
-            'TicketHasTrackMinutePie',
-            'AssetOverview',
-            'TicketOverview',
+
         ],
 
         'resources' => [],

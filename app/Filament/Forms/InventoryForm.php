@@ -18,7 +18,7 @@ class InventoryForm
     {
         return [
             TextInput::make('name')
-                ->label('任务名称')
+                ->label(__('cat.name'))
                 ->required(),
             Select::make('class_name')
                 ->options([
@@ -26,13 +26,13 @@ class InventoryForm
                     Part::class => '配件',
                     Software::class => '软件',
                 ])
-                ->label('资产')
+                ->label(__('cat.asset'))
                 ->reactive()
                 ->required(),
             Select::make('model_ids')
                 ->multiple()
                 ->searchable()
-                ->label('资产编号')
+                ->label(__('cat.asset_number'))
                 ->options(function (callable $get) {
                     $model = $get('class_name');
                     if (! $model) {
@@ -54,13 +54,13 @@ class InventoryForm
         return [
             Radio::make('check')
                 ->options([
-                    1 => '在库',
-                    2 => '标记缺失',
+                    1 => __('cat.in_stock'),
+                    2 => __('cat.not_in_stock'),
                 ])
-                ->label('操作')
+                ->label(__('cat.operation'))
                 ->required(),
             TextInput::make('comment')
-                ->label('备忘'),
+                ->label(__('cat.comment')),
         ];
     }
 }

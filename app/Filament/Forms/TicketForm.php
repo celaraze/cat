@@ -17,26 +17,26 @@ class TicketForm
     {
         return [
             Select::make('asset_number')
-                ->label('资产编号')
+                ->label(__('cat.asset_number'))
                 ->options(DeviceService::pluckOptions('asset_number'))
                 ->searchable()
                 ->preload()
                 ->required(),
             TextInput::make('subject')
-                ->label('主题')
+                ->label(__('cat.subject'))
                 ->required(),
             RichEditor::make('description')
-                ->label('描述')
+                ->label(__('cat.description'))
                 ->required(),
             Select::make('category_id')
-                ->label('工单分类')
+                ->label(__('cat.category'))
                 ->relationship('category', 'name')
                 ->searchable()
                 ->preload()
                 ->createOptionForm(TicketCategoryForm::createOrEdit())
                 ->required(),
             Select::make('priority')
-                ->label('优先级')
+                ->label(__('cat.priority'))
                 ->options(TicketEnum::allPriorityText())
                 ->searchable()
                 ->preload()

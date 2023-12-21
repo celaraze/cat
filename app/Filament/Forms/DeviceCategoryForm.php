@@ -16,7 +16,7 @@ class DeviceCategoryForm
     {
         return [
             TextInput::make('name')
-                ->label('名称')
+                ->label(__('cat.name'))
                 ->maxLength(255)
                 ->required(),
         ];

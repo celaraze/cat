@@ -16,23 +16,20 @@ use Illuminate\Database\Eloquent\Model;
 
 class SecretAction
 {
-    /**
-     * 查看密码.
-     */
     public static function viewToken(): Action
     {
-        return Action::make('查看密码')
+        return Action::make(__('cat.action.view_token'))
             ->icon('heroicon-m-key')
             ->color('warning')
             ->requiresConfirmation()
-            ->modalDescription('请验证您的身份，通过后密码将以通知形式展示在右上角。您可以查看并复制密码，并自行关闭消息。')
+            ->modalDescription(__('cat.action.view_token_description'))
             ->form(SecretForm::viewToken())
             ->action(function (array $data, Secret $secret) {
                 try {
                     if (auth()->attempt(['email' => auth()->user()->email, 'password' => $data['password']])) {
-                        NotificationUtil::make(true, '密码：'.decrypt($secret->getAttribute('token')), true);
+                        NotificationUtil::make(true, __('cat.password').decrypt($secret->getAttribute('token')), true);
                     } else {
-                        NotificationUtil::make(false, '密码错误');
+                        NotificationUtil::make(false, __('cat.action.view_token_failure'));
                     }
                 } catch (Exception $exception) {
                     LogUtil::error($exception);
@@ -41,13 +38,10 @@ class SecretAction
             });
     }
 
-    /**
-     * 创建密钥-设备按钮.
-     */
     public static function createDeviceHasSecret(?Model $out_secret = null): Action
     {
         /* @var Secret $out_secret */
-        return Action::make('附加到设备')
+        return Action::make(__('cat.action.assign_device'))
             ->slideOver()
             ->icon('heroicon-m-plus-circle')
             ->form(DeviceHasSecretForm::createFromSecret($out_secret))
@@ -61,7 +55,7 @@ class SecretAction
                     $data['status'] = 0;
                     $device_has_secret_service = new DeviceHasSecretService();
                     $device_has_secret_service->create($data);
-                    NotificationUtil::make(true, '密钥已附加到设备');
+                    NotificationUtil::make(true, __('cat.action.assign_device_success'));
                 } catch (Exception $exception) {
                     LogUtil::error($exception);
                     NotificationUtil::make(false, $exception);
@@ -70,12 +64,9 @@ class SecretAction
             ->closeModalByClickingAway(false);
     }
 
-    /**
-     * 创建按钮.
-     */
     public static function create(): Action
     {
-        return Action::make('新增')
+        return Action::make(__('cat.action.create'))
             ->slideOver()
             ->icon('heroicon-m-plus')
             ->form(SecretForm::createOrEdit())
@@ -84,7 +75,7 @@ class SecretAction
                     $data['creator_id'] = auth()->id();
                     $secret_service = new SecretService();
                     $secret_service->create($data);
-                    NotificationUtil::make(true, '已创建密钥');
+                    NotificationUtil::make(true, __('cat.action.create_success'));
                 } catch (Exception $exception) {
                     LogUtil::error($exception);
                     NotificationUtil::make(false, $exception);
@@ -93,12 +84,9 @@ class SecretAction
             ->closeModalByClickingAway(false);
     }
 
-    /**
-     * 密钥脱离设备按钮.
-     */
     public static function deleteDeviceHasSecret(): Action
     {
-        return Action::make('脱离')
+        return Action::make(__('cat.action.unassign_device'))
             ->icon('heroicon-s-minus-circle')
             ->requiresConfirmation()
             ->color('danger')
@@ -109,7 +97,7 @@ class SecretAction
                         'status' => 1,
                     ];
                     $device_has_secret->service()->delete($data);
-                    NotificationUtil::make(true, '密钥已脱离设备');
+                    NotificationUtil::make(true, __('cat.action.unassign_device_success'));
                 } catch (Exception $exception) {
                     LogUtil::error($exception);
                     NotificationUtil::make(false, $exception);
@@ -118,12 +106,9 @@ class SecretAction
             ->closeModalByClickingAway(false);
     }
 
-    /**
-     * 弃用按钮.
-     */
     public static function retire(): Action
     {
-        return Action::make('弃用')
+        return Action::make(__('cat.action.retire'))
             ->icon('heroicon-m-trash')
             ->color('danger')
             ->requiresConfirmation()
@@ -131,7 +116,7 @@ class SecretAction
             ->action(function (Secret $secret) {
                 try {
                     $secret->service()->retire();
-                    NotificationUtil::make(true, '已弃用密钥');
+                    NotificationUtil::make(true, __('cat.action.retire_success'));
                 } catch (Exception $exception) {
                     LogUtil::error($exception);
                     NotificationUtil::make(false, $exception);

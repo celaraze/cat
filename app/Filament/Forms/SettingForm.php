@@ -17,17 +17,17 @@ class SettingForm
 
         return [
             TextInput::make('name')
-                ->label('名称')
+                ->label(__('cat.name'))
                 ->required(),
             Textarea::make('formula')
-                ->label('公式')
+                ->label(__('cat.formula'))
                 ->required(),
             TextInput::make('auto_increment_length')
-                ->label('自增长度')
+                ->label(__('cat.auto_increment_length'))
                 ->numeric()
                 ->required(),
             Shout::make('description')
-                ->label('公式说明')
+                ->label(__('cat.description'))
                 ->content($description),
         ];
     }

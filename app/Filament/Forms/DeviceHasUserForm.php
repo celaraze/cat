@@ -18,21 +18,21 @@ class DeviceHasUserForm
         return [
             Radio::make('status')
                 ->options([1 => '使用', 2 => '借用'])
-                ->label('分配方式')
+                ->label(__('cat.status'))
                 ->required(),
 
             Select::make('user_id')
-                ->label('用户')
+                ->label(__('cat.user'))
                 ->options(UserService::pluckOptions())
                 ->searchable()
                 ->required(),
 
             TextInput::make('comment')
-                ->label('说明')
+                ->label(__('cat.comment'))
                 ->required(),
 
             DatePicker::make('expired_at')
-                ->label('过期时间'),
+                ->label(__('cat.expired_at')),
         ];
     }
 
@@ -43,7 +43,7 @@ class DeviceHasUserForm
     {
         return [
             TextInput::make('delete_comment')
-                ->label('解除说明')
+                ->label(__('cat.delete_comment'))
                 ->required(),
         ];
     }

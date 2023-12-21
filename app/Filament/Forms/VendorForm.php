@@ -14,15 +14,15 @@ class VendorForm
     {
         return [
             TextInput::make('name')
-                ->label('名称')
+                ->label(__('cat.name'))
                 ->required(),
             TextInput::make('address')
-                ->label('地址')
+                ->label(__('cat.address'))
                 ->required(),
             TextInput::make('public_phone_number')
-                ->label('对公电话'),
+                ->label(__('cat.public_phone_number')),
             TextInput::make('referrer')
-                ->label('引荐人'),
+                ->label(__('cat.referrer')),
         ];
     }
 

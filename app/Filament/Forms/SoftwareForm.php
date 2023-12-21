@@ -26,7 +26,7 @@ class SoftwareForm
             //region 文本 资产编号 asset_number
             TextInput::make('asset_number')
                 ->maxLength(255)
-                ->label('资产编号')
+                ->label(__('cat.asset_number'))
                 ->required(function () {
                     return ! AssetNumberRuleService::isAuto(Software::class);
                 })
@@ -44,14 +44,14 @@ class SoftwareForm
 
             //region 文本 名称 name
             TextInput::make('name')
-                ->label('名称')
+                ->label(__('cat.name'))
                 ->required(),
             //endregion
 
             //region 选择 分类 category_id
             Select::make('category_id')
                 ->relationship('category', 'name')
-                ->label('分类')
+                ->label(__('cat.category'))
                 ->searchable()
                 ->preload()
                 ->createOptionForm(SoftwareCategoryForm::createOrEdit())
@@ -61,7 +61,7 @@ class SoftwareForm
             //region 选择 品牌 brand_id
             Select::make('brand_id')
                 ->relationship('brand', 'name')
-                ->label('品牌')
+                ->label(__('cat.brand'))
                 ->searchable()
                 ->preload()
                 ->createOptionForm(BrandForm::createOrEdit())
@@ -71,13 +71,13 @@ class SoftwareForm
             //region 文本 序列号 sn
             TextInput::make('sn')
                 ->maxLength(255)
-                ->label('序列号'),
+                ->label(__('cat.sn')),
             //endregion
 
             //region 文本 规格 specification
             TextInput::make('specification')
                 ->maxLength(255)
-                ->label('规格'),
+                ->label(__('cat.specification')),
             //endregion
 
             //region 文本 授权数量 max_license_count
@@ -85,12 +85,12 @@ class SoftwareForm
                 ->numeric()
                 ->minValue(0)
                 ->required()
-                ->label('授权数量'),
+                ->label(__('cat.max_license_count')),
             //endregion
 
             //region 上传 照片 image
             FileUpload::make('image')
-                ->label('照片')
+                ->label(__('cat.image'))
                 ->directory('software')
                 ->getUploadedFileNameForStorageUsing(
                     function (TemporaryUploadedFile $file) {
@@ -101,19 +101,19 @@ class SoftwareForm
 
             //region 文本 说明 description
             Textarea::make('description')
-                ->label('说明'),
+                ->label(__('cat.description')),
             //endregion
 
             //region 数组 额外信息 additional
             Repeater::make('additional')
                 ->schema([
                     TextInput::make('name')
-                        ->label('名称'),
+                        ->label(__('cat.name')),
                     TextInput::make('text')
-                        ->label('值'),
+                        ->label(__('cat.text')),
                 ])
                 ->defaultItems(0)
-                ->label('额外信息'),
+                ->label(__('cat.additional')),
             //endregion
         ];
     }
@@ -127,7 +127,7 @@ class SoftwareForm
             Select::make('flow_id')
                 ->options(FlowService::pluckOptions())
                 ->required()
-                ->label('流程'),
+                ->label(__('cat.flow')),
         ];
     }
 
@@ -138,12 +138,12 @@ class SoftwareForm
     {
         return [
             Select::make('asset_number_rule_id')
-                ->label('规则')
+                ->label(__('cat.asset_number_rule'))
                 ->options(AssetNumberRuleService::pluckOptions())
                 ->required()
                 ->default(AssetNumberRuleService::getAutoRule(Software::class)?->getAttribute('id')),
             Checkbox::make('is_auto')
-                ->label('自动生成')
+                ->label(__('cat.is_auto'))
                 ->default(AssetNumberRuleService::getAutoRule(Software::class)?->getAttribute('is_auto')),
         ];
     }
@@ -155,7 +155,7 @@ class SoftwareForm
     {
         return [
             TextInput::make('comment')
-                ->label('说明')
+                ->label(__('cat.comment'))
                 ->required(),
         ];
     }

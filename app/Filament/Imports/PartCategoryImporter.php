@@ -16,8 +16,8 @@ class PartCategoryImporter extends Importer
         return [
             ImportColumn::make('name')
                 ->requiredMapping()
-                ->example('示例配件分类')
-                ->label('名称'),
+                ->example(__('cat.example_part_category'))
+                ->label(__('cat.name')),
         ];
     }
 

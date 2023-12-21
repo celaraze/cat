@@ -7,22 +7,22 @@ class FootprintEnum
     public static function allActionText(): array
     {
         return [
-            'create' => '创建',
-            'update' => '更新',
-            'delete' => '删除',
-            'restore' => '恢复',
-            'force_delete' => '永久删除',
+            'create' => __('cat.footprint.action.create'),
+            'update' => __('cat.footprint.action.update'),
+            'delete' => __('cat.footprint.action.delete'),
+            'restore' => __('cat.footprint.action.restore'),
+            'force_delete' => __('cat.footprint.action.force_delete'),
         ];
     }
 
     public static function actionText(string $state): string
     {
         return match ($state) {
-            'create' => '创建',
-            'update' => '更新',
-            'delete' => '删除',
-            'restore' => '恢复',
-            'force_delete' => '永久删除',
+            'create' => __('cat.footprint.action.create'),
+            'update' => __('cat.footprint.action.update'),
+            'delete' => __('cat.footprint.action.delete'),
+            'restore' => __('cat.footprint.action.restore'),
+            'force_delete' => __('cat.footprint.action.force_delete'),
         };
     }
 

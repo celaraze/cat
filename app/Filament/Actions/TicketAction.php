@@ -15,13 +15,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class TicketAction
 {
-    /**
-     * 创建工单记录按钮.
-     */
     public static function createHasTrack(Model $ticket): Action
     {
         /* @var Ticket $ticket */
-        return Action::make('发表评论')
+        return Action::make(__('cat.action.create_ticket_has_track'))
             ->slideOver()
             ->icon('heroicon-m-plus-circle')
             ->form(TicketHasTrackForm::create())
@@ -31,7 +28,7 @@ class TicketAction
                     $data['user_id'] = auth()->id();
                     $ticket_has_track_service = new TicketHasTrackService();
                     $ticket_has_track_service->create($data);
-                    NotificationUtil::make(true, '已发表评论');
+                    NotificationUtil::make(true, __('cat.action.create_ticket_has_track_success'));
                 } catch (Exception $exception) {
                     LogUtil::error($exception);
                     NotificationUtil::make(false, $exception);
@@ -40,12 +37,9 @@ class TicketAction
             ->closeModalByClickingAway(false);
     }
 
-    /**
-     * 创建工单按钮.
-     */
     public static function create(): Action
     {
-        return Action::make('新增')
+        return Action::make(__('cat.action.create'))
             ->slideOver()
             ->icon('heroicon-m-plus')
             ->form(TicketForm::create())
@@ -53,7 +47,7 @@ class TicketAction
                 try {
                     $ticket_service = new TicketService();
                     $ticket_service->create($data);
-                    NotificationUtil::make(true, '已创建工单');
+                    NotificationUtil::make(true, __('cat.action.create_success'));
                 } catch (Exception $exception) {
                     LogUtil::error($exception);
                     NotificationUtil::make(false, $exception);
@@ -62,33 +56,17 @@ class TicketAction
             ->closeModalByClickingAway(false);
     }
 
-    /**
-     * 前往工单分类.
-     */
     public static function toCategory(): Action
     {
-        return Action::make('分类')
+        return Action::make(__('cat.action.to_category'))
             ->icon('heroicon-s-square-3-stack-3d')
             ->url('/ticket-categories');
     }
 
-    /**
-     * 前往工单.
-     */
-    public static function toTickets(): Action
-    {
-        return Action::make('返回工单')
-            ->icon('heroicon-o-document-text')
-            ->url('/tickets');
-    }
-
-    /**
-     * 标记完成.
-     */
     public static function finish(): \Filament\Infolists\Components\Actions\Action
     {
         /* @var Ticket $ticket */
-        return \Filament\Infolists\Components\Actions\Action::make('标记完成')
+        return \Filament\Infolists\Components\Actions\Action::make(__('cat.action.finish'))
             ->color('success')
             ->icon('heroicon-o-check-circle')
             ->requiresConfirmation()
@@ -96,7 +74,7 @@ class TicketAction
             ->action(function (Ticket $ticket) {
                 try {
                     $ticket->service()->finish();
-                    NotificationUtil::make(true, '已标记完成');
+                    NotificationUtil::make(true, __('cat.action.finish_success'));
                 } catch (Exception $exception) {
                     LogUtil::error($exception);
                     NotificationUtil::make(false, $exception);
@@ -105,12 +83,9 @@ class TicketAction
             ->closeModalByClickingAway(false);
     }
 
-    /**
-     * 接单按钮.
-     */
     public static function setAssignee(): Action
     {
-        return Action::make('接单')
+        return Action::make(__('cat.action.set_assignee'))
             ->icon('heroicon-o-hand-raised')
             ->color('success')
             ->requiresConfirmation()
@@ -118,7 +93,7 @@ class TicketAction
                 try {
                     $assignee_id = auth()->id();
                     $ticket->service()->setAssignee($assignee_id);
-                    NotificationUtil::make(true, '已接单');
+                    NotificationUtil::make(true, __('cat.action.set_assignee_success'));
                 } catch (Exception $exception) {
                     LogUtil::error($exception);
                     NotificationUtil::make(false, $exception);

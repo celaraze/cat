@@ -20,13 +20,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class PartAction
 {
-    /**
-     * 创建配件-设备按钮.
-     */
     public static function createDeviceHasPart(?Model $out_part = null): Action
     {
         /* @var Part $out_part */
-        return Action::make('附加到设备')
+        return Action::make(__('cat.action.assign_device'))
             ->slideOver()
             ->icon('heroicon-m-plus-circle')
             ->form(DeviceHasPartForm::createFromPart($out_part))
@@ -40,7 +37,7 @@ class PartAction
                     $data['status'] = 0;
                     $device_has_part_service = new DeviceHasPartService();
                     $device_has_part_service->create($data);
-                    NotificationUtil::make(true, '配件已附加到设备');
+                    NotificationUtil::make(true, __('cat.action.assign_device_success'));
                 } catch (Exception $exception) {
                     LogUtil::error($exception);
                     NotificationUtil::make(false, $exception);
@@ -49,12 +46,9 @@ class PartAction
             ->closeModalByClickingAway(false);
     }
 
-    /**
-     * 创建配件.
-     */
     public static function create(): Action
     {
-        return Action::make('新增')
+        return Action::make(__('cat.action.create'))
             ->slideOver()
             ->icon('heroicon-m-plus')
             ->form(PartForm::createOrEdit())
@@ -62,7 +56,7 @@ class PartAction
                 try {
                     $device_service = new PartService();
                     $device_service->create($data);
-                    NotificationUtil::make(true, '已新增配件');
+                    NotificationUtil::make(true, __('cat.action.create_success'));
                 } catch (Exception $exception) {
                     LogUtil::error($exception);
                     NotificationUtil::make(false, $exception);
@@ -71,12 +65,9 @@ class PartAction
             ->closeModalByClickingAway(false);
     }
 
-    /**
-     * 配件脱离设备按钮.
-     */
     public static function deleteDeviceHasPart(): Action
     {
-        return Action::make('脱离')
+        return Action::make(__('cat.action.unassign_device'))
             ->icon('heroicon-s-minus-circle')
             ->requiresConfirmation()
             ->color('danger')
@@ -87,7 +78,7 @@ class PartAction
                         'status' => 1,
                     ];
                     $device_has_part->service()->delete($data);
-                    NotificationUtil::make(true, '配件已脱离设备');
+                    NotificationUtil::make(true, __('cat.action.unassign_device_success'));
                 } catch (Exception $exception) {
                     LogUtil::error($exception);
                     NotificationUtil::make(false, $exception);
@@ -96,19 +87,16 @@ class PartAction
             ->closeModalByClickingAway(false);
     }
 
-    /**
-     * 绑定配件报废流程.
-     */
     public static function setRetireFlow(): Action
     {
-        return Action::make('配置报废流程')
+        return Action::make(__('cat.action.set_retire_flow'))
             ->slideOver()
             ->form(PartForm::setRetireFlow())
             ->action(function (array $data) {
                 try {
                     $setting_service = new SettingService();
                     $setting_service->set('part_retire_flow_id', $data['flow_id']);
-                    NotificationUtil::make(true, '流程配置成功');
+                    NotificationUtil::make(true, __('cat.action.set_retire_flow_success'));
                 } catch (Exception $exception) {
                     LogUtil::error($exception);
                     NotificationUtil::make(false, $exception);
@@ -117,48 +105,39 @@ class PartAction
             ->closeModalByClickingAway(false);
     }
 
-    /**
-     * 设置资产编号生成配置.
-     */
     public static function setAssetNumberRule(): Action
     {
-        return Action::make('配置资产编号自动生成规则')
+        return Action::make(__('cat.action.set_asset_number_rule'))
             ->slideOver()
             ->form(PartForm::setAssetNumberRule())
             ->action(function (array $data) {
                 $data['class_name'] = Part::class;
                 AssetNumberRuleService::setAutoRule($data);
-                NotificationUtil::make(true, '已配置资产编号自动生成规则');
+                NotificationUtil::make(true, __('cat.action.set_asset_number_rule_success'));
             })
             ->closeModalByClickingAway(false);
     }
 
-    /**
-     * 重置资产编号生成配置.
-     */
     public static function resetAssetNumberRule(): Action
     {
-        return Action::make('清除资产编号自动生成规则')
+        return Action::make(__('cat.action.reset_asset_number_rule'))
             ->requiresConfirmation()
             ->action(function () {
                 AssetNumberRuleService::resetAutoRule(Part::class);
-                NotificationUtil::make(true, '已清除编号自动生成规则');
+                NotificationUtil::make(true, __('cat.action.reset_asset_number_rule_success'));
             })
             ->closeModalByClickingAway(false);
     }
 
-    /**
-     * 强制报废按钮.
-     */
     public static function forceRetire(): Action
     {
-        return Action::make('强制报废')
+        return Action::make(__('cat.action.force_retire'))
             ->requiresConfirmation()
             ->icon('heroicon-m-archive-box-x-mark')
             ->action(function (Part $part) {
                 try {
                     $part->service()->retire();
-                    NotificationUtil::make(true, '已报废');
+                    NotificationUtil::make(true, __('cat.action.force_retire_success'));
                 } catch (Exception $exception) {
                     LogUtil::error($exception);
                     NotificationUtil::make(false, $exception);
@@ -167,12 +146,9 @@ class PartAction
             ->closeModalByClickingAway(false);
     }
 
-    /**
-     * 发起配件报废流程表单.
-     */
     public static function retire(): Action
     {
-        return Action::make('流程报废')
+        return Action::make(__('cat.action.retire'))
             ->slideOver()
             ->icon('heroicon-m-archive-box-x-mark')
             ->form(PartForm::retire())
@@ -182,10 +158,10 @@ class PartAction
                     $asset_number = $part->getAttribute('asset_number');
                     $flow_has_form_service = new FlowHasFormService();
                     $data['flow_id'] = $part_retire_flow->getKey();
-                    $data['name'] = '配件报废单 - '.$asset_number;
+                    $data['name'] = __('cat.action.retire_flow_name').' - '.$asset_number;
                     $data['payload'] = $asset_number;
                     $flow_has_form_service->create($data);
-                    NotificationUtil::make(true, '已创建表单');
+                    NotificationUtil::make(true, __('cat.action.retire_success'));
                 } catch (Exception $exception) {
                     LogUtil::error($exception);
                     NotificationUtil::make(false, $exception);
@@ -194,12 +170,9 @@ class PartAction
             ->closeModalByClickingAway(false);
     }
 
-    /**
-     * 前往配件分类清单.
-     */
-    public static function toCategories(): Action
+    public static function toCategory(): Action
     {
-        return Action::make('分类')
+        return Action::make(__('cat.action.to_category'))
             ->icon('heroicon-s-square-3-stack-3d')
             ->url(PartCategoryResource::getUrl('index'));
     }

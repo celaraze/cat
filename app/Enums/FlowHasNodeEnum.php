@@ -18,11 +18,11 @@ class FlowHasNodeEnum
     public static function statusText(int $state): string
     {
         return match ($state) {
-            0 => '草稿',
-            1 => '同意',
-            2 => '退回',
-            3 => '驳回',
-            4 => '通过',
+            0 => __('cat.flow_has_node.status.draft'),
+            1 => __('cat.flow_has_node.status.agreed'),
+            2 => __('cat.flow_has_node.status.back'),
+            3 => __('cat.flow_has_node.status.rejected'),
+            4 => __('cat.flow_has_node.status.approved'),
         };
     }
 

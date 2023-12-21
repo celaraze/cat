@@ -13,12 +13,9 @@ use Illuminate\Auth\AuthenticationException;
 
 class UserAction
 {
-    /**
-     * 清除密码.
-     */
     public static function resetPassword(): Action
     {
-        return Action::make('清除密码')
+        return Action::make(__('cat.action.reset_password'))
             ->color('warning')
             ->icon('heroicon-o-lock-open')
             ->requiresConfirmation()
@@ -26,33 +23,30 @@ class UserAction
             ->action(function (User $user) {
                 try {
                     $user->service()->changePassword('cat');
-                    NotificationUtil::make(true, '已清除密码，用户可在下次登陆时自行设定密码');
-                } catch (\Exception $exception) {
+                    NotificationUtil::make(true, __('cat.action.reset_password_success'));
+                } catch (Exception $exception) {
                     LogUtil::error($exception);
                     NotificationUtil::make(false, $exception);
                 }
             });
     }
 
-    /**
-     * 修改密码.
-     */
     public static function changePassword(): \Filament\Actions\Action
     {
         return \Filament\Actions\Action::make('changePasswordAction')
-            ->label('修改密码')
+            ->label(__('cat.change_password'))
             ->slideOver()
             ->icon('heroicon-m-key')
             ->form(UserForm::changePassword())
             ->action(function (array $data) {
                 try {
                     if ($data['password'] != $data['password-verify']) {
-                        throw new AuthenticationException('密码不一致');
+                        throw new AuthenticationException(__('cat.action.change_password_failure_password_not_match'));
                     }
                     /* @var User $user */
                     $user = auth()->user();
                     $user->service()->changePassword($data['password']);
-                    NotificationUtil::make(true, '已修改密码');
+                    NotificationUtil::make(true, __('cat.action.change_password_success'));
                 } catch (Exception $exception) {
                     LogUtil::error($exception);
                     NotificationUtil::make(false, $exception);
@@ -64,7 +58,7 @@ class UserAction
     public static function changeAvatar(): \Filament\Actions\Action
     {
         return \Filament\Actions\Action::make('changeAvatarAction')
-            ->label('上传头像')
+            ->label(__('cat.action.change_avatar'))
             ->slideOver()
             ->icon('heroicon-s-paint-brush')
             ->form(UserForm::changeAvatar())
@@ -73,7 +67,7 @@ class UserAction
                     /* @var User $user */
                     $user = auth()->user();
                     $user->service()->changeAvatar($data['avatar']);
-                    NotificationUtil::make(true, '已上传头像');
+                    NotificationUtil::make(true, __('cat.action.change_avatar_success'));
                 } catch (Exception $exception) {
                     LogUtil::error($exception);
                     NotificationUtil::make(false, $exception);
@@ -82,12 +76,9 @@ class UserAction
             ->closeModalByClickingAway(false);
     }
 
-    /**
-     * 创建用户.
-     */
     public static function create(): Action
     {
-        return Action::make('新增')
+        return Action::make(__('cat.action.create'))
             ->slideOver()
             ->icon('heroicon-m-plus')
             ->form(UserForm::create())
@@ -97,7 +88,7 @@ class UserAction
                     $data['password_verify'] = 'cat';
                     $user_service = new UserService();
                     $user_service->create($data);
-                    NotificationUtil::make(true, '已创建用户');
+                    NotificationUtil::make(true, __('cat.action.create_success'));
                 } catch (Exception $exception) {
                     LogUtil::error($exception);
                     NotificationUtil::make(false, $exception);
@@ -106,12 +97,9 @@ class UserAction
             ->closeModalByClickingAway(false);
     }
 
-    /**
-     * 删除用户按钮.
-     */
     public static function delete(): Action
     {
-        return Action::make('删除')
+        return Action::make(__('cat.action.delete'))
             ->color('danger')
             ->icon('heroicon-o-trash')
             ->requiresConfirmation()
@@ -126,7 +114,7 @@ class UserAction
             ->action(function (User $user) {
                 try {
                     $user->service()->delete();
-                    NotificationUtil::make(true, '已删除用户');
+                    NotificationUtil::make(true, __('cat.action.delete_success'));
                 } catch (Exception $exception) {
                     LogUtil::error($exception);
                     NotificationUtil::make(false, $exception);
@@ -134,20 +122,17 @@ class UserAction
             });
     }
 
-    /**
-     * 永久删除按钮.
-     */
     public static function forceDelete(): Action
     {
-        return Action::make('永久删除')
+        return Action::make(__('cat.action.force_delete'))
             ->icon('heroicon-s-trash')
             ->color('danger')
             ->requiresConfirmation()
-            ->modalDescription('永久删除后无法恢复！')
+            ->modalDescription(__('cat.action.force_delete_helper'))
             ->action(function (User $user) {
                 try {
                     $user->service()->forceDelete();
-                    NotificationUtil::make(true, '已永久删除用户');
+                    NotificationUtil::make(true, __('cat.action.force_delete_success'));
                 } catch (Exception $exception) {
                     LogUtil::error($exception);
                     NotificationUtil::make(false, $exception);

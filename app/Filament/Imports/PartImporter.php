@@ -17,29 +17,29 @@ class PartImporter extends Importer
             ImportColumn::make('asset_number')
                 ->requiredMapping()
                 ->example('Example001')
-                ->label('资产编号'),
+                ->label(__('cat.asset_number')),
             ImportColumn::make('category')
                 ->relationship(resolveUsing: 'name')
                 ->requiredMapping()
-                ->example('硬盘')
-                ->label('分类'),
+                ->example(__('cat.example_part_category'))
+                ->label(__('cat.category')),
             ImportColumn::make('sn')
                 ->example('AAAAAAA')
-                ->label('序列号'),
+                ->label(__('cat.sn')),
             ImportColumn::make('specification')
                 ->example('500GB')
-                ->label('规格'),
+                ->label(__('cat.specification')),
             ImportColumn::make('image')
                 ->example('https://test.com/logo.png')
-                ->label('照片'),
+                ->label(__('cat.image')),
             ImportColumn::make('brand')
                 ->relationship(resolveUsing: 'name')
                 ->requiredMapping()
-                ->example('微软 Microsoft')
-                ->label('品牌'),
+                ->example(__('cat.example_brand'))
+                ->label(__('cat.brand')),
             ImportColumn::make('description')
-                ->example('这是一个 CPU')
-                ->label('说明'),
+                ->example(__('cat.example_description'))
+                ->label(__('cat.description')),
         ];
     }
 

@@ -17,20 +17,20 @@ class FlowHasNodeForm
     {
         return [
             TextInput::make('name')
-                ->label('名称')
+                ->label(__('cat.name'))
                 ->required(),
             Radio::make('type')
-                ->label('类型')
-                ->options(['user' => '用户', 'role' => '角色'])
+                ->label(__('cat.type'))
+                ->options(['user' => __('cat.user'), 'role' => __('cat.role')])
                 ->default('user')
                 ->reactive()
                 ->required(),
             Select::make('user_id')
-                ->label('用户')
+                ->label(__('cat.user'))
                 ->options(UserService::pluckOptions())
                 ->hidden(fn (callable $get) => $get('type') != 'user'),
             Select::make('role_id')
-                ->label('角色')
+                ->label(__('cat.role'))
                 ->options(RoleService::pluckOptions())
                 ->hidden(fn (callable $get) => $get('type') != 'role'),
         ];

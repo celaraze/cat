@@ -17,38 +17,38 @@ class SoftwareImporter extends Importer
             ImportColumn::make('asset_number')
                 ->requiredMapping()
                 ->example('Example001')
-                ->label('资产编号'),
+                ->label(__('cat.asset_number')),
             ImportColumn::make('category')
                 ->relationship(resolveUsing: 'name')
                 ->requiredMapping()
-                ->example('操作系统')
-                ->label('分类'),
+                ->example(__('cat.example_software_category'))
+                ->label(__('cat.category')),
             ImportColumn::make('name')
                 ->requiredMapping()
                 ->example('Windows 10 Pro')
-                ->label('名称'),
+                ->label(__('cat.name')),
             ImportColumn::make('sn')
                 ->example('AAAAAAA')
-                ->label('序列号'),
+                ->label(__('cat.sn')),
             ImportColumn::make('specification')
                 ->example('LTSC')
-                ->label('规格'),
+                ->label(__('cat.specification')),
             ImportColumn::make('max_license_count')
                 ->requiredMapping()
                 ->rules(['numeric', 'min:0'])
                 ->example('LTSC')
-                ->label('授权数量'),
+                ->label(__('cat.max_license_count')),
             ImportColumn::make('image')
                 ->example('https://test.com/logo.png')
-                ->label('照片'),
+                ->label(__('cat.image')),
             ImportColumn::make('brand')
                 ->relationship(resolveUsing: 'name')
                 ->requiredMapping()
-                ->example('微软 Microsoft')
-                ->label('品牌'),
+                ->example(__('cat.example_brand'))
+                ->label(__('cat.brand')),
             ImportColumn::make('description')
-                ->example('这是一个操作系统软件')
-                ->label('说明'),
+                ->example(__('cat.example_description'))
+                ->label(__('cat.description')),
         ];
     }
 

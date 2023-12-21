@@ -14,12 +14,9 @@ use Filament\Tables\Actions\Action;
 
 class PartCategoryAction
 {
-    /**
-     * 创建设备分类按钮.
-     */
     public static function create(): Action
     {
-        return Action::make('新增')
+        return Action::make(__('cat.action.create'))
             ->slideOver()
             ->icon('heroicon-m-plus')
             ->form(PartCategoryForm::createOrEdit())
@@ -27,7 +24,7 @@ class PartCategoryAction
                 try {
                     $part_category_service = new PartCategoryService();
                     $part_category_service->create($data);
-                    NotificationUtil::make(true, '已创建配件分类');
+                    NotificationUtil::make(true, __('cat.action.create_success'));
                 } catch (Exception $exception) {
                     LogUtil::error($exception);
                     NotificationUtil::make(false, $exception);
@@ -36,12 +33,9 @@ class PartCategoryAction
             ->closeModalByClickingAway(false);
     }
 
-    /**
-     * 删除配件分类.
-     */
     public static function delete(): Action
     {
-        return Action::make('删除')
+        return Action::make(__('cat.action.delete'))
             ->icon('heroicon-s-trash')
             ->color('danger')
             ->requiresConfirmation()
@@ -49,7 +43,7 @@ class PartCategoryAction
             ->action(function (PartCategory $part_category) {
                 try {
                     $part_category->service()->delete();
-                    NotificationUtil::make(true, '已删除配件分类');
+                    NotificationUtil::make(true, __('cat.action.delete_success'));
                 } catch (Exception $exception) {
                     LogUtil::error($exception);
                     NotificationUtil::make(false, $exception);
@@ -57,22 +51,16 @@ class PartCategoryAction
             });
     }
 
-    /**
-     * 前往配件清单.
-     */
-    public static function toParts(): Action
+    public static function backToPart(): Action
     {
-        return Action::make('返回配件')
+        return Action::make(__('cat.action.back_to_part'))
             ->icon('heroicon-m-cpu-chip')
             ->url(PartResource::getUrl('index'));
     }
 
-    /**
-     * 前往配件.
-     */
-    public static function toPart(): Action
+    public static function toPartView(): Action
     {
-        return Action::make('前往配件详情')
+        return Action::make(__('cat.action.to_part_view'))
             ->icon('heroicon-m-cpu-chip')
             ->url(function (Part $part) {
                 return PartResource::getUrl('view', ['record' => $part->getKey()]);

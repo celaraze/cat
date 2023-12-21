@@ -2,7 +2,6 @@
 
 namespace App\Providers\Filament;
 
-use App\Filament\Widgets\StatsOverviewWidget;
 use BezhanSalleh\FilamentShield\FilamentShieldPlugin;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\DisableBladeIconComponents;
@@ -49,7 +48,7 @@ class AdminPanelProvider extends PanelProvider
                 '系统设置',
             ])
             ->widgets([
-                StatsOverviewWidget::class,
+
             ])
             ->middleware([
                 EncryptCookies::class,

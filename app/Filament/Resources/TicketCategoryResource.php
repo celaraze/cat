@@ -2,7 +2,6 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Actions\TicketAction;
 use App\Filament\Actions\TicketCategoryAction;
 use App\Filament\Forms\TicketCategoryForm;
 use App\Filament\Imports\TicketCategoryImporter;
@@ -107,7 +106,7 @@ class TicketCategoryResource extends Resource implements HasShieldPermissions
                 // 创建
                 TicketCategoryAction::create(),
                 // 前往工单
-                TicketAction::toTickets(),
+                TicketCategoryAction::backToTicket(),
             ]);
     }
 

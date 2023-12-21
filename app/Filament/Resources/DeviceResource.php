@@ -130,7 +130,7 @@ class DeviceResource extends Resource implements HasShieldPermissions
                     ->toggleable()
                     ->circular()
                     ->defaultImageUrl(('/images/default.jpg'))
-                    ->label('照片'),
+                    ->label(__('cat.image')),
                 Tables\Columns\TextColumn::make('asset_number')
                     ->searchable()
                     ->toggleable()
@@ -138,39 +138,39 @@ class DeviceResource extends Resource implements HasShieldPermissions
                     ->badge()
                     ->sortable()
                     ->color('gray')
-                    ->label('资产编号'),
+                    ->label(__('cat.asset_number')),
                 Tables\Columns\TextColumn::make('name')
                     ->searchable()
                     ->toggleable()
                     ->sortable()
-                    ->label('名称'),
+                    ->label(__('cat.name')),
                 Tables\Columns\TextColumn::make('brand.name')
                     ->searchable()
                     ->toggleable()
                     ->sortable()
-                    ->label('品牌'),
+                    ->label(__('cat.brand')),
                 Tables\Columns\TextColumn::make('category.name')
                     ->searchable()
                     ->toggleable()
                     ->sortable()
-                    ->label('分类'),
+                    ->label(__('cat.category')),
                 Tables\Columns\TextColumn::make('users.name')
                     ->searchable()
                     ->toggleable()
                     ->badge()
                     ->color('success')
                     ->sortable()
-                    ->label('用户'),
+                    ->label(__('cat.user')),
                 Tables\Columns\TextColumn::make('sn')
                     ->searchable()
                     ->toggleable()
                     ->sortable()
-                    ->label('序列号'),
+                    ->label(__('cat.sn')),
                 Tables\Columns\TextColumn::make('specification')
                     ->searchable()
                     ->toggleable()
                     ->sortable()
-                    ->label('规格'),
+                    ->label(__('cat.specification')),
                 Tables\Columns\TextColumn::make('status')
                     ->toggleable()
                     ->badge()
@@ -181,7 +181,7 @@ class DeviceResource extends Resource implements HasShieldPermissions
                     ->color(function ($state) {
                         return AssetEnum::statusColor($state);
                     })
-                    ->label('状态'),
+                    ->label(__('cat.status')),
             ])
             ->filters([
                 Tables\Filters\SelectFilter::make('category_id')
@@ -259,7 +259,7 @@ class DeviceResource extends Resource implements HasShieldPermissions
                     }),
                 Tables\Actions\ActionGroup::make([
                     // 前往分类
-                    DeviceAction::toCategories(),
+                    DeviceAction::toCategory(),
                     // 配置资产编号自动生成规则
                     DeviceAction::setAssetNumberRule()
                         ->visible(function () {

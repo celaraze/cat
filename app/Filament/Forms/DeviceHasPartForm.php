@@ -26,7 +26,7 @@ class DeviceHasPartForm
                 ->searchable()
                 ->preload()
                 ->required()
-                ->label('配件'),
+                ->label(__('cat.parts')),
         ];
     }
 
@@ -41,7 +41,7 @@ class DeviceHasPartForm
             Select::make('device_id')
                 ->options(DeviceService::pluckOptions('id', $device_ids))
                 ->searchable()
-                ->label('设备'),
+                ->label(__('cat.device')),
         ];
     }
 }

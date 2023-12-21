@@ -16,8 +16,8 @@ class DeviceCategoryImporter extends Importer
         return [
             ImportColumn::make('name')
                 ->requiredMapping()
-                ->example('示例设备分类')
-                ->label('名称'),
+                ->example(__('cat.device_category'))
+                ->label(__('cat.name')),
         ];
     }
 

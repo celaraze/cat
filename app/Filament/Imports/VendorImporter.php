@@ -16,18 +16,18 @@ class VendorImporter extends Importer
         return [
             ImportColumn::make('name')
                 ->requiredMapping()
-                ->example('张三三')
-                ->label('名称'),
+                ->example(__('cat.example_vendor_name'))
+                ->label(__('cat.name')),
             ImportColumn::make('address')
                 ->requiredMapping()
-                ->example('北京市朝阳区')
-                ->label('地址'),
+                ->example(__('cat.example_vendor_address'))
+                ->label(__('cat.address')),
             ImportColumn::make('public_phone_number')
                 ->example('010-12345678')
-                ->label('对公电话'),
+                ->label(__('cat.public_phone_number')),
             ImportColumn::make('referrer')
-                ->example('李四四')
-                ->label('引荐人'),
+                ->example(__('cat.example_vendor_referrer'))
+                ->label(__('cat.referrer')),
         ];
     }
 

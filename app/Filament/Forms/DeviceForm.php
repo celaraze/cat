@@ -29,26 +29,26 @@ class DeviceForm
     {
         return [
             Select::make('asset_number')
-                ->label('资产编号')
+                ->label(__('cat.asset_number'))
                 ->options(DeviceService::pluckOptions('asset_number'))
                 ->searchable()
                 ->preload()
                 ->placeholder($asset_number)
                 ->disabled(),
             TextInput::make('subject')
-                ->label('主题')
+                ->label(__('cat.subject'))
                 ->required(),
             RichEditor::make('description')
-                ->label('描述')
+                ->label(__('cat.description'))
                 ->required(),
             Select::make('category_id')
-                ->label('工单分类')
+                ->label(__('cat.category'))
                 ->options(TicketCategoryService::pluckOptions())
                 ->searchable()
                 ->preload()
                 ->required(),
             Select::make('priority')
-                ->label('优先级')
+                ->label(__('cat.priority'))
                 ->options(TicketEnum::allPriorityText())
                 ->searchable()
                 ->preload()
@@ -65,7 +65,7 @@ class DeviceForm
             //region 文本 资产编号 asset_number
             TextInput::make('asset_number')
                 ->maxLength(255)
-                ->label('资产编号')
+                ->label(__('cat.asset_number'))
                 ->required(function () {
                     return ! AssetNumberRuleService::isAuto(Device::class);
                 })

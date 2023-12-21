@@ -14,7 +14,7 @@ class OrganizationForm
         return [
             TextInput::make('name')
                 ->required()
-                ->label('名称'),
+                ->label(__('cat.name')),
         ];
     }
 }

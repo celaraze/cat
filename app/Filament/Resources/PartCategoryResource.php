@@ -108,7 +108,7 @@ class PartCategoryResource extends Resource implements HasShieldPermissions
                         return auth()->user()->can('create_part::category');
                     }),
                 // 返回配件
-                PartCategoryAction::toParts(),
+                PartCategoryAction::backToPart(),
             ]);
     }
 

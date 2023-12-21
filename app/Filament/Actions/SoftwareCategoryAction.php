@@ -14,12 +14,9 @@ use Filament\Tables\Actions\Action;
 
 class SoftwareCategoryAction
 {
-    /**
-     * 创建软件分类按钮.
-     */
     public static function create(): Action
     {
-        return Action::make('新增')
+        return Action::make(__('cat.action.create'))
             ->slideOver()
             ->icon('heroicon-m-plus')
             ->form(SoftwareCategoryForm::createOrEdit())
@@ -27,7 +24,7 @@ class SoftwareCategoryAction
                 try {
                     $software_category_service = new SoftwareCategoryService();
                     $software_category_service->create($data);
-                    NotificationUtil::make(true, '已创建软件分类');
+                    NotificationUtil::make(true, __('cat.action.create_success'));
                 } catch (Exception $exception) {
                     LogUtil::error($exception);
                     NotificationUtil::make(false, $exception);
@@ -36,12 +33,9 @@ class SoftwareCategoryAction
             ->closeModalByClickingAway(false);
     }
 
-    /**
-     * 删除软件分类.
-     */
     public static function delete(): Action
     {
-        return Action::make('删除')
+        return Action::make(__('cat.action.delete'))
             ->icon('heroicon-s-trash')
             ->color('danger')
             ->requiresConfirmation()
@@ -49,7 +43,7 @@ class SoftwareCategoryAction
             ->action(function (SoftwareCategory $software_category) {
                 try {
                     $software_category->service()->delete();
-                    NotificationUtil::make(true, '已删除软件分类');
+                    NotificationUtil::make(true, __('cat.action.delete_success'));
                 } catch (Exception $exception) {
                     LogUtil::error($exception);
                     NotificationUtil::make(false, $exception);
@@ -57,22 +51,16 @@ class SoftwareCategoryAction
             });
     }
 
-    /**
-     * 前往软件清单.
-     */
-    public static function toSoftwareIndex(): Action
+    public static function backToSoftware(): Action
     {
-        return Action::make('返回软件')
+        return Action::make(__('cat.action.back_to_software'))
             ->icon('heroicon-m-squares-plus')
             ->url(SoftwareResource::getUrl('index'));
     }
 
-    /**
-     * 前往软件.
-     */
-    public static function toSoftware(): Action
+    public static function toSoftwareView(): Action
     {
-        return Action::make('前往软件详情')
+        return Action::make(__('cat.action.to_software_view'))
             ->icon('heroicon-m-squares-plus')
             ->url(function (Software $software) {
                 return SoftwareResource::getUrl('view', ['record' => $software->getKey()]);

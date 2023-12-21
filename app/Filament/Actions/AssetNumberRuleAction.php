@@ -11,12 +11,9 @@ use Illuminate\Support\Facades\Log;
 
 class AssetNumberRuleAction
 {
-    /**
-     * 创建资产编号规则。
-     */
     public static function create(): Action
     {
-        return Action::make('新增')
+        return Action::make(__('cat.action.create'))
             ->slideOver()
             ->icon('heroicon-m-plus')
             ->form(SettingForm::createOrEdit())
@@ -24,7 +21,7 @@ class AssetNumberRuleAction
                 try {
                     $asset_number_rule_service = new AssetNumberRuleService();
                     $asset_number_rule_service->create($data);
-                    NotificationUtil::make(true, '已新增规则');
+                    NotificationUtil::make(true, __('cat.action.created'));
                 } catch (Exception $exception) {
                     Log::error($exception);
                     NotificationUtil::make(false, $exception);

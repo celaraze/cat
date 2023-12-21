@@ -7,10 +7,10 @@ class FlowHasFormEnum
     public static function statusText(int $state): string
     {
         return match ($state) {
-            0 => '草稿',
-            1, 2 => '在途',
-            3 => '驳回',
-            4 => '通过',
+            0 => __('cat.flow_has_form.status.draft'),
+            1, 2 => __('cat.flow_has_form.status.processing'),
+            3 => __('cat.flow_has_form.status.rejected'),
+            4 => __('cat.flow_has_form.status.approved'),
         };
     }
 

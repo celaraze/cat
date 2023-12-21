@@ -12,12 +12,9 @@ use Filament\Tables\Actions\Action;
 
 class TicketCategoryAction
 {
-    /**
-     * 创建工单分类按钮.
-     */
     public static function create(): Action
     {
-        return Action::make('新增')
+        return Action::make(__('cat.action.create'))
             ->slideOver()
             ->icon('heroicon-m-plus')
             ->form(TicketCategoryForm::createOrEdit())
@@ -25,7 +22,7 @@ class TicketCategoryAction
                 try {
                     $ticket_category_service = new TicketCategoryService();
                     $ticket_category_service->create($data);
-                    NotificationUtil::make(true, '已创建分类');
+                    NotificationUtil::make(true, __('cat.action.create_success'));
                 } catch (Exception $exception) {
                     LogUtil::error($exception);
                     NotificationUtil::make(false, $exception);
@@ -34,12 +31,9 @@ class TicketCategoryAction
             ->closeModalByClickingAway(false);
     }
 
-    /**
-     * 删除工单分类.
-     */
     public static function delete(): Action
     {
-        return Action::make('删除')
+        return Action::make(__('cat.action.delete'))
             ->icon('heroicon-s-trash')
             ->color('danger')
             ->requiresConfirmation()
@@ -47,11 +41,18 @@ class TicketCategoryAction
             ->action(function (TicketCategory $ticket_category) {
                 try {
                     $ticket_category->service()->delete();
-                    NotificationUtil::make(true, '已删除工单分类');
+                    NotificationUtil::make(true, __('cat.action.delete_success'));
                 } catch (Exception $exception) {
                     LogUtil::error($exception);
                     NotificationUtil::make(false, $exception);
                 }
             });
+    }
+
+    public static function backToTicket(): Action
+    {
+        return Action::make(__('cat.action.back_to_ticket'))
+            ->icon('heroicon-o-document-text')
+            ->url('/tickets');
     }
 }

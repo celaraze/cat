@@ -20,26 +20,23 @@ use Ramsey\Uuid\Uuid;
 
 class FlowAction
 {
-    /**
-     * 创建流程节点按钮.
-     */
     public static function createHasNode(Model $flow): Action
     {
         /* @var Flow $flow */
-        return Action::make('追加节点')
+        return Action::make(__('cat.action.create_node'))
             ->slideOver()
             ->icon('heroicon-s-user-plus')
             ->form(FlowHasNodeForm::create())
             ->action(function (array $data, FlowHasNode $node) use ($flow): void {
                 if ($flow->activeForms()) {
-                    NotificationUtil::make(false, '创建失败，仍有此流程的表单没有结束');
+                    NotificationUtil::make(false, __('cat.action.create_node_failure_is_not_finished'));
                 } else {
                     $flow_has_node_service = new FlowHasNodeService($node);
                     $is_last_node = $flow_has_node_service->isLastNode();
                     if (! $is_last_node) {
-                        NotificationUtil::make(false, '该节点不是最终节点，请在最终节点后追加');
+                        NotificationUtil::make(false, __('cat.action.create_node_failure_is_not_last_node'));
                     } elseif (empty($data['user_id']) && empty($data['role_id'])) {
-                        NotificationUtil::make(false, '流程审批类型不能为空，必须选择用户或者角色');
+                        NotificationUtil::make(false, __('cat.action.create_node_failure_user_id_or_role_id_is_empty'));
                     } else {
                         $data = [
                             'name' => $data['name'],
@@ -50,19 +47,16 @@ class FlowAction
                         ];
                         $flow_has_node_service = new FlowHasNodeService();
                         $flow_has_node_service->create($data);
-                        NotificationUtil::make(true, '节点追加成功');
+                        NotificationUtil::make(true, __('cat.action.create_node_success'));
                     }
                 }
             })
             ->closeModalByClickingAway(false);
     }
 
-    /**
-     * 创建流程按钮.
-     */
     public static function create(): Action
     {
-        return Action::make('创建流程')
+        return Action::make(__('cat.action.create'))
             ->slideOver()
             ->icon('heroicon-m-plus')
             ->form(FlowForm::create())
@@ -75,60 +69,52 @@ class FlowAction
                     $flow->setAttribute('tag', Uuid::uuid4());
                     $flow->save();
                     $node = new FlowHasNode();
-                    $node->setAttribute('name', '申请人');
+                    $node->setAttribute('name', __('cat.flow_has_node.applicant'));
                     $node->setAttribute('flow_id', $flow->getKey());
                     $node->setAttribute('user_id', 0);
                     $node->setAttribute('role_id', 0);
                     $node->save();
                     // 提交事务
                     DB::commit();
-                    NotificationUtil::make(true, '创建成功');
+                    NotificationUtil::make(true, __('cat.action.create_success'));
                 } catch (Exception $exception) {
                     // 回滚事务
                     DB::rollBack();
                     LogUtil::error($exception);
-                    NotificationUtil::make(false, '流程创建失败：'.$exception->getMessage());
+                    NotificationUtil::make(false, $exception->getMessage());
                 }
             })
             ->closeModalByClickingAway(false);
     }
 
-    /**
-     * 删除节点.
-     *
-     * @param  Flow  $flow
-     */
     public static function deleteHasNode(Model $flow): Action
     {
         /* @var Flow $flow */
-        return Action::make('删除')
+        return Action::make(__('cat.action.delete_node'))
             ->color('danger')
             ->icon('heroicon-s-trash')
             ->requiresConfirmation()
             ->action(function (FlowHasNode $node) use ($flow) {
                 if ($flow->activeForms()) {
-                    NotificationUtil::make(false, '删除失败，仍有此流程的表单没有结束');
+                    NotificationUtil::make(false, __('cat.action.delete_node_failure_is_not_finished'));
                 } else {
                     $node->delete();
-                    NotificationUtil::make(true, '成功删除节点');
+                    NotificationUtil::make(true, __('cat.action.delete_node_success'));
                 }
             })
             ->closeModalByClickingAway(false);
     }
 
-    /**
-     * 删除流程.
-     */
     public static function delete(): Action
     {
-        return Action::make('删除')
+        return Action::make(__('cat.action.delete'))
             ->requiresConfirmation()
             ->color('danger')
             ->icon('heroicon-s-trash')
             ->action(function (Flow $flow) {
                 try {
                     $flow->service()->delete();
-                    NotificationUtil::make(true, '已删除流程');
+                    NotificationUtil::make(true, __('cat.action.delete_success'));
                 } catch (Exception $exception) {
                     LogUtil::error($exception);
                     NotificationUtil::make(false, $exception);
@@ -137,32 +123,26 @@ class FlowAction
             ->closeModalByClickingAway(false);
     }
 
-    /**
-     * 删除流程所有节点.
-     */
     public static function deleteHasNodeWithAll(Model $flow): Action
     {
         /* @var Flow $flow */
-        return Action::make('清空节点')
+        return Action::make(__('cat.action.delete_node_with_all'))
             ->color('danger')
             ->requiresConfirmation()
             ->action(function () use ($flow) {
                 if ($flow->activeForms()) {
-                    NotificationUtil::make(false, '删除失败，仍有此流程的表单没有结束');
+                    NotificationUtil::make(false, __('cat.action.delete_node_failure_is_not_finished'));
                 } else {
                     $flow->nodes()->where('parent_node_id', '!=', 0)->delete();
-                    NotificationUtil::make(true, '成功删除所有节点');
+                    NotificationUtil::make(true, __('cat.action.delete_node_success'));
                 }
             })
             ->closeModalByClickingAway(false);
     }
 
-    /**
-     * 创建表单按钮.
-     */
     public static function createHasForm(): Action
     {
-        return Action::make('发起表单')
+        return Action::make(__('cat.action.create_flow_has_form'))
             ->slideOver()
             ->icon('heroicon-m-plus')
             ->form(FlowHasFormForm::create())
@@ -170,7 +150,7 @@ class FlowAction
                 try {
                     $flow_has_form_service = new FlowHasFormService();
                     $flow_has_form_service->create($data);
-                    NotificationUtil::make(true, '已创建表单');
+                    NotificationUtil::make(true, __('cat.action.create_success'));
                 } catch (Exception $exception) {
                     LogUtil::error($exception);
                     NotificationUtil::make(false, $exception);
@@ -179,12 +159,9 @@ class FlowAction
             ->closeModalByClickingAway(false);
     }
 
-    /**
-     * 流程表单审批按钮.
-     */
     public static function approve(): \Filament\Infolists\Components\Actions\Action
     {
-        return \Filament\Infolists\Components\Actions\Action::make('审批')
+        return \Filament\Infolists\Components\Actions\Action::make(__('cat.action.approve'))
             ->slideOver()
             ->icon('heroicon-o-shield-exclamation')
             ->form(FlowHasFormForm::approve())
@@ -192,7 +169,7 @@ class FlowAction
                 try {
                     $flow_has_form_service = new FlowHasFormService($flow_has_form);
                     $flow_has_form_service->approve($data['status'], $data['approve_comment']);
-                    NotificationUtil::make(true, '审批完成');
+                    NotificationUtil::make(true, __('cat.action.approve_success'));
                 } catch (Exception $exception) {
                     LogUtil::error($exception);
                     NotificationUtil::make(false, $exception->getMessage());
