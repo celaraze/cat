@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Traits;
+namespace App\Traits\Services;
 
 use App\Models\Footprint;
 use Illuminate\Database\Eloquent\Model;

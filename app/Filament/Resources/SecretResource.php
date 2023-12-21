@@ -89,18 +89,22 @@ class SecretResource extends Resource implements HasShieldPermissions
                 Tables\Columns\TextColumn::make('name')
                     ->searchable()
                     ->toggleable()
+                    ->sortable()
                     ->label('名称'),
                 Tables\Columns\TextColumn::make('site')
                     ->searchable()
                     ->toggleable()
+                    ->sortable()
                     ->label('站点'),
                 Tables\Columns\TextColumn::make('username')
                     ->searchable()
                     ->toggleable()
+                    ->sortable()
                     ->label('账户'),
                 Tables\Columns\TextColumn::make('expired_at')
                     ->searchable()
                     ->toggleable()
+                    ->sortable()
                     ->label('过期时间'),
                 Tables\Columns\TextColumn::make('status')
                     ->searchable()

@@ -3,7 +3,7 @@
 namespace App\Services;
 
 use App\Models\Setting;
-use App\Traits\HasFootprint;
+use App\Traits\Services\HasFootprint;
 
 class SettingService
 {

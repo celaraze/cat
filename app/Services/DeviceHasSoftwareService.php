@@ -5,7 +5,7 @@ namespace App\Services;
 use App\Models\DeviceHasSoftware;
 use App\Models\Part;
 use App\Models\Software;
-use App\Traits\HasFootprint;
+use App\Traits\Services\HasFootprint;
 use Exception;
 use Illuminate\Support\Facades\DB;
 use JetBrains\PhpStorm\ArrayShape;

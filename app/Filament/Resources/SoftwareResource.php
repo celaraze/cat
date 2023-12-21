@@ -115,33 +115,40 @@ class SoftwareResource extends Resource implements HasShieldPermissions
                 Tables\Columns\TextColumn::make('asset_number')
                     ->searchable()
                     ->toggleable()
+                    ->sortable()
                     ->label('资产编号'),
                 Tables\Columns\TextColumn::make('name')
                     ->searchable()
                     ->toggleable()
+                    ->sortable()
                     ->label('名称'),
                 Tables\Columns\TextColumn::make('brand.name')
                     ->searchable()
                     ->toggleable()
+                    ->sortable()
                     ->label('品牌'),
                 Tables\Columns\TextColumn::make('category.name')
                     ->searchable()
                     ->toggleable()
+                    ->sortable()
                     ->label('分类'),
                 Tables\Columns\TextColumn::make('sn')
                     ->searchable()
                     ->toggleable()
+                    ->sortable()
                     ->label('sn'),
                 Tables\Columns\TextColumn::make('specification')
                     ->searchable()
                     ->toggleable()
+                    ->sortable()
                     ->label('规格'),
                 Tables\Columns\TextColumn::make('status')
                     ->toggleable()
+                    ->badge()
+                    ->sortable()
                     ->formatStateUsing(function ($state) {
                         return AssetEnum::statusText($state);
                     })
-                    ->badge()
                     ->color(function ($state) {
                         return AssetEnum::statusColor($state);
                     })

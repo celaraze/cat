@@ -7,6 +7,7 @@ use App\Filament\Actions\DeviceAction;
 use App\Filament\Resources\DeviceResource;
 use App\Models\Device;
 use App\Models\DeviceHasSoftware;
+use App\Traits\ManageRelatedRecords\QueryRecordByUrl;
 use Filament\Resources\Pages\ManageRelatedRecords;
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -15,6 +16,8 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class HasSoftware extends ManageRelatedRecords
 {
+    use QueryRecordByUrl;
+
     protected static string $resource = DeviceResource::class;
 
     protected static string $relationship = 'hasSoftware';
@@ -28,6 +31,11 @@ class HasSoftware extends ManageRelatedRecords
     public static function getNavigationLabel(): string
     {
         return '软件';
+    }
+
+    public static function getNavigationBadge(): ?string
+    {
+        return self::queryRecord()->software()->count();
     }
 
     public function table(Table $table): Table

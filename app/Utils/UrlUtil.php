@@ -12,22 +12,28 @@ class UrlUtil
      *
      * @throws Exception
      */
-    public static function getRecordId(int $index = 0, ?string $uri = null): bool|string
+    public static function getRecordId(?string $uri = null): bool|string
     {
         try {
+            // 如果没有传入 uri，就从 request 中获取
             if (! $uri) {
-                $uri = request()->getRequestUri('referer');
-                // livewire 的 ajax 转发，不添加的话获取到的永远的 livewire/update
-                if ($uri == '/livewire/update') {
-                    $uri = request()->header('referer');
-                }
+                $uri = request()->getRequestUri();
             }
-            $uri = explode('/', $uri);
 
-            return $uri[count($uri) + $index - 1];
+            // livewire 的 ajax 转发，不添加的话获取到的永远是 livewire/update
+            if ($uri == '/livewire/update') {
+                $uri = request()->header('referer');
+            }
+
+            // 获取 URL 的路径部分
+            $path = parse_url($uri, PHP_URL_PATH);
+
+            // 正则表达式获取记录 ID
+            if (preg_match('/\/(\d+)\/?/', $path, $matches)) {
+                return $matches[1];
+            }
         } catch (Exception $exception) {
             throw new Exception('URL 解析错误。');
         }
-
     }
 }

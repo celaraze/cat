@@ -7,6 +7,7 @@ use App\Filament\Actions\SecretAction;
 use App\Filament\Resources\SecretResource;
 use App\Models\DeviceHasSecret;
 use App\Models\Secret;
+use App\Traits\ManageRelatedRecords\QueryRecordByUrl;
 use Filament\Resources\Pages\ManageRelatedRecords;
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -15,6 +16,8 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class HasSecret extends ManageRelatedRecords
 {
+    use QueryRecordByUrl;
+
     protected static string $resource = SecretResource::class;
 
     protected static string $relationship = 'hasSecrets';
@@ -28,6 +31,11 @@ class HasSecret extends ManageRelatedRecords
     public static function getNavigationLabel(): string
     {
         return '附属记录';
+    }
+
+    public static function getNavigationBadge(): ?string
+    {
+        return static::queryRecord()->devices()->first()?->getAttribute('asset_number');
     }
 
     public function table(Table $table): Table

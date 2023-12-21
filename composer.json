@@ -27,7 +27,7 @@
         "laravel/sanctum": "^3.2",
         "laravel/tinker": "^2.8",
         "leandrocfe/filament-apex-charts": "3.0.1",
-        "psr/simple-cache": "^2.0",
+        "psr/simple-cache": "^3.0",
         "pxlrbt/filament-excel": "^2.1",
         "solution-forest/filament-tree": "^2.0",
         "swisnl/filament-backgrounds": "^1.1",

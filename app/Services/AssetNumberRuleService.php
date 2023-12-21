@@ -3,7 +3,7 @@
 namespace App\Services;
 
 use App\Models\AssetNumberRule;
-use App\Traits\HasFootprint;
+use App\Traits\Services\HasFootprint;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;

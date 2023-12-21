@@ -7,7 +7,7 @@ use App\Filament\Actions\SoftwareAction;
 use App\Filament\Resources\SoftwareResource;
 use App\Models\DeviceHasSoftware;
 use App\Models\Software;
-use Filament\Forms\Form;
+use App\Traits\ManageRelatedRecords\QueryRecordByUrl;
 use Filament\Resources\Pages\ManageRelatedRecords;
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -16,6 +16,8 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class HasSoftware extends ManageRelatedRecords
 {
+    use QueryRecordByUrl;
+
     protected static string $resource = SoftwareResource::class;
 
     protected static string $relationship = 'hasSoftware';
@@ -31,12 +33,9 @@ class HasSoftware extends ManageRelatedRecords
         return '附属记录';
     }
 
-    public function form(Form $form): Form
+    public static function getNavigationBadge(): ?string
     {
-        return $form
-            ->schema([
-
-            ]);
+        return static::queryRecord()->devices()->first()?->getAttribute('asset_number');
     }
 
     public function table(Table $table): Table

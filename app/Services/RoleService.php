@@ -4,7 +4,7 @@ namespace App\Services;
 
 use App\Models\Role;
 use App\Models\User;
-use App\Traits\HasFootprint;
+use App\Traits\Services\HasFootprint;
 use Illuminate\Support\Collection;
 
 class RoleService

@@ -3,7 +3,7 @@
 namespace App\Services;
 
 use App\Models\PartCategory;
-use App\Traits\HasFootprint;
+use App\Traits\Services\HasFootprint;
 use Illuminate\Support\Collection;
 use JetBrains\PhpStorm\ArrayShape;
 

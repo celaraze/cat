@@ -161,6 +161,11 @@ class DeviceResource extends Resource implements HasShieldPermissions
                     ->color('success')
                     ->sortable()
                     ->label('用户'),
+                Tables\Columns\TextColumn::make('sn')
+                    ->searchable()
+                    ->toggleable()
+                    ->sortable()
+                    ->label('序列号'),
                 Tables\Columns\TextColumn::make('specification')
                     ->searchable()
                     ->toggleable()

@@ -6,7 +6,7 @@ use App\Models\AssetNumberRule;
 use App\Models\Flow;
 use App\Models\Part;
 use App\Models\Setting;
-use App\Traits\HasFootprint;
+use App\Traits\Services\HasFootprint;
 use Exception;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;

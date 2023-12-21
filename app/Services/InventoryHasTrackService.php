@@ -3,7 +3,7 @@
 namespace App\Services;
 
 use App\Models\InventoryHasTrack;
-use App\Traits\HasFootprint;
+use App\Traits\Services\HasFootprint;
 use JetBrains\PhpStorm\ArrayShape;
 
 class InventoryHasTrackService

@@ -31,9 +31,8 @@ class FootprintEnum
         return match ($state) {
             'create' => 'success',
             'update' => 'warning',
-            'delete' => 'danger',
+            'delete', 'force_delete' => 'danger',
             'restore' => 'blue',
-            'force_delete' => 'pink',
         };
     }
 }

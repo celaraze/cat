@@ -7,6 +7,7 @@ use App\Filament\Actions\DeviceAction;
 use App\Filament\Resources\DeviceResource;
 use App\Models\Device;
 use App\Models\DeviceHasUser;
+use App\Traits\ManageRelatedRecords\QueryRecordByUrl;
 use Filament\Resources\Pages\ManageRelatedRecords;
 use Filament\Tables;
 use Filament\Tables\Columns\TextColumn\TextColumnSize;
@@ -16,6 +17,8 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class HasUser extends ManageRelatedRecords
 {
+    use QueryRecordByUrl;
+
     protected static string $resource = DeviceResource::class;
 
     protected static string $relationship = 'hasUsers';
@@ -29,6 +32,16 @@ class HasUser extends ManageRelatedRecords
     public static function getNavigationLabel(): string
     {
         return '用户';
+    }
+
+    public static function getNavigationBadge(): ?string
+    {
+        return self::queryRecord()->users()->first()?->getAttribute('name');
+    }
+
+    public static function getNavigationBadgeColor(): string|array|null
+    {
+        return 'success';
     }
 
     public function table(Table $table): Table

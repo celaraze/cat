@@ -4,7 +4,7 @@ namespace App\Services;
 
 use App\Models\DeviceHasSecret;
 use App\Models\Secret;
-use App\Traits\HasFootprint;
+use App\Traits\Services\HasFootprint;
 use Exception;
 use Illuminate\Support\Facades\DB;
 use JetBrains\PhpStorm\ArrayShape;

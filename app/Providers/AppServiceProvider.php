@@ -51,6 +51,7 @@ use App\Observers\RoleObserver;
 use App\Observers\SecretObserver;
 use App\Observers\SettingObserver;
 use App\Observers\SoftwareCategoryObserver;
+use App\Observers\SoftwareObserver;
 use App\Observers\TicketCategoryObserver;
 use App\Observers\TicketHasTrackObserver;
 use App\Observers\TicketObserver;
@@ -98,7 +99,7 @@ class AppServiceProvider extends ServiceProvider
         Role::observe(RoleObserver::class);
         Setting::observe(SettingObserver::class);
         SoftwareCategory::observe(SoftwareCategoryObserver::class);
-        Software::observe(SettingObserver::class);
+        Software::observe(SoftwareObserver::class);
         TicketCategory::observe(TicketCategoryObserver::class);
         TicketHasTrack::observe(TicketHasTrackObserver::class);
         Ticket::observe(TicketObserver::class);

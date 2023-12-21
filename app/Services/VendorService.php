@@ -3,7 +3,7 @@
 namespace App\Services;
 
 use App\Models\Vendor;
-use App\Traits\HasFootprint;
+use App\Traits\Services\HasFootprint;
 use Exception;
 use Illuminate\Support\Facades\DB;
 use JetBrains\PhpStorm\ArrayShape;

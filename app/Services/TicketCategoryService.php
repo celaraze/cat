@@ -3,7 +3,7 @@
 namespace App\Services;
 
 use App\Models\TicketCategory;
-use App\Traits\HasFootprint;
+use App\Traits\Services\HasFootprint;
 use Illuminate\Support\Collection;
 
 class TicketCategoryService

@@ -4,7 +4,7 @@ namespace App\Services;
 
 use App\Models\Organization;
 use App\Models\OrganizationHasUser;
-use App\Traits\HasFootprint;
+use App\Traits\Services\HasFootprint;
 use Exception;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
