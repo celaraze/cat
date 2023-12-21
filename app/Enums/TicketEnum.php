@@ -18,7 +18,7 @@ class TicketEnum
     {
         return match ($state) {
             0 => 'gray',
-            1 => 'blue',
+            1 => 'green',
             2 => 'warning',
             3 => 'danger',
         };

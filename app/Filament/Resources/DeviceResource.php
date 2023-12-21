@@ -301,13 +301,7 @@ class DeviceResource extends Resource implements HasShieldPermissions
                                         TextEntry::make('asset_number')
                                             ->label('资产编号')
                                             ->badge()
-                                            ->color('primary')
-                                            ->hint(function (Device $device) {
-                                                return AssetEnum::statusText($device->getAttribute('status'));
-                                            })
-                                            ->hintColor(function (Device $device) {
-                                                return AssetEnum::statusColor($device->getAttribute('status'));
-                                            }),
+                                            ->color('primary'),
                                         TextEntry::make('name')
                                             ->label('名称'),
                                         TextEntry::make('category.name')

@@ -243,12 +243,6 @@ class PartResource extends Resource implements HasShieldPermissions
                                         TextEntry::make('asset_number')
                                             ->badge()
                                             ->color('primary')
-                                            ->hint(function (Part $part) {
-                                                return AssetEnum::statusText($part->getAttribute('status'));
-                                            })
-                                            ->hintColor(function (Part $part) {
-                                                return AssetEnum::statusColor($part->getAttribute('status'));
-                                            })
                                             ->label('资产编号'),
                                         TextEntry::make('category.name')
                                             ->label('分类'),

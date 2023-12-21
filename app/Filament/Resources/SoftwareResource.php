@@ -252,13 +252,7 @@ class SoftwareResource extends Resource implements HasShieldPermissions
                                         TextEntry::make('asset_number')
                                             ->label('资产编号')
                                             ->badge()
-                                            ->color('primary')
-                                            ->hint(function (Software $software) {
-                                                return AssetEnum::statusText($software->getAttribute('status'));
-                                            })
-                                            ->hintColor(function (Software $software) {
-                                                return AssetEnum::statusColor($software->getAttribute('status'));
-                                            }),
+                                            ->color('primary'),
                                         TextEntry::make('name')
                                             ->label('名称'),
                                         TextEntry::make('category.name')

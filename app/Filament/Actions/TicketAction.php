@@ -92,6 +92,7 @@ class TicketAction
             ->color('success')
             ->icon('heroicon-o-check-circle')
             ->requiresConfirmation()
+            ->button()
             ->action(function (Ticket $ticket) {
                 try {
                     $ticket->service()->finish();
