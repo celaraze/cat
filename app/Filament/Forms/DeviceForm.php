@@ -23,7 +23,7 @@ use Ramsey\Uuid\Uuid;
 class DeviceForm
 {
     /**
-     * 创建工单.
+     * 从设备创建工单.
      */
     public static function createTicketFromDevice(string $asset_number): array
     {
@@ -62,7 +62,6 @@ class DeviceForm
     public static function createOrEdit(): array
     {
         return [
-            //region 文本 资产编号 asset_number
             TextInput::make('asset_number')
                 ->maxLength(255)
                 ->label(__('cat.asset_number'))
@@ -73,55 +72,37 @@ class DeviceForm
                     return AssetNumberRuleService::isAuto(Device::class);
                 })
                 ->hintAction(
-                    Action::make('资产编号已绑定自动生成，无需填写本字段')
+                    Action::make(__('cat.form.create_asset_number_helper'))
                         ->icon('heroicon-o-arrow-path-rounded-square')
                         ->visible(function () {
                             return AssetNumberRuleService::isAuto(Device::class);
                         })
                 ),
-            //endregion
-
-            //region 选择 分类 category_id
             Select::make('category_id')
                 ->relationship('category', 'name')
-                ->label('分类')
+                ->label(__('cat.category'))
                 ->preload()
                 ->searchable()
                 ->createOptionForm(DeviceCategoryForm::createOrEdit())
                 ->required(),
-            //endregion
-
-            //region 文本 名称 name
             TextInput::make('name')
                 ->maxLength(255)
-                ->label('名称'),
-            //endregion
-
-            //region 选择 品牌 brand_id
+                ->label(__('cat.name')),
             Select::make('brand_id')
-                ->label('品牌')
+                ->label(__('cat.brand'))
                 ->relationship('brand', 'name')
                 ->preload()
                 ->searchable()
                 ->createOptionForm(BrandForm::createOrEdit())
                 ->required(),
-            //endregion
-
-            //region 文本 序列号 sn
             TextInput::make('sn')
                 ->maxLength(255)
-                ->label('序列号'),
-            //endregion
-
-            //region 文本 规格 specification
+                ->label(__('cat.sn')),
             TextInput::make('specification')
                 ->maxLength(255)
-                ->label('规格'),
-            //endregion
-
-            //region 上传 照片 image
+                ->label(__('cat.specification')),
             FileUpload::make('image')
-                ->label('照片')
+                ->label(__('cat.image'))
                 ->directory('devices')
                 ->visibility('public')
                 ->getUploadedFileNameForStorageUsing(
@@ -130,41 +111,34 @@ class DeviceForm
                     }
                 )
                 ->image(),
-            //endregion
-
-            //region 文本 说明 description
             Textarea::make('description')
-                ->label('说明'),
-            //endregion
-
-            //region 数组 额外信息 additional
+                ->label(__('cat.description')),
             Repeater::make('additional')
                 ->schema([
                     TextInput::make('name')
-                        ->label('名称'),
+                        ->label(__('cat.name')),
                     TextInput::make('text')
-                        ->label('值'),
+                        ->label(__('cat.text')),
                 ])
                 ->defaultItems(0)
-                ->label('额外信息'),
-            //endregion
+                ->label(__('cat.additional')),
         ];
     }
 
     /**
-     * 强制报废.
+     * 强制废弃.
      */
     public static function forceRetire(): array
     {
         return [
             Shout::make('hint')
                 ->color('danger')
-                ->content('此操作将同时报废所含配件（不包含软件）'),
+                ->content(__('cat.form.force_retire_device_helper')),
         ];
     }
 
     /**
-     * 配置设备报废流程.
+     * 配置设备废弃流程.
      */
     public static function setRetireFlow(): array
     {
@@ -172,7 +146,7 @@ class DeviceForm
             Select::make('flow_id')
                 ->options(FlowService::pluckOptions())
                 ->required()
-                ->label('流程'),
+                ->label(__('cat.flow')),
         ];
     }
 
@@ -183,27 +157,27 @@ class DeviceForm
     {
         return [
             Select::make('asset_number_rule_id')
-                ->label('规则')
+                ->label(__('cat.asset_number_rule'))
                 ->options(AssetNumberRuleService::pluckOptions())
                 ->required()
                 ->default(AssetNumberRuleService::getAutoRule(Device::class)?->getAttribute('id')),
             Checkbox::make('is_auto')
-                ->label('自动生成')
+                ->label(__('cat.is_auto'))
                 ->default(AssetNumberRuleService::getAutoRule(Device::class)?->getAttribute('is_auto')),
         ];
     }
 
     /**
-     * 流程报废.
+     * 流程废弃.
      */
     public static function retire(): array
     {
         return [
             Shout::make('')
                 ->color('danger')
-                ->content('此操作将同时报废所含配件（不包含软件）'),
+                ->content(__('cat.form.retire_device_helper')),
             TextInput::make('comment')
-                ->label('说明')
+                ->label(__('cat.comment'))
                 ->required(),
         ];
     }

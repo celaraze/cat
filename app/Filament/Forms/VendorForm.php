@@ -34,10 +34,10 @@ class VendorForm
         return [
             Shout::make('hint')
                 ->color('danger')
-                ->content('不建议删除厂商，会造成资产关联厂商出错，可以通过编辑厂商名称实现。如果必须删除，强烈建议后续修改资产厂商。'),
+                ->content(__('cat.form.delete_vendor_helper')),
             Shout::make('hint')
                 ->color('danger')
-                ->content('删除厂商会同时删除附属联系人。'),
+                ->content(__('cat.form.delete_vendor_shout_helper')),
         ];
     }
 }

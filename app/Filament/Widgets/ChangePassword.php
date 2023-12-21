@@ -28,6 +28,6 @@ class ChangePassword extends Widget implements HasActions, HasForms
 
     public function getDescription(): string
     {
-        return '请养成定期修改密码的好习惯。';
+        return __('cat.widget.change_password_description');
     }
 }

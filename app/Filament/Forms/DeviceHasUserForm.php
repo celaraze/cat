@@ -2,6 +2,7 @@
 
 namespace App\Filament\Forms;
 
+use App\Enums\DeviceHasUserEnum;
 use App\Services\UserService;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Radio;
@@ -11,13 +12,13 @@ use Filament\Forms\Components\TextInput;
 class DeviceHasUserForm
 {
     /**
-     * 创建.
+     * 分配.
      */
     public static function create(): array
     {
         return [
             Radio::make('status')
-                ->options([1 => '使用', 2 => '借用'])
+                ->options(DeviceHasUserEnum::allStatusText())
                 ->label(__('cat.status'))
                 ->required(),
 
@@ -37,7 +38,7 @@ class DeviceHasUserForm
     }
 
     /**
-     * 解除设备使用者.
+     * 解除.
      */
     public static function delete(): array
     {

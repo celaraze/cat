@@ -8,35 +8,38 @@ use Filament\Forms\Components\TextInput;
 
 class SecretForm
 {
+    /**
+     * 创建或编辑.
+     */
     public static function createOrEdit(): array
     {
         return [
             TextInput::make('name')
                 ->required()
-                ->label('名称'),
+                ->label(__('cat.name')),
             TextInput::make('site')
-                ->label('站点'),
+                ->label(__('cat.site')),
             TextInput::make('username')
                 ->required()
-                ->label('账户'),
+                ->label(__('cat.username')),
             TextInput::make('token')
                 ->required()
                 ->password()
-                ->label('密钥'),
+                ->label(__('cat.token')),
             DatePicker::make('expired_at')
-                ->label('过期时间'),
+                ->label(__('cat.expired_at')),
         ];
     }
 
     /**
-     * 强制报废.
+     * 删除.
      */
     public static function delete(): array
     {
         return [
             Shout::make('hint')
                 ->color('danger')
-                ->content('此操作将同时删除所含附属记录'),
+                ->content(__('cat.form.delete_secret_helper')),
         ];
     }
 
@@ -49,7 +52,7 @@ class SecretForm
             TextInput::make('password')
                 ->required()
                 ->password()
-                ->label('密码'),
+                ->label(__('cat.password')),
         ];
     }
 }

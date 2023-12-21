@@ -2,9 +2,8 @@
 
 namespace App\Filament\Forms;
 
-use App\Models\Device;
-use App\Models\Part;
-use App\Models\Software;
+use App\Enums\AssetEnum;
+use App\Enums\InventoryEnum;
 use Filament\Forms\Components\Radio;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
@@ -12,7 +11,7 @@ use Filament\Forms\Components\TextInput;
 class InventoryForm
 {
     /**
-     * 创建盘点.
+     * 创建.
      */
     public static function create(): array
     {
@@ -21,11 +20,7 @@ class InventoryForm
                 ->label(__('cat.name'))
                 ->required(),
             Select::make('class_name')
-                ->options([
-                    Device::class => '设备',
-                    Part::class => '配件',
-                    Software::class => '软件',
-                ])
+                ->options(AssetEnum::allAssetTypeText())
                 ->label(__('cat.asset'))
                 ->reactive()
                 ->required(),
@@ -42,7 +37,7 @@ class InventoryForm
 
                     return $model->service()->pluckOptions();
                 })
-                ->hint('留空为选择全部该类资产'),
+                ->hint(__('cat.form.create_model_ids_helper')),
         ];
     }
 
@@ -53,10 +48,7 @@ class InventoryForm
     {
         return [
             Radio::make('check')
-                ->options([
-                    1 => __('cat.in_stock'),
-                    2 => __('cat.not_in_stock'),
-                ])
+                ->options(InventoryEnum::allCheckText())
                 ->label(__('cat.operation'))
                 ->required(),
             TextInput::make('comment')

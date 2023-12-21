@@ -10,9 +10,12 @@ class FlowProgressChart extends ApexChartWidget
 {
     protected static string $chartId = 'flowProgressChart';
 
-    protected static ?string $heading = '流程路径';
-
     protected static ?string $pollingInterval = null;
+
+    public static function getHeading(): ?string
+    {
+        return __('cat.widget.flow_progress_chart_heading');
+    }
 
     protected function getOptions(): array
     {

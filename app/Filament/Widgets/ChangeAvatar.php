@@ -26,6 +26,6 @@ class ChangeAvatar extends Widget implements HasActions, HasForms
 
     public function getDescription(): string
     {
-        return '上传新的头像。';
+        return __('cat.widget.change_avatar_description');
     }
 }

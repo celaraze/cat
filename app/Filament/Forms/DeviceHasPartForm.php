@@ -11,7 +11,7 @@ use Filament\Forms\Components\Select;
 class DeviceHasPartForm
 {
     /**
-     * 附加配件.
+     * 附加.
      */
     public static function create(): array
     {
@@ -31,7 +31,7 @@ class DeviceHasPartForm
     }
 
     /**
-     * 配件附加到设备.
+     * 分配.
      */
     public static function createFromPart(Part $part): array
     {

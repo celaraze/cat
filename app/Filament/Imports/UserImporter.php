@@ -17,21 +17,21 @@ class UserImporter extends Importer
         return [
             ImportColumn::make('name')
                 ->requiredMapping()
-                ->example('张三')
-                ->label('名称'),
+                ->example(__('cat.example_user_name'))
+                ->label(__('cat.name')),
             ImportColumn::make('email')
                 ->requiredMapping()
-                ->example('zhangsan@local.com')
-                ->label('邮箱'),
+                ->example(__('cat.example_user_email'))
+                ->label(__('cat.email')),
         ];
     }
 
     public static function getCompletedNotificationBody(Import $import): string
     {
-        $body = '你的用户导入已完成并有 '.number_format($import->successful_rows).' 行记录被导入。';
+        $body = __('cat.import.user_success', ['success_count' => number_format($import->successful_rows)]);
 
         if ($failedRowsCount = $import->getFailedRowsCount()) {
-            $body .= ' '.number_format($failedRowsCount).'行导入失败。';
+            $body .= ' '.__('cat.import.user_failure', ['failure_count' => number_format($failedRowsCount)]);
         }
 
         return $body;
@@ -42,7 +42,7 @@ class UserImporter extends Importer
         return [
             Shout::make('')
                 ->color('warning')
-                ->content('导入用户的默认密码为空且无法登录，需要正常使用账户请先重置密码。'),
+                ->content(__('cat.import.user_shout_helper')),
         ];
     }
 

@@ -8,7 +8,7 @@ use Filament\Forms\Components\Select;
 class OrganizationHasUserForm
 {
     /**
-     * 创建.
+     * 附加.
      */
     public static function create(): array
     {

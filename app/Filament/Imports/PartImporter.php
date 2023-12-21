@@ -16,7 +16,7 @@ class PartImporter extends Importer
         return [
             ImportColumn::make('asset_number')
                 ->requiredMapping()
-                ->example('Example001')
+                ->example(__('cat.example_part_asset_number'))
                 ->label(__('cat.asset_number')),
             ImportColumn::make('category')
                 ->relationship(resolveUsing: 'name')
@@ -24,13 +24,13 @@ class PartImporter extends Importer
                 ->example(__('cat.example_part_category'))
                 ->label(__('cat.category')),
             ImportColumn::make('sn')
-                ->example('AAAAAAA')
+                ->example(__('cat.example_part_sn'))
                 ->label(__('cat.sn')),
             ImportColumn::make('specification')
-                ->example('500GB')
+                ->example(__('cat.example_part_specification'))
                 ->label(__('cat.specification')),
             ImportColumn::make('image')
-                ->example('https://test.com/logo.png')
+                ->example(__('cat.example_part_image'))
                 ->label(__('cat.image')),
             ImportColumn::make('brand')
                 ->relationship(resolveUsing: 'name')
@@ -38,17 +38,17 @@ class PartImporter extends Importer
                 ->example(__('cat.example_brand'))
                 ->label(__('cat.brand')),
             ImportColumn::make('description')
-                ->example(__('cat.example_description'))
+                ->example(__('cat.example_part_description'))
                 ->label(__('cat.description')),
         ];
     }
 
     public static function getCompletedNotificationBody(Import $import): string
     {
-        $body = '你的配件导入已完成并有 '.number_format($import->successful_rows).' 行记录被导入。';
+        $body = __('cat.import.part_success', ['success_count' => number_format($import->successful_rows)]);
 
         if ($failedRowsCount = $import->getFailedRowsCount()) {
-            $body .= ' '.number_format($failedRowsCount).'行导入失败。';
+            $body .= ' '.__('cat.import.part_failure', ['failure_count' => number_format($failedRowsCount)]);
         }
 
         return $body;
@@ -56,11 +56,6 @@ class PartImporter extends Importer
 
     public function resolveRecord(): ?Part
     {
-        // return Device::firstOrNew([
-        //     // Update existing records, matching them by `$this->data['column_name']`
-        //     'email' => $this->data['email'],
-        // ]);
-
         return new Part();
     }
 }

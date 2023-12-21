@@ -35,6 +35,11 @@ class UserResource extends Resource implements HasShieldPermissions
 
     protected static ?string $recordTitleAttribute = 'name';
 
+    public static function shouldRegisterNavigation(): bool
+    {
+        return ! config('app.demo_mode');
+    }
+
     public static function getRecordSubNavigation(Page $page): array
     {
         $navigation_items = [

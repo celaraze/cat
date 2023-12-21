@@ -10,9 +10,12 @@ class Profile extends Page
 {
     protected static string $view = 'filament.pages.profile';
 
-    protected static ?string $title = '个人档';
-
     protected static bool $shouldRegisterNavigation = false;
+
+    public static function getNavigationLabel(): string
+    {
+        return __('cat.profile');
+    }
 
     public function getHeaderWidgetsColumns(): int|array
     {

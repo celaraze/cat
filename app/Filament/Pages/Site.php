@@ -21,10 +21,6 @@ class Site extends Page implements HasForms
 
     protected static string $view = 'filament.pages.site';
 
-    protected static ?string $navigationLabel = '站点';
-
-    protected static ?string $navigationGroup = '系统设置';
-
     // todo 暂时隐藏
     protected static bool $shouldRegisterNavigation = false;
 
@@ -32,12 +28,22 @@ class Site extends Page implements HasForms
 
     protected ?string $heading = ' ';
 
+    public static function getNavigationLabel(): string
+    {
+        return __('cat.site');
+    }
+
+    public static function getNavigationGroup(): ?string
+    {
+        return __('cat.system_setting');
+    }
+
     public function getBreadcrumbs(): array
     {
         return [
             '/' => 'CAT',
-            '' => '系统',
-            'site' => '站点',
+            '' => __('cat.system_setting'),
+            'site' => __('cat.site'),
         ];
     }
 
@@ -50,9 +56,9 @@ class Site extends Page implements HasForms
     {
         return $form->schema([
             TextInput::make('app_url')
-                ->hint('填写你访问 CAT 的地址，这会影响上传的图片、文件、Logo 这一类资源的正确显示。')
+                ->hint(__('cat.app_url_helper'))
                 ->rules(['url'])
-                ->label('站点地址'),
+                ->label(__('cat.app_url')),
         ])
             ->statePath('data');
     }
@@ -70,7 +76,7 @@ class Site extends Page implements HasForms
                     ['custom_key' => $key, 'custom_value' => $datum]
                 );
             }
-            NotificationUtil::make(true, '已保存');
+            NotificationUtil::make(true, __('cat.save_success'));
         } catch (Halt $exception) {
             LogUtil::error($exception);
             NotificationUtil::make(false, $exception);
@@ -81,7 +87,7 @@ class Site extends Page implements HasForms
     {
         return [
             Action::make('save')
-                ->label('保存')
+                ->label(__('cat.save'))
                 ->submit('save'),
         ];
     }

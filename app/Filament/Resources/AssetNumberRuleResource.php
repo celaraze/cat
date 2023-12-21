@@ -3,7 +3,7 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Actions\AssetNumberRuleAction;
-use App\Filament\Forms\SettingForm;
+use App\Filament\Forms\AssetNumberRuleForm;
 use App\Filament\Resources\AssetNumberRuleResource\Pages\Edit;
 use App\Filament\Resources\AssetNumberRuleResource\Pages\Index;
 use App\Filament\Resources\AssetNumberRuleResource\Pages\View;
@@ -60,7 +60,7 @@ class AssetNumberRuleResource extends Resource implements HasShieldPermissions
 
     public static function form(Form $form): Form
     {
-        return $form->schema(SettingForm::createOrEdit());
+        return $form->schema(AssetNumberRuleForm::createOrEdit());
     }
 
     public static function table(Table $table): Table

@@ -16,44 +16,44 @@ class DeviceImporter extends Importer
         return [
             ImportColumn::make('asset_number')
                 ->requiredMapping()
-                ->example('Example001')
-                ->label('资产编号'),
+                ->example(__('cat.example_device_asset_number'))
+                ->label(__('cat.asset_number')),
             ImportColumn::make('category')
                 ->relationship(resolveUsing: 'name')
                 ->requiredMapping()
-                ->example('台式机')
-                ->label('分类'),
+                ->example(__('cat.example_device_category'))
+                ->label(__('cat.category')),
             ImportColumn::make('name')
-                ->example('工作站 A 组 1 号机')
-                ->label('名称'),
+                ->example(__('cat.example_device_name'))
+                ->label(__('cat.name')),
             ImportColumn::make('sn')
                 ->requiredMapping()
-                ->example('如果没有序列号，请直接填写：无。但不能留空或缺少本字段。')
-                ->label('序列号'),
+                ->example(__('cat.example_device_sn'))
+                ->label(__('cat.sn')),
             ImportColumn::make('specification')
                 ->requiredMapping()
-                ->example('如果没有规格，请直接填写：无。但不能留空或缺少本字段。')
-                ->label('规格'),
+                ->example(__('cat.example_device_specification'))
+                ->label(__('cat.specification')),
             ImportColumn::make('image')
-                ->example('https://test.com/logo.png')
-                ->label('照片'),
+                ->example(__('cat.example_device_image'))
+                ->label(__('cat.image')),
             ImportColumn::make('brand')
                 ->relationship(resolveUsing: 'name')
                 ->requiredMapping()
-                ->example('微软 Microsoft')
-                ->label('品牌'),
+                ->example(__('cat.example_brand'))
+                ->label(__('cat.brand')),
             ImportColumn::make('description')
-                ->example('这是一台工作站')
-                ->label('说明'),
+                ->example(__('cat.example_device_description'))
+                ->label(__('cat.description')),
         ];
     }
 
     public static function getCompletedNotificationBody(Import $import): string
     {
-        $body = '你的设备导入已完成并有 '.number_format($import->successful_rows).' 行记录被导入。';
+        $body = __('cat.import.device_success', ['success_count' => number_format($import->successful_rows)]);
 
         if ($failedRowsCount = $import->getFailedRowsCount()) {
-            $body .= ' '.number_format($failedRowsCount).'行导入失败。';
+            $body .= ' '.__('cat.import.device_failure', ['failure_count' => number_format($failedRowsCount)]);
         }
 
         return $body;
@@ -61,11 +61,6 @@ class DeviceImporter extends Importer
 
     public function resolveRecord(): ?Device
     {
-        // return Device::firstOrNew([
-        //     // Update existing records, matching them by `$this->data['column_name']`
-        //     'email' => $this->data['email'],
-        // ]);
-
         return new Device();
     }
 }

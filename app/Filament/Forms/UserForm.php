@@ -35,7 +35,7 @@ class UserForm
                 ->preload(),
             Shout::make('')
                 ->color('warning')
-                ->content('新建用户的默认密码为 cat ，请提醒用户及时修改密码。'),
+                ->content(__('cat.form.create_user_shout_helper')),
         ];
     }
 
@@ -115,34 +115,34 @@ class UserForm
         return [
             Shout::make('')
                 ->color('primary')
-                ->content('删除用户前，请先确认已处理以下内容：'),
+                ->content(__('cat.form.delete_user_shout_1_helper')),
             Shout::make('')
                 ->color('warning')
                 ->content(function () use ($bool) {
                     $icon = $bool['device_has_users'] ? '✔' : '✖';
 
-                    return $icon.' 此用户没有正在管理的设备';
+                    return $icon.__('cat.form.delete_user_shout_2_helper');
                 }),
             Shout::make('')
                 ->color('warning')
                 ->content(function () use ($bool) {
                     $icon = $bool['applicant_forms'] ? '✔' : '✖';
 
-                    return $icon.' 此用户没有尚未结案的申请表单';
+                    return $icon.__('cat.form.delete_user_shout_3_helper');
                 }),
             Shout::make('')
                 ->color('warning')
                 ->content(function () use ($bool) {
                     $icon = $bool['approve_forms'] ? '✔' : '✖';
 
-                    return $icon.' 此用户没有尚未结案的审批表单';
+                    return $icon.__('cat.form.delete_user_shout_4_helper');
                 }),
             Shout::make('')
                 ->color('warning')
                 ->content(function () use ($bool) {
                     $icon = $bool['approve_nodes'] ? '✔' : '✖';
 
-                    return $icon.' 此用户没有正在审批的节点';
+                    return $icon.__('cat.form.delete_user_shout_5_helper');
                 }),
         ];
     }
@@ -155,7 +155,7 @@ class UserForm
         return [
             Shout::make('')
                 ->color('warning')
-                ->content('重置后用户的默认密码为 cat ，请提醒用户及时修改密码。'),
+                ->content(__('cat.form.reset_password_shout_helper')),
         ];
     }
 }

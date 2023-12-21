@@ -23,7 +23,7 @@ class VendorImporter extends Importer
                 ->example(__('cat.example_vendor_address'))
                 ->label(__('cat.address')),
             ImportColumn::make('public_phone_number')
-                ->example('010-12345678')
+                ->example(__('cat.example_vendor_public_phone_number'))
                 ->label(__('cat.public_phone_number')),
             ImportColumn::make('referrer')
                 ->example(__('cat.example_vendor_referrer'))
@@ -33,10 +33,10 @@ class VendorImporter extends Importer
 
     public static function getCompletedNotificationBody(Import $import): string
     {
-        $body = '你的厂商导入已完成并有 '.number_format($import->successful_rows).' 行记录被导入。';
+        $body = __('cat.import.vendor_success', ['success_count' => number_format($import->successful_rows)]);
 
         if ($failedRowsCount = $import->getFailedRowsCount()) {
-            $body .= ' '.number_format($failedRowsCount).'行导入失败。';
+            $body .= ' '.__('cat.import.vendor_failure', ['failure_count' => number_format($failedRowsCount)]);
         }
 
         return $body;
@@ -44,11 +44,6 @@ class VendorImporter extends Importer
 
     public function resolveRecord(): ?Vendor
     {
-        // return Device::firstOrNew([
-        //     // Update existing records, matching them by `$this->data['column_name']`
-        //     'email' => $this->data['email'],
-        // ]);
-
         return new Vendor();
     }
 }

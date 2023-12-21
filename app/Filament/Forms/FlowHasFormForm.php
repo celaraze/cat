@@ -30,7 +30,7 @@ class FlowHasFormForm
     }
 
     /**
-     * 创建表单.
+     * 创建.
      */
     public static function create(): array
     {

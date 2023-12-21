@@ -12,9 +12,12 @@ class Dashboard extends Page
 
     protected static string $view = 'filament.pages.dash-board';
 
-    protected static ?string $navigationLabel = '总览';
-
     protected ?string $heading = '';
+
+    public static function getNavigationLabel(): string
+    {
+        return __('cat.dashboard');
+    }
 
     protected function getHeaderWidgets(): array
     {

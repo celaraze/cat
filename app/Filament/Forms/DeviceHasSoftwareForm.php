@@ -10,7 +10,7 @@ use Filament\Forms\Components\Select;
 class DeviceHasSoftwareForm
 {
     /**
-     * 附加软件.
+     * 附加.
      */
     public static function create(): array
     {
@@ -25,7 +25,7 @@ class DeviceHasSoftwareForm
     }
 
     /**
-     * 软件附加到设备.
+     * 分配.
      */
     public static function createFromSoftware(Software $software): array
     {

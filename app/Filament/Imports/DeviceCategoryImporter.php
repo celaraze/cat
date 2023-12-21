@@ -23,10 +23,10 @@ class DeviceCategoryImporter extends Importer
 
     public static function getCompletedNotificationBody(Import $import): string
     {
-        $body = '你的设备分类导入已完成并有 '.number_format($import->successful_rows).' 行记录被导入。';
+        $body = __('cat.import.device_category_success', ['success_count' => $import->successful_rows]);
 
         if ($failedRowsCount = $import->getFailedRowsCount()) {
-            $body .= ' '.number_format($failedRowsCount).'行导入失败。';
+            $body .= ' '.__('cat.import.device_category_failure', ['failure_count' => $failedRowsCount]);
         }
 
         return $body;
@@ -34,11 +34,6 @@ class DeviceCategoryImporter extends Importer
 
     public function resolveRecord(): ?DeviceCategory
     {
-        // return Device::firstOrNew([
-        //     // Update existing records, matching them by `$this->data['column_name']`
-        //     'email' => $this->data['email'],
-        // ]);
-
         return new DeviceCategory();
     }
 }

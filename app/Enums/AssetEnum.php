@@ -2,6 +2,10 @@
 
 namespace App\Enums;
 
+use App\Models\Device;
+use App\Models\Part;
+use App\Models\Software;
+
 class AssetEnum
 {
     public static function statusText(int $state): string
@@ -60,6 +64,15 @@ class AssetEnum
         return [
             0 => __('cat.asset.relation_operation.attach'),
             1 => __('cat.asset.relation_operation.detach'),
+        ];
+    }
+
+    public static function allAssetTypeText(): array
+    {
+        return [
+            Device::class => __('cat.device'),
+            Part::class => __('cat.part'),
+            Software::class => __('cat.software'),
         ];
     }
 }

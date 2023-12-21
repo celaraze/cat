@@ -18,20 +18,20 @@ class AssetOverview extends BaseWidget
     protected function getStats(): array
     {
         return [
-            Stat::make('设备', Device::query()->count())
-                ->description(Device::query()->where('status', 1)->count().' 使用中')
+            Stat::make(__('cat.device'), Device::query()->count())
+                ->description(Device::query()->where('status', 1)->count().__('cat.widget.using'))
                 ->descriptionColor('success')
                 ->url(DeviceResource::getUrl('index')),
-            Stat::make('配件', Part::query()->count())
-                ->description(Part::query()->where('status', 1)->count().' 使用中')
+            Stat::make(__('cat.part'), Part::query()->count())
+                ->description(Part::query()->where('status', 1)->count().__('cat.widget.using'))
                 ->descriptionColor('success')
                 ->url(PartResource::getUrl('index')),
-            Stat::make('软件', Software::query()->count())
-                ->description(Software::query()->where('status', 1)->count().' 使用中')
+            Stat::make('cat.software', Software::query()->count())
+                ->description(Software::query()->where('status', 1)->count().__('cat.widget.using'))
                 ->descriptionColor('success')
                 ->url(SoftwareResource::getUrl('index')),
-            Stat::make('密钥', Secret::query()->count())
-                ->description(Secret::query()->where('status', 1)->count().' 使用中')
+            Stat::make('cat.secret', Secret::query()->count())
+                ->description(Secret::query()->where('status', 1)->count().__('cat.widget.using'))
                 ->descriptionColor('success')
                 ->url(SecretResource::getUrl('index')),
         ];

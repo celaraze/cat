@@ -10,9 +10,12 @@ class TicketHasTrackMinutePie extends ApexChartWidget
 {
     protected static string $chartId = 'ticketHasTrackMinutePie';
 
-    protected static ?string $heading = '工时构成（分钟）';
-
     protected int|string|array $columnStart = 2;
+
+    public static function getHeading(): ?string
+    {
+        return __('cat.widget.ticket_has_track_minute_pie_heading');
+    }
 
     protected function getOptions(): array
     {

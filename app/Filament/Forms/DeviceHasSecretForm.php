@@ -11,7 +11,7 @@ use Filament\Forms\Components\Select;
 class DeviceHasSecretForm
 {
     /**
-     * 密钥附加到设备.
+     * 分配.
      */
     public static function createFromSecret(Secret $secret): array
     {
@@ -21,12 +21,12 @@ class DeviceHasSecretForm
             Select::make('device_id')
                 ->options(DeviceService::pluckOptions('id', $device_ids))
                 ->searchable()
-                ->label('设备'),
+                ->label(__('cat.device')),
         ];
     }
 
     /**
-     * 附加密钥.
+     * 附加.
      */
     public static function create(): array
     {
@@ -41,7 +41,7 @@ class DeviceHasSecretForm
                 ->searchable()
                 ->preload()
                 ->required()
-                ->label('密钥'),
+                ->label(__('cat.secrets')),
         ];
     }
 }

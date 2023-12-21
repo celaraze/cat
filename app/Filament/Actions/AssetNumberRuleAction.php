@@ -2,7 +2,7 @@
 
 namespace App\Filament\Actions;
 
-use App\Filament\Forms\SettingForm;
+use App\Filament\Forms\AssetNumberRuleForm;
 use App\Services\AssetNumberRuleService;
 use App\Utils\NotificationUtil;
 use Exception;
@@ -16,7 +16,7 @@ class AssetNumberRuleAction
         return Action::make(__('cat.action.create'))
             ->slideOver()
             ->icon('heroicon-m-plus')
-            ->form(SettingForm::createOrEdit())
+            ->form(AssetNumberRuleForm::createOrEdit())
             ->action(function (array $data) {
                 try {
                     $asset_number_rule_service = new AssetNumberRuleService();
