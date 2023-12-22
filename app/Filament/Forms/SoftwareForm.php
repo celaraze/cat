@@ -44,7 +44,7 @@ class SoftwareForm
                 ->required(),
             Select::make('category_id')
                 ->relationship('category', 'name')
-                ->label(__('cat.software.category'))
+                ->label(__('cat.software.category_id'))
                 ->searchable()
                 ->preload()
                 ->createOptionForm(SoftwareCategoryForm::createOrEdit())
@@ -80,12 +80,12 @@ class SoftwareForm
             Repeater::make('additional')
                 ->schema([
                     TextInput::make('name')
-                        ->label(__('cat.additional.name')),
+                        ->label(__('cat.software.additional.name')),
                     TextInput::make('text')
-                        ->label(__('cat.additional.text')),
+                        ->label(__('cat.software.additional.text')),
                 ])
                 ->defaultItems(0)
-                ->label(__('cat.additional')),
+                ->label(__('cat.software.additional')),
         ];
     }
 
@@ -114,7 +114,7 @@ class SoftwareForm
                 ->required()
                 ->default(AssetNumberRuleService::getAutoRule(Software::class)?->getAttribute('id')),
             Checkbox::make('is_auto')
-                ->label(__('cat.is_auto'))
+                ->label(__('cat.software.is_auto'))
                 ->default(AssetNumberRuleService::getAutoRule(Software::class)?->getAttribute('is_auto')),
         ];
     }
@@ -126,7 +126,7 @@ class SoftwareForm
     {
         return [
             TextInput::make('comment')
-                ->label(__('cat.comment'))
+                ->label(__('cat.software.form.retire_comment'))
                 ->required(),
         ];
     }

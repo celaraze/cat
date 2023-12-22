@@ -33,7 +33,7 @@ class PartForm
                     return AssetNumberRuleService::isAuto(Part::class);
                 })
                 ->hintAction(
-                    Action::make(__('cat.part.form.asset_number.create_helper'))
+                    Action::make(__('cat.part.action.asset_number.create_helper'))
                         ->icon('heroicon-o-arrow-path-rounded-square')
                         ->visible(function () {
                             return AssetNumberRuleService::isAuto(Part::class);
@@ -77,7 +77,7 @@ class PartForm
                         ->label(__('cat.part.additional.text')),
                 ])
                 ->defaultItems(0)
-                ->label(__('cat.additional')),
+                ->label(__('cat.part.additional')),
         ];
     }
 
@@ -90,7 +90,7 @@ class PartForm
             Select::make('flow_id')
                 ->options(FlowService::pluckOptions())
                 ->required()
-                ->label(__('cat.flow')),
+                ->label(__('cat.part.flow_id')),
         ];
     }
 
@@ -101,12 +101,12 @@ class PartForm
     {
         return [
             Select::make('asset_number_rule_id')
-                ->label(__('cat.asset_number_rule'))
+                ->label(__('cat.part.asset_number_rule_id'))
                 ->options(AssetNumberRuleService::pluckOptions())
                 ->required()
                 ->default(AssetNumberRuleService::getAutoRule(Part::class)?->getAttribute('id')),
             Checkbox::make('is_auto')
-                ->label(__('cat.is_auto'))
+                ->label(__('cat.part.is_auto'))
                 ->default(AssetNumberRuleService::getAutoRule(Part::class)?->getAttribute('is_auto')),
         ];
     }
@@ -118,7 +118,7 @@ class PartForm
     {
         return [
             TextInput::make('comment')
-                ->label(__('cat.comment'))
+                ->label(__('cat.part.form.retire_comment'))
                 ->required(),
         ];
     }
