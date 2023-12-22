@@ -4,6 +4,7 @@ namespace App\Filament\Resources\DeviceResource\Pages;
 
 use App\Enums\AssetEnum;
 use App\Filament\Actions\DeviceAction;
+use App\Filament\Actions\DeviceHasSecretAction;
 use App\Filament\Resources\DeviceResource;
 use App\Models\Device;
 use App\Models\DeviceHasSecret;
@@ -28,7 +29,7 @@ class HasSecret extends ManageRelatedRecords
 
     public static function getNavigationLabel(): string
     {
-        return __('cat.menu.secret');
+        return __('cat/menu.secret');
     }
 
     public static function getNavigationBadge(): ?string
@@ -38,7 +39,7 @@ class HasSecret extends ManageRelatedRecords
 
     public function getBreadcrumb(): string
     {
-        return __('cat.menu.secret');
+        return __('cat/menu.secret');
     }
 
     public function table(Table $table): Table
@@ -50,11 +51,11 @@ class HasSecret extends ManageRelatedRecords
                     Tables\Columns\TextColumn::make('secret.name')
                         ->searchable()
                         ->toggleable()
-                        ->label(__('cat.secret.name')),
+                        ->label(__('cat/secret.name')),
                     Tables\Columns\TextColumn::make('secret.username')
                         ->searchable()
                         ->toggleable()
-                        ->label(__('cat.secret.username')),
+                        ->label(__('cat/secret.username')),
                     Tables\Columns\TextColumn::make('status')
                         ->toggleable()
                         ->badge()
@@ -64,15 +65,15 @@ class HasSecret extends ManageRelatedRecords
                         ->color(function ($state) {
                             return AssetEnum::relationOperationColor($state);
                         })
-                        ->label(__('cat.secret.status')),
+                        ->label(__('cat/secret.status')),
                     Tables\Columns\TextColumn::make('updated_at')
                         ->searchable()
                         ->toggleable()
-                        ->label(__('cat.secret.updated_at')),
+                        ->label(__('cat/secret.updated_at')),
                     Tables\Columns\TextColumn::make('creator.name')
                         ->searchable()
                         ->toggleable()
-                        ->label(__('cat.secret.creator')),
+                        ->label(__('cat/secret.creator')),
                 ]
             )
             ->filters([
@@ -80,7 +81,7 @@ class HasSecret extends ManageRelatedRecords
             ])
             ->headerActions([
                 // 创建
-                DeviceAction::createHasSecret($this->getOwnerRecord())
+                DeviceHasSecretAction::create($this->getOwnerRecord())
                     ->visible(function () {
                         /* @var Device $device */
                         $device = $this->getOwnerRecord();
@@ -97,7 +98,7 @@ class HasSecret extends ManageRelatedRecords
                         return auth()->user()->can('view_token_device');
                     }),
                 // 删除
-                DeviceAction::deleteHasSecret()
+                DeviceHasSecretAction::delete()
                     ->visible(function (DeviceHasSecret $device_has_secret) {
                         /* @var Device $device */
                         $device = $this->getOwnerRecord();
@@ -109,7 +110,7 @@ class HasSecret extends ManageRelatedRecords
             ])
             ->bulkActions([
                 // 批量脱离配件
-                DeviceAction::batchDeleteHasSecret()
+                DeviceHasSecretAction::batchDelete()
                     ->visible(function () {
                         return auth()->user()->can('batch_delete_has_secret_device');
                     }),

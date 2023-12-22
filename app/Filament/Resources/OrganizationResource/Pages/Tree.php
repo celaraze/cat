@@ -30,7 +30,7 @@ class Tree extends BasePage
 
     public static function getNavigationLabel(): string
     {
-        return __('cat.action.back');
+        return __('cat/action.back');
     }
 
     protected function getHeaderActions(): array
@@ -40,7 +40,7 @@ class Tree extends BasePage
             CreateAction::make()
                 ->slideOver()
                 ->icon('heroicon-m-plus')
-                ->label(__('cat.action.create'))
+                ->label(__('cat/action.create'))
                 ->createAnother(false)
                 ->closeModalByClickingAway(false),
         ];
@@ -50,7 +50,7 @@ class Tree extends BasePage
     {
         return [
             // 查看成员
-            Action::make(__('cat.action.view_members'))
+            Action::make(__('cat/action.view_members'))
                 ->icon('heroicon-m-eye')
                 ->color('info')
                 ->link()

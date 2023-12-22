@@ -20,7 +20,7 @@ class DeviceHasSoftwareForm
                 ->multiple()
                 ->searchable()
                 ->preload()
-                ->label(__('cat.menu.software')),
+                ->label(__('cat/device_has_software.software_ids')),
         ];
     }
 
@@ -36,7 +36,7 @@ class DeviceHasSoftwareForm
                 ->options(DeviceService::pluckOptions('id', $device_ids))
                 ->multiple()
                 ->searchable()
-                ->label(__('cat.menu.device')),
+                ->label(__('cat/device_has_software.device_ids')),
         ];
     }
 }

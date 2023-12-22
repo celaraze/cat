@@ -33,7 +33,7 @@ class UrlUtil
                 return $matches[1];
             }
         } catch (Exception $exception) {
-            throw new Exception(__('cat.auth.url_error'));
+            throw new Exception(__('cat/auth.url_error'));
         }
     }
 }

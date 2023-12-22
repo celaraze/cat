@@ -10,13 +10,13 @@ class Dashboard extends Page
 {
     protected static ?string $navigationIcon = 'heroicon-s-chart-pie';
 
-    protected static string $view = 'filament.pages.dash-board';
+    protected static string $view = 'cat.pages.dashboard';
 
     protected ?string $heading = '';
 
     public static function getNavigationLabel(): string
     {
-        return __('cat.dashboard');
+        return __('cat/menu.dashboard');
     }
 
     protected function getHeaderWidgets(): array

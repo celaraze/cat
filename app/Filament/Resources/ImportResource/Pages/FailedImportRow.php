@@ -20,12 +20,12 @@ class FailedImportRow extends ManageRelatedRecords
 
     public static function getNavigationLabel(): string
     {
-        return __('cat.menu.failed_import_row');
+        return __('cat/menu.failed_import_row');
     }
 
     public function getBreadcrumb(): string
     {
-        return __('cat.menu.failed_import_row');
+        return __('cat/menu.failed_import_row');
     }
 
     public function form(Form $form): Form
@@ -44,15 +44,15 @@ class FailedImportRow extends ManageRelatedRecords
                 Tables\Columns\TextColumn::make('created_at')
                     ->searchable()
                     ->toggleable()
-                    ->label(__('cat.failed_import_row.created_at')),
+                    ->label(__('cat/failed_import_row.created_at')),
                 Tables\Columns\TextColumn::make('data')
                     ->searchable()
                     ->toggleable()
-                    ->label(__('cat.failed_import_row.data')),
+                    ->label(__('cat/failed_import_row.data')),
                 Tables\Columns\TextColumn::make('validation_error')
                     ->searchable()
                     ->toggleable()
-                    ->label(__('cat.failed_import_row.validation_error')),
+                    ->label(__('cat/failed_import_row.validation_error')),
             ])
             ->filters([
 

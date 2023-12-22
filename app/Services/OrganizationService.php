@@ -87,7 +87,7 @@ class OrganizationService
             ->where('user_id', $data['user_id'])
             ->count();
         if ($organization_has_user) {
-            throw new Exception(__('cat.organization_has_user_exists'));
+            throw new Exception(__('cat/organization_has_user_exists'));
         }
 
         return $this->model->hasUsers()->create($data);

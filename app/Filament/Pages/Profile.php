@@ -8,13 +8,13 @@ use Filament\Pages\Page;
 
 class Profile extends Page
 {
-    protected static string $view = 'filament.pages.profile';
+    protected static string $view = 'cat.pages.profile';
 
     protected static bool $shouldRegisterNavigation = false;
 
     public static function getNavigationLabel(): string
     {
-        return __('cat.profile');
+        return __('cat/menu.profile');
     }
 
     public function getHeaderWidgetsColumns(): int|array

@@ -16,18 +16,18 @@ class SecretForm
         return [
             TextInput::make('name')
                 ->required()
-                ->label(__('cat.name')),
+                ->label(__('cat/secret.name')),
             TextInput::make('site')
-                ->label(__('cat.site')),
+                ->label(__('cat/secret.site')),
             TextInput::make('username')
                 ->required()
-                ->label(__('cat.username')),
+                ->label(__('cat/secret.username')),
             TextInput::make('token')
                 ->required()
                 ->password()
-                ->label(__('cat.token')),
+                ->label(__('cat/secret.token')),
             DatePicker::make('expired_at')
-                ->label(__('cat.expired_at')),
+                ->label(__('cat/secret.expired_at')),
         ];
     }
 
@@ -39,7 +39,7 @@ class SecretForm
         return [
             Shout::make('hint')
                 ->color('danger')
-                ->content(__('cat.form.delete_secret_helper')),
+                ->content(__('cat/secret.form.delete_helper')),
         ];
     }
 
@@ -52,7 +52,7 @@ class SecretForm
             TextInput::make('password')
                 ->required()
                 ->password()
-                ->label(__('cat.password')),
+                ->label(__('cat/secret.password')),
         ];
     }
 }

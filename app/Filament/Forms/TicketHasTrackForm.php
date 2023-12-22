@@ -15,12 +15,12 @@ class TicketHasTrackForm
         return [
             RichEditor::make('comment')
                 ->required()
-                ->label(__('cat.comment')),
+                ->label(__('cat/ticket_has_track.comment')),
             TextInput::make('minutes')
                 ->numeric()
                 ->minValue(1)
-                ->hint(__('cat.ticket.minutes'))
-                ->label(__('cat.ticket.minutes')),
+                ->hint(__('cat/ticket_has_track.form.minutes.create_helper'))
+                ->label(__('cat/ticket_has_track.minutes')),
         ];
     }
 }

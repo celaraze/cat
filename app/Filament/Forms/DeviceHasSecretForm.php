@@ -21,7 +21,7 @@ class DeviceHasSecretForm
             Select::make('device_id')
                 ->options(DeviceService::pluckOptions('id', $device_ids))
                 ->searchable()
-                ->label(__('cat.device')),
+                ->label(__('cat/device_has_secret.device_id')),
         ];
     }
 
@@ -41,7 +41,7 @@ class DeviceHasSecretForm
                 ->searchable()
                 ->preload()
                 ->required()
-                ->label(__('cat.secret')),
+                ->label(__('cat/device_has_secret.secret_ids')),
         ];
     }
 }

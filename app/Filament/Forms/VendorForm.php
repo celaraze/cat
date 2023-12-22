@@ -14,15 +14,15 @@ class VendorForm
     {
         return [
             TextInput::make('name')
-                ->label(__('cat.vendor.name'))
+                ->label(__('cat/vendor.name'))
                 ->required(),
             TextInput::make('address')
-                ->label(__('cat.vendor.address'))
+                ->label(__('cat/vendor.address'))
                 ->required(),
             TextInput::make('public_phone_number')
-                ->label(__('cat.vendor.public_phone_number')),
+                ->label(__('cat/vendor.public_phone_number')),
             TextInput::make('referrer')
-                ->label(__('cat.vendor.referrer')),
+                ->label(__('cat/vendor.referrer')),
         ];
     }
 
@@ -34,10 +34,10 @@ class VendorForm
         return [
             Shout::make('hint')
                 ->color('danger')
-                ->content(__('cat.vendor.form.delete_helper_1')),
+                ->content(__('cat/vendor.form.delete_helper_1')),
             Shout::make('hint')
                 ->color('danger')
-                ->content(__('cat.vendor.form.delete_helper_2')),
+                ->content(__('cat/vendor.form.delete_helper_2')),
         ];
     }
 }

@@ -16,7 +16,7 @@ class InventoryAction
 {
     public static function create(): Action
     {
-        return Action::make(__('cat.action.create'))
+        return Action::make(__('cat/inventory.action.create'))
             ->slideOver()
             ->icon('heroicon-m-plus')
             ->form(InventoryForm::create())
@@ -25,7 +25,7 @@ class InventoryAction
                     $data['creator_id'] = auth()->id();
                     $inventory_service = new InventoryService();
                     $inventory_service->create($data);
-                    NotificationUtil::make(true, __('cat.action.created'));
+                    NotificationUtil::make(true, __('cat/inventory.action.create_success'));
                 } catch (Exception $exception) {
                     LogUtil::error($exception);
                     NotificationUtil::make(false, $exception);
@@ -36,14 +36,14 @@ class InventoryAction
 
     public static function delete(): \Filament\Actions\Action
     {
-        return \Filament\Actions\Action::make(__('cat.action.delete'))
+        return \Filament\Actions\Action::make(__('cat/inventory.action.delete'))
             ->icon('heroicon-s-trash')
             ->color('danger')
             ->requiresConfirmation()
             ->action(function (Inventory $inventory) {
                 try {
                     $inventory->service()->delete();
-                    NotificationUtil::make(true, __('cat.action.delete_success'));
+                    NotificationUtil::make(true, __('cat/inventory.action.delete_success'));
                     redirect(InventoryResource::getUrl('index'));
                 } catch (Exception $exception) {
                     LogUtil::error($exception);
@@ -55,7 +55,7 @@ class InventoryAction
 
     public static function check(): Action
     {
-        return Action::make(__('cat.action.inventory_check'))
+        return Action::make(__('cat/inventory.action.check'))
             ->slideOver()
             ->icon('heroicon-m-document-check')
             ->form(InventoryForm::check())
@@ -63,7 +63,7 @@ class InventoryAction
                 try {
                     $data['creator_id'] = auth()->id();
                     $inventory_has_track->service()->check($data);
-                    NotificationUtil::make(true, __('cat.action.inventory_check_success'));
+                    NotificationUtil::make(true, __('cat/inventory.action.check_success'));
                 } catch (Exception $exception) {
                     LogUtil::error($exception);
                     NotificationUtil::make(false, $exception);

@@ -4,6 +4,8 @@ namespace App\Filament\Resources;
 
 use App\Enums\AssetEnum;
 use App\Filament\Actions\DeviceAction;
+use App\Filament\Actions\DeviceHasUserAction;
+use App\Filament\Actions\TicketAction;
 use App\Filament\Forms\DeviceForm;
 use App\Filament\Imports\DeviceImporter;
 use App\Filament\Resources\DeviceResource\Pages\Edit;
@@ -51,20 +53,20 @@ class DeviceResource extends Resource implements HasShieldPermissions
 
     public static function getNavigationGroup(): ?string
     {
-        return __('cat.asset');
+        return __('cat/menu.asset');
     }
 
     public static function getModelLabel(): string
     {
-        return __('cat.device');
+        return __('cat/menu.device');
     }
 
     public static function getGlobalSearchResultDetails(Model $record): array
     {
         /* @var Device $record */
         return [
-            __('cat.name') => $record->getAttribute('name'),
-            __('cat.user') => $record->users()->value('name') ?? __('cat.none'),
+            __('cat/name') => $record->getAttribute('name'),
+            __('cat/user') => $record->users()->value('name') ?? __('cat/none'),
         ];
     }
 
@@ -136,7 +138,7 @@ class DeviceResource extends Resource implements HasShieldPermissions
                     ->toggleable()
                     ->circular()
                     ->defaultImageUrl(('/images/default.jpg'))
-                    ->label(__('cat.image')),
+                    ->label(__('cat/device.image')),
                 Tables\Columns\TextColumn::make('asset_number')
                     ->searchable()
                     ->toggleable()
@@ -144,39 +146,39 @@ class DeviceResource extends Resource implements HasShieldPermissions
                     ->badge()
                     ->sortable()
                     ->color('gray')
-                    ->label(__('cat.asset_number')),
+                    ->label(__('cat/device.asset_number')),
                 Tables\Columns\TextColumn::make('name')
                     ->searchable()
                     ->toggleable()
                     ->sortable()
-                    ->label(__('cat.name')),
+                    ->label(__('cat/device.name')),
                 Tables\Columns\TextColumn::make('brand.name')
                     ->searchable()
                     ->toggleable()
                     ->sortable()
-                    ->label(__('cat.brand')),
+                    ->label(__('cat/device.brand')),
                 Tables\Columns\TextColumn::make('category.name')
                     ->searchable()
                     ->toggleable()
                     ->sortable()
-                    ->label(__('cat.category')),
+                    ->label(__('cat/device.category')),
                 Tables\Columns\TextColumn::make('users.name')
                     ->searchable()
                     ->toggleable()
                     ->badge()
                     ->color('success')
                     ->sortable()
-                    ->label(__('cat.user')),
+                    ->label(__('cat/device.user')),
                 Tables\Columns\TextColumn::make('sn')
                     ->searchable()
                     ->toggleable()
                     ->sortable()
-                    ->label(__('cat.sn')),
+                    ->label(__('cat/device.sn')),
                 Tables\Columns\TextColumn::make('specification')
                     ->searchable()
                     ->toggleable()
                     ->sortable()
-                    ->label(__('cat.specification')),
+                    ->label(__('cat/device.specification')),
                 Tables\Columns\TextColumn::make('status')
                     ->toggleable()
                     ->badge()
@@ -187,26 +189,26 @@ class DeviceResource extends Resource implements HasShieldPermissions
                     ->color(function ($state) {
                         return AssetEnum::statusColor($state);
                     })
-                    ->label(__('cat.status')),
+                    ->label(__('cat/device.status')),
             ])
             ->filters([
                 Tables\Filters\SelectFilter::make('category_id')
                     ->multiple()
                     ->options(DeviceCategoryService::pluckOptions())
-                    ->label(__('cat.category')),
+                    ->label(__('cat/device.category_id')),
                 Tables\Filters\SelectFilter::make('brand_id')
                     ->multiple()
                     ->options(BrandService::pluckOptions())
-                    ->label(__('cat.brand')),
+                    ->label(__('cat/device.brand_id')),
                 Tables\Filters\SelectFilter::make('status')
                     ->multiple()
                     ->options(AssetEnum::allStatusText())
-                    ->label(__('cat.status')),
+                    ->label(__('cat/device.status')),
             ])
             ->actions([
                 DeviceAction::summary(),
                 // 分配用户
-                DeviceAction::createHasUser()
+                DeviceHasUserAction::create()
                     ->visible(function (Device $device) {
                         $can = auth()->user()->can('assign_user_device');
                         $is_retired = $device->service()->isRetired();
@@ -215,9 +217,9 @@ class DeviceResource extends Resource implements HasShieldPermissions
                     }),
                 Tables\Actions\ActionGroup::make([
                     // 创建工单
-                    DeviceAction::createTicket(),
+                    TicketAction::createFromDevice(),
                     // 解除用户
-                    DeviceAction::deleteHasUser()
+                    DeviceHasUserAction::delete()
                         ->visible(function (Device $device) {
                             $can = auth()->user()->can('delete_assign_user_device');
 
@@ -252,11 +254,11 @@ class DeviceResource extends Resource implements HasShieldPermissions
                     ->importer(DeviceImporter::class)
                     ->icon('heroicon-o-arrow-up-tray')
                     ->color('primary')
-                    ->label(__('cat.action.import'))
+                    ->label(__('cat/device.action.import'))
                     ->visible(auth()->user()->can('import_device')),
                 // 导出
                 ExportAction::make()
-                    ->label(__('cat.action.export'))
+                    ->label(__('cat/device.action.export'))
                     ->visible(auth()->user()->can('export_device')),
                 // 创建
                 DeviceAction::create()
@@ -282,11 +284,11 @@ class DeviceResource extends Resource implements HasShieldPermissions
                             return auth()->user()->can('set_retire_flow_device');
                         }),
                 ])
-                    ->label(__('cat.action.advance'))
+                    ->label(__('cat/device.action.advance'))
                     ->icon('heroicon-m-cog-8-tooth')
                     ->button(),
             ])
-            ->heading(__('cat.device'));
+            ->heading(__('cat/menu.device'));
     }
 
     public static function form(Form $form): Form
@@ -305,28 +307,28 @@ class DeviceResource extends Resource implements HasShieldPermissions
                                 ->schema([
                                     Group::make([
                                         TextEntry::make('asset_number')
-                                            ->label(__('cat.asset_number'))
+                                            ->label(__('cat/device.asset_number'))
                                             ->badge()
                                             ->color('primary'),
                                         TextEntry::make('name')
-                                            ->label(__('cat.name')),
+                                            ->label(__('cat/device.name')),
                                         TextEntry::make('category.name')
-                                            ->label(__('cat.category')),
+                                            ->label(__('cat/device.category')),
                                     ]),
                                     Group::make([
                                         TextEntry::make('sn')
-                                            ->label(__('cat.sn')),
+                                            ->label(__('cat/device.sn')),
                                         TextEntry::make('brand.name')
-                                            ->label(__('cat.brand')),
+                                            ->label(__('cat/device.brand')),
                                         TextEntry::make('specification')
-                                            ->label(__('cat.specification')),
+                                            ->label(__('cat/device.specification')),
                                     ]),
                                 ]),
                         ]),
                     ]),
                 Section::make()->schema([
                     TextEntry::make('description')
-                        ->label(__('cat.description')),
+                        ->label(__('cat/device.description')),
                 ]),
                 Section::make()->schema([
                     RepeatableEntry::make('additional')
@@ -340,7 +342,7 @@ class DeviceResource extends Resource implements HasShieldPermissions
                         ])
                         ->grid()
                         ->columns()
-                        ->label(__('cat.additional')),
+                        ->label(__('cat/device.additional')),
                 ]),
             ])->columnSpan(['lg' => 2]),
             Group::make()->schema([
@@ -350,7 +352,7 @@ class DeviceResource extends Resource implements HasShieldPermissions
                             ->disk('public')
                             ->height(300)
                             ->defaultImageUrl(('/images/default.jpg'))
-                            ->label(__('cat.image')),
+                            ->label(__('cat/device.image')),
                     ]),
             ])->columnSpan(['lg' => 1]),
         ])->columns(3);

@@ -70,7 +70,7 @@ class FlowService
     public function delete(): void
     {
         if ($this->model->activeForms()) {
-            throw new Exception(__('cat.flow_has_active_forms'));
+            throw new Exception(__('cat/flow_has_active_forms'));
         }
         try {
             DB::beginTransaction();

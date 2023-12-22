@@ -14,7 +14,7 @@ class TicketCategoryForm
     {
         return [
             TextInput::make('name')
-                ->label(__('cat.ticket_category.name'))
+                ->label(__('cat/ticket_category.name'))
                 ->required(),
         ];
     }
@@ -27,7 +27,7 @@ class TicketCategoryForm
         return [
             Shout::make('hint')
                 ->color('danger')
-                ->content(__('cat.ticket_category.form.delete_helper')),
+                ->content(__('cat/ticket_category.form.delete_helper')),
         ];
     }
 }

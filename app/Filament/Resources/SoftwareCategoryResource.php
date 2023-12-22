@@ -29,7 +29,7 @@ class SoftwareCategoryResource extends Resource implements HasShieldPermissions
 
     public static function getModelLabel(): string
     {
-        return __('cat.menu.software_category');
+        return __('cat/menu.software_category');
     }
 
     public static function getRecordSubNavigation(Page $page): array
@@ -74,7 +74,7 @@ class SoftwareCategoryResource extends Resource implements HasShieldPermissions
                 Tables\Columns\TextColumn::make('name')
                     ->searchable()
                     ->toggleable()
-                    ->label(__('cat.software_category.name')),
+                    ->label(__('cat/software_category.name')),
             ])
             ->filters([
                 Tables\Filters\TrashedFilter::make(),
@@ -94,13 +94,13 @@ class SoftwareCategoryResource extends Resource implements HasShieldPermissions
                     ->importer(SoftwareCategoryImporter::class)
                     ->icon('heroicon-o-arrow-up-tray')
                     ->color('primary')
-                    ->label(__('cat.action.import'))
+                    ->label(__('cat/action.import'))
                     ->visible(function () {
                         return auth()->user()->can('import_software::category');
                     }),
                 // 导出
                 ExportAction::make()
-                    ->label(__('cat.action.export'))
+                    ->label(__('cat/action.export'))
                     ->visible(function () {
                         return auth()->user()->can('export_software::category');
                     }),
@@ -110,7 +110,7 @@ class SoftwareCategoryResource extends Resource implements HasShieldPermissions
                         return auth()->user()->can('create_software::category');
                     }),
                 // 前往软件
-                SoftwareCategoryAction::backToSoftware(),
+                SoftwareCategoryAction::toSoftware(),
             ]);
     }
 

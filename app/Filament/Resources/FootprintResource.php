@@ -34,12 +34,17 @@ class FootprintResource extends Resource implements HasShieldPermissions
 
     public static function getNavigationGroup(): ?string
     {
-        return __('cat.log');
+        return __('cat/menu.log');
     }
 
     public static function getModelLabel(): string
     {
-        return __('cat.footprint');
+        return __('cat/menu.footprint');
+    }
+
+    public static function getNavigationLabel(): string
+    {
+        return __('cat/menu.footprint');
     }
 
     public static function getRecordSubNavigation(Page $page): array
@@ -81,7 +86,7 @@ class FootprintResource extends Resource implements HasShieldPermissions
                     ->toggleable()
                     ->badge()
                     ->color('gray')
-                    ->label(__('cat.creator')),
+                    ->label(__('cat/creator')),
                 TextColumn::make('action')
                     ->formatStateUsing(function ($state) {
                         return FootprintEnum::actionText($state);
@@ -90,24 +95,24 @@ class FootprintResource extends Resource implements HasShieldPermissions
                     ->color(function ($state) {
                         return FootprintEnum::actionColor($state);
                     })
-                    ->label(__('cat.action')),
+                    ->label(__('cat/action')),
                 TextColumn::make('model_class')
                     ->searchable()
                     ->toggleable()
-                    ->label(__('cat.model_class')),
+                    ->label(__('cat/model_class')),
                 TextColumn::make('model_id')
                     ->searchable()
                     ->toggleable()
-                    ->label(__('cat.model_id')),
+                    ->label(__('cat/model_id')),
                 TextColumn::make('created_at')
                     ->alignRight()
-                    ->label(__('cat.created_at')),
+                    ->label(__('cat/created_at')),
             ])
             ->filters([
                 SelectFilter::make('action')
                     ->multiple()
                     ->options(FootprintEnum::allActionText())
-                    ->label(__('cat.action')),
+                    ->label(__('cat/action')),
             ])
             ->actions([
 
@@ -128,12 +133,12 @@ class FootprintResource extends Resource implements HasShieldPermissions
                                 ->schema([
                                     Group::make([
                                         TextEntry::make('creator.name')
-                                            ->label(__('cat.creator'))
+                                            ->label(__('cat/creator'))
                                             ->badge(),
                                         TextEntry::make('model_class')
-                                            ->label(__('cat.model_class')),
+                                            ->label(__('cat/model_class')),
                                         TextEntry::make('created_at')
-                                            ->label(__('cat.created_at')),
+                                            ->label(__('cat/created_at')),
                                     ]),
                                     Group::make([
                                         TextEntry::make('action')
@@ -144,9 +149,9 @@ class FootprintResource extends Resource implements HasShieldPermissions
                                             ->color(function ($state) {
                                                 return FootprintEnum::actionColor($state);
                                             })
-                                            ->label(__('cat.action')),
+                                            ->label(__('cat/action')),
                                         TextEntry::make('model_id')
-                                            ->label(__('cat.model_id')),
+                                            ->label(__('cat/model_id')),
                                     ]),
                                 ]),
                         ]),
@@ -169,7 +174,7 @@ $state
 EOF;
                                         })
                                         ->markdown()
-                                        ->label(__('cat.before')),
+                                        ->label(__('cat/before')),
                                 ]),
                             ]),
                     ]),
@@ -192,7 +197,7 @@ $state
 EOF;
                                         })
                                         ->markdown()
-                                        ->label(__('cat.after'))]),
+                                        ->label(__('cat/after'))]),
                             ]),
                     ]),
             ])

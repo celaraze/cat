@@ -16,7 +16,7 @@ class SoftwareCategoryAction
 {
     public static function create(): Action
     {
-        return Action::make(__('cat.action.create'))
+        return Action::make(__('cat/software_category.action.create'))
             ->slideOver()
             ->icon('heroicon-m-plus')
             ->form(SoftwareCategoryForm::createOrEdit())
@@ -24,7 +24,7 @@ class SoftwareCategoryAction
                 try {
                     $software_category_service = new SoftwareCategoryService();
                     $software_category_service->create($data);
-                    NotificationUtil::make(true, __('cat.action.create_success'));
+                    NotificationUtil::make(true, __('cat/software_category.action.create_success'));
                 } catch (Exception $exception) {
                     LogUtil::error($exception);
                     NotificationUtil::make(false, $exception);
@@ -35,7 +35,7 @@ class SoftwareCategoryAction
 
     public static function delete(): Action
     {
-        return Action::make(__('cat.action.delete'))
+        return Action::make(__('cat/software_category.action.delete'))
             ->icon('heroicon-s-trash')
             ->color('danger')
             ->requiresConfirmation()
@@ -43,7 +43,7 @@ class SoftwareCategoryAction
             ->action(function (SoftwareCategory $software_category) {
                 try {
                     $software_category->service()->delete();
-                    NotificationUtil::make(true, __('cat.action.delete_success'));
+                    NotificationUtil::make(true, __('cat/software_category.action.delete_success'));
                 } catch (Exception $exception) {
                     LogUtil::error($exception);
                     NotificationUtil::make(false, $exception);
@@ -51,16 +51,16 @@ class SoftwareCategoryAction
             });
     }
 
-    public static function backToSoftware(): Action
+    public static function toSoftware(): Action
     {
-        return Action::make(__('cat.action.back_to_software'))
+        return Action::make(__('cat/software_category.action.to_software'))
             ->icon('heroicon-m-squares-plus')
             ->url(SoftwareResource::getUrl('index'));
     }
 
     public static function toSoftwareView(): Action
     {
-        return Action::make(__('cat.action.to_software_view'))
+        return Action::make(__('cat/software_category.action.to_software_view'))
             ->icon('heroicon-m-squares-plus')
             ->url(function (Software $software) {
                 return SoftwareResource::getUrl('view', ['record' => $software->getKey()]);

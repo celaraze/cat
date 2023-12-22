@@ -16,17 +16,17 @@ class PartCategoryImporter extends Importer
         return [
             ImportColumn::make('name')
                 ->requiredMapping()
-                ->example(__('cat.example_part_category'))
-                ->label(__('cat.name')),
+                ->example(__('cat/example_part_category'))
+                ->label(__('cat/name')),
         ];
     }
 
     public static function getCompletedNotificationBody(Import $import): string
     {
-        $body = __('cat.import.part_category_success', ['success_count' => number_format($import->successful_rows)]);
+        $body = __('cat/import.part_category_success', ['success_count' => number_format($import->successful_rows)]);
 
         if ($failedRowsCount = $import->getFailedRowsCount()) {
-            $body .= ' '.__('cat.import.part_category_failure', ['failure_count' => number_format($failedRowsCount)]);
+            $body .= ' '.__('cat/import.part_category_failure', ['failure_count' => number_format($failedRowsCount)]);
         }
 
         return $body;

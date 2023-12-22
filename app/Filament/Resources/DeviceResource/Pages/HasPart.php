@@ -3,7 +3,7 @@
 namespace App\Filament\Resources\DeviceResource\Pages;
 
 use App\Enums\AssetEnum;
-use App\Filament\Actions\DeviceAction;
+use App\Filament\Actions\DeviceHasPartAction;
 use App\Filament\Resources\DeviceResource;
 use App\Models\Device;
 use App\Models\DeviceHasPart;
@@ -28,7 +28,7 @@ class HasPart extends ManageRelatedRecords
 
     public static function getNavigationLabel(): string
     {
-        return __('cat.menu.part');
+        return __('cat/menu.part');
     }
 
     public static function getNavigationBadge(): ?string
@@ -38,7 +38,7 @@ class HasPart extends ManageRelatedRecords
 
     public function getBreadcrumb(): string
     {
-        return __('cat.menu.part');
+        return __('cat/menu.part');
     }
 
     public function table(Table $table): Table
@@ -50,11 +50,11 @@ class HasPart extends ManageRelatedRecords
                     Tables\Columns\TextColumn::make('part.category.name')
                         ->searchable()
                         ->toggleable()
-                        ->label(__('cat.part.category')),
+                        ->label(__('cat/part.category')),
                     Tables\Columns\TextColumn::make('part.asset_number')
                         ->searchable()
                         ->toggleable()
-                        ->label(__('cat.part.asset_number')),
+                        ->label(__('cat/part.asset_number')),
                     Tables\Columns\TextColumn::make('status')
                         ->toggleable()
                         ->badge()
@@ -64,15 +64,15 @@ class HasPart extends ManageRelatedRecords
                         ->color(function ($state) {
                             return AssetEnum::relationOperationColor($state);
                         })
-                        ->label(__('cat.part.status')),
+                        ->label(__('cat/part.status')),
                     Tables\Columns\TextColumn::make('updated_at')
                         ->searchable()
                         ->toggleable()
-                        ->label(__('cat.part.updated_at')),
+                        ->label(__('cat/part.updated_at')),
                     Tables\Columns\TextColumn::make('creator.name')
                         ->searchable()
                         ->toggleable()
-                        ->label(__('cat.part.creator')),
+                        ->label(__('cat/part.creator')),
                 ]
             )
             ->filters([
@@ -80,7 +80,7 @@ class HasPart extends ManageRelatedRecords
             ])
             ->headerActions([
                 // 创建
-                DeviceAction::createHasPart($this->getOwnerRecord())
+                DeviceHasPartAction::create($this->getOwnerRecord())
                     ->visible(function () {
                         /* @var Device $device */
                         $device = $this->getOwnerRecord();
@@ -92,7 +92,7 @@ class HasPart extends ManageRelatedRecords
             ])
             ->actions([
                 // 删除
-                DeviceAction::deleteHasPart()
+                DeviceHasPartAction::delete()
                     ->visible(function (DeviceHasPart $device_has_part) {
                         /* @var Device $device */
                         $device = $this->getOwnerRecord();
@@ -104,7 +104,7 @@ class HasPart extends ManageRelatedRecords
             ])
             ->bulkActions([
                 // 批量脱离配件
-                DeviceAction::batchDeleteHasPart()
+                DeviceHasPartAction::batchDelete()
                     ->visible(function () {
                         return auth()->user()->can('batch_delete_has_part_device');
                     }),

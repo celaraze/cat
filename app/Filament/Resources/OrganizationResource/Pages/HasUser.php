@@ -2,7 +2,7 @@
 
 namespace App\Filament\Resources\OrganizationResource\Pages;
 
-use App\Filament\Actions\OrganizationAction;
+use App\Filament\Actions\OrganizationHasUserAction;
 use App\Filament\Resources\OrganizationResource;
 use Filament\Resources\Pages\ManageRelatedRecords;
 use Filament\Tables;
@@ -20,7 +20,7 @@ class HasUser extends ManageRelatedRecords
 
     public static function getNavigationLabel(): string
     {
-        return __('cat.menu.organization_has_user');
+        return __('cat/menu.organization_has_user');
     }
 
     public function table(Table $table): Table
@@ -31,18 +31,18 @@ class HasUser extends ManageRelatedRecords
                 Tables\Columns\TextColumn::make('user.name')
                     ->searchable()
                     ->toggleable()
-                    ->label(__('cat.organization_has_user.user')),
+                    ->label(__('cat/organization_has_user.user')),
             ])
             ->filters([
 
             ])
             ->headerActions([
                 // 新增成员
-                OrganizationAction::createHasUser($this->getOwnerRecord()),
+                OrganizationHasUserAction::create($this->getOwnerRecord()),
             ])
             ->actions([
                 // 删除成员
-                OrganizationAction::deleteHasUser(),
+                OrganizationHasUserAction::delete(),
             ])
             ->bulkActions([
 

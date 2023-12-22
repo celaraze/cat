@@ -13,6 +13,6 @@ class Index extends ListRecords
 
     public static function getNavigationLabel(): string
     {
-        return __('cat.action.back');
+        return __('cat/action.back');
     }
 }

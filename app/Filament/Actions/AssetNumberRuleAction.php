@@ -13,7 +13,7 @@ class AssetNumberRuleAction
 {
     public static function create(): Action
     {
-        return Action::make(__('cat.action.create'))
+        return Action::make(__('cat/asset_number_rule.action.create'))
             ->slideOver()
             ->icon('heroicon-m-plus')
             ->form(AssetNumberRuleForm::createOrEdit())
@@ -21,7 +21,7 @@ class AssetNumberRuleAction
                 try {
                     $asset_number_rule_service = new AssetNumberRuleService();
                     $asset_number_rule_service->create($data);
-                    NotificationUtil::make(true, __('cat.action.created'));
+                    NotificationUtil::make(true, __('cat/asset_number_rule.action.create_success'));
                 } catch (Exception $exception) {
                     Log::error($exception);
                     NotificationUtil::make(false, $exception);

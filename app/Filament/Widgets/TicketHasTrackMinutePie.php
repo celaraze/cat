@@ -14,7 +14,7 @@ class TicketHasTrackMinutePie extends ApexChartWidget
 
     protected function getHeading(): ?string
     {
-        return __('cat.widget.ticket_has_track_minute_pie_heading');
+        return __('cat/ticket.widget.minute_pie');
     }
 
     protected function getOptions(): array

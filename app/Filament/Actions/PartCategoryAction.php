@@ -16,7 +16,7 @@ class PartCategoryAction
 {
     public static function create(): Action
     {
-        return Action::make(__('cat.action.create'))
+        return Action::make(__('cat/part_category.action.create'))
             ->slideOver()
             ->icon('heroicon-m-plus')
             ->form(PartCategoryForm::createOrEdit())
@@ -24,7 +24,7 @@ class PartCategoryAction
                 try {
                     $part_category_service = new PartCategoryService();
                     $part_category_service->create($data);
-                    NotificationUtil::make(true, __('cat.action.create_success'));
+                    NotificationUtil::make(true, __('cat/part_category.action.create_success'));
                 } catch (Exception $exception) {
                     LogUtil::error($exception);
                     NotificationUtil::make(false, $exception);
@@ -35,7 +35,7 @@ class PartCategoryAction
 
     public static function delete(): Action
     {
-        return Action::make(__('cat.action.delete'))
+        return Action::make(__('cat/part_category.action.delete'))
             ->icon('heroicon-s-trash')
             ->color('danger')
             ->requiresConfirmation()
@@ -43,7 +43,7 @@ class PartCategoryAction
             ->action(function (PartCategory $part_category) {
                 try {
                     $part_category->service()->delete();
-                    NotificationUtil::make(true, __('cat.action.delete_success'));
+                    NotificationUtil::make(true, __('cat/part_category.action.delete_success'));
                 } catch (Exception $exception) {
                     LogUtil::error($exception);
                     NotificationUtil::make(false, $exception);
@@ -51,16 +51,16 @@ class PartCategoryAction
             });
     }
 
-    public static function backToPart(): Action
+    public static function toPart(): Action
     {
-        return Action::make(__('cat.action.back_to_part'))
+        return Action::make(__('cat/part_category.action.to_part'))
             ->icon('heroicon-m-cpu-chip')
             ->url(PartResource::getUrl('index'));
     }
 
     public static function toPartView(): Action
     {
-        return Action::make(__('cat.action.to_part_view'))
+        return Action::make(__('cat/part_category.action.to_part_view'))
             ->icon('heroicon-m-cpu-chip')
             ->url(function (Part $part) {
                 return PartResource::getUrl('view', ['record' => $part->getKey()]);

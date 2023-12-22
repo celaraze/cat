@@ -46,12 +46,12 @@ class PartResource extends Resource implements HasShieldPermissions
 
     public static function getNavigationGroup(): ?string
     {
-        return __('cat.menu.asset');
+        return __('cat/menu.asset');
     }
 
     public static function getModelLabel(): string
     {
-        return __('cat.menu.part');
+        return __('cat/menu.part');
     }
 
     public static function getRecordSubNavigation(Page $page): array
@@ -75,7 +75,7 @@ class PartResource extends Resource implements HasShieldPermissions
     {
         /* @var Part $record */
         return [
-            __('cat.device') => $record->devices()->value('asset_number'),
+            __('cat/device') => $record->devices()->value('asset_number'),
             __('cat_user') => $record->devices()->first()?->users()->value('name'),
         ];
     }
@@ -114,32 +114,32 @@ class PartResource extends Resource implements HasShieldPermissions
                     ->circular()
                     ->toggleable()
                     ->defaultImageUrl(('/images/default.jpg'))
-                    ->label(__('cat.resource.part.images')),
+                    ->label(__('cat/resource.part.images')),
                 Tables\Columns\TextColumn::make('asset_number')
                     ->searchable()
                     ->toggleable()
                     ->sortable()
-                    ->label(__('cat.resource.part.asset_number')),
+                    ->label(__('cat/resource.part.asset_number')),
                 Tables\Columns\TextColumn::make('brand.name')
                     ->searchable()
                     ->toggleable()
                     ->sortable()
-                    ->label(__('cat.resource.part.brand')),
+                    ->label(__('cat/resource.part.brand')),
                 Tables\Columns\TextColumn::make('category.name')
                     ->searchable()
                     ->toggleable()
                     ->sortable()
-                    ->label(__('cat.resource.part.category')),
+                    ->label(__('cat/resource.part.category')),
                 Tables\Columns\TextColumn::make('sn')
                     ->searchable()
                     ->toggleable()
                     ->sortable()
-                    ->label(__('cat.resource.part.sn')),
+                    ->label(__('cat/resource.part.sn')),
                 Tables\Columns\TextColumn::make('specification')
                     ->searchable()
                     ->toggleable()
                     ->sortable()
-                    ->label(__('cat.resource.part.specification')),
+                    ->label(__('cat/resource.part.specification')),
                 Tables\Columns\TextColumn::make('status')
                     ->toggleable()
                     ->badge()
@@ -150,21 +150,21 @@ class PartResource extends Resource implements HasShieldPermissions
                     ->color(function ($state) {
                         return AssetEnum::statusColor($state);
                     })
-                    ->label(__('cat.resource.part.status')),
+                    ->label(__('cat/resource.part.status')),
             ])
             ->filters([
                 Tables\Filters\SelectFilter::make('category_id')
                     ->multiple()
                     ->options(PartCategoryService::pluckOptions())
-                    ->label(__('cat.resource.part.category')),
+                    ->label(__('cat/resource.part.category')),
                 Tables\Filters\SelectFilter::make('brand_id')
                     ->multiple()
                     ->options(BrandService::pluckOptions())
-                    ->label(__('cat.resource.part.brand')),
+                    ->label(__('cat/resource.part.brand')),
                 Tables\Filters\SelectFilter::make('status')
                     ->multiple()
                     ->options(AssetEnum::allStatusText())
-                    ->label(__('cat.resource.part.status')),
+                    ->label(__('cat/resource.part.status')),
             ])
             ->actions([
                 Tables\Actions\ActionGroup::make([
@@ -191,13 +191,13 @@ class PartResource extends Resource implements HasShieldPermissions
                     ->importer(PartImporter::class)
                     ->icon('heroicon-o-arrow-up-tray')
                     ->color('primary')
-                    ->label(__('cat.action.import'))
+                    ->label(__('cat/action.import'))
                     ->visible(function () {
                         return auth()->user()->can('import_part');
                     }),
                 // 导出
                 ExportAction::make()
-                    ->label(__('cat.action.export'))
+                    ->label(__('cat/action.export'))
                     ->visible(function () {
                         return auth()->user()->can('export_part');
                     }),
@@ -224,11 +224,11 @@ class PartResource extends Resource implements HasShieldPermissions
                             return auth()->user()->can('set_retire_flow_part');
                         }),
                 ])
-                    ->label(__('cat.action.advance'))
+                    ->label(__('cat/action.advance'))
                     ->icon('heroicon-m-cog-8-tooth')
                     ->button(),
             ])
-            ->heading(__('cat.resource.part'));
+            ->heading(__('cat/resource.part'));
     }
 
     public static function form(Form $form): Form
@@ -249,24 +249,24 @@ class PartResource extends Resource implements HasShieldPermissions
                                         TextEntry::make('asset_number')
                                             ->badge()
                                             ->color('primary')
-                                            ->label(__('cat.part.asset_number')),
+                                            ->label(__('cat/part.asset_number')),
                                         TextEntry::make('category.name')
-                                            ->label(__('cat.part.category')),
+                                            ->label(__('cat/part.category')),
                                     ]),
                                     Group::make([
                                         TextEntry::make('sn')
-                                            ->label(__('cat.part.sn')),
+                                            ->label(__('cat/part.sn')),
                                         TextEntry::make('brand.name')
-                                            ->label(__('cat.part.brand')),
+                                            ->label(__('cat/part.brand')),
                                         TextEntry::make('specification')
-                                            ->label(__('cat.part.specification')),
+                                            ->label(__('cat/part.specification')),
                                     ]),
                                 ]),
                         ]),
                     ]),
                 Section::make()->schema([
                     TextEntry::make('description')
-                        ->label(__('cat.part.description')),
+                        ->label(__('cat/part.description')),
                 ]),
                 Section::make()->schema([
                     RepeatableEntry::make('additional')
@@ -280,7 +280,7 @@ class PartResource extends Resource implements HasShieldPermissions
                         ])
                         ->grid()
                         ->columns()
-                        ->label(__('cat.part.additional')),
+                        ->label(__('cat/part.additional')),
                 ]),
             ])->columnSpan(['lg' => 2]),
             Group::make()->schema([
@@ -290,7 +290,7 @@ class PartResource extends Resource implements HasShieldPermissions
                             ->disk('public')
                             ->height(300)
                             ->defaultImageUrl(('/images/default.jpg'))
-                            ->label(__('cat.part.image')),
+                            ->label(__('cat/part.image')),
                     ]),
             ])->columnSpan(['lg' => 1]),
         ])->columns(3);

@@ -29,7 +29,7 @@ class PartCategoryResource extends Resource implements HasShieldPermissions
 
     public static function getModelLabel(): string
     {
-        return __('cat.part_category');
+        return __('cat/part_category');
     }
 
     public static function getRecordSubNavigation(Page $page): array
@@ -74,7 +74,7 @@ class PartCategoryResource extends Resource implements HasShieldPermissions
                 Tables\Columns\TextColumn::make('name')
                     ->searchable()
                     ->toggleable()
-                    ->label(__('cat.resource.part_category.name')),
+                    ->label(__('cat/resource.part_category.name')),
             ])
             ->filters([
                 Tables\Filters\TrashedFilter::make(),
@@ -95,13 +95,13 @@ class PartCategoryResource extends Resource implements HasShieldPermissions
                     ->importer(PartCategoryImporter::class)
                     ->icon('heroicon-o-arrow-up-tray')
                     ->color('primary')
-                    ->label(__('cat.action.import'))
+                    ->label(__('cat/action.import'))
                     ->visible(function () {
                         return auth()->user()->can('import_part::category');
                     }),
                 // 导出
                 ExportAction::make()
-                    ->label(__('cat.action.export'))
+                    ->label(__('cat/action.export'))
                     ->visible(function () {
                         return auth()->user()->can('export_part::category');
                     }),
@@ -111,7 +111,7 @@ class PartCategoryResource extends Resource implements HasShieldPermissions
                         return auth()->user()->can('create_part::category');
                     }),
                 // 返回配件
-                PartCategoryAction::backToPart(),
+                PartCategoryAction::toPart(),
             ]);
     }
 

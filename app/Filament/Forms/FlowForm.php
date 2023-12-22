@@ -13,7 +13,7 @@ class FlowForm
     {
         return [
             TextInput::make('name')
-                ->label(__('cat.flow.name'))
+                ->label(__('cat/flow.name'))
                 ->required()
                 ->unique(),
         ];

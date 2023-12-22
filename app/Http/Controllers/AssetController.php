@@ -74,7 +74,7 @@ class AssetController extends Controller
         }
 
         return response()->json([
-            'message' => __('cat.asset_not_found'),
+            'message' => __('cat/asset_not_found'),
         ], 404);
     }
 

@@ -19,7 +19,7 @@ class Site extends Page implements HasForms
 
     protected static ?string $navigationIcon = 'heroicon-m-globe-asia-australia';
 
-    protected static string $view = 'filament.pages.site';
+    protected static string $view = 'cat.pages.site';
 
     // todo 暂时隐藏
     protected static bool $shouldRegisterNavigation = false;
@@ -30,20 +30,20 @@ class Site extends Page implements HasForms
 
     public static function getNavigationLabel(): string
     {
-        return __('cat.site');
+        return __('cat/menu.site');
     }
 
     public static function getNavigationGroup(): ?string
     {
-        return __('cat.system_setting');
+        return __('cat/menu.system_setting');
     }
 
     public function getBreadcrumbs(): array
     {
         return [
             '/' => 'CAT',
-            '' => __('cat.system_setting'),
-            'site' => __('cat.site'),
+            '' => __('cat/menu.system_setting'),
+            'site' => __('cat/menu.site'),
         ];
     }
 
@@ -56,9 +56,9 @@ class Site extends Page implements HasForms
     {
         return $form->schema([
             TextInput::make('app_url')
-                ->hint(__('cat.app_url_helper'))
+                ->hint(__('cat/site.app_url_helper'))
                 ->rules(['url'])
-                ->label(__('cat.app_url')),
+                ->label(__('cat/site.app_url')),
         ])
             ->statePath('data');
     }
@@ -76,7 +76,7 @@ class Site extends Page implements HasForms
                     ['custom_key' => $key, 'custom_value' => $datum]
                 );
             }
-            NotificationUtil::make(true, __('cat.save_success'));
+            NotificationUtil::make(true, __('cat/notification.success'));
         } catch (Halt $exception) {
             LogUtil::error($exception);
             NotificationUtil::make(false, $exception);
@@ -87,7 +87,7 @@ class Site extends Page implements HasForms
     {
         return [
             Action::make('save')
-                ->label(__('cat.save'))
+                ->label(__('cat/site.action.save'))
                 ->submit('save'),
         ];
     }

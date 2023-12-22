@@ -20,24 +20,24 @@ class Index extends ListRecords
 
     public static function getNavigationLabel(): string
     {
-        return __('cat.action.back');
+        return __('cat/ticket.action.back');
     }
 
     public function getTabs(): array
     {
         return [
-            __('cat.ticket.status.all') => Tab::make()
+            __('cat/ticket.status.all') => Tab::make()
                 ->badge(Ticket::query()->count())
                 ->badgeColor(Color::Slate),
-            __('cat.ticket.status.idle') => Tab::make()
+            __('cat/ticket.status.idle') => Tab::make()
                 ->badge(Ticket::query()->where('status', 0)->count())
                 ->badgeColor(TicketEnum::statusColor(0))
                 ->modifyQueryUsing(fn (Builder $query) => $query->where('status', 0)),
-            __('cat.ticket.status.processing') => Tab::make()
+            __('cat/ticket.status.processing') => Tab::make()
                 ->badge(Ticket::query()->where('status', 1)->count())
                 ->badgeColor(TicketEnum::statusColor(1))
                 ->modifyQueryUsing(fn (Builder $query) => $query->where('status', 1)),
-            __('cat.ticket.status.finished') => Tab::make()
+            __('cat/ticket.status.completed') => Tab::make()
                 ->badge(Ticket::query()->where('status', 2)->count())
                 ->badgeColor(TicketEnum::statusColor(2))
                 ->modifyQueryUsing(fn (Builder $query) => $query->where('status', 2)),

@@ -14,7 +14,7 @@ class FlowProgressChart extends ApexChartWidget
 
     protected function getHeading(): ?string
     {
-        return __('cat.widget.flow_progress_chart_heading');
+        return __('cat/widget.flow_progress_chart_heading');
     }
 
     protected function getOptions(): array

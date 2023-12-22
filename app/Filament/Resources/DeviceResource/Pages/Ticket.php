@@ -4,6 +4,7 @@ namespace App\Filament\Resources\DeviceResource\Pages;
 
 use App\Enums\TicketEnum;
 use App\Filament\Actions\DeviceAction;
+use App\Filament\Actions\TicketAction;
 use App\Filament\Resources\DeviceResource;
 use App\Models\Device;
 use App\Traits\ManageRelatedRecords\QueryRecordByUrl;
@@ -27,7 +28,7 @@ class Ticket extends ManageRelatedRecords
 
     public static function getNavigationLabel(): string
     {
-        return __('cat.menu.ticket');
+        return __('cat/menu.ticket');
     }
 
     public static function getNavigationBadge(): ?string
@@ -37,7 +38,7 @@ class Ticket extends ManageRelatedRecords
 
     public function getBreadcrumb(): string
     {
-        return __('cat.menu.ticket');
+        return __('cat/menu.ticket');
     }
 
     public function table(Table $table): Table
@@ -48,19 +49,19 @@ class Ticket extends ManageRelatedRecords
                 Tables\Columns\TextColumn::make('subject')
                     ->searchable()
                     ->toggleable()
-                    ->label(__('cat.ticket.subject')),
+                    ->label(__('cat/ticket.subject')),
                 Tables\Columns\TextColumn::make('created_at')
                     ->searchable()
                     ->toggleable()
-                    ->label(__('cat.ticket.created_at')),
+                    ->label(__('cat/ticket.created_at')),
                 Tables\Columns\TextColumn::make('user.name')
                     ->searchable()
                     ->toggleable()
-                    ->label(__('cat.ticket.user')),
+                    ->label(__('cat/ticket.user')),
                 Tables\Columns\TextColumn::make('assignee.name')
                     ->searchable()
                     ->toggleable()
-                    ->label(__('cat.ticket.assignee')),
+                    ->label(__('cat/ticket.assignee')),
                 Tables\Columns\TextColumn::make('status')
                     ->searchable()
                     ->toggleable()
@@ -71,14 +72,14 @@ class Ticket extends ManageRelatedRecords
                     ->color(function ($state) {
                         return TicketEnum::statusColor($state);
                     })
-                    ->label(__('cat.ticket.status')),
+                    ->label(__('cat/ticket.status')),
             ])
             ->filters([
 
             ])
             ->headerActions([
                 // 创建
-                DeviceAction::createTicket($this->getOwnerRecord()->getAttribute('asset_number'))
+                TicketAction::createFromDevice($this->getOwnerRecord()->getAttribute('asset_number'))
                     ->visible(function () {
                         /* @var Device $device */
                         $device = $this->getOwnerRecord();

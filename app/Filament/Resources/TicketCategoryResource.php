@@ -28,7 +28,7 @@ class TicketCategoryResource extends Resource implements HasShieldPermissions
 
     public static function getModelLabel(): string
     {
-        return __('cat.menu.ticket_category');
+        return __('cat/menu.ticket_category');
     }
 
     public static function getRecordSubNavigation(Page $page): array
@@ -78,7 +78,7 @@ class TicketCategoryResource extends Resource implements HasShieldPermissions
                 Tables\Columns\TextColumn::make('name')
                     ->toggleable()
                     ->searchable()
-                    ->label(__('cat.ticket_category.name')),
+                    ->label(__('cat/ticket_category.name')),
             ])
             ->filters([
                 Tables\Filters\TrashedFilter::make(),
@@ -96,20 +96,20 @@ class TicketCategoryResource extends Resource implements HasShieldPermissions
                     ->importer(TicketCategoryImporter::class)
                     ->icon('heroicon-o-arrow-up-tray')
                     ->color('primary')
-                    ->label(__('cat.action.import'))
+                    ->label(__('cat/action.import'))
                     ->visible(function () {
                         return auth()->user()->can('import_ticket::category');
                     }),
                 // 导出
                 ExportAction::make()
-                    ->label(__('cat.action.export'))
+                    ->label(__('cat/action.export'))
                     ->visible(function () {
                         return auth()->user()->can('export_ticket::category');
                     }),
                 // 创建
                 TicketCategoryAction::create(),
                 // 前往工单
-                TicketCategoryAction::backToTicket(),
+                TicketCategoryAction::toTicket(),
             ]);
     }
 

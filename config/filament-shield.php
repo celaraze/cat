@@ -2,7 +2,7 @@
 
 return [
     'shield_resource' => [
-        'should_register_navigation' => env('DEMO_MODE', false),
+        'should_register_navigation' => ! env('DEMO_MODE', true),
         'slug' => 'roles',
         'navigation_sort' => -1,
         'navigation_badge' => true,

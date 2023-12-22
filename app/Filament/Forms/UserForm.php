@@ -21,21 +21,21 @@ class UserForm
     {
         return [
             TextInput::make('name')
-                ->label(__('cat.user.name'))
+                ->label(__('cat/user.name'))
                 ->required(),
             TextInput::make('email')
-                ->label(__('cat.email'))
+                ->label(__('cat/user.email'))
                 ->rules(['email'])
                 ->required(),
             Select::make('roles')
-                ->label(__('cat.roles'))
+                ->label(__('cat/user.roles'))
                 ->multiple()
                 ->options(RoleService::pluckOptions())
                 ->searchable()
                 ->preload(),
             Shout::make('')
                 ->color('warning')
-                ->content(__('cat.form.create_user_shout_helper')),
+                ->content(__('cat/user.form.create_shout_helper')),
         ];
     }
 
@@ -47,11 +47,11 @@ class UserForm
         return [
             TextInput::make('name')
                 ->required()
-                ->label(__('cat.name')),
+                ->label(__('cat/user.name')),
             TextInput::make('email')
                 ->rules(['email'])
                 ->required()
-                ->label(__('cat.email')),
+                ->label(__('cat/user.email')),
             // 排除超级管理员角色
             Select::make('roles')
                 ->multiple()
@@ -69,7 +69,7 @@ class UserForm
                 ->searchable()
                 ->preload()
                 ->default('roles')
-                ->label(__('cat.roles')),
+                ->label(__('cat/user.roles')),
         ];
     }
 
@@ -80,11 +80,11 @@ class UserForm
     {
         return [
             TextInput::make('password')
-                ->label(__('cat.new_password'))
+                ->label(__('cat/user.new_password'))
                 ->password()
                 ->required(),
             TextInput::make('password-verify')
-                ->label(__('cat.new_password_verify'))
+                ->label(__('cat/user.new_password_verify'))
                 ->password()
                 ->required(),
         ];
@@ -97,7 +97,7 @@ class UserForm
     {
         return [
             FileUpload::make('avatar')
-                ->label(__('cat.image'))
+                ->label(__('cat/user.image'))
                 ->directory('avatars')
                 ->getUploadedFileNameForStorageUsing(
                     function (TemporaryUploadedFile $file) {
@@ -115,34 +115,34 @@ class UserForm
         return [
             Shout::make('')
                 ->color('primary')
-                ->content(__('cat.form.delete_user_shout_1_helper')),
+                ->content(__('cat/user.form.delete_helper_1')),
             Shout::make('')
                 ->color('warning')
                 ->content(function () use ($bool) {
                     $icon = $bool['device_has_users'] ? '✔' : '✖';
 
-                    return $icon.__('cat.form.delete_user_shout_2_helper');
+                    return $icon.__('cat/user.form.delete_helper_2');
                 }),
             Shout::make('')
                 ->color('warning')
                 ->content(function () use ($bool) {
                     $icon = $bool['applicant_forms'] ? '✔' : '✖';
 
-                    return $icon.__('cat.form.delete_user_shout_3_helper');
+                    return $icon.__('cat/user.form.delete_helper_3');
                 }),
             Shout::make('')
                 ->color('warning')
                 ->content(function () use ($bool) {
                     $icon = $bool['approve_forms'] ? '✔' : '✖';
 
-                    return $icon.__('cat.form.delete_user_shout_4_helper');
+                    return $icon.__('cat/user.form.delete_helper_4');
                 }),
             Shout::make('')
                 ->color('warning')
                 ->content(function () use ($bool) {
                     $icon = $bool['approve_nodes'] ? '✔' : '✖';
 
-                    return $icon.__('cat.form.delete_user_shout_5_helper');
+                    return $icon.__('cat/user.form.delete_helper_5');
                 }),
         ];
     }
@@ -155,7 +155,7 @@ class UserForm
         return [
             Shout::make('')
                 ->color('warning')
-                ->content(__('cat.form.reset_password_shout_helper')),
+                ->content(__('cat/user.form.reset_password_helper')),
         ];
     }
 }

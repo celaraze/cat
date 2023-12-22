@@ -18,4 +18,6 @@ return [
     'form.retire_comment' => '废弃备注',
 
     'action.asset_number.create_helper' => '资产编号已绑定自动生成，无需填写本字段',
+
+    'widget.using' => ' 使用中',
 ];

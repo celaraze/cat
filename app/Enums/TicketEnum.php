@@ -7,10 +7,10 @@ class TicketEnum
     public static function priorityText(int $state): string
     {
         return match ($state) {
-            0 => __('cat.ticket.priority.low'),
-            1 => __('cat.ticket.priority.medium'),
-            2 => __('cat.ticket.priority.high'),
-            3 => __('cat.ticket.priority.urgent'),
+            0 => __('cat/ticket.priority.low'),
+            1 => __('cat/ticket.priority.medium'),
+            2 => __('cat/ticket.priority.high'),
+            3 => __('cat/ticket.priority.urgent'),
         };
     }
 
@@ -27,28 +27,28 @@ class TicketEnum
     public static function allPriorityText(): array
     {
         return [
-            0 => __('cat.ticket.priority.low'),
-            1 => __('cat.ticket.priority.medium'),
-            2 => __('cat.ticket.priority.high'),
-            3 => __('cat.ticket.priority.urgent'),
+            0 => __('cat/ticket.priority.low'),
+            1 => __('cat/ticket.priority.medium'),
+            2 => __('cat/ticket.priority.high'),
+            3 => __('cat/ticket.priority.urgent'),
         ];
     }
 
     public static function allStatusText(): array
     {
         return [
-            0 => __('cat.ticket.status.idle'),
-            1 => __('cat.ticket.status.processing'),
-            2 => __('cat.ticket.status.completed'),
+            0 => __('cat/ticket.status.idle'),
+            1 => __('cat/ticket.status.processing'),
+            2 => __('cat/ticket.status.completed'),
         ];
     }
 
     public static function statusText(int $state): string
     {
         return match ($state) {
-            0 => __('cat.ticket.status.idle'),
-            1 => __('cat.ticket.status.processing'),
-            2 => __('cat.ticket.status.completed'),
+            0 => __('cat/ticket.status.idle'),
+            1 => __('cat/ticket.status.processing'),
+            2 => __('cat/ticket.status.completed'),
         };
     }
 

@@ -14,7 +14,7 @@ class BrandForm
     {
         return [
             TextInput::make('name')
-                ->label(__('cat.brand.name'))
+                ->label(__('cat/brand.name'))
                 ->required(),
         ];
     }
@@ -27,7 +27,7 @@ class BrandForm
         return [
             Shout::make('hint')
                 ->color('danger')
-                ->content(__('cat.brand.form.delete_helper')),
+                ->content(__('cat/brand.form.delete_helper')),
         ];
     }
 }

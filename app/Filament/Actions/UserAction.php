@@ -15,7 +15,7 @@ class UserAction
 {
     public static function resetPassword(): Action
     {
-        return Action::make(__('cat.action.reset_password'))
+        return Action::make(__('cat/user.action.reset_password'))
             ->color('warning')
             ->icon('heroicon-o-lock-open')
             ->requiresConfirmation()
@@ -23,7 +23,7 @@ class UserAction
             ->action(function (User $user) {
                 try {
                     $user->service()->changePassword('cat');
-                    NotificationUtil::make(true, __('cat.action.reset_password_success'));
+                    NotificationUtil::make(true, __('cat/user.action.reset_password_success'));
                 } catch (Exception $exception) {
                     LogUtil::error($exception);
                     NotificationUtil::make(false, $exception);
@@ -34,19 +34,19 @@ class UserAction
     public static function changePassword(): \Filament\Actions\Action
     {
         return \Filament\Actions\Action::make('changePasswordAction')
-            ->label(__('cat.change_password'))
+            ->label(__('cat/user.action.change_password'))
             ->slideOver()
             ->icon('heroicon-m-key')
             ->form(UserForm::changePassword())
             ->action(function (array $data) {
                 try {
                     if ($data['password'] != $data['password-verify']) {
-                        throw new AuthenticationException(__('cat.action.change_password_failure_password_not_match'));
+                        throw new AuthenticationException(__('cat/user.action.change_password_failure_password_not_match'));
                     }
                     /* @var User $user */
                     $user = auth()->user();
                     $user->service()->changePassword($data['password']);
-                    NotificationUtil::make(true, __('cat.action.change_password_success'));
+                    NotificationUtil::make(true, __('cat/user.action.change_password_success'));
                 } catch (Exception $exception) {
                     LogUtil::error($exception);
                     NotificationUtil::make(false, $exception);
@@ -58,7 +58,7 @@ class UserAction
     public static function changeAvatar(): \Filament\Actions\Action
     {
         return \Filament\Actions\Action::make('changeAvatarAction')
-            ->label(__('cat.action.change_avatar'))
+            ->label(__('cat/user.action.change_avatar'))
             ->slideOver()
             ->icon('heroicon-s-paint-brush')
             ->form(UserForm::changeAvatar())
@@ -67,7 +67,7 @@ class UserAction
                     /* @var User $user */
                     $user = auth()->user();
                     $user->service()->changeAvatar($data['avatar']);
-                    NotificationUtil::make(true, __('cat.action.change_avatar_success'));
+                    NotificationUtil::make(true, __('cat/user.action.change_avatar_success'));
                 } catch (Exception $exception) {
                     LogUtil::error($exception);
                     NotificationUtil::make(false, $exception);
@@ -78,7 +78,7 @@ class UserAction
 
     public static function create(): Action
     {
-        return Action::make(__('cat.action.create'))
+        return Action::make(__('cat/user.action.create'))
             ->slideOver()
             ->icon('heroicon-m-plus')
             ->form(UserForm::create())
@@ -88,7 +88,7 @@ class UserAction
                     $data['password_verify'] = 'cat';
                     $user_service = new UserService();
                     $user_service->create($data);
-                    NotificationUtil::make(true, __('cat.action.create_success'));
+                    NotificationUtil::make(true, __('cat/user.action.create_success'));
                 } catch (Exception $exception) {
                     LogUtil::error($exception);
                     NotificationUtil::make(false, $exception);
@@ -99,7 +99,7 @@ class UserAction
 
     public static function delete(): Action
     {
-        return Action::make(__('cat.action.delete'))
+        return Action::make(__('cat/user.action.delete'))
             ->color('danger')
             ->icon('heroicon-o-trash')
             ->requiresConfirmation()
@@ -114,7 +114,7 @@ class UserAction
             ->action(function (User $user) {
                 try {
                     $user->service()->delete();
-                    NotificationUtil::make(true, __('cat.action.delete_success'));
+                    NotificationUtil::make(true, __('cat/user.action.delete_success'));
                 } catch (Exception $exception) {
                     LogUtil::error($exception);
                     NotificationUtil::make(false, $exception);
@@ -124,15 +124,15 @@ class UserAction
 
     public static function forceDelete(): Action
     {
-        return Action::make(__('cat.action.force_delete'))
+        return Action::make(__('cat/user.action.force_delete'))
             ->icon('heroicon-s-trash')
             ->color('danger')
             ->requiresConfirmation()
-            ->modalDescription(__('cat.action.force_delete_helper'))
+            ->modalDescription(__('cat/user.action.force_delete_helper'))
             ->action(function (User $user) {
                 try {
                     $user->service()->forceDelete();
-                    NotificationUtil::make(true, __('cat.action.force_delete_success'));
+                    NotificationUtil::make(true, __('cat/user.action.force_delete_success'));
                 } catch (Exception $exception) {
                     LogUtil::error($exception);
                     NotificationUtil::make(false, $exception);

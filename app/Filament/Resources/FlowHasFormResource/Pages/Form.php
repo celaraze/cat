@@ -22,12 +22,12 @@ class Form extends ManageRelatedRecords
 
     public static function getNavigationLabel(): string
     {
-        return __('cat.menu.flow_has_form_record');
+        return __('cat/menu.flow_has_form_record');
     }
 
     public function getBreadcrumb(): string
     {
-        return __('cat.menu.flow_has_form_record');
+        return __('cat/menu.flow_has_form_record');
     }
 
     public function table(Table $table): Table
@@ -38,19 +38,19 @@ class Form extends ManageRelatedRecords
                 Tables\Columns\TextColumn::make('node_name')
                     ->searchable()
                     ->toggleable()
-                    ->label(__('cat.flow_has_form.node_name')),
+                    ->label(__('cat/flow_has_form.node_name')),
                 Tables\Columns\TextColumn::make('approve_comment')
                     ->searchable()
                     ->toggleable()
-                    ->label(__('cat.flow_has_form.approve_comment')),
+                    ->label(__('cat/flow_has_form.approve_comment')),
                 Tables\Columns\TextColumn::make('approve_user_name')
                     ->searchable()
                     ->toggleable()
-                    ->label(__('cat.flow_has_form.approve_user_name')),
+                    ->label(__('cat/flow_has_form.approve_user_name')),
                 Tables\Columns\TextColumn::make('created_at')
                     ->searchable()
                     ->toggleable()
-                    ->label(__('cat.flow_has_form.created_at')),
+                    ->label(__('cat/flow_has_form.created_at')),
                 Tables\Columns\TextColumn::make('status')
                     ->toggleable()
                     ->formatStateUsing(function (string $state) {
@@ -62,7 +62,7 @@ class Form extends ManageRelatedRecords
                     ->color(function (string $state) {
                         return FlowHasNodeEnum::statusColor($state);
                     })
-                    ->label(__('cat.flow_has_form.status')),
+                    ->label(__('cat/flow_has_form.status')),
             ])
             ->filters([
 

@@ -7,10 +7,10 @@ class FlowHasFormEnum
     public static function statusText(int $state): string
     {
         return match ($state) {
-            0 => __('cat.flow_has_form.status.draft'),
-            1, 2 => __('cat.flow_has_form.status.processing'),
-            3 => __('cat.flow_has_form.status.rejected'),
-            4 => __('cat.flow_has_form.status.approved'),
+            0 => __('cat/flow_has_form.status.draft'),
+            1, 2 => __('cat/flow_has_form.status.processing'),
+            3 => __('cat/flow_has_form.status.rejected'),
+            4 => __('cat/flow_has_form.status.approved'),
         };
     }
 
@@ -37,9 +37,9 @@ class FlowHasFormEnum
     public static function allApproveText(): array
     {
         return [
-            1 => __('cat.flow_has_form.action.status.approve'),
-            2 => __('cat.flow_has_form.action.status.back'),
-            3 => __('cat.flow_has_form.action.status.reject'),
+            1 => __('cat/flow_has_form.action.status.approve'),
+            2 => __('cat/flow_has_form.action.status.back'),
+            3 => __('cat/flow_has_form.action.status.reject'),
         ];
     }
 }

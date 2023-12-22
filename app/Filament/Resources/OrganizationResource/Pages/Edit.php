@@ -14,7 +14,7 @@ class Edit extends EditRecord
 
     public static function getNavigationLabel(): string
     {
-        return __('cat.action.edit');
+        return __('cat/action.edit');
     }
 
     protected function getHeaderActions(): array

@@ -16,7 +16,7 @@ class DeviceCategoryAction
 {
     public static function create(): Action
     {
-        return Action::make(__('cat.action.create'))
+        return Action::make(__('cat/device_category.action.create'))
             ->slideOver()
             ->icon('heroicon-m-plus')
             ->form(DeviceCategoryForm::createOrEdit())
@@ -24,7 +24,7 @@ class DeviceCategoryAction
                 try {
                     $device_category_service = new DeviceCategoryService();
                     $device_category_service->create($data);
-                    NotificationUtil::make(true, __('cat.action.create_success'));
+                    NotificationUtil::make(true, __('cat/device_category.action.create_success'));
                 } catch (Exception $exception) {
                     LogUtil::error($exception);
                     NotificationUtil::make(false, $exception);
@@ -33,16 +33,16 @@ class DeviceCategoryAction
             ->closeModalByClickingAway(false);
     }
 
-    public static function backToDevice(): Action
+    public static function toDevice(): Action
     {
-        return Action::make(__('cat.action.back_to_device'))
+        return Action::make(__('cat/device_category.action.to_device'))
             ->icon('heroicon-s-server')
             ->url(DeviceResource::getUrl('index'));
     }
 
     public static function toDeviceView(): Action
     {
-        return Action::make(__('cat.action.to_device_view'))
+        return Action::make(__('cat/device_category.action.to_device_view'))
             ->icon('heroicon-s-server')
             ->url(function (Device $device) {
                 return DeviceResource::getUrl('view', ['record' => $device->getKey()]);
@@ -51,19 +51,21 @@ class DeviceCategoryAction
 
     public static function delete(): Action
     {
-        return Action::make(__('cat.action.delete'))
+        return Action::make(__('cat/device_category.action.delete'))
             ->icon('heroicon-s-trash')
             ->color('danger')
             ->requiresConfirmation()
+            ->slideOver()
             ->form(DeviceCategoryForm::delete())
             ->action(function (DeviceCategory $device_category) {
                 try {
                     $device_category->service()->delete();
-                    NotificationUtil::make(true, __('cat.action.delete_success'));
+                    NotificationUtil::make(true, __('cat/device_category.action.delete_success'));
                 } catch (Exception $exception) {
                     LogUtil::error($exception);
                     NotificationUtil::make(false, $exception);
                 }
-            });
+            })
+            ->closeModalByClickingAway(false);
     }
 }

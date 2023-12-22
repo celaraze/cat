@@ -14,7 +14,7 @@ class BrandAction
 {
     public static function create(): Action
     {
-        return Action::make(__('cat.action.create'))
+        return Action::make(__('cat/brand.action.create'))
             ->slideOver()
             ->icon('heroicon-m-plus')
             ->form(BrandForm::createOrEdit())
@@ -22,7 +22,7 @@ class BrandAction
                 try {
                     $brand_service = new BrandService();
                     $brand_service->create($data);
-                    NotificationUtil::make(true, __('cat.action.created'));
+                    NotificationUtil::make(true, __('cat/brand.action.create_success'));
                 } catch (Exception $exception) {
                     LogUtil::error($exception);
                     NotificationUtil::make(false, $exception);
@@ -33,7 +33,7 @@ class BrandAction
 
     public static function delete(): Action
     {
-        return Action::make(__('cat.action.delete'))
+        return Action::make(__('cat/brand.action.delete'))
             ->icon('heroicon-m-trash')
             ->color('danger')
             ->requiresConfirmation()
@@ -41,7 +41,7 @@ class BrandAction
             ->action(function (Brand $brand) {
                 try {
                     $brand->delete();
-                    NotificationUtil::make(true, __('cat.action.deleted'));
+                    NotificationUtil::make(true, __('cat/brand.action.delete_success'));
                 } catch (Exception $exception) {
                     LogUtil::error($exception);
                     NotificationUtil::make(false, $exception);

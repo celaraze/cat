@@ -4,6 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Enums\FlowHasFormEnum;
 use App\Filament\Actions\FlowAction;
+use App\Filament\Actions\FlowHasFormAction;
 use App\Filament\Resources\FlowHasFormResource\Pages\Form;
 use App\Filament\Resources\FlowHasFormResource\Pages\Index;
 use App\Filament\Resources\FlowHasFormResource\Pages\View;
@@ -34,12 +35,12 @@ class FlowHasFormResource extends Resource implements HasShieldPermissions
 
     public static function getNavigationGroup(): ?string
     {
-        return __('cat.workflow');
+        return __('cat/menu.workflow');
     }
 
     public static function getModelLabel(): string
     {
-        return __('cat.flow_has_form');
+        return __('cat/menu.flow_has_form');
     }
 
     public static function getRecordSubNavigation(Page $page): array
@@ -72,23 +73,23 @@ class FlowHasFormResource extends Resource implements HasShieldPermissions
                 Tables\Columns\TextColumn::make('name')
                     ->toggleable()
                     ->searchable()
-                    ->label(__('cat.name')),
+                    ->label(__('cat/name')),
                 Tables\Columns\TextColumn::make('uuid')
                     ->badge()
                     ->color('primary')
-                    ->label(__('cat.uuid')),
+                    ->label(__('cat/uuid')),
                 Tables\Columns\TextColumn::make('flow_name')
                     ->toggleable()
                     ->searchable()
-                    ->label(__('cat.flow_name')),
+                    ->label(__('cat/flow_name')),
                 Tables\Columns\TextColumn::make('applicantUser.name')
                     ->toggleable()
                     ->searchable()
-                    ->label(__('cat.applicant')),
+                    ->label(__('cat/applicant')),
                 Tables\Columns\TextColumn::make('type')
                     ->toggleable()
                     ->searchable()
-                    ->label(__('cat.flow_has_form_type')),
+                    ->label(__('cat/flow_has_form_type')),
                 Tables\Columns\TextColumn::make('status')
                     ->toggleable()
                     ->searchable()
@@ -104,7 +105,7 @@ class FlowHasFormResource extends Resource implements HasShieldPermissions
                     ->color(function (string $state) {
                         return FlowHasFormEnum::statusColor($state);
                     })
-                    ->label(__('cat.status')),
+                    ->label(__('cat/status')),
             ])
             ->filters([
 
@@ -120,12 +121,12 @@ class FlowHasFormResource extends Resource implements HasShieldPermissions
             ])
             ->headerActions([
                 // 创建
-                FlowAction::createHasForm()
+                FlowHasFormAction::create()
                     ->visible(function () {
                         return auth()->user()->can('create_flow::has::form');
                     }),
             ])
-            ->heading(__('cat.flow_has_form'));
+            ->heading(__('cat/flow_has_form'));
     }
 
     public static function getPages(): array
@@ -154,7 +155,7 @@ class FlowHasFormResource extends Resource implements HasShieldPermissions
                 Section::make()->schema([
                     TextEntry::make('uuid')
                         ->hintActions([
-                            Action::make(__('cat.action.flow_has_form_snapshot'))
+                            Action::make(__('cat/action.flow_has_form_snapshot'))
                                 ->icon('heroicon-s-camera')
                                 ->color('warning')
                                 ->visible(function (FlowHasForm $form_has_form) {
@@ -182,7 +183,7 @@ class FlowHasFormResource extends Resource implements HasShieldPermissions
                                 }),
                         ])
                         ->badge()
-                        ->label(__('cat.uuid')),
+                        ->label(__('cat/uuid')),
                     TextEntry::make('status')
                         ->formatStateUsing(function (string $state) {
                             return FlowHasFormEnum::statusText($state);
@@ -196,21 +197,21 @@ class FlowHasFormResource extends Resource implements HasShieldPermissions
                         ->color(function (string $state) {
                             return FlowHasFormEnum::statusColor($state);
                         })
-                        ->label(__('cat.status')),
+                        ->label(__('cat/status')),
                     TextEntry::make('type')
-                        ->label(__('cat.flow_has_form_type')),
+                        ->label(__('cat/flow_has_form_type')),
                     TextEntry::make('flow_name')
                         ->hintActions([
-                            Action::make(__('cat.action.flow_has_form.flow_deleted'))
+                            Action::make(__('cat/action.flow_has_form.flow_deleted'))
                                 ->icon('heroicon-m-information-circle')
                                 ->color('warning')
                                 ->visible(function (FlowHasForm $flow_has_form) {
                                     return ! $flow_has_form->service()->isExistFlow();
                                 }),
                         ])
-                        ->label(__('cat.flow_name')),
+                        ->label(__('cat/flow_name')),
                     TextEntry::make('name')
-                        ->label(__('cat.name')),
+                        ->label(__('cat/name')),
                 ]),
             ])->columnSpan(['lg' => 1]),
             Group::make()->schema([

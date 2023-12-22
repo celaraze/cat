@@ -18,20 +18,20 @@ class AssetOverview extends BaseWidget
     protected function getStats(): array
     {
         return [
-            Stat::make(__('cat.device'), Device::query()->count())
-                ->description(Device::query()->where('status', 1)->count().__('cat.widget.using'))
+            Stat::make(__('cat/menu.device'), Device::query()->count())
+                ->description(Device::query()->where('status', 1)->count().__('cat/device.widget.using'))
                 ->descriptionColor('success')
                 ->url(DeviceResource::getUrl('index')),
-            Stat::make(__('cat.part'), Part::query()->count())
-                ->description(Part::query()->where('status', 1)->count().__('cat.widget.using'))
+            Stat::make(__('cat/menu.part'), Part::query()->count())
+                ->description(Part::query()->where('status', 1)->count().__('cat/part.widget.using'))
                 ->descriptionColor('success')
                 ->url(PartResource::getUrl('index')),
-            Stat::make('cat.software', Software::query()->count())
-                ->description(Software::query()->where('status', 1)->count().__('cat.widget.using'))
+            Stat::make(__('cat/menu.software'), Software::query()->count())
+                ->description(Software::query()->where('status', 1)->count().__('cat/software.widget.using'))
                 ->descriptionColor('success')
                 ->url(SoftwareResource::getUrl('index')),
-            Stat::make('cat.secret', Secret::query()->count())
-                ->description(Secret::query()->where('status', 1)->count().__('cat.widget.using'))
+            Stat::make(__('cat/menu.secret'), Secret::query()->count())
+                ->description(Secret::query()->where('status', 1)->count().__('cat/secret.widget.using'))
                 ->descriptionColor('success')
                 ->url(SecretResource::getUrl('index')),
         ];

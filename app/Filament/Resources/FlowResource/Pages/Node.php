@@ -2,7 +2,7 @@
 
 namespace App\Filament\Resources\FlowResource\Pages;
 
-use App\Filament\Actions\FlowAction;
+use App\Filament\Actions\FlowHasNodeAction;
 use App\Filament\Resources\FlowResource;
 use App\Models\FlowHasNode;
 use App\Services\FlowHasNodeService;
@@ -24,12 +24,12 @@ class Node extends ManageRelatedRecords
 
     public static function getNavigationLabel(): string
     {
-        return __('cat.menu.flow_has_node');
+        return __('cat/menu.flow_has_node');
     }
 
     public function getBreadcrumb(): string
     {
-        return __('cat.menu.flow_has_node');
+        return __('cat/menu.flow_has_node');
     }
 
     public function table(Table $table): Table
@@ -41,7 +41,7 @@ class Node extends ManageRelatedRecords
                 Tables\Columns\TextColumn::make('name')
                     ->searchable()
                     ->toggleable()
-                    ->label(__('cat.flow_has_node.name')),
+                    ->label(__('cat/flow_has_node.name')),
                 Tables\Columns\TextColumn::make('type')
                     ->searchable()
                     ->toggleable()
@@ -53,23 +53,23 @@ class Node extends ManageRelatedRecords
                             return 'success';
                         }
                     })
-                    ->label(__('cat.flow_has_node.type')),
+                    ->label(__('cat/flow_has_node.type')),
             ])
             ->filters([
 
             ])
             ->headerActions([
-                FlowAction::deleteHasNodeWithAll($this->getOwnerRecord())
+                FlowHasNodeAction::deleteAll($this->getOwnerRecord())
                     ->visible($this->getOwnerRecord()->nodes()->count()),
             ])
             ->actions([
-                FlowAction::createHasNode($this->getOwnerRecord())
+                FlowHasNodeAction::create($this->getOwnerRecord())
                     ->visible(function (FlowHasNode $node) {
                         $flow_has_node_service = new FlowHasNodeService($node);
 
                         return ! $flow_has_node_service->isExistChildNode();
                     }),
-                FlowAction::deleteHasNode($this->getOwnerRecord())
+                FlowHasNodeAction::delete($this->getOwnerRecord())
                     ->visible(function (FlowHasNode $node) {
                         $flow_has_node_service = new FlowHasNodeService($node);
 

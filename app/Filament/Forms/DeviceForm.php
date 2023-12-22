@@ -29,26 +29,26 @@ class DeviceForm
     {
         return [
             Select::make('asset_number')
-                ->label(__('cat.asset_number'))
+                ->label(__('cat/device.asset_number'))
                 ->options(DeviceService::pluckOptions('asset_number'))
                 ->searchable()
                 ->preload()
                 ->placeholder($asset_number)
                 ->disabled(),
             TextInput::make('subject')
-                ->label(__('cat.subject'))
+                ->label(__('cat/ticket.subject'))
                 ->required(),
             RichEditor::make('description')
-                ->label(__('cat.description'))
+                ->label(__('cat/ticket.description'))
                 ->required(),
             Select::make('category_id')
-                ->label(__('cat.category'))
+                ->label(__('cat/ticket.category_id'))
                 ->options(TicketCategoryService::pluckOptions())
                 ->searchable()
                 ->preload()
                 ->required(),
             Select::make('priority')
-                ->label(__('cat.priority'))
+                ->label(__('cat/ticket.priority'))
                 ->options(TicketEnum::allPriorityText())
                 ->searchable()
                 ->preload()
@@ -64,7 +64,7 @@ class DeviceForm
         return [
             TextInput::make('asset_number')
                 ->maxLength(255)
-                ->label(__('cat.asset_number'))
+                ->label(__('cat/device.asset_number'))
                 ->required(function () {
                     return ! AssetNumberRuleService::isAuto(Device::class);
                 })
@@ -72,7 +72,7 @@ class DeviceForm
                     return AssetNumberRuleService::isAuto(Device::class);
                 })
                 ->hintAction(
-                    Action::make(__('cat.form.create_asset_number_helper'))
+                    Action::make(__('cat/device.form.asset_number.create_helper'))
                         ->icon('heroicon-o-arrow-path-rounded-square')
                         ->visible(function () {
                             return AssetNumberRuleService::isAuto(Device::class);
@@ -80,16 +80,16 @@ class DeviceForm
                 ),
             Select::make('category_id')
                 ->relationship('category', 'name')
-                ->label(__('cat.category'))
+                ->label(__('cat/device.category_id'))
                 ->preload()
                 ->searchable()
                 ->createOptionForm(DeviceCategoryForm::createOrEdit())
                 ->required(),
             TextInput::make('name')
                 ->maxLength(255)
-                ->label(__('cat.name')),
+                ->label(__('cat/device.name')),
             Select::make('brand_id')
-                ->label(__('cat.brand'))
+                ->label(__('cat/device.brand_id'))
                 ->relationship('brand', 'name')
                 ->preload()
                 ->searchable()
@@ -97,12 +97,12 @@ class DeviceForm
                 ->required(),
             TextInput::make('sn')
                 ->maxLength(255)
-                ->label(__('cat.sn')),
+                ->label(__('cat/device.sn')),
             TextInput::make('specification')
                 ->maxLength(255)
-                ->label(__('cat.specification')),
+                ->label(__('cat/device.specification')),
             FileUpload::make('image')
-                ->label(__('cat.image'))
+                ->label(__('cat/device.image'))
                 ->directory('devices')
                 ->visibility('public')
                 ->getUploadedFileNameForStorageUsing(
@@ -112,16 +112,16 @@ class DeviceForm
                 )
                 ->image(),
             Textarea::make('description')
-                ->label(__('cat.description')),
+                ->label(__('cat/device.description')),
             Repeater::make('additional')
                 ->schema([
                     TextInput::make('name')
-                        ->label(__('cat.name')),
+                        ->label(__('cat/device.additional.name')),
                     TextInput::make('text')
-                        ->label(__('cat.text')),
+                        ->label(__('cat/device.additional.text')),
                 ])
                 ->defaultItems(0)
-                ->label(__('cat.additional')),
+                ->label(__('cat/device.additional')),
         ];
     }
 
@@ -133,7 +133,7 @@ class DeviceForm
         return [
             Shout::make('hint')
                 ->color('danger')
-                ->content(__('cat.form.force_retire_device_helper')),
+                ->content(__('cat/device.form.force_retire_helper')),
         ];
     }
 
@@ -146,7 +146,7 @@ class DeviceForm
             Select::make('flow_id')
                 ->options(FlowService::pluckOptions())
                 ->required()
-                ->label(__('cat.flow')),
+                ->label(__('cat/device.flow_id')),
         ];
     }
 
@@ -157,12 +157,12 @@ class DeviceForm
     {
         return [
             Select::make('asset_number_rule_id')
-                ->label(__('cat.asset_number_rule'))
+                ->label(__('cat/device.asset_number_rule_id'))
                 ->options(AssetNumberRuleService::pluckOptions())
                 ->required()
                 ->default(AssetNumberRuleService::getAutoRule(Device::class)?->getAttribute('id')),
             Checkbox::make('is_auto')
-                ->label(__('cat.is_auto'))
+                ->label(__('cat/device.is_auto'))
                 ->default(AssetNumberRuleService::getAutoRule(Device::class)?->getAttribute('is_auto')),
         ];
     }
@@ -175,9 +175,9 @@ class DeviceForm
         return [
             Shout::make('')
                 ->color('danger')
-                ->content(__('cat.form.retire_device_helper')),
+                ->content(__('cat/device.form.retire_helper')),
             TextInput::make('comment')
-                ->label(__('cat.comment'))
+                ->label(__('cat/device.form.retire_comment'))
                 ->required(),
         ];
     }

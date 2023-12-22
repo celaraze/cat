@@ -41,11 +41,11 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->databaseNotifications()
             ->navigationGroups([
-                '资产',
-                '工作流',
-                '基础数据',
-                '日志',
-                '系统设置',
+                __('cat/menu.asset'),
+                __('cat/menu.workflow'),
+                __('cat/menu.basic_data'),
+                __('cat/menu.log'),
+                __('cat/menu.system'),
             ])
             ->widgets([
 
@@ -78,21 +78,21 @@ class AdminPanelProvider extends PanelProvider
             ->viteTheme('resources/css/filament/admin/theme.css')
             ->userMenuItems([
                 MenuItem::make()
-                    ->label(__('cat.profile'))
+                    ->label(__('cat/menu.profile'))
                     ->url('/profile')
                     ->icon('heroicon-m-identification'),
                 MenuItem::make()
-                    ->label(__('cat.menu.github_helper'))
+                    ->label(__('cat/menu.github'))
                     ->url('https://github.com/celaraze/cat')
                     ->openUrlInNewTab()
                     ->icon('heroicon-s-star'),
                 MenuItem::make()
-                    ->label(__('cat.menu.official_docs'))
+                    ->label(__('cat/menu.docs'))
                     ->url('https://github.com/celaraze/cat/wiki')
                     ->openUrlInNewTab()
                     ->icon('heroicon-o-book-open'),
                 MenuItem::make()
-                    ->label(__('cat.menu.official_community'))
+                    ->label(__('cat/menu.community'))
                     ->url('https://pd.qq.com/s/sknbyfnh')
                     ->openUrlInNewTab()
                     ->icon('heroicon-s-user-group'),

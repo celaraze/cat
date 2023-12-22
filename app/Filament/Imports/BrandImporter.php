@@ -16,17 +16,17 @@ class BrandImporter extends Importer
         return [
             ImportColumn::make('name')
                 ->requiredMapping()
-                ->example(__('cat.example_brand'))
-                ->label(__('cat.name')),
+                ->example(__('cat/example_brand'))
+                ->label(__('cat/name')),
         ];
     }
 
     public static function getCompletedNotificationBody(Import $import): string
     {
-        $body = __('cat.import.brand_success', ['success_count' => $import->successful_rows]);
+        $body = __('cat/import.brand_success', ['success_count' => $import->successful_rows]);
 
         if ($failedRowsCount = $import->getFailedRowsCount()) {
-            $body .= ' '.__('cat.import.brand_failure', ['failure_count' => $failedRowsCount]);
+            $body .= ' '.__('cat/import.brand_failure', ['failure_count' => $failedRowsCount]);
         }
 
         return $body;

@@ -21,12 +21,12 @@ class Device extends ManageRelatedRecords
 
     public static function getNavigationLabel(): string
     {
-        return __('cat.menu.device');
+        return __('cat/menu.device');
     }
 
     public function getTitle(): string|Htmlable
     {
-        return __('cat.menu.device');
+        return __('cat/menu.device');
     }
 
     public function table(Table $table): Table
@@ -37,7 +37,7 @@ class Device extends ManageRelatedRecords
                 Tables\Columns\TextColumn::make('asset_number')
                     ->searchable()
                     ->toggleable()
-                    ->label(__('cat.device.asset_number')),
+                    ->label(__('cat/device.asset_number')),
             ])
             ->filters([
                 Tables\Filters\TrashedFilter::make(),

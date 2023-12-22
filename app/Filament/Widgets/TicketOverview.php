@@ -34,20 +34,20 @@ class TicketOverview extends BaseWidget
         })->reverse();
 
         return [
-            Stat::make(__('cat.ticket'), Ticket::query()->count())
-                ->description(__('cat.widget.ticket_overview_status_all'))
+            Stat::make(__('cat/menu.ticket'), Ticket::query()->count())
+                ->description(__('cat/ticket.widget.overview_status_all'))
                 ->chart($days->pluck('all')->flatten()->toArray())
                 ->url(TicketResource::getUrl('index')),
-            Stat::make(__('cat.ticket'), Ticket::query()->where('status', 0)->count())
-                ->description(__('cat.widget.ticket_overview_status_0'))
+            Stat::make(__('cat/menu.ticket'), Ticket::query()->where('status', 0)->count())
+                ->description(__('cat/ticket.widget.overview_status_0'))
                 ->chart($days->pluck('status_0')->flatten()->toArray())
                 ->descriptionColor('gray'),
-            Stat::make(__('cat.ticket'), Ticket::query()->where('status', 1)->count())
-                ->description(__('cat.widget.ticket_overview_status_1'))
+            Stat::make(__('cat/menu.ticket'), Ticket::query()->where('status', 1)->count())
+                ->description(__('cat/ticket.widget.overview_status_1'))
                 ->chart($days->pluck('status_1')->flatten()->toArray())
                 ->descriptionColor('warning'),
-            Stat::make(__('cat.ticket'), Ticket::query()->where('status', 2)->count())
-                ->description(__('cat.widget.ticket_overview_status_2'))
+            Stat::make(__('cat/menu.ticket'), Ticket::query()->where('status', 2)->count())
+                ->description(__('cat/ticket.widget.overview_status_2'))
                 ->chart($days->pluck('status_2')->flatten()->toArray())
                 ->descriptionColor('success'),
         ];

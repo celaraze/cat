@@ -2,7 +2,7 @@
 
 namespace App\Filament\Resources\TicketResource\Pages;
 
-use App\Filament\Actions\TicketAction;
+use App\Filament\Actions\TicketHasTrackAction;
 use App\Filament\Resources\TicketResource;
 use Filament\Resources\Pages\ManageRelatedRecords;
 use Filament\Tables;
@@ -22,12 +22,12 @@ class Track extends ManageRelatedRecords
 
     public static function getNavigationLabel(): string
     {
-        return __('cat.menu.ticket_has_track');
+        return __('cat/menu.ticket_has_track');
     }
 
     public function getBreadcrumb(): string
     {
-        return __('cat.menu.ticket_has_track');
+        return __('cat/menu.ticket_has_track');
     }
 
     public function table(Table $table): Table
@@ -38,31 +38,31 @@ class Track extends ManageRelatedRecords
                 Tables\Columns\TextColumn::make('created_at')
                     ->searchable()
                     ->toggleable()
-                    ->label(__('cat.ticket_has_track.created_at')),
+                    ->label(__('cat/ticket_has_track.created_at')),
                 Tables\Columns\TextColumn::make('user.name')
                     ->searchable()
                     ->toggleable()
-                    ->label(__('cat.user.name')),
+                    ->label(__('cat/ticket_has_track.user.name')),
                 Tables\Columns\TextColumn::make('comment')
                     ->searchable()
                     ->toggleable()
                     // todo wrap 不起作用？
                     ->wrap()
                     ->html()
-                    ->label(__('cat.ticket_has_track.comment')),
+                    ->label(__('cat/ticket_has_track.comment')),
                 Tables\Columns\TextColumn::make('minutes')
                     ->searchable()
                     ->toggleable()
                     ->alignRight()
                     ->badge()
-                    ->label(__('cat.ticket_has_track.minutes')),
+                    ->label(__('cat/ticket_has_track.minutes')),
             ])
             ->filters([
 
             ])
             ->headerActions([
                 // 创建
-                TicketAction::createHasTrack($this->getOwnerRecord()),
+                TicketHasTrackAction::create($this->getOwnerRecord()),
             ])
             ->actions([
 

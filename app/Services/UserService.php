@@ -60,7 +60,7 @@ class UserService
             $this->model->setAttribute('name', $data['name']);
             $this->model->setAttribute('email', $data['email']);
             if ($data['password'] != $data['password_verify']) {
-                throw new Exception(__('cat.password_not_match'));
+                throw new Exception(__('cat/password_not_match'));
             }
             $this->model->setAttribute('password', bcrypt($data['password']));
             $this->model->save();
@@ -106,19 +106,19 @@ class UserService
     public function delete(): ?bool
     {
         if ($this->model->approvalNodes()->count()) {
-            throw new Exception(__('cat.user_delete_failure_approval_node'));
+            throw new Exception(__('cat/user_delete_failure_approval_node'));
         }
         if ($this->model->deviceHasUsers()->count()) {
-            throw new Exception(__('cat.user_delete_failure_device_has_user'));
+            throw new Exception(__('cat/user_delete_failure_device_has_user'));
         }
         if ($this->model->applicantForms()->whereNotIn('status', [3, 4])->count()) {
-            throw new Exception(__('cat.user_delete_failure_applicant_form'));
+            throw new Exception(__('cat/user_delete_failure_applicant_form'));
         }
         if ($this->model->approvalForms()->whereNotIn('status', [3, 4])->count()) {
-            throw new Exception(__('cat.user_delete_failure_approval_form'));
+            throw new Exception(__('cat/user_delete_failure_approval_form'));
         }
         if ($this->model->getKey() == auth()->id()) {
-            throw new Exception(__('cat.user_delete_failure_self'));
+            throw new Exception(__('cat/user_delete_failure_self'));
         }
 
         return $this->model->delete();
@@ -132,7 +132,7 @@ class UserService
     public function forceDelete(): ?bool
     {
         if (! $this->model->service()->isDeleted()) {
-            throw new Exception(__('cat.user_force_delete_failure_not_deleted'));
+            throw new Exception(__('cat/user_force_delete_failure_not_deleted'));
         }
 
         return $this->model->forceDelete();
@@ -161,7 +161,7 @@ class UserService
             ->where('id', '!=', $this->model->getKey())
             ->exists();
         if ($is_exist) {
-            throw new Exception(__('cat.email_already_exist'));
+            throw new Exception(__('cat/email_already_exist'));
         }
 
         try {

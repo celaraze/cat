@@ -21,12 +21,12 @@ class Part extends ManageRelatedRecords
 
     public static function getNavigationLabel(): string
     {
-        return __('cat.menu.part');
+        return __('cat/menu.part');
     }
 
     public function getTitle(): string|Htmlable
     {
-        return __('cat.menu.part');
+        return __('cat/menu.part');
     }
 
     public function table(Table $table): Table
@@ -37,7 +37,7 @@ class Part extends ManageRelatedRecords
                 Tables\Columns\TextColumn::make('asset_number')
                     ->searchable()
                     ->toggleable()
-                    ->label(__('cat.part.asset_number')),
+                    ->label(__('cat/part.asset_number')),
             ])
             ->filters([
                 Tables\Filters\TrashedFilter::make(),

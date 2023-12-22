@@ -17,11 +17,11 @@ class FlowHasFormForm
     {
         return [
             Radio::make('status')
-                ->label(__('cat.flow_has_form.status'))
+                ->label(__('cat/flow_has_form.status'))
                 ->options(FlowHasFormEnum::allApproveText())
                 ->required(),
             TextInput::make('approve_comment')
-                ->label(__('cat.flow_has_form.approve_comment'))
+                ->label(__('cat/flow_has_form.approve_comment'))
                 ->required(),
         ];
     }
@@ -34,14 +34,14 @@ class FlowHasFormForm
         return [
             Select::make('flow_id')
                 ->options(FlowService::pluckOptions())
-                ->label(__('cat.flow'))
+                ->label(__('cat/flow_has_form.flow_id'))
                 ->required(),
             TextInput::make('name')
-                ->label(__('cat.name'))
-                ->helperText(__('cat.name_helper'))
+                ->label(__('cat/name'))
+                ->helperText(__('cat/flow_has_form.name_helper'))
                 ->required(),
             TextInput::make('comment')
-                ->label(__('cat.comment'))
+                ->label(__('cat/flow_has_form.comment'))
                 ->required(),
         ];
     }

@@ -2,33 +2,40 @@
 
 namespace App\Filament\Actions;
 
+use App\Filament\Forms\DeviceForm;
 use App\Filament\Forms\TicketForm;
-use App\Filament\Forms\TicketHasTrackForm;
+use App\Models\Device;
 use App\Models\Ticket;
-use App\Services\TicketHasTrackService;
 use App\Services\TicketService;
 use App\Utils\LogUtil;
 use App\Utils\NotificationUtil;
 use Exception;
 use Filament\Tables\Actions\Action;
-use Illuminate\Database\Eloquent\Model;
 
 class TicketAction
 {
-    public static function createHasTrack(Model $ticket): Action
+    public static function createFromDevice($asset_number = null): Action
     {
-        /* @var Ticket $ticket */
-        return Action::make(__('cat.action.create_ticket_has_track'))
-            ->slideOver()
+        return Action::make(__('cat/ticket.action.create_from_device'))
             ->icon('heroicon-m-plus-circle')
-            ->form(TicketHasTrackForm::create())
-            ->action(function (array $data) use ($ticket) {
+            ->slideOver()
+            ->form(function (Device $device) use ($asset_number) {
+                if (! $asset_number) {
+                    $asset_number = $device->getAttribute('asset_number');
+                }
+
+                return DeviceForm::createTicketFromDevice($asset_number);
+            })
+            ->action(function (array $data, Device $device) use ($asset_number) {
                 try {
-                    $data['ticket_id'] = $ticket->getAttribute('id');
+                    if (! $asset_number) {
+                        $asset_number = $device->getAttribute('asset_number');
+                    }
+                    $data['asset_number'] = $asset_number;
                     $data['user_id'] = auth()->id();
-                    $ticket_has_track_service = new TicketHasTrackService();
-                    $ticket_has_track_service->create($data);
-                    NotificationUtil::make(true, __('cat.action.create_ticket_has_track_success'));
+                    $ticket_service = new TicketService();
+                    $ticket_service->create($data);
+                    NotificationUtil::make(true, __('cat/ticket.action.created_from_device_success'));
                 } catch (Exception $exception) {
                     LogUtil::error($exception);
                     NotificationUtil::make(false, $exception);
@@ -39,7 +46,7 @@ class TicketAction
 
     public static function create(): Action
     {
-        return Action::make(__('cat.action.create'))
+        return Action::make(__('cat/ticket.action.create'))
             ->slideOver()
             ->icon('heroicon-m-plus')
             ->form(TicketForm::create())
@@ -48,7 +55,7 @@ class TicketAction
                     $data['user_id'] = auth()->id();
                     $ticket_service = new TicketService();
                     $ticket_service->create($data);
-                    NotificationUtil::make(true, __('cat.action.create_success'));
+                    NotificationUtil::make(true, __('cat/ticket.action.create_success'));
                 } catch (Exception $exception) {
                     LogUtil::error($exception);
                     NotificationUtil::make(false, $exception);
@@ -59,7 +66,7 @@ class TicketAction
 
     public static function toCategory(): Action
     {
-        return Action::make(__('cat.action.to_category'))
+        return Action::make(__('cat/menu.ticket_category'))
             ->icon('heroicon-s-square-3-stack-3d')
             ->url('/ticket-categories');
     }
@@ -67,7 +74,7 @@ class TicketAction
     public static function finish(): \Filament\Infolists\Components\Actions\Action
     {
         /* @var Ticket $ticket */
-        return \Filament\Infolists\Components\Actions\Action::make(__('cat.action.finish'))
+        return \Filament\Infolists\Components\Actions\Action::make(__('cat/ticket.action.finish'))
             ->color('success')
             ->icon('heroicon-o-check-circle')
             ->requiresConfirmation()
@@ -75,7 +82,7 @@ class TicketAction
             ->action(function (Ticket $ticket) {
                 try {
                     $ticket->service()->finish();
-                    NotificationUtil::make(true, __('cat.action.finish_success'));
+                    NotificationUtil::make(true, __('cat/ticket.action.finish_success'));
                 } catch (Exception $exception) {
                     LogUtil::error($exception);
                     NotificationUtil::make(false, $exception);
@@ -86,7 +93,7 @@ class TicketAction
 
     public static function setAssignee(): Action
     {
-        return Action::make(__('cat.action.set_assignee'))
+        return Action::make(__('cat/ticket.action.set_assignee'))
             ->icon('heroicon-o-hand-raised')
             ->color('success')
             ->requiresConfirmation()
@@ -94,7 +101,7 @@ class TicketAction
                 try {
                     $assignee_id = auth()->id();
                     $ticket->service()->setAssignee($assignee_id);
-                    NotificationUtil::make(true, __('cat.action.set_assignee_success'));
+                    NotificationUtil::make(true, __('cat/ticket.action.set_assignee_success'));
                 } catch (Exception $exception) {
                     LogUtil::error($exception);
                     NotificationUtil::make(false, $exception);

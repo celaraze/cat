@@ -48,20 +48,20 @@ class SoftwareResource extends Resource implements HasShieldPermissions
 
     public static function getNavigationGroup(): ?string
     {
-        return __('cat.menu.asset');
+        return __('cat/menu.asset');
     }
 
     public static function getModelLabel(): string
     {
-        return __('cat.menu.software');
+        return __('cat/menu.software');
     }
 
     public static function getGlobalSearchResultDetails(Model $record): array
     {
         /* @var Software $record */
         return [
-            __('cat.device.name') => $record->devices()->value('asset_number'),
-            __('cat.user.name') => $record->devices()->first()?->users()->value('name'),
+            __('cat/device.name') => $record->devices()->value('asset_number'),
+            __('cat/user.name') => $record->devices()->first()?->users()->value('name'),
         ];
     }
 
@@ -117,37 +117,37 @@ class SoftwareResource extends Resource implements HasShieldPermissions
                     ->circular()
                     ->toggleable()
                     ->defaultImageUrl(('/images/default.jpg'))
-                    ->label(__('cat.software.images')),
+                    ->label(__('cat/software.images')),
                 Tables\Columns\TextColumn::make('asset_number')
                     ->searchable()
                     ->toggleable()
                     ->sortable()
-                    ->label(__('cat.software.asset_number')),
+                    ->label(__('cat/software.asset_number')),
                 Tables\Columns\TextColumn::make('name')
                     ->searchable()
                     ->toggleable()
                     ->sortable()
-                    ->label(__('cat.software.name')),
+                    ->label(__('cat/software.name')),
                 Tables\Columns\TextColumn::make('brand.name')
                     ->searchable()
                     ->toggleable()
                     ->sortable()
-                    ->label(__('cat.software.brand')),
+                    ->label(__('cat/software.brand')),
                 Tables\Columns\TextColumn::make('category.name')
                     ->searchable()
                     ->toggleable()
                     ->sortable()
-                    ->label(__('cat.software.category')),
+                    ->label(__('cat/software.category')),
                 Tables\Columns\TextColumn::make('sn')
                     ->searchable()
                     ->toggleable()
                     ->sortable()
-                    ->label(__('cat.software.sn')),
+                    ->label(__('cat/software.sn')),
                 Tables\Columns\TextColumn::make('specification')
                     ->searchable()
                     ->toggleable()
                     ->sortable()
-                    ->label(__('cat.software.specification')),
+                    ->label(__('cat/software.specification')),
                 Tables\Columns\TextColumn::make('status')
                     ->toggleable()
                     ->badge()
@@ -158,21 +158,21 @@ class SoftwareResource extends Resource implements HasShieldPermissions
                     ->color(function ($state) {
                         return AssetEnum::statusColor($state);
                     })
-                    ->label(__('cat.software.status')),
+                    ->label(__('cat/software.status')),
             ])
             ->filters([
                 Tables\Filters\SelectFilter::make('category_id')
                     ->multiple()
                     ->options(SoftwareCategoryService::pluckOptions())
-                    ->label(__('cat.software.category')),
+                    ->label(__('cat/software.category')),
                 Tables\Filters\SelectFilter::make('brand_id')
                     ->multiple()
                     ->options(BrandService::pluckOptions())
-                    ->label(__('cat.software.brand')),
+                    ->label(__('cat/software.brand')),
                 Tables\Filters\SelectFilter::make('status')
                     ->multiple()
                     ->options(AssetEnum::allStatusText())
-                    ->label(__('cat.software.status')),
+                    ->label(__('cat/software.status')),
             ])
             ->actions([
                 Tables\Actions\ActionGroup::make([
@@ -199,13 +199,13 @@ class SoftwareResource extends Resource implements HasShieldPermissions
                     ->importer(SoftwareImporter::class)
                     ->icon('heroicon-o-arrow-up-tray')
                     ->color('primary')
-                    ->label(__('cat.action.import'))
+                    ->label(__('cat/action.import'))
                     ->visible(function () {
                         return auth()->user()->can('import_software');
                     }),
                 // 导出
                 ExportAction::make()
-                    ->label(__('cat.action.export'))
+                    ->label(__('cat/action.export'))
                     ->visible(function () {
                         return auth()->user()->can('export_software');
                     }),
@@ -233,11 +233,11 @@ class SoftwareResource extends Resource implements HasShieldPermissions
                             return auth()->user()->can('set_retire_flow_software');
                         }),
                 ])
-                    ->label(__('cat.action.advance'))
+                    ->label(__('cat/action.advance'))
                     ->icon('heroicon-m-cog-8-tooth')
                     ->button(),
             ])
-            ->heading(__('cat.menu.software'));
+            ->heading(__('cat/menu.software'));
     }
 
     public static function form(Form $form): Form
@@ -256,30 +256,30 @@ class SoftwareResource extends Resource implements HasShieldPermissions
                                 ->schema([
                                     Group::make([
                                         TextEntry::make('asset_number')
-                                            ->label(__('cat.software.asset_number'))
+                                            ->label(__('cat/software.asset_number'))
                                             ->badge()
                                             ->color('primary'),
                                         TextEntry::make('name')
-                                            ->label(__('cat.software.name')),
+                                            ->label(__('cat/software.name')),
                                         TextEntry::make('category.name')
-                                            ->label(__('cat.software.category')),
+                                            ->label(__('cat/software.category')),
                                         TextEntry::make('max_license_count')
-                                            ->label(__('cat.software.max_license_count')),
+                                            ->label(__('cat/software.max_license_count')),
                                     ]),
                                     Group::make([
                                         TextEntry::make('sn')
-                                            ->label(__('cat.software.sn')),
+                                            ->label(__('cat/software.sn')),
                                         TextEntry::make('brand.name')
-                                            ->label(__('cat.software.brand')),
+                                            ->label(__('cat/software.brand')),
                                         TextEntry::make('specification')
-                                            ->label(__('cat.software.specification')),
+                                            ->label(__('cat/software.specification')),
                                     ]),
                                 ]),
                         ]),
                     ]),
                 Section::make()->schema([
                     TextEntry::make('description')
-                        ->label(__('cat.software.description')),
+                        ->label(__('cat/software.description')),
                 ]),
                 Section::make()->schema([
                     RepeatableEntry::make('additional')
@@ -293,7 +293,7 @@ class SoftwareResource extends Resource implements HasShieldPermissions
                         ])
                         ->grid()
                         ->columns()
-                        ->label(__('cat.software.additional')),
+                        ->label(__('cat/software.additional')),
                 ]),
             ])->columnSpan(['lg' => 2]),
             Group::make()->schema([
@@ -303,7 +303,7 @@ class SoftwareResource extends Resource implements HasShieldPermissions
                             ->disk('public')
                             ->height(300)
                             ->defaultImageUrl(('/images/default.jpg'))
-                            ->label(__('cat.software.image')),
+                            ->label(__('cat/software.image')),
                     ]),
             ])->columnSpan(['lg' => 1]),
         ])->columns(3);

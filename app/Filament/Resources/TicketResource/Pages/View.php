@@ -18,7 +18,7 @@ class View extends ViewRecord
 
     public static function getNavigationLabel(): string
     {
-        return __('cat.action.view');
+        return __('cat/ticket.action.view');
     }
 
     public static function getNavigationBadge(): ?string

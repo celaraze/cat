@@ -10,18 +10,18 @@
             <th colspan="5" class="px-4 py-2 text-left text-sm font-medium uppercase tracking-wider">
                 {{ $device->name }}，
                 @if($device->users()->first())
-                    {{ $device->users()->first()->getAttribute('name') }} 使用中
+                    {{ $device->users()->first()->getAttribute('name') }} {{ __('cat/device.status.using') }}
                 @else
-                    无人使用
+                    {{ __('cat/device.status.idle') }}
                 @endif
             </th>
         </tr>
         <tr>
-            <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">类型</th>
-            <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">品牌</th>
-            <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">名称</th>
-            <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">规格</th>
-            <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">资产编号</th>
+            <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{{ __('cat/device.category') }}</th>
+            <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{{ __('cat/device.brand') }}</th>
+            <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{{ __('cat/device.name') }}</th>
+            <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{{ __('cat/device.specification') }}</th>
+            <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{{ __('cat/device.asset_number') }}</th>
         </tr>
         </thead>
         <tbody>
@@ -67,6 +67,6 @@
     </table>
 
     <div class="bg-blue-100 border border-blue-400 text-blue-700 px-3 py-3 rounded relative" role="alert">
-        <span class="block sm:inline">本速览仅用于快速查看设备附属资产，详请可单独前往设备资产查看。</span>
+        <span class="block sm:inline">{{ __('cat/device.action.summary.helper') }}</span>
     </div>
 </x-filament-panels::page>

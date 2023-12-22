@@ -32,12 +32,12 @@ class BrandResource extends Resource implements HasShieldPermissions
 
     public static function getNavigationGroup(): ?string
     {
-        return __('cat.basic_data');
+        return __('cat/menu.basic_data');
     }
 
     public static function getModelLabel(): string
     {
-        return __('cat.brand');
+        return __('cat/menu.brand');
     }
 
     public static function getRecordSubNavigation(Page $page): array
@@ -79,7 +79,7 @@ class BrandResource extends Resource implements HasShieldPermissions
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('name')
-                    ->label(__('cat.name')),
+                    ->label(__('cat/name')),
             ])
             ->filters([
                 Tables\Filters\TrashedFilter::make(),
@@ -103,13 +103,13 @@ class BrandResource extends Resource implements HasShieldPermissions
                     ->importer(BrandImporter::class)
                     ->icon('heroicon-o-arrow-up-tray')
                     ->color('primary')
-                    ->label(__('cat.action.import'))
+                    ->label(__('cat/action.import'))
                     ->visible(function () {
                         return auth()->user()->can('import_brand');
                     }),
                 // 导出
                 ExportAction::make()
-                    ->label(__('cat.action.export'))
+                    ->label(__('cat/action.export'))
                     ->visible(function () {
                         return auth()->user()->can('export_brand');
                     }),
@@ -119,7 +119,7 @@ class BrandResource extends Resource implements HasShieldPermissions
                         return auth()->user()->can('create_brand');
                     }),
             ])
-            ->heading(__('cat.brand'));
+            ->heading(__('cat/brand'));
     }
 
     public static function getPages(): array

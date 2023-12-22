@@ -2,7 +2,7 @@
 
 namespace App\Filament\Resources\VendorResource\Pages;
 
-use App\Filament\Actions\VendorAction;
+use App\Filament\Actions\VendorHasContactAction;
 use App\Filament\Forms\VendorHasContactForm;
 use App\Filament\Resources\VendorResource;
 use Filament\Forms\Form;
@@ -22,12 +22,12 @@ class Contact extends ManageRelatedRecords
 
     public static function getNavigationLabel(): string
     {
-        return __('cat.menu.vendor_has_contact');
+        return __('cat/menu.vendor_has_contact');
     }
 
     public function getBreadcrumb(): string
     {
-        return __('cat.menu.vendor_has_contact');
+        return __('cat/menu.vendor_has_contact');
     }
 
     public function form(Form $form): Form
@@ -44,22 +44,22 @@ class Contact extends ManageRelatedRecords
                 Tables\Columns\TextColumn::make('name')
                     ->searchable()
                     ->toggleable()
-                    ->label(__('cat.vendor_has_contact.name')),
+                    ->label(__('cat/vendor_has_contact.name')),
                 Tables\Columns\TextColumn::make('phone_number')
                     ->searchable()
                     ->toggleable()
-                    ->label(__('cat.vendor_has_contact.phone_number')),
+                    ->label(__('cat/vendor_has_contact.phone_number')),
                 Tables\Columns\TextColumn::make('email')
                     ->searchable()
                     ->toggleable()
-                    ->label(__('cat.vendor_has_contact.email')),
+                    ->label(__('cat/vendor_has_contact.email')),
             ])
             ->filters([
 
             ])
             ->headerActions([
                 // 添加联系人
-                VendorAction::createHasContact($this->getOwnerRecord()),
+                VendorHasContactAction::create($this->getOwnerRecord()),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),

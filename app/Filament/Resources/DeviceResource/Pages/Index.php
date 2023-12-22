@@ -19,28 +19,28 @@ class Index extends ListRecords
 
     public static function getNavigationLabel(): string
     {
-        return __('cat.action.back');
+        return __('cat/action.back');
     }
 
     public function getTabs(): array
     {
         return [
-            __('cat.device.status.all') => Tab::make()
+            __('cat/device.status.all') => Tab::make()
                 ->badge(Device::query()->count())
                 ->badgeColor('success'),
-            __('cat.device.status.idle') => Tab::make()
+            __('cat/device.status.idle') => Tab::make()
                 ->badge(Device::query()->where('status', 0)->count())
                 ->badgeColor(AssetEnum::statusColor(0))
                 ->modifyQueryUsing(fn (Builder $query) => $query->where('status', 0)),
-            __('cat.device.status.using') => Tab::make()
+            __('cat/device.status.using') => Tab::make()
                 ->badge(Device::query()->where('status', 1)->count())
                 ->badgeColor(AssetEnum::statusColor(1))
                 ->modifyQueryUsing(fn (Builder $query) => $query->where('status', 1)),
-            __('cat.device.status.borrowing') => Tab::make()
+            __('cat/device.status.borrowing') => Tab::make()
                 ->badge(Device::query()->where('status', 2)->count())
                 ->badgeColor(AssetEnum::statusColor(2))
                 ->modifyQueryUsing(fn (Builder $query) => $query->where('status', 2)),
-            __('cat.device.status.retired') => Tab::make()
+            __('cat/device.status.retired') => Tab::make()
                 ->badge(Device::query()->where('status', 3)->count())
                 ->badgeColor(AssetEnum::statusColor(3))
                 ->modifyQueryUsing(fn (Builder $query) => $query->where('status', 3)),

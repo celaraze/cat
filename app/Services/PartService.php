@@ -37,9 +37,9 @@ class PartService
             ->mapWithKeys(function (Part $part) {
                 $title = '';
                 $title .= $part->getAttribute('asset_number');
-                $title .= ' | '.$part->brand()->first()?->getAttribute('name') ?? __('cat.unknown_brand');
+                $title .= ' | '.$part->brand()->first()?->getAttribute('name') ?? __('cat/unknown_brand');
                 $title .= ' | '.$part->getAttribute('specification');
-                $title .= ' | '.$part->category()->first()?->getAttribute('name') ?? __('cat.unknown_category');
+                $title .= ' | '.$part->category()->first()?->getAttribute('name') ?? __('cat/unknown_category');
 
                 return [$part->getKey() => $title];
             });
@@ -137,13 +137,13 @@ class PartService
             ->where('custom_key', 'part_retire_flow_id')
             ->value('custom_value');
         if (! $flow_id) {
-            throw new Exception(__('cat.part_retire_flow_not_set'));
+            throw new Exception(__('cat/part_retire_flow_not_set'));
         }
         $flow = Flow::query()
             ->where('id', $flow_id)
             ->first();
         if (! $flow) {
-            throw new Exception(__('cat.part_retire_flow_not_found'));
+            throw new Exception(__('cat/part_retire_flow_not_found'));
         }
 
         return $flow;

@@ -31,7 +31,7 @@ return [
     |--------------------------------------------------------------------------
     */
 
-    'nav.group' => '安全',
+    'nav.group' => __('cat/menu.security'),
     'nav.role.label' => '角色',
     'nav.role.icon' => 'heroicon-o-shield-check',
     'resource.label.role' => '角色',

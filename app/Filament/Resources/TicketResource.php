@@ -38,7 +38,12 @@ class TicketResource extends Resource
 
     public static function getModelLabel(): string
     {
-        return __('cat.menu.ticket');
+        return __('cat/menu.ticket');
+    }
+
+    public static function getNavigationLabel(): string
+    {
+        return __('cat/menu.ticket');
     }
 
     public static function getRecordSubNavigation(Page $page): array
@@ -60,19 +65,19 @@ class TicketResource extends Resource
                 TextColumn::make('asset_number')
                     ->searchable()
                     ->toggleable()
-                    ->label(__('cat.ticket.asset_number')),
+                    ->label(__('cat/ticket.asset_number')),
                 TextColumn::make('subject')
                     ->searchable()
                     ->toggleable()
-                    ->label(__('cat.ticket.subject')),
+                    ->label(__('cat/ticket.subject')),
                 TextColumn::make('category.name')
                     ->searchable()
                     ->toggleable()
-                    ->label(__('cat.ticket.category')),
+                    ->label(__('cat/ticket.category')),
                 TextColumn::make('priority')
                     ->searchable()
                     ->toggleable()
-                    ->label(__('cat.ticket.priority'))
+                    ->label(__('cat/ticket.priority'))
                     ->formatStateUsing(function (string $state) {
                         return TicketEnum::priorityText($state);
                     })
@@ -83,15 +88,15 @@ class TicketResource extends Resource
                 TextColumn::make('user.name')
                     ->searchable()
                     ->toggleable()
-                    ->label(__('cat.ticket.user')),
+                    ->label(__('cat/ticket.user')),
                 TextColumn::make('assignee.name')
                     ->searchable()
                     ->toggleable()
-                    ->label(__('cat.ticket.assignee')),
+                    ->label(__('cat/ticket.assignee')),
                 TextColumn::make('created_at')
                     ->searchable()
                     ->toggleable()
-                    ->label(__('cat.ticket.created_at')),
+                    ->label(__('cat/ticket.created_at')),
                 TextColumn::make('status')
                     ->toggleable()
                     ->badge()
@@ -101,21 +106,21 @@ class TicketResource extends Resource
                     ->color(function (string $state) {
                         return TicketEnum::statusColor($state);
                     })
-                    ->label(__('cat.ticket.status')),
+                    ->label(__('cat/ticket.status')),
             ])
             ->filters([
                 SelectFilter::make('category_id')
                     ->multiple()
                     ->options(TicketCategoryService::pluckOptions())
-                    ->label(__('cat.ticket.category')),
+                    ->label(__('cat/ticket.category_id')),
                 SelectFilter::make('priority')
                     ->multiple()
                     ->options(TicketEnum::allPriorityText())
-                    ->label(__('cat.ticket.priority')),
+                    ->label(__('cat/ticket.priority')),
                 SelectFilter::make('status')
                     ->multiple()
                     ->options(TicketEnum::allStatusText())
-                    ->label(__('cat.ticket.status')),
+                    ->label(__('cat/ticket.status')),
             ])
             ->actions([
                 // 抢单
@@ -134,11 +139,11 @@ class TicketResource extends Resource
                     // 前往分类
                     TicketAction::toCategory(),
                 ])
-                    ->label(__('cat.ticket.advance'))
+                    ->label(__('cat/ticket.action.advance'))
                     ->icon('heroicon-m-cog-8-tooth')
                     ->button(),
             ])
-            ->heading(__('cat.menu.ticket'));
+            ->heading(__('cat/menu.ticket'));
     }
 
     public static function infolist(Infolist $infolist): Infolist
@@ -158,13 +163,13 @@ class TicketResource extends Resource
                                         return ! $is_finished && $ticket->getAttribute('user_id') == auth()->id();
                                     }),
                             ])
-                            ->label(__('cat.ticket.asset_number')),
+                            ->label(__('cat/ticket.asset_number')),
                     ]),
                 Section::make()
                     ->schema([
                         TextEntry::make('description')
                             ->html()
-                            ->label(__('cat.ticket.description')),
+                            ->label(__('cat/ticket.description')),
                     ]),
             ])->columnSpan(['lg' => 1]),
             Group::make()->schema([
@@ -175,17 +180,17 @@ class TicketResource extends Resource
                                 ->schema([
                                     Group::make([
                                         TextEntry::make('category.name')
-                                            ->label(__('cat.ticket.category')),
+                                            ->label(__('cat/ticket.category')),
                                         TextEntry::make('user.name')
-                                            ->label(__('cat.ticket.user')),
+                                            ->label(__('cat/ticket.user')),
                                         TextEntry::make('assignee.name')
-                                            ->label(__('cat.ticket.assignee')),
+                                            ->label(__('cat/ticket.assignee')),
                                     ]),
                                     Group::make([
                                         TextEntry::make('subject')
-                                            ->label(__('cat.ticket.subject')),
+                                            ->label(__('cat/ticket.subject')),
                                         TextEntry::make('priority')
-                                            ->label(__('cat.ticket.priority'))
+                                            ->label(__('cat/ticket.priority'))
                                             ->formatStateUsing(function (string $state) {
                                                 return TicketEnum::priorityText($state);
                                             })

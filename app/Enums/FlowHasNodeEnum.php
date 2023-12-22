@@ -18,11 +18,11 @@ class FlowHasNodeEnum
     public static function statusText(int $state): string
     {
         return match ($state) {
-            0 => __('cat.flow_has_node.status.draft'),
-            1 => __('cat.flow_has_node.status.agreed'),
-            2 => __('cat.flow_has_node.status.back'),
-            3 => __('cat.flow_has_node.status.rejected'),
-            4 => __('cat.flow_has_node.status.approved'),
+            0 => __('cat/flow_has_node.status.draft'),
+            1 => __('cat/flow_has_node.status.agreed'),
+            2 => __('cat/flow_has_node.status.back'),
+            3 => __('cat/flow_has_node.status.rejected'),
+            4 => __('cat/flow_has_node.status.approved'),
         };
     }
 
@@ -39,8 +39,8 @@ class FlowHasNodeEnum
     public static function allTypeText(): array
     {
         return [
-            'user' => __('cat.menu.user'),
-            'role' => __('cat.menu.role'),
+            'user' => __('cat/menu.user'),
+            'role' => __('cat/menu.role'),
         ];
     }
 }

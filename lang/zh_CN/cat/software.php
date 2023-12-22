@@ -17,7 +17,9 @@ return [
     'asset_number_rule_id' => '资产编号生成规则',
     'is_auto' => '自动生成',
 
+    'form.retire_comment' => '废弃备注',
+
     'action.asset_number.create_helper' => '资产编号已绑定自动生成，无需填写本字段',
 
-    'form.retire_comment' => '废弃备注',
+    'widget.using' => ' 使用中',
 ];

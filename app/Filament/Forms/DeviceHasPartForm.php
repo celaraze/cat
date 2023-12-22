@@ -26,7 +26,7 @@ class DeviceHasPartForm
                 ->searchable()
                 ->preload()
                 ->required()
-                ->label(__('cat.menu.part')),
+                ->label(__('cat/device_has_part.part_ids')),
         ];
     }
 
@@ -41,7 +41,7 @@ class DeviceHasPartForm
             Select::make('device_id')
                 ->options(DeviceService::pluckOptions('id', $device_ids))
                 ->searchable()
-                ->label(__('cat.menu.device')),
+                ->label(__('cat/device_has_part.device_id')),
         ];
     }
 }

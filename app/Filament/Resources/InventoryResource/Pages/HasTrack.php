@@ -22,12 +22,12 @@ class HasTrack extends ManageRelatedRecords
 
     public static function getNavigationLabel(): string
     {
-        return __('cat.menu.inventory_has_track');
+        return __('cat/menu.inventory_has_track');
     }
 
     public function getBreadcrumb(): string
     {
-        return __('cat.menu.inventory_has_track');
+        return __('cat/menu.inventory_has_track');
     }
 
     public function table(Table $table): Table
@@ -38,22 +38,22 @@ class HasTrack extends ManageRelatedRecords
                 Tables\Columns\TextColumn::make('asset_number')
                     ->searchable()
                     ->toggleable()
-                    ->label(__('cat.inventory_has_track.asset_number')),
+                    ->label(__('cat/inventory_has_track.asset_number')),
                 Tables\Columns\TextColumn::make('check')
                     ->searchable()
                     ->toggleable()
                     ->formatStateUsing(function (string $state) {
                         return InventoryEnum::checkText($state);
                     })
-                    ->label(__('cat.inventory_has_track.check')),
+                    ->label(__('cat/inventory_has_track.check')),
                 Tables\Columns\TextColumn::make('comment')
                     ->searchable()
                     ->toggleable()
-                    ->label(__('cat.inventory_has_track.comment')),
+                    ->label(__('cat/inventory_has_track.comment')),
                 Tables\Columns\TextColumn::make('creator.name')
                     ->searchable()
                     ->toggleable()
-                    ->label(__('cat.inventory_has_track.creator')),
+                    ->label(__('cat/inventory_has_track.creator')),
             ])
             ->filters([
 

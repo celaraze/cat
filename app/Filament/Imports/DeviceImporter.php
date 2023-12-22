@@ -16,44 +16,44 @@ class DeviceImporter extends Importer
         return [
             ImportColumn::make('asset_number')
                 ->requiredMapping()
-                ->example(__('cat.example_device_asset_number'))
-                ->label(__('cat.asset_number')),
+                ->example(__('cat/example_device_asset_number'))
+                ->label(__('cat/asset_number')),
             ImportColumn::make('category')
                 ->relationship(resolveUsing: 'name')
                 ->requiredMapping()
-                ->example(__('cat.example_device_category'))
-                ->label(__('cat.category')),
+                ->example(__('cat/example_device_category'))
+                ->label(__('cat/category')),
             ImportColumn::make('name')
-                ->example(__('cat.example_device_name'))
-                ->label(__('cat.name')),
+                ->example(__('cat/example_device_name'))
+                ->label(__('cat/name')),
             ImportColumn::make('sn')
                 ->requiredMapping()
-                ->example(__('cat.example_device_sn'))
-                ->label(__('cat.sn')),
+                ->example(__('cat/example_device_sn'))
+                ->label(__('cat/sn')),
             ImportColumn::make('specification')
                 ->requiredMapping()
-                ->example(__('cat.example_device_specification'))
-                ->label(__('cat.specification')),
+                ->example(__('cat/example_device_specification'))
+                ->label(__('cat/specification')),
             ImportColumn::make('image')
-                ->example(__('cat.example_device_image'))
-                ->label(__('cat.image')),
+                ->example(__('cat/example_device_image'))
+                ->label(__('cat/image')),
             ImportColumn::make('brand')
                 ->relationship(resolveUsing: 'name')
                 ->requiredMapping()
-                ->example(__('cat.example_brand'))
-                ->label(__('cat.brand')),
+                ->example(__('cat/example_brand'))
+                ->label(__('cat/brand')),
             ImportColumn::make('description')
-                ->example(__('cat.example_device_description'))
-                ->label(__('cat.description')),
+                ->example(__('cat/example_device_description'))
+                ->label(__('cat/description')),
         ];
     }
 
     public static function getCompletedNotificationBody(Import $import): string
     {
-        $body = __('cat.import.device_success', ['success_count' => number_format($import->successful_rows)]);
+        $body = __('cat/import.device_success', ['success_count' => number_format($import->successful_rows)]);
 
         if ($failedRowsCount = $import->getFailedRowsCount()) {
-            $body .= ' '.__('cat.import.device_failure', ['failure_count' => number_format($failedRowsCount)]);
+            $body .= ' '.__('cat/import.device_failure', ['failure_count' => number_format($failedRowsCount)]);
         }
 
         return $body;

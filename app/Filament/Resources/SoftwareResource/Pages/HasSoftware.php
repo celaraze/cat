@@ -3,7 +3,7 @@
 namespace App\Filament\Resources\SoftwareResource\Pages;
 
 use App\Enums\AssetEnum;
-use App\Filament\Actions\SoftwareAction;
+use App\Filament\Actions\DeviceHasSoftwareAction;
 use App\Filament\Resources\SoftwareResource;
 use App\Models\DeviceHasSoftware;
 use App\Models\Software;
@@ -28,7 +28,7 @@ class HasSoftware extends ManageRelatedRecords
 
     public static function getNavigationLabel(): string
     {
-        return __('cat.menu.device_has_software');
+        return __('cat/menu.device_has_software');
     }
 
     public static function getNavigationBadge(): ?string
@@ -38,7 +38,7 @@ class HasSoftware extends ManageRelatedRecords
 
     public function getBreadcrumb(): string
     {
-        return __('cat.menu.device_has_software');
+        return __('cat/menu.device_has_software');
     }
 
     public function table(Table $table): Table
@@ -49,15 +49,15 @@ class HasSoftware extends ManageRelatedRecords
                 Tables\Columns\TextColumn::make('device.asset_number')
                     ->searchable()
                     ->toggleable()
-                    ->label(__('cat.device.asset_number')),
+                    ->label(__('cat/device.asset_number')),
                 Tables\Columns\TextColumn::make('device.category.name')
                     ->searchable()
                     ->toggleable()
-                    ->label(__('cat.device_category.name')),
+                    ->label(__('cat/device_category.name')),
                 Tables\Columns\TextColumn::make('device.name')
                     ->searchable()
                     ->toggleable()
-                    ->label(__('cat.device.name')),
+                    ->label(__('cat/device.name')),
                 Tables\Columns\TextColumn::make('status')
                     ->toggleable()
                     ->badge()
@@ -67,25 +67,25 @@ class HasSoftware extends ManageRelatedRecords
                     ->color(function ($state) {
                         return AssetEnum::relationOperationColor($state);
                     })
-                    ->label(__('cat.device_has_software.status')),
+                    ->label(__('cat/device_has_software.status')),
                 Tables\Columns\TextColumn::make('updated_at')
                     ->searchable()
                     ->toggleable()
-                    ->label(__('cat.device_has_software.updated_at')),
+                    ->label(__('cat/device_has_software.updated_at')),
                 Tables\Columns\TextColumn::make('user.name')
                     ->searchable()
                     ->toggleable()
-                    ->label(__('cat.user.name')),
+                    ->label(__('cat/user.name')),
             ])
             ->filters([
                 Tables\Filters\SelectFilter::make('status')
                     ->multiple()
                     ->options(AssetEnum::allRelationOperationText())
-                    ->label(__('cat.device_has_software.status')),
+                    ->label(__('cat/device_has_software.status')),
             ])
             ->headerActions([
                 // 创建
-                SoftwareAction::createDeviceHasSoftware($this->getOwnerRecord())
+                DeviceHasSoftwareAction::createFromSoftware($this->getOwnerRecord())
                     ->visible(function () {
                         /* @var Software $software */
                         $software = $this->getOwnerRecord();
@@ -97,7 +97,7 @@ class HasSoftware extends ManageRelatedRecords
             ])
             ->actions([
                 // 删除
-                SoftwareAction::deleteDeviceHasSoftware()
+                DeviceHasSoftwareAction::deleteFromSoftware()
                     ->visible(function (DeviceHasSoftware $device_has_software) {
                         $can = auth()->user()->can('delete_has_software_software');
                         $is_retired = $device_has_software->software()->first()?->service()->isRetired() ?? false;
@@ -107,7 +107,7 @@ class HasSoftware extends ManageRelatedRecords
             ])
             ->bulkActions([
                 // 批量脱离软件
-                SoftwareAction::batchDeleteDeviceHasSoftware()
+                DeviceHasSoftwareAction::batchDeleteFromSoftware()
                     ->visible(function () {
                         return auth()->user()->can('delete_has_software_software');
                     }),
