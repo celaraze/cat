@@ -2,18 +2,14 @@
 
 namespace App\Filament\Forms;
 
-use App\Enums\TicketEnum;
 use App\Models\Device;
 use App\Services\AssetNumberRuleService;
-use App\Services\DeviceService;
 use App\Services\FlowService;
-use App\Services\TicketCategoryService;
 use Awcodes\Shout\Components\Shout;
 use Filament\Forms\Components\Actions\Action;
 use Filament\Forms\Components\Checkbox;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Repeater;
-use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
@@ -22,40 +18,6 @@ use Ramsey\Uuid\Uuid;
 
 class DeviceForm
 {
-    /**
-     * 从设备创建工单.
-     */
-    public static function createTicketFromDevice(string $asset_number): array
-    {
-        return [
-            Select::make('asset_number')
-                ->label(__('cat/device.asset_number'))
-                ->options(DeviceService::pluckOptions('asset_number'))
-                ->searchable()
-                ->preload()
-                ->placeholder($asset_number)
-                ->disabled(),
-            TextInput::make('subject')
-                ->label(__('cat/ticket.subject'))
-                ->required(),
-            RichEditor::make('description')
-                ->label(__('cat/ticket.description'))
-                ->required(),
-            Select::make('category_id')
-                ->label(__('cat/ticket.category_id'))
-                ->options(TicketCategoryService::pluckOptions())
-                ->searchable()
-                ->preload()
-                ->required(),
-            Select::make('priority')
-                ->label(__('cat/ticket.priority'))
-                ->options(TicketEnum::allPriorityText())
-                ->searchable()
-                ->preload()
-                ->required(),
-        ];
-    }
-
     /**
      * 创建或编辑.
      */

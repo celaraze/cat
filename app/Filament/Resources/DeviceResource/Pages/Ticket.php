@@ -79,7 +79,7 @@ class Ticket extends ManageRelatedRecords
             ])
             ->headerActions([
                 // 创建
-                TicketAction::createFromDevice($this->getOwnerRecord()->getAttribute('asset_number'))
+                TicketAction::create($this->getOwnerRecord())
                     ->visible(function () {
                         /* @var Device $device */
                         $device = $this->getOwnerRecord();

@@ -5,7 +5,6 @@ namespace App\Filament\Resources;
 use App\Enums\AssetEnum;
 use App\Filament\Actions\DeviceAction;
 use App\Filament\Actions\DeviceHasUserAction;
-use App\Filament\Actions\TicketAction;
 use App\Filament\Forms\DeviceForm;
 use App\Filament\Imports\DeviceImporter;
 use App\Filament\Resources\DeviceResource\Pages\Edit;
@@ -216,8 +215,6 @@ class DeviceResource extends Resource implements HasShieldPermissions
                         return $can && ! $is_retired && ! $device->hasUsers()->count();
                     }),
                 Tables\Actions\ActionGroup::make([
-                    // 创建工单
-                    TicketAction::createFromDevice(),
                     // 解除用户
                     DeviceHasUserAction::delete()
                         ->visible(function (Device $device) {

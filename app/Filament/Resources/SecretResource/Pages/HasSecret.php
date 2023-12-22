@@ -81,7 +81,7 @@ class HasSecret extends ManageRelatedRecords
             ])
             ->headerActions([
                 // 创建
-                DeviceHasSecretAction::createFromSecret($this->getOwnerRecord())
+                DeviceHasSecretAction::create($this->getOwnerRecord())
                     ->visible(function () {
                         /* @var Secret $secret */
                         $secret = $this->getOwnerRecord();
@@ -93,7 +93,7 @@ class HasSecret extends ManageRelatedRecords
             ])
             ->actions([
                 // 删除
-                DeviceHasSecretAction::deleteFromSecret()
+                DeviceHasSecretAction::delete()
                     ->visible(function (DeviceHasSecret $device_has_secret) {
                         /* @var Secret $secret */
                         $secret = $this->getOwnerRecord();

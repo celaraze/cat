@@ -85,7 +85,7 @@ class HasPart extends ManageRelatedRecords
             ])
             ->headerActions([
                 // 创建
-                DeviceHasPartAction::createFromPart($this->getOwnerRecord())
+                DeviceHasPartAction::create($this->getOwnerRecord())
                     ->visible(function () {
                         /* @var Part $part */
                         $part = $this->getOwnerRecord();
@@ -97,7 +97,7 @@ class HasPart extends ManageRelatedRecords
             ])
             ->actions([
                 // 删除
-                DeviceHasPartAction::deleteFromPart()
+                DeviceHasPartAction::delete()
                     ->visible(function (DeviceHasPart $device_has_part) {
                         $can = auth()->user()->can('delete_has_part_part');
                         $is_retired = $device_has_part->part()->first()?->service()->isRetired() ?? false;

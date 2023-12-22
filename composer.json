@@ -24,6 +24,7 @@
         "guzzlehttp/guzzle": "^7.2",
         "hasnayeen/themes": "^3.0",
         "laravel/framework": "^10.10",
+        "laravel/octane": "^2.2",
         "laravel/sanctum": "^3.2",
         "laravel/tinker": "^2.8",
         "leandrocfe/filament-apex-charts": "3.0.1",

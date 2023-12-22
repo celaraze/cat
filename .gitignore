@@ -18,6 +18,9 @@ yarn-error.log
 /vendor
 composer.lock
 package-lock.json
-cat-macos
-cat-macos-intel
-cat-linux
+
+/caddy
+frankenphp
+frankenphp-worker.php
+
+/temp

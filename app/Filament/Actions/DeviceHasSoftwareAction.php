@@ -13,7 +13,6 @@ use Exception;
 use Filament\Tables\Actions\Action;
 use Filament\Tables\Actions\BulkAction;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Database\Eloquent\Model;
 
 class DeviceHasSoftwareAction
 {
@@ -59,49 +58,25 @@ class DeviceHasSoftwareAction
             ->closeModalByClickingAway(false);
     }
 
-    public static function createFromSoftware(?Model $out_software = null): Action
-    {
-        /* @var Software $out_software */
-        return Action::make(__('cat/device_has_software.action.create_from_software'))
-            ->slideOver()
-            ->icon('heroicon-m-plus-circle')
-            ->form(DeviceHasSoftwareForm::createFromSoftware($out_software))
-            ->action(function (array $data, Software $software) use ($out_software) {
-                try {
-                    if ($out_software) {
-                        $software = $out_software;
-                    }
-                    foreach ($data['device_ids'] as $device_id) {
-                        $data['device_id'] = $device_id;
-                        $data['software_id'] = $software->getKey();
-                        $data['creator_id'] = auth()->id();
-                        $data['status'] = 0;
-                        $device_has_software_service = new DeviceHasSoftwareService();
-                        $device_has_software_service->create($data);
-                    }
-                    NotificationUtil::make(true, __('cat/device_has_software.action.create_from_software_success'));
-                } catch (Exception $exception) {
-                    LogUtil::error($exception);
-                    NotificationUtil::make(false, $exception);
-                }
-            })
-            ->closeModalByClickingAway(false);
-    }
-
-    public static function create(?Model $out_device = null): Action
+    public static function create($model): Action
     {
         return Action::make(__('cat/device_has_software.action.create'))
             ->slideOver()
             ->icon('heroicon-m-plus-circle')
-            ->form(DeviceHasSoftwareForm::create())
-            ->action(function (array $data, Device $device) use ($out_device): void {
+            ->form(DeviceHasSoftwareForm::create($model))
+            ->action(function (array $data) use ($model): void {
                 try {
-                    if ($out_device) {
-                        $device = $out_device;
+                    // 如果在设备页面创建，则获取设备 id
+                    if ($model instanceof Device) {
+                        $data['device_id'] = $model->getKey();
+                    }
+                    // 如果在软件页面创建，则获取软件 id，并创建一个单元素数组
+                    // 因为下面处理时需要使用 foreach 循环，默认批量处理
+                    if ($model instanceof Software) {
+                        $data['software_ids'] = [$model->getKey()];
                     }
                     foreach ($data['software_ids'] as $software_id) {
                         $data['software_id'] = $software_id;
-                        $data['device_id'] = $device->getKey();
                         $data['creator_id'] = auth()->id();
                         $data['status'] = 0;
                         $device_has_software_service = new DeviceHasSoftwareService();
@@ -112,47 +87,6 @@ class DeviceHasSoftwareAction
                     LogUtil::error($exception);
                     NotificationUtil::make(false, $exception);
                 }
-            })
-            ->closeModalByClickingAway(false);
-    }
-
-    public static function deleteFromSoftware(): Action
-    {
-        return Action::make(__('cat/device_has_software_action.delete_from_software'))
-            ->requiresConfirmation()
-            ->color('danger')
-            ->action(function (DeviceHasSoftware $device_has_software) {
-                try {
-                    $data = [
-                        'creator_id' => auth()->id(),
-                        'status' => 1,
-                    ];
-                    $device_has_software->service()->delete($data);
-                    NotificationUtil::make(true, __('cat/device_has_software_action.delete_from_software_success'));
-                } catch (Exception $exception) {
-                    LogUtil::error($exception);
-                    NotificationUtil::make(false, $exception);
-                }
-            })
-            ->closeModalByClickingAway(false);
-    }
-
-    public static function batchDeleteFromSoftware(): BulkAction
-    {
-        return BulkAction::make(__('cat/device_has_software.action.batch_delete_from_software'))
-            ->requiresConfirmation()
-            ->icon('heroicon-m-minus-circle')
-            ->color('danger')
-            ->action(function (Collection $device_has_software) {
-                $data = [
-                    'creator_id' => auth()->id(),
-                    'status' => 1,
-                ];
-                /* @var DeviceHasSoftware $item */
-                foreach ($device_has_software as $item) {
-                    $item->service()->delete($data);
-                }
-                NotificationUtil::make(true, __('cat/device_has_software.action.batch_delete_from_software_success'));
             })
             ->closeModalByClickingAway(false);
     }

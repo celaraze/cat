@@ -85,7 +85,7 @@ class HasSoftware extends ManageRelatedRecords
             ])
             ->headerActions([
                 // 创建
-                DeviceHasSoftwareAction::createFromSoftware($this->getOwnerRecord())
+                DeviceHasSoftwareAction::create($this->getOwnerRecord())
                     ->visible(function () {
                         /* @var Software $software */
                         $software = $this->getOwnerRecord();
@@ -97,7 +97,7 @@ class HasSoftware extends ManageRelatedRecords
             ])
             ->actions([
                 // 删除
-                DeviceHasSoftwareAction::deleteFromSoftware()
+                DeviceHasSoftwareAction::delete()
                     ->visible(function (DeviceHasSoftware $device_has_software) {
                         $can = auth()->user()->can('delete_has_software_software');
                         $is_retired = $device_has_software->software()->first()?->service()->isRetired() ?? false;
@@ -107,7 +107,7 @@ class HasSoftware extends ManageRelatedRecords
             ])
             ->bulkActions([
                 // 批量脱离软件
-                DeviceHasSoftwareAction::batchDeleteFromSoftware()
+                DeviceHasSoftwareAction::batchDelete()
                     ->visible(function () {
                         return auth()->user()->can('delete_has_software_software');
                     }),

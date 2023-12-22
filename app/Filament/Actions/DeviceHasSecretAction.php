@@ -13,7 +13,6 @@ use Exception;
 use Filament\Tables\Actions\Action;
 use Filament\Tables\Actions\BulkAction;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Database\Eloquent\Model;
 
 class DeviceHasSecretAction
 {
@@ -59,74 +58,31 @@ class DeviceHasSecretAction
             ->closeModalByClickingAway(false);
     }
 
-    public static function createFromSecret(?Model $out_secret = null): Action
-    {
-        /* @var Secret $out_secret */
-        return Action::make(__('cat/device_has_secret.action.create_from_secret'))
-            ->slideOver()
-            ->icon('heroicon-m-plus-circle')
-            ->form(DeviceHasSecretForm::createFromSecret($out_secret))
-            ->action(function (array $data, Secret $secret) use ($out_secret) {
-                try {
-                    if ($out_secret) {
-                        $secret = $out_secret;
-                    }
-                    $data['secret_id'] = $secret->getKey();
-                    $data['creator_id'] = auth()->id();
-                    $data['status'] = 0;
-                    $device_has_secret_service = new DeviceHasSecretService();
-                    $device_has_secret_service->create($data);
-                    NotificationUtil::make(true, __('cat/device_has_secret.action.create_from_secret_success'));
-                } catch (Exception $exception) {
-                    LogUtil::error($exception);
-                    NotificationUtil::make(false, $exception);
-                }
-            })
-            ->closeModalByClickingAway(false);
-    }
-
-    public static function create(?Model $out_device = null): Action
+    public static function create($model): Action
     {
         return Action::make(__('cat/device_has_secret.action.create'))
             ->slideOver()
             ->icon('heroicon-m-plus-circle')
-            ->form(DeviceHasSecretForm::create())
-            ->action(function (array $data, Device $device) use ($out_device): void {
+            ->form(DeviceHasSecretForm::create($model))
+            ->action(function (array $data) use ($model): void {
                 try {
-                    if ($out_device) {
-                        $device = $out_device;
+                    // 如果在设备页面创建，则获取设备 id
+                    if ($model instanceof Device) {
+                        $data['device_id'] = $model->getKey();
+                    }
+                    // 如果在密钥页面创建，则获取密钥 id，并创建一个单元素数组
+                    // 因为下面处理时需要使用 foreach 循环，默认批量处理
+                    if ($model instanceof Secret) {
+                        $data['secret_ids'] = [$model->getKey()];
                     }
                     foreach ($data['secret_ids'] as $secret_id) {
                         $data['secret_id'] = $secret_id;
-                        $data['device_id'] = $device->getKey();
                         $data['creator_id'] = auth()->id();
                         $data['status'] = 0;
                         $device_has_secret_service = new DeviceHasSecretService();
                         $device_has_secret_service->create($data);
                     }
                     NotificationUtil::make(true, __('cat/device_has_secret.action.create_success'));
-                } catch (Exception $exception) {
-                    LogUtil::error($exception);
-                    NotificationUtil::make(false, $exception);
-                }
-            })
-            ->closeModalByClickingAway(false);
-    }
-
-    public static function deleteFromSecret(): Action
-    {
-        return Action::make(__('cat/device_has_secret.action.delete_from_secret'))
-            ->icon('heroicon-s-minus-circle')
-            ->requiresConfirmation()
-            ->color('danger')
-            ->action(function (DeviceHasSecret $device_has_secret) {
-                try {
-                    $data = [
-                        'creator_id' => auth()->id(),
-                        'status' => 1,
-                    ];
-                    $device_has_secret->service()->delete($data);
-                    NotificationUtil::make(true, __('cat/device_has_secret.action.delete_from_secret_success'));
                 } catch (Exception $exception) {
                     LogUtil::error($exception);
                     NotificationUtil::make(false, $exception);
