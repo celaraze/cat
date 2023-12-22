@@ -41,7 +41,7 @@ class DeviceHasSoftwareService
                 /* @var Software $software */
                 $software = $this->model->software()->first();
                 $this->model->delete();
-                if (!$software->hasSoftware()->count()) {
+                if (! $software->hasSoftware()->count()) {
                     $software->setAttribute('status', 0);
                     $software->save();
                 }
@@ -86,7 +86,7 @@ class DeviceHasSoftwareService
             throw new Exception(__('cat.device_has_software_exist'));
         }
         $software = Software::query()->where('id', $data['software_id'])->first();
-        if (!$software) {
+        if (! $software) {
             throw new Exception(__('cat.software_not_found'));
         }
         /* @var Software $software */

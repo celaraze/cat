@@ -2,7 +2,7 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\ImportResource\Pages\FailedImportRows;
+use App\Filament\Resources\ImportResource\Pages\FailedImportRow;
 use App\Filament\Resources\ImportResource\Pages\Index;
 use App\Filament\Resources\ImportResource\Pages\View;
 use App\Models\Import;
@@ -44,7 +44,7 @@ class ImportResource extends Resource
         $navigation_items = [
             Index::class,
             View::class,
-            FailedImportRows::class,
+            FailedImportRow::class,
         ];
 
         return $page->generateNavigationItems($navigation_items);
@@ -142,7 +142,7 @@ class ImportResource extends Resource
         return [
             'index' => Index::route('/'),
             'view' => View::route('/{record}'),
-            'failed_import_rows' => FailedImportRows::route('/{record}/failed_import_rows'),
+            'failed_import_rows' => FailedImportRow::route('/{record}/failed_import_rows'),
         ];
     }
 

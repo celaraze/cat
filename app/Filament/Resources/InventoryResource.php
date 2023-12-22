@@ -72,16 +72,16 @@ class InventoryResource extends Resource implements HasShieldPermissions
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('name')
-                    ->label('名称'),
+                    ->label(__('cat.name')),
                 Tables\Columns\TextColumn::make('class_name')
                     ->formatStateUsing(function (string $state) {
                         return AssetEnum::assetTypeText($state);
                     })
-                    ->label('资产'),
+                    ->label(__('cat.class_name')),
                 Tables\Columns\TextColumn::make('creator.name')
-                    ->label('创建人'),
+                    ->label(__('cat.creator')),
                 Tables\Columns\TextColumn::make('hasTracks.check')
-                    ->label('已盘点数量')
+                    ->label(__('cat.resource.inventory.check'))
                     ->formatStateUsing(function (string $state) {
                         $checks = explode(',', $state);
                         $array_filter = array_filter($checks, function ($value) {
@@ -91,7 +91,7 @@ class InventoryResource extends Resource implements HasShieldPermissions
                         return count($array_filter);
                     }),
                 Tables\Columns\TextColumn::make('hasTracks.asset_number')
-                    ->label('资产总数')
+                    ->label(__('cat.resource.inventory.asset_number'))
                     ->formatStateUsing(function (string $state) {
                         $asset_numbers = explode(',', $state);
 
@@ -114,7 +114,7 @@ class InventoryResource extends Resource implements HasShieldPermissions
                         return auth()->user()->can('create_inventory');
                     }),
             ])
-            ->heading('盘点');
+            ->heading(__('cat.resource.inventory'));
     }
 
     public static function infolist(Infolist $infolist): Infolist
@@ -135,7 +135,7 @@ class InventoryResource extends Resource implements HasShieldPermissions
                                             ->formatStateUsing(function (string $state) {
                                                 return AssetEnum::assetTypeText($state);
                                             })
-                                            ->label('资产'),
+                                            ->label(__('cat.inventory.class_name')),
                                     ]),
                                 ]),
                         ]),
@@ -145,7 +145,7 @@ class InventoryResource extends Resource implements HasShieldPermissions
                 Section::make()
                     ->schema([
                         TextEntry::make('creator.name')
-                            ->label('创建人'),
+                            ->label(__('cat.inventory.creator')),
                     ]),
             ])->columnSpan(['lg' => 1]),
         ])->columns(3);

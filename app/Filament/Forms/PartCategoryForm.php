@@ -14,7 +14,7 @@ class PartCategoryForm
     {
         return [
             TextInput::make('name')
-                ->label(__('cat.name'))
+                ->label(__('cat.part_category.name'))
                 ->maxLength(255)
                 ->required(),
         ];
@@ -28,7 +28,7 @@ class PartCategoryForm
         return [
             Shout::make('hint')
                 ->color('danger')
-                ->content(__('cat.form.delete_part_category_helper')),
+                ->content(__('cat.part_category.form.delete_helper')),
         ];
     }
 }

@@ -41,7 +41,7 @@ class DeviceCategoryResource extends Resource implements HasShieldPermissions
             Device::class,
         ];
         $can_update_device_category = auth()->user()->can('update_device::category');
-        if (!$can_update_device_category) {
+        if (! $can_update_device_category) {
             unset($navigation_items[2]);
         }
 

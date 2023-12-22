@@ -25,19 +25,25 @@ class SecretResource extends Resource implements HasShieldPermissions
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
-    protected static ?string $modelLabel = '密钥';
-
     protected static ?int $navigationSort = 5;
 
-    protected static ?string $navigationGroup = '资产';
-
     protected static ?string $recordTitleAttribute = 'name';
+
+    public static function getNavigationGroup(): ?string
+    {
+        return __('cat.menu.asset');
+    }
+
+    public static function getModelLabel(): string
+    {
+        return __('cat.menu.secret');
+    }
 
     public static function getGlobalSearchResultDetails(Model $record): array
     {
         /* @var Device $record */
         return [
-            '名称' => $record->getAttribute('name'),
+            __('cat.secret.name') => $record->getAttribute('name'),
         ];
     }
 
@@ -90,22 +96,22 @@ class SecretResource extends Resource implements HasShieldPermissions
                     ->searchable()
                     ->toggleable()
                     ->sortable()
-                    ->label('名称'),
+                    ->label(__('cat.secret.name')),
                 Tables\Columns\TextColumn::make('site')
                     ->searchable()
                     ->toggleable()
                     ->sortable()
-                    ->label('站点'),
+                    ->label(__('cat.secret.site')),
                 Tables\Columns\TextColumn::make('username')
                     ->searchable()
                     ->toggleable()
                     ->sortable()
-                    ->label('账户'),
+                    ->label(__('cat.secret.username')),
                 Tables\Columns\TextColumn::make('expired_at')
                     ->searchable()
                     ->toggleable()
                     ->sortable()
-                    ->label('过期时间'),
+                    ->label(__('cat.secret.expired_at')),
                 Tables\Columns\TextColumn::make('status')
                     ->searchable()
                     ->toggleable()
@@ -116,7 +122,7 @@ class SecretResource extends Resource implements HasShieldPermissions
                     ->color(function ($state) {
                         return AssetEnum::statusColor($state);
                     })
-                    ->label('状态'),
+                    ->label(__('cat.secret.status')),
             ])
             ->filters([
                 //
@@ -140,7 +146,7 @@ class SecretResource extends Resource implements HasShieldPermissions
                 // 新增
                 SecretAction::create(),
             ])
-            ->heading('密钥');
+            ->heading(__('cat.menu.secret'));
     }
 
     public static function getPages(): array

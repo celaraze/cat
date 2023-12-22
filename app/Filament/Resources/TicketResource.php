@@ -32,11 +32,14 @@ class TicketResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-document-text';
 
-    protected static ?string $modelLabel = '工单';
-
     protected static ?int $navigationSort = 1;
 
     protected static ?string $recordTitleAttribute = 'asset_number';
+
+    public static function getModelLabel(): string
+    {
+        return __('cat.menu.ticket');
+    }
 
     public static function getRecordSubNavigation(Page $page): array
     {
@@ -57,19 +60,19 @@ class TicketResource extends Resource
                 TextColumn::make('asset_number')
                     ->searchable()
                     ->toggleable()
-                    ->label('资产编号'),
+                    ->label(__('cat.ticket.asset_number')),
                 TextColumn::make('subject')
                     ->searchable()
                     ->toggleable()
-                    ->label('主题'),
+                    ->label(__('cat.ticket.subject')),
                 TextColumn::make('category.name')
                     ->searchable()
                     ->toggleable()
-                    ->label('分类'),
+                    ->label(__('cat.ticket.category')),
                 TextColumn::make('priority')
                     ->searchable()
                     ->toggleable()
-                    ->label('优先级')
+                    ->label(__('cat.ticket.priority'))
                     ->formatStateUsing(function (string $state) {
                         return TicketEnum::priorityText($state);
                     })
@@ -80,15 +83,15 @@ class TicketResource extends Resource
                 TextColumn::make('user.name')
                     ->searchable()
                     ->toggleable()
-                    ->label('提交人'),
+                    ->label(__('cat.ticket.user')),
                 TextColumn::make('assignee.name')
                     ->searchable()
                     ->toggleable()
-                    ->label('处理人'),
+                    ->label(__('cat.ticket.assignee')),
                 TextColumn::make('created_at')
                     ->searchable()
                     ->toggleable()
-                    ->label('提交时间'),
+                    ->label(__('cat.ticket.created_at')),
                 TextColumn::make('status')
                     ->toggleable()
                     ->badge()
@@ -98,21 +101,21 @@ class TicketResource extends Resource
                     ->color(function (string $state) {
                         return TicketEnum::statusColor($state);
                     })
-                    ->label('状态'),
+                    ->label(__('cat.ticket.status')),
             ])
             ->filters([
                 SelectFilter::make('category_id')
                     ->multiple()
                     ->options(TicketCategoryService::pluckOptions())
-                    ->label('分类'),
+                    ->label(__('cat.ticket.category')),
                 SelectFilter::make('priority')
                     ->multiple()
                     ->options(TicketEnum::allPriorityText())
-                    ->label('优先级'),
+                    ->label(__('cat.ticket.priority')),
                 SelectFilter::make('status')
                     ->multiple()
                     ->options(TicketEnum::allStatusText())
-                    ->label('状态'),
+                    ->label(__('cat.ticket.status')),
             ])
             ->actions([
                 // 抢单
@@ -131,11 +134,11 @@ class TicketResource extends Resource
                     // 前往分类
                     TicketAction::toCategory(),
                 ])
-                    ->label('高级')
+                    ->label(__('cat.ticket.advance'))
                     ->icon('heroicon-m-cog-8-tooth')
                     ->button(),
             ])
-            ->heading('工单');
+            ->heading(__('cat.menu.ticket'));
     }
 
     public static function infolist(Infolist $infolist): Infolist
@@ -155,13 +158,13 @@ class TicketResource extends Resource
                                         return ! $is_finished && $ticket->getAttribute('user_id') == auth()->id();
                                     }),
                             ])
-                            ->label('资产编号'),
+                            ->label(__('cat.ticket.asset_number')),
                     ]),
                 Section::make()
                     ->schema([
                         TextEntry::make('description')
                             ->html()
-                            ->label('描述'),
+                            ->label(__('cat.ticket.description')),
                     ]),
             ])->columnSpan(['lg' => 1]),
             Group::make()->schema([
@@ -172,17 +175,17 @@ class TicketResource extends Resource
                                 ->schema([
                                     Group::make([
                                         TextEntry::make('category.name')
-                                            ->label('分类'),
+                                            ->label(__('cat.ticket.category')),
                                         TextEntry::make('user.name')
-                                            ->label('提交人'),
+                                            ->label(__('cat.ticket.user')),
                                         TextEntry::make('assignee.name')
-                                            ->label('处理人'),
+                                            ->label(__('cat.ticket.assignee')),
                                     ]),
                                     Group::make([
                                         TextEntry::make('subject')
-                                            ->label('主题'),
+                                            ->label(__('cat.ticket.subject')),
                                         TextEntry::make('priority')
-                                            ->label('优先级')
+                                            ->label(__('cat.ticket.priority'))
                                             ->formatStateUsing(function (string $state) {
                                                 return TicketEnum::priorityText($state);
                                             })

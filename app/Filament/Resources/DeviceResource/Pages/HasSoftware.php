@@ -24,18 +24,21 @@ class HasSoftware extends ManageRelatedRecords
 
     protected static ?string $navigationIcon = 'heroicon-m-squares-plus';
 
-    protected static ?string $breadcrumb = '软件';
-
     protected ?string $heading = ' ';
 
     public static function getNavigationLabel(): string
     {
-        return '软件';
+        return __('cat.menu.software');
     }
 
     public static function getNavigationBadge(): ?string
     {
         return self::queryRecord()->software()->count();
+    }
+
+    public function getBreadcrumb(): string
+    {
+        return __('cat.menu.software');
     }
 
     public function table(Table $table): Table
@@ -46,11 +49,11 @@ class HasSoftware extends ManageRelatedRecords
                 Tables\Columns\TextColumn::make('software.category.name')
                     ->searchable()
                     ->toggleable()
-                    ->label('分类'),
+                    ->label(__('cat.software.category')),
                 Tables\Columns\TextColumn::make('software.asset_number')
                     ->searchable()
                     ->toggleable()
-                    ->label('资产编号'),
+                    ->label(__('cat.software.asset_number')),
                 Tables\Columns\TextColumn::make('status')
                     ->toggleable()
                     ->badge()
@@ -60,15 +63,15 @@ class HasSoftware extends ManageRelatedRecords
                     ->color(function ($state) {
                         return AssetEnum::relationOperationColor($state);
                     })
-                    ->label('状态'),
+                    ->label(__('cat.software.status')),
                 Tables\Columns\TextColumn::make('updated_at')
                     ->searchable()
                     ->toggleable()
-                    ->label('操作时间'),
+                    ->label(__('cat.software.updated_at')),
                 Tables\Columns\TextColumn::make('creator.name')
                     ->searchable()
                     ->toggleable()
-                    ->label('操作人'),
+                    ->label(__('cat.software.creator')),
             ])
             ->filters([
                 Tables\Filters\TrashedFilter::make(),

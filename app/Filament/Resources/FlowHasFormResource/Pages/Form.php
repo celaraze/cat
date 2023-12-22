@@ -18,13 +18,16 @@ class Form extends ManageRelatedRecords
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
-    protected static ?string $breadcrumb = '记录';
-
     protected ?string $heading = ' ';
 
     public static function getNavigationLabel(): string
     {
-        return '记录';
+        return __('cat.menu.flow_has_form_record');
+    }
+
+    public function getBreadcrumb(): string
+    {
+        return __('cat.menu.flow_has_form_record');
     }
 
     public function table(Table $table): Table
@@ -35,19 +38,19 @@ class Form extends ManageRelatedRecords
                 Tables\Columns\TextColumn::make('node_name')
                     ->searchable()
                     ->toggleable()
-                    ->label('节点说明'),
+                    ->label(__('cat.flow_has_form.node_name')),
                 Tables\Columns\TextColumn::make('approve_comment')
                     ->searchable()
                     ->toggleable()
-                    ->label('审批意见'),
+                    ->label(__('cat.flow_has_form.approve_comment')),
                 Tables\Columns\TextColumn::make('approve_user_name')
                     ->searchable()
                     ->toggleable()
-                    ->label('审批人'),
+                    ->label(__('cat.flow_has_form.approve_user_name')),
                 Tables\Columns\TextColumn::make('created_at')
                     ->searchable()
                     ->toggleable()
-                    ->label('审批时间'),
+                    ->label(__('cat.flow_has_form.created_at')),
                 Tables\Columns\TextColumn::make('status')
                     ->toggleable()
                     ->formatStateUsing(function (string $state) {
@@ -59,7 +62,7 @@ class Form extends ManageRelatedRecords
                     ->color(function (string $state) {
                         return FlowHasNodeEnum::statusColor($state);
                     })
-                    ->label('状态'),
+                    ->label(__('cat.flow_has_form.status')),
             ])
             ->filters([
 

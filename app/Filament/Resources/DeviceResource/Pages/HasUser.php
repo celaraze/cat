@@ -25,13 +25,11 @@ class HasUser extends ManageRelatedRecords
 
     protected static ?string $navigationIcon = 'heroicon-o-user';
 
-    protected static ?string $breadcrumb = '用户';
-
     protected ?string $heading = ' ';
 
     public static function getNavigationLabel(): string
     {
-        return '用户';
+        return __('cat.menu.user');
     }
 
     public static function getNavigationBadge(): ?string
@@ -42,6 +40,11 @@ class HasUser extends ManageRelatedRecords
     public static function getNavigationBadgeColor(): string|array|null
     {
         return 'success';
+    }
+
+    public function getBreadcrumb(): string
+    {
+        return __('cat.menu.user');
     }
 
     public function table(Table $table): Table
@@ -60,34 +63,34 @@ class HasUser extends ManageRelatedRecords
                             return 'success';
                         }
                     })
-                    ->label('用户'),
+                    ->label(__('cat.user.name')),
                 Tables\Columns\TextColumn::make('comment')
                     ->searchable()
                     ->toggleable()
-                    ->label('分配说明'),
+                    ->label(__('cat.user.comment')),
                 Tables\Columns\TextColumn::make('delete_comment')
                     ->searchable()
                     ->toggleable()
-                    ->label('解除分配说明'),
+                    ->label(__('cat.user.delete_comment')),
                 Tables\Columns\TextColumn::make('expired_at')
                     ->searchable()
                     ->toggleable()
                     ->size(TextColumnSize::ExtraSmall)
-                    ->label('到期时间'),
+                    ->label(__('cat.user.expired_at')),
                 Tables\Columns\TextColumn::make('created_at')
                     ->searchable()
                     ->toggleable()
                     ->size(TextColumnSize::ExtraSmall)
-                    ->label('分配时间'),
+                    ->label(__('cat.user.created_at')),
                 Tables\Columns\TextColumn::make('deleted_at')
                     ->searchable()
                     ->toggleable()
                     ->size(TextColumnSize::ExtraSmall)
-                    ->label('解除分配时间'),
+                    ->label(__('cat.user.deleted_at')),
                 Tables\Columns\TextColumn::make('creator.name')
                     ->searchable()
                     ->toggleable()
-                    ->label('操作人'),
+                    ->label(__('cat.user.creator')),
                 Tables\Columns\TextColumn::make('status')
                     ->toggleable()
                     ->badge()
@@ -97,7 +100,7 @@ class HasUser extends ManageRelatedRecords
                     ->color(function ($state) {
                         return AssetEnum::statusColor($state);
                     })
-                    ->label('状态'),
+                    ->label(__('cat.user.status')),
             ])
             ->filters([
 

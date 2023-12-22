@@ -6,7 +6,6 @@ use App\Enums\InventoryEnum;
 use App\Filament\Actions\InventoryAction;
 use App\Filament\Resources\InventoryResource;
 use App\Models\InventoryHasTrack;
-use App\Utils\InventoryUtil;
 use Filament\Resources\Pages\ManageRelatedRecords;
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -19,13 +18,16 @@ class HasTrack extends ManageRelatedRecords
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
-    protected static ?string $breadcrumb = '记录';
-
     protected ?string $heading = ' ';
 
     public static function getNavigationLabel(): string
     {
-        return '记录';
+        return __('cat.menu.inventory_has_track');
+    }
+
+    public function getBreadcrumb(): string
+    {
+        return __('cat.menu.inventory_has_track');
     }
 
     public function table(Table $table): Table
@@ -36,22 +38,22 @@ class HasTrack extends ManageRelatedRecords
                 Tables\Columns\TextColumn::make('asset_number')
                     ->searchable()
                     ->toggleable()
-                    ->label('资产编号'),
+                    ->label(__('cat.inventory_has_track.asset_number')),
                 Tables\Columns\TextColumn::make('check')
                     ->searchable()
                     ->toggleable()
                     ->formatStateUsing(function (string $state) {
                         return InventoryEnum::checkText($state);
                     })
-                    ->label('状态'),
+                    ->label(__('cat.inventory_has_track.check')),
                 Tables\Columns\TextColumn::make('comment')
                     ->searchable()
                     ->toggleable()
-                    ->label('备忘'),
+                    ->label(__('cat.inventory_has_track.comment')),
                 Tables\Columns\TextColumn::make('creator.name')
                     ->searchable()
                     ->toggleable()
-                    ->label('操作人'),
+                    ->label(__('cat.inventory_has_track.creator')),
             ])
             ->filters([
 

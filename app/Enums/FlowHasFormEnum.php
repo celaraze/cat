@@ -33,4 +33,13 @@ class FlowHasFormEnum
             4 => 'heroicon-m-check-circle'
         };
     }
+
+    public static function allApproveText(): array
+    {
+        return [
+            1 => __('cat.flow_has_form.action.status.approve'),
+            2 => __('cat.flow_has_form.action.status.back'),
+            3 => __('cat.flow_has_form.action.status.reject'),
+        ];
+    }
 }

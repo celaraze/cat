@@ -14,7 +14,7 @@ class OrganizationHasUserForm
     {
         return [
             Select::make('user_ids')
-                ->label(__('cat.users'))
+                ->label(__('cat.organization_has_user.user_ids'))
                 ->options(UserService::pluckOptions('id', UserService::existOrganizationHasUserIds()))
                 ->multiple()
                 ->searchable(),

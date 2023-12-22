@@ -7,6 +7,7 @@ use App\Filament\Resources\PartCategoryResource;
 use Filament\Resources\Pages\ManageRelatedRecords;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
@@ -18,11 +19,14 @@ class Part extends ManageRelatedRecords
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
-    protected static ?string $title = '配件';
-
     public static function getNavigationLabel(): string
     {
-        return '配件';
+        return __('cat.menu.part');
+    }
+
+    public function getTitle(): string|Htmlable
+    {
+        return __('cat.menu.part');
     }
 
     public function table(Table $table): Table
@@ -33,7 +37,7 @@ class Part extends ManageRelatedRecords
                 Tables\Columns\TextColumn::make('asset_number')
                     ->searchable()
                     ->toggleable()
-                    ->label('资产编号'),
+                    ->label(__('cat.part.asset_number')),
             ])
             ->filters([
                 Tables\Filters\TrashedFilter::make(),

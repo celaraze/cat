@@ -2,6 +2,7 @@
 
 namespace App\Filament\Forms;
 
+use App\Enums\FlowHasFormEnum;
 use App\Services\FlowService;
 use Filament\Forms\Components\Radio;
 use Filament\Forms\Components\Select;
@@ -17,14 +18,10 @@ class FlowHasFormForm
         return [
             Radio::make('status')
                 ->label(__('cat.flow_has_form.status'))
-                ->options([
-                    1 => __('cat.flow_has_form.approve'),
-                    2 => __('cat.flow_has_form.back'),
-                    3 => __('cat.flow_has_form.reject'),
-                ])
+                ->options(FlowHasFormEnum::allApproveText())
                 ->required(),
             TextInput::make('approve_comment')
-                ->label(__('cat.approve_comment'))
+                ->label(__('cat.flow_has_form.approve_comment'))
                 ->required(),
         ];
     }

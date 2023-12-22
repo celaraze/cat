@@ -24,18 +24,21 @@ class HasSecret extends ManageRelatedRecords
 
     protected static ?string $navigationIcon = 'heroicon-s-server';
 
-    protected static ?string $breadcrumb = '附属记录';
-
     protected ?string $heading = ' ';
 
     public static function getNavigationLabel(): string
     {
-        return '附属记录';
+        return __('cat.menu.device_has_secret');
     }
 
     public static function getNavigationBadge(): ?string
     {
         return static::queryRecord()->devices()->first()?->getAttribute('asset_number');
+    }
+
+    public function getBreadcrumb(): string
+    {
+        return __('cat.menu.device_has_secret');
     }
 
     public function table(Table $table): Table
@@ -46,11 +49,11 @@ class HasSecret extends ManageRelatedRecords
                 Tables\Columns\TextColumn::make('secret.name')
                     ->searchable()
                     ->toggleable()
-                    ->label('名称'),
+                    ->label(__('cat.secret.name')),
                 Tables\Columns\TextColumn::make('secret.username')
                     ->searchable()
                     ->toggleable()
-                    ->label('账户'),
+                    ->label(__('cat.secret.username')),
                 Tables\Columns\TextColumn::make('status')
                     ->toggleable()
                     ->badge()
@@ -60,21 +63,21 @@ class HasSecret extends ManageRelatedRecords
                     ->color(function ($state) {
                         return AssetEnum::relationOperationColor($state);
                     })
-                    ->label('状态'),
+                    ->label(__('cat.device_has_secret.status')),
                 Tables\Columns\TextColumn::make('updated_at')
                     ->searchable()
                     ->toggleable()
-                    ->label('操作时间'),
+                    ->label(__('cat.device_has_secret.updated_at')),
                 Tables\Columns\TextColumn::make('user.name')
                     ->searchable()
                     ->toggleable()
-                    ->label('操作人'),
+                    ->label(__('cat.user.name')),
             ])
             ->filters([
                 Tables\Filters\SelectFilter::make('status')
                     ->multiple()
                     ->options(AssetEnum::allRelationOperationText())
-                    ->label('状态'),
+                    ->label(__('cat.device_has_secret.status')),
             ])
             ->headerActions([
                 // 创建

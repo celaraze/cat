@@ -20,24 +20,24 @@ class Index extends ListRecords
 
     public static function getNavigationLabel(): string
     {
-        return '返回列表';
+        return __('cat.action.back');
     }
 
     public function getTabs(): array
     {
         return [
-            '全部' => Tab::make()
+            __('cat.ticket.status.all') => Tab::make()
                 ->badge(Ticket::query()->count())
                 ->badgeColor(Color::Slate),
-            '空闲' => Tab::make()
+            __('cat.ticket.status.idle') => Tab::make()
                 ->badge(Ticket::query()->where('status', 0)->count())
                 ->badgeColor(TicketEnum::statusColor(0))
                 ->modifyQueryUsing(fn (Builder $query) => $query->where('status', 0)),
-            '进行' => Tab::make()
+            __('cat.ticket.status.processing') => Tab::make()
                 ->badge(Ticket::query()->where('status', 1)->count())
                 ->badgeColor(TicketEnum::statusColor(1))
                 ->modifyQueryUsing(fn (Builder $query) => $query->where('status', 1)),
-            '完成' => Tab::make()
+            __('cat.ticket.status.finished') => Tab::make()
                 ->badge(Ticket::query()->where('status', 2)->count())
                 ->badgeColor(TicketEnum::statusColor(2))
                 ->modifyQueryUsing(fn (Builder $query) => $query->where('status', 2)),

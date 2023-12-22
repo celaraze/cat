@@ -29,6 +29,7 @@ class FootprintResource extends Resource implements HasShieldPermissions
     protected static ?string $navigationIcon = 'heroicon-m-document-text';
 
     protected static ?int $navigationSort = 2;
+
     protected static ?string $recordTitleAttribute = 'id';
 
     public static function getNavigationGroup(): ?string
@@ -195,7 +196,7 @@ EOF;
                             ]),
                     ]),
             ])
-                ->columnSpan(1),]);
+                ->columnSpan(1), ]);
     }
 
     public static function getEloquentQuery(): Builder

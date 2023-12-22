@@ -4,7 +4,8 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration {
+return new class extends Migration
+{
     public function up(): void
     {
         Schema::create('consumable', function (Blueprint $table) {
@@ -61,7 +62,7 @@ return new class extends Migration {
 
         Schema::table('device_has_users', function (Blueprint $table) {
             $table->string('comment')->default(null)->change();
-            $table->string('delete_comment')->default(null)->change();
+            $table->string('delete_comment')->nullable()->default(null)->change();
             $table->integer('creator_id')->default(null)->change();
         });
 

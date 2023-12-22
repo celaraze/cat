@@ -165,7 +165,7 @@ class FlowHasFormResource extends Resource implements HasShieldPermissions
                                     // 根据表单状态判断是否显示审批按钮
                                     $current_approve_user_id = $flow_has_form->getAttribute('current_approve_user_id');
                                     $current_approve_role_id = $flow_has_form->getAttribute('current_approve_role_id');
-                                    if (!$flow_has_form->service()->isFinished()) {
+                                    if (! $flow_has_form->service()->isFinished()) {
                                         // 根据表单当前审批人判断是否显示审批按钮
                                         if ($current_approve_user_id == auth()->id()) {
                                             return true;
@@ -205,7 +205,7 @@ class FlowHasFormResource extends Resource implements HasShieldPermissions
                                 ->icon('heroicon-m-information-circle')
                                 ->color('warning')
                                 ->visible(function (FlowHasForm $flow_has_form) {
-                                    return !$flow_has_form->service()->isExistFlow();
+                                    return ! $flow_has_form->service()->isExistFlow();
                                 }),
                         ])
                         ->label(__('cat.flow_name')),

@@ -11,6 +11,6 @@ class Edit extends EditRecord
 
     public static function getNavigationLabel(): string
     {
-        return '编辑';
+        return __('cat.action.edit');
     }
 }

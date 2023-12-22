@@ -13,6 +13,6 @@ class Index extends ListRecords
 
     public static function getNavigationLabel(): string
     {
-        return '返回列表';
+        return __('cat.action.back');
     }
 }

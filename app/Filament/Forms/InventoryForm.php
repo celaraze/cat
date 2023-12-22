@@ -17,17 +17,17 @@ class InventoryForm
     {
         return [
             TextInput::make('name')
-                ->label(__('cat.name'))
+                ->label(__('cat.inventory.name'))
                 ->required(),
             Select::make('class_name')
                 ->options(AssetEnum::allAssetTypeText())
-                ->label(__('cat.asset'))
+                ->label(__('cat.inventory.class_name'))
                 ->reactive()
                 ->required(),
             Select::make('model_ids')
                 ->multiple()
                 ->searchable()
-                ->label(__('cat.asset_number'))
+                ->label(__('cat.inventory.model_ids'))
                 ->options(function (callable $get) {
                     $model = $get('class_name');
                     if (! $model) {
@@ -49,10 +49,10 @@ class InventoryForm
         return [
             Radio::make('check')
                 ->options(InventoryEnum::allCheckText())
-                ->label(__('cat.operation'))
+                ->label(__('cat.inventory.check'))
                 ->required(),
             TextInput::make('comment')
-                ->label(__('cat.comment')),
+                ->label(__('cat.inventory.comment')),
         ];
     }
 }

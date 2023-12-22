@@ -16,7 +16,7 @@ class DeviceCategoryForm
     {
         return [
             TextInput::make('name')
-                ->label(__('cat.name'))
+                ->label(__('cat.device_category.name'))
                 ->maxLength(255)
                 ->required(),
         ];
@@ -30,7 +30,7 @@ class DeviceCategoryForm
         return [
             Shout::make('hint')
                 ->color('danger')
-                ->content(__('cat.form.delete_device_category_helper')),
+                ->content(__('cat.device_category.form.delete_helper')),
         ];
     }
 }

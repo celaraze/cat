@@ -48,7 +48,7 @@ class BrandResource extends Resource implements HasShieldPermissions
             Edit::class,
         ];
         $can_update_brand = auth()->user()->can('update_brand');
-        if (!$can_update_brand) {
+        if (! $can_update_brand) {
             unset($navigation[2]);
         }
 

@@ -15,10 +15,10 @@ class NotificationUtil
         $notification = Notification::make()
             ->body($body);
         if ($result) {
-            $notification->title(__('cat.success'));
+            $notification->title(__('cat.notification.success'));
             $notification->success();
         } else {
-            $notification->title(__('cat.failure'));
+            $notification->title(__('cat.notification.failure'));
             $notification->danger();
         }
         if ($always) {

@@ -48,7 +48,7 @@ class FlowResource extends Resource implements HasShieldPermissions
             Node::class,
         ];
         $can_update_flow = auth()->user()->can('update_flow');
-        if (!$can_update_flow) {
+        if (! $can_update_flow) {
             unset($navigation_items[2]);
         }
 

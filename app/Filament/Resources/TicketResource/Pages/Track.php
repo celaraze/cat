@@ -18,13 +18,16 @@ class Track extends ManageRelatedRecords
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
-    protected static ?string $breadcrumb = '记录';
-
     protected ?string $heading = ' ';
 
     public static function getNavigationLabel(): string
     {
-        return '记录';
+        return __('cat.menu.ticket_has_track');
+    }
+
+    public function getBreadcrumb(): string
+    {
+        return __('cat.menu.ticket_has_track');
     }
 
     public function table(Table $table): Table
@@ -35,24 +38,24 @@ class Track extends ManageRelatedRecords
                 Tables\Columns\TextColumn::make('created_at')
                     ->searchable()
                     ->toggleable()
-                    ->label('创建时间'),
+                    ->label(__('cat.ticket_has_track.created_at')),
                 Tables\Columns\TextColumn::make('user.name')
                     ->searchable()
                     ->toggleable()
-                    ->label('用户'),
+                    ->label(__('cat.user.name')),
                 Tables\Columns\TextColumn::make('comment')
                     ->searchable()
                     ->toggleable()
                     // todo wrap 不起作用？
                     ->wrap()
                     ->html()
-                    ->label('评论'),
+                    ->label(__('cat.ticket_has_track.comment')),
                 Tables\Columns\TextColumn::make('minutes')
                     ->searchable()
                     ->toggleable()
                     ->alignRight()
                     ->badge()
-                    ->label('工时（分钟）'),
+                    ->label(__('cat.ticket_has_track.minutes')),
             ])
             ->filters([
 

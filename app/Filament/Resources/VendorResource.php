@@ -27,13 +27,19 @@ class VendorResource extends Resource implements HasShieldPermissions
 
     protected static ?string $navigationIcon = 'heroicon-o-building-storefront';
 
-    protected static ?string $modelLabel = '厂商';
-
     protected static ?int $navigationSort = 2;
 
-    protected static ?string $navigationGroup = '基础数据';
-
     protected static ?string $recordTitleAttribute = 'name';
+
+    public static function getNavigationGroup(): ?string
+    {
+        return __('cat.menu.base_data');
+    }
+
+    public static function getModelLabel(): string
+    {
+        return __('cat.menu.vendor');
+    }
 
     public static function getRecordSubNavigation(Page $page): array
     {
@@ -77,15 +83,15 @@ class VendorResource extends Resource implements HasShieldPermissions
                 Tables\Columns\TextColumn::make('name')
                     ->toggleable()
                     ->searchable()
-                    ->label('名称'),
+                    ->label(__('cat.vendor.name')),
                 Tables\Columns\TextColumn::make('address')
                     ->toggleable()
                     ->searchable()
-                    ->label('地址'),
+                    ->label(__('cat.vendor.address')),
                 Tables\Columns\TextColumn::make('public_phone_number')
                     ->toggleable()
                     ->searchable()
-                    ->label('对公电话'),
+                    ->label(__('cat.vendor.public_phone_number')),
             ])
             ->filters([
 
@@ -108,13 +114,13 @@ class VendorResource extends Resource implements HasShieldPermissions
                     ->importer(VendorImporter::class)
                     ->icon('heroicon-o-arrow-up-tray')
                     ->color('primary')
-                    ->label('导入')
+                    ->label(__('cat.action.import'))
                     ->visible(function () {
                         return auth()->user()->can('import_vendor');
                     }),
                 // 导出
                 ExportAction::make()
-                    ->label('导出')
+                    ->label(__('cat.action.export'))
                     ->visible(function () {
                         return auth()->user()->can('export_vendor');
                     }),
@@ -124,7 +130,7 @@ class VendorResource extends Resource implements HasShieldPermissions
                         return auth()->user()->can('create_vendor');
                     }),
             ])
-            ->heading('厂商');
+            ->heading(__('cat.menu.vendor'));
     }
 
     public static function getPages(): array

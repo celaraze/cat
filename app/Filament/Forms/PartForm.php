@@ -25,7 +25,7 @@ class PartForm
         return [
             TextInput::make('asset_number')
                 ->maxLength(255)
-                ->label(__('cat.asset_number'))
+                ->label(__('cat.part.asset_number'))
                 ->required(function () {
                     return ! AssetNumberRuleService::isAuto(Part::class);
                 })
@@ -33,7 +33,7 @@ class PartForm
                     return AssetNumberRuleService::isAuto(Part::class);
                 })
                 ->hintAction(
-                    Action::make(__('cat.form.create_asset_number_helper'))
+                    Action::make(__('cat.part.form.asset_number.create_helper'))
                         ->icon('heroicon-o-arrow-path-rounded-square')
                         ->visible(function () {
                             return AssetNumberRuleService::isAuto(Part::class);
@@ -41,26 +41,26 @@ class PartForm
                 ),
             Select::make('category_id')
                 ->relationship('category', 'name')
-                ->label(__('cat.category'))
+                ->label(__('cat.part.category_id'))
                 ->searchable()
                 ->preload()
                 ->createOptionForm(PartCategoryForm::createOrEdit())
                 ->required(),
             Select::make('brand_id')
                 ->relationship('brand', 'name')
-                ->label(__('cat.brand'))
+                ->label(__('cat.part.brand_id'))
                 ->searchable()
                 ->preload()
                 ->createOptionForm(BrandForm::createOrEdit())
                 ->required(),
             TextInput::make('sn')
                 ->maxLength(255)
-                ->label(__('cat.sn')),
+                ->label(__('cat.part.sn')),
             TextInput::make('specification')
                 ->maxLength(255)
-                ->label(__('cat.specification')),
+                ->label(__('cat.part.specification')),
             FileUpload::make('image')
-                ->label(__('cat.image'))
+                ->label(__('cat.part.image'))
                 ->directory('parts')
                 ->getUploadedFileNameForStorageUsing(
                     function (TemporaryUploadedFile $file) {
@@ -68,13 +68,13 @@ class PartForm
                     }
                 ),
             Textarea::make('description')
-                ->label(__('cat.description')),
+                ->label(__('cat.part.description')),
             Repeater::make('additional')
                 ->schema([
                     TextInput::make('name')
-                        ->label(__('cat.name')),
+                        ->label(__('cat.part.additional.name')),
                     TextInput::make('text')
-                        ->label(__('cat.text')),
+                        ->label(__('cat.part.additional.text')),
                 ])
                 ->defaultItems(0)
                 ->label(__('cat.additional')),

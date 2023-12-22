@@ -17,7 +17,7 @@ class View extends ViewRecord
 
     public static function getNavigationLabel(): string
     {
-        return '详情';
+        return __('cat.action.view');
     }
 
     public static function getNavigationBadge(): ?string

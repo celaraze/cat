@@ -27,13 +27,19 @@ class UserResource extends Resource implements HasShieldPermissions
 
     protected static ?string $navigationIcon = 'heroicon-s-user-circle';
 
-    protected static ?string $modelLabel = '用户';
-
     protected static ?int $navigationSort = 1;
 
-    protected static ?string $navigationGroup = '安全';
-
     protected static ?string $recordTitleAttribute = 'name';
+
+    public static function getNavigationGroup(): ?string
+    {
+        return __('cat.menu.security');
+    }
+
+    public static function getModelLabel(): string
+    {
+        return __('cat.menu.user');
+    }
 
     public static function shouldRegisterNavigation(): bool
     {
@@ -70,7 +76,7 @@ class UserResource extends Resource implements HasShieldPermissions
     {
         /* @var User $record */
         return [
-            '账户' => $record->getAttribute('email'),
+            __('cat.user.email') => $record->getAttribute('email'),
         ];
     }
 
@@ -108,17 +114,17 @@ class UserResource extends Resource implements HasShieldPermissions
                     ->toggleable()
                     ->circular()
                     ->defaultImageUrl(('/images/default.jpg'))
-                    ->label('头像'),
+                    ->label(__('cat.user.avatar')),
                 Tables\Columns\TextColumn::make('name')
                     ->toggleable()
                     ->searchable()
-                    ->label('名称'),
+                    ->label(__('cat.user.name')),
                 Tables\Columns\TextColumn::make('email')
                     ->toggleable()
                     ->searchable()
                     ->badge()
                     ->icon('heroicon-s-envelope')
-                    ->label('邮箱'),
+                    ->label(__('cat.user.email')),
             ])
             ->filters([
                 Tables\Filters\TrashedFilter::make(),
@@ -185,11 +191,11 @@ class UserResource extends Resource implements HasShieldPermissions
                     ->importer(UserImporter::class)
                     ->icon('heroicon-o-arrow-up-tray')
                     ->color('primary')
-                    ->label('导入')
+                    ->label(__('cat.action.import'))
                     ->visible(auth()->user()->can('import_user')),
                 // 导出
                 ExportAction::make()
-                    ->label('导出')
+                    ->label(__('cat.action.export'))
                     ->visible(auth()->user()->can('export_user')),
                 // 创建
                 UserAction::create()
@@ -197,7 +203,7 @@ class UserResource extends Resource implements HasShieldPermissions
                         return auth()->user()->can('create_user');
                     }),
             ])
-            ->heading('用户');
+            ->heading(__('cat.menu.user'));
     }
 
     public static function getEloquentQuery(): Builder

@@ -20,7 +20,7 @@ class HasUser extends ManageRelatedRecords
 
     public static function getNavigationLabel(): string
     {
-        return '成员';
+        return __('cat.menu.organization_has_user');
     }
 
     public function table(Table $table): Table
@@ -31,7 +31,7 @@ class HasUser extends ManageRelatedRecords
                 Tables\Columns\TextColumn::make('user.name')
                     ->searchable()
                     ->toggleable()
-                    ->label('名称'),
+                    ->label(__('cat.organization_has_user.user')),
             ])
             ->filters([
 

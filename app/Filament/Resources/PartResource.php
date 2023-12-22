@@ -40,13 +40,19 @@ class PartResource extends Resource implements HasShieldPermissions
 
     protected static ?string $navigationIcon = 'heroicon-m-cpu-chip';
 
-    protected static ?string $modelLabel = '配件';
-
     protected static ?int $navigationSort = 2;
 
-    protected static ?string $navigationGroup = '资产';
-
     protected static ?string $recordTitleAttribute = 'asset_number';
+
+    public static function getNavigationGroup(): ?string
+    {
+        return __('cat.menu.asset');
+    }
+
+    public static function getModelLabel(): string
+    {
+        return __('cat.menu.part');
+    }
 
     public static function getRecordSubNavigation(Page $page): array
     {
@@ -69,8 +75,8 @@ class PartResource extends Resource implements HasShieldPermissions
     {
         /* @var Part $record */
         return [
-            '设备' => $record->devices()->value('asset_number'),
-            '用户' => $record->devices()->first()?->users()->value('name'),
+            __('cat.device') => $record->devices()->value('asset_number'),
+            __('cat_user') => $record->devices()->first()?->users()->value('name'),
         ];
     }
 
@@ -108,32 +114,32 @@ class PartResource extends Resource implements HasShieldPermissions
                     ->circular()
                     ->toggleable()
                     ->defaultImageUrl(('/images/default.jpg'))
-                    ->label('照片'),
+                    ->label(__('cat.resource.part.images')),
                 Tables\Columns\TextColumn::make('asset_number')
                     ->searchable()
                     ->toggleable()
                     ->sortable()
-                    ->label('资产编号'),
+                    ->label(__('cat.resource.part.asset_number')),
                 Tables\Columns\TextColumn::make('brand.name')
                     ->searchable()
                     ->toggleable()
                     ->sortable()
-                    ->label('品牌'),
+                    ->label(__('cat.resource.part.brand')),
                 Tables\Columns\TextColumn::make('category.name')
                     ->searchable()
                     ->toggleable()
                     ->sortable()
-                    ->label('分类'),
+                    ->label(__('cat.resource.part.category')),
                 Tables\Columns\TextColumn::make('sn')
                     ->searchable()
                     ->toggleable()
                     ->sortable()
-                    ->label('序列号'),
+                    ->label(__('cat.resource.part.sn')),
                 Tables\Columns\TextColumn::make('specification')
                     ->searchable()
                     ->toggleable()
                     ->sortable()
-                    ->label('规格'),
+                    ->label(__('cat.resource.part.specification')),
                 Tables\Columns\TextColumn::make('status')
                     ->toggleable()
                     ->badge()
@@ -144,21 +150,21 @@ class PartResource extends Resource implements HasShieldPermissions
                     ->color(function ($state) {
                         return AssetEnum::statusColor($state);
                     })
-                    ->label('状态'),
+                    ->label(__('cat.resource.part.status')),
             ])
             ->filters([
                 Tables\Filters\SelectFilter::make('category_id')
                     ->multiple()
                     ->options(PartCategoryService::pluckOptions())
-                    ->label('分类'),
+                    ->label(__('cat.resource.part.category')),
                 Tables\Filters\SelectFilter::make('brand_id')
                     ->multiple()
                     ->options(BrandService::pluckOptions())
-                    ->label('品牌'),
+                    ->label(__('cat.resource.part.brand')),
                 Tables\Filters\SelectFilter::make('status')
                     ->multiple()
                     ->options(AssetEnum::allStatusText())
-                    ->label('状态'),
+                    ->label(__('cat.resource.part.status')),
             ])
             ->actions([
                 Tables\Actions\ActionGroup::make([
@@ -185,13 +191,13 @@ class PartResource extends Resource implements HasShieldPermissions
                     ->importer(PartImporter::class)
                     ->icon('heroicon-o-arrow-up-tray')
                     ->color('primary')
-                    ->label('导入')
+                    ->label(__('cat.action.import'))
                     ->visible(function () {
                         return auth()->user()->can('import_part');
                     }),
                 // 导出
                 ExportAction::make()
-                    ->label('导出')
+                    ->label(__('cat.action.export'))
                     ->visible(function () {
                         return auth()->user()->can('export_part');
                     }),
@@ -218,11 +224,11 @@ class PartResource extends Resource implements HasShieldPermissions
                             return auth()->user()->can('set_retire_flow_part');
                         }),
                 ])
-                    ->label('高级')
+                    ->label(__('cat.action.advance'))
                     ->icon('heroicon-m-cog-8-tooth')
                     ->button(),
             ])
-            ->heading('配件');
+            ->heading(__('cat.resource.part'));
     }
 
     public static function form(Form $form): Form
@@ -243,24 +249,24 @@ class PartResource extends Resource implements HasShieldPermissions
                                         TextEntry::make('asset_number')
                                             ->badge()
                                             ->color('primary')
-                                            ->label('资产编号'),
+                                            ->label(__('cat.part.asset_number')),
                                         TextEntry::make('category.name')
-                                            ->label('分类'),
+                                            ->label(__('cat.part.category')),
                                     ]),
                                     Group::make([
                                         TextEntry::make('sn')
-                                            ->label('序列号'),
+                                            ->label(__('cat.part.sn')),
                                         TextEntry::make('brand.name')
-                                            ->label('品牌'),
+                                            ->label(__('cat.part.brand')),
                                         TextEntry::make('specification')
-                                            ->label('规格'),
+                                            ->label(__('cat.part.specification')),
                                     ]),
                                 ]),
                         ]),
                     ]),
                 Section::make()->schema([
                     TextEntry::make('description')
-                        ->label('说明'),
+                        ->label(__('cat.part.description')),
                 ]),
                 Section::make()->schema([
                     RepeatableEntry::make('additional')
@@ -274,7 +280,7 @@ class PartResource extends Resource implements HasShieldPermissions
                         ])
                         ->grid()
                         ->columns()
-                        ->label('额外信息'),
+                        ->label(__('cat.part.additional')),
                 ]),
             ])->columnSpan(['lg' => 2]),
             Group::make()->schema([
@@ -284,7 +290,7 @@ class PartResource extends Resource implements HasShieldPermissions
                             ->disk('public')
                             ->height(300)
                             ->defaultImageUrl(('/images/default.jpg'))
-                            ->label('照片'),
+                            ->label(__('cat.part.image')),
                     ]),
             ])->columnSpan(['lg' => 1]),
         ])->columns(3);

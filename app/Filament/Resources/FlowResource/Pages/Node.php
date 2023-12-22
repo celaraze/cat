@@ -24,7 +24,12 @@ class Node extends ManageRelatedRecords
 
     public static function getNavigationLabel(): string
     {
-        return '节点';
+        return __('cat.menu.flow_has_node');
+    }
+
+    public function getBreadcrumb(): string
+    {
+        return __('cat.menu.flow_has_node');
     }
 
     public function table(Table $table): Table
@@ -36,7 +41,7 @@ class Node extends ManageRelatedRecords
                 Tables\Columns\TextColumn::make('name')
                     ->searchable()
                     ->toggleable()
-                    ->label('节点名称'),
+                    ->label(__('cat.flow_has_node.name')),
                 Tables\Columns\TextColumn::make('type')
                     ->searchable()
                     ->toggleable()
@@ -48,7 +53,7 @@ class Node extends ManageRelatedRecords
                             return 'success';
                         }
                     })
-                    ->label('审批类型'),
+                    ->label(__('cat.flow_has_node.type')),
             ])
             ->filters([
 

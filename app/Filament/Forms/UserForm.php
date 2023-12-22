@@ -21,7 +21,7 @@ class UserForm
     {
         return [
             TextInput::make('name')
-                ->label(__('cat.name'))
+                ->label(__('cat.user.name'))
                 ->required(),
             TextInput::make('email')
                 ->label(__('cat.email'))

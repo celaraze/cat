@@ -24,18 +24,21 @@ class HasSoftware extends ManageRelatedRecords
 
     protected static ?string $icon = 'heroicon-o-cube';
 
-    protected static ?string $breadcrumb = '附属记录';
-
     protected ?string $heading = ' ';
 
     public static function getNavigationLabel(): string
     {
-        return '附属记录';
+        return __('cat.menu.device_has_software');
     }
 
     public static function getNavigationBadge(): ?string
     {
         return static::queryRecord()->devices()->first()?->getAttribute('asset_number');
+    }
+
+    public function getBreadcrumb(): string
+    {
+        return __('cat.menu.device_has_software');
     }
 
     public function table(Table $table): Table
@@ -46,15 +49,15 @@ class HasSoftware extends ManageRelatedRecords
                 Tables\Columns\TextColumn::make('device.asset_number')
                     ->searchable()
                     ->toggleable()
-                    ->label('资产编号'),
+                    ->label(__('cat.device.asset_number')),
                 Tables\Columns\TextColumn::make('device.category.name')
                     ->searchable()
                     ->toggleable()
-                    ->label('分类'),
+                    ->label(__('cat.device_category.name')),
                 Tables\Columns\TextColumn::make('device.name')
                     ->searchable()
                     ->toggleable()
-                    ->label('名称'),
+                    ->label(__('cat.device.name')),
                 Tables\Columns\TextColumn::make('status')
                     ->toggleable()
                     ->badge()
@@ -64,21 +67,21 @@ class HasSoftware extends ManageRelatedRecords
                     ->color(function ($state) {
                         return AssetEnum::relationOperationColor($state);
                     })
-                    ->label('状态'),
+                    ->label(__('cat.device_has_software.status')),
                 Tables\Columns\TextColumn::make('updated_at')
                     ->searchable()
                     ->toggleable()
-                    ->label('操作时间'),
+                    ->label(__('cat.device_has_software.updated_at')),
                 Tables\Columns\TextColumn::make('user.name')
                     ->searchable()
                     ->toggleable()
-                    ->label('操作人'),
+                    ->label(__('cat.user.name')),
             ])
             ->filters([
                 Tables\Filters\SelectFilter::make('status')
                     ->multiple()
                     ->options(AssetEnum::allRelationOperationText())
-                    ->label('状态'),
+                    ->label(__('cat.device_has_software.status')),
             ])
             ->headerActions([
                 // 创建

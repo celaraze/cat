@@ -25,7 +25,7 @@ class SoftwareForm
         return [
             TextInput::make('asset_number')
                 ->maxLength(255)
-                ->label(__('cat.asset_number'))
+                ->label(__('cat.software.asset_number'))
                 ->required(function () {
                     return ! AssetNumberRuleService::isAuto(Software::class);
                 })
@@ -33,42 +33,42 @@ class SoftwareForm
                     return AssetNumberRuleService::isAuto(Software::class);
                 })
                 ->hintAction(
-                    Action::make(__('cat.form.create_asset_number_helper'))
+                    Action::make(__('cat.software.action.asset_number.create_helper'))
                         ->icon('heroicon-o-arrow-path-rounded-square')
                         ->visible(function () {
                             return AssetNumberRuleService::isAuto(Software::class);
                         })
                 ),
             TextInput::make('name')
-                ->label(__('cat.name'))
+                ->label(__('cat.software.name'))
                 ->required(),
             Select::make('category_id')
                 ->relationship('category', 'name')
-                ->label(__('cat.category'))
+                ->label(__('cat.software.category'))
                 ->searchable()
                 ->preload()
                 ->createOptionForm(SoftwareCategoryForm::createOrEdit())
                 ->required(),
             Select::make('brand_id')
                 ->relationship('brand', 'name')
-                ->label(__('cat.brand'))
+                ->label(__('cat.software.brand_id'))
                 ->searchable()
                 ->preload()
                 ->createOptionForm(BrandForm::createOrEdit())
                 ->required(),
             TextInput::make('sn')
                 ->maxLength(255)
-                ->label(__('cat.sn')),
+                ->label(__('cat.software.sn')),
             TextInput::make('specification')
                 ->maxLength(255)
-                ->label(__('cat.specification')),
+                ->label(__('cat.software.specification')),
             TextInput::make('max_license_count')
                 ->numeric()
                 ->minValue(0)
                 ->required()
-                ->label(__('cat.max_license_count')),
+                ->label(__('cat.software.max_license_count')),
             FileUpload::make('image')
-                ->label(__('cat.image'))
+                ->label(__('cat.software.image'))
                 ->directory('software')
                 ->getUploadedFileNameForStorageUsing(
                     function (TemporaryUploadedFile $file) {
@@ -76,13 +76,13 @@ class SoftwareForm
                     }
                 ),
             Textarea::make('description')
-                ->label(__('cat.description')),
+                ->label(__('cat.software.description')),
             Repeater::make('additional')
                 ->schema([
                     TextInput::make('name')
-                        ->label(__('cat.name')),
+                        ->label(__('cat.additional.name')),
                     TextInput::make('text')
-                        ->label(__('cat.text')),
+                        ->label(__('cat.additional.text')),
                 ])
                 ->defaultItems(0)
                 ->label(__('cat.additional')),
@@ -98,7 +98,7 @@ class SoftwareForm
             Select::make('flow_id')
                 ->options(FlowService::pluckOptions())
                 ->required()
-                ->label(__('cat.flow')),
+                ->label(__('cat.software.flow_id')),
         ];
     }
 
@@ -109,7 +109,7 @@ class SoftwareForm
     {
         return [
             Select::make('asset_number_rule_id')
-                ->label(__('cat.asset_number_rule'))
+                ->label(__('cat.software.asset_number_rule_id'))
                 ->options(AssetNumberRuleService::pluckOptions())
                 ->required()
                 ->default(AssetNumberRuleService::getAutoRule(Software::class)?->getAttribute('id')),

@@ -19,28 +19,28 @@ class Index extends ListRecords
 
     public static function getNavigationLabel(): string
     {
-        return '返回列表';
+        return __('cat.action.back');
     }
 
     public function getTabs(): array
     {
         return [
-            '全部' => Tab::make()
+            __('cat.flow_has_form.status.all') => Tab::make()
                 ->badge(FlowHasForm::query()->count())
                 ->badgeColor('success'),
-            '草稿' => Tab::make()
+            __('cat.flow_has_form.status.draft') => Tab::make()
                 ->badge(FlowHasForm::query()->where('status', 0)->count())
                 ->badgeColor(FlowHasFormEnum::statusColor(0))
                 ->modifyQueryUsing(fn (Builder $query) => $query->where('status', 0)),
-            '在途' => Tab::make()
+            __('cat.flow_has_form.status.processing') => Tab::make()
                 ->badge(FlowHasForm::query()->whereIn('status', [1, 3])->count())
                 ->badgeColor(FlowHasFormEnum::statusColor(1))
                 ->modifyQueryUsing(fn (Builder $query) => $query->whereIn('status', [1, 3])),
-            '驳回' => Tab::make()
+            __('cat.flow_has_form.status.rejected') => Tab::make()
                 ->badge(FlowHasForm::query()->where('status', 2)->count())
                 ->badgeColor(FlowHasFormEnum::statusColor(2))
                 ->modifyQueryUsing(fn (Builder $query) => $query->where('status', 2)),
-            '通过' => Tab::make()
+            __('cat.flow_has_form.status.approved') => Tab::make()
                 ->badge(FlowHasForm::query()->where('status', 4)->count())
                 ->badgeColor(FlowHasFormEnum::statusColor(4))
                 ->modifyQueryUsing(fn (Builder $query) => $query->where('status', 4)),

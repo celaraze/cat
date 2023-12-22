@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\DeviceResource\Pages;
 
+use App\Enums\TicketEnum;
 use App\Filament\Actions\DeviceAction;
 use App\Filament\Resources\DeviceResource;
 use App\Models\Device;
@@ -22,18 +23,21 @@ class Ticket extends ManageRelatedRecords
 
     protected static ?string $navigationIcon = 'heroicon-o-document-text';
 
-    protected static ?string $breadcrumb = '工单';
-
     protected ?string $heading = ' ';
 
     public static function getNavigationLabel(): string
     {
-        return '工单';
+        return __('cat.menu.ticket');
     }
 
     public static function getNavigationBadge(): ?string
     {
         return self::queryRecord()->tickets()->count();
+    }
+
+    public function getBreadcrumb(): string
+    {
+        return __('cat.menu.ticket');
     }
 
     public function table(Table $table): Table
@@ -44,30 +48,30 @@ class Ticket extends ManageRelatedRecords
                 Tables\Columns\TextColumn::make('subject')
                     ->searchable()
                     ->toggleable()
-                    ->label('主题'),
+                    ->label(__('cat.ticket.subject')),
                 Tables\Columns\TextColumn::make('created_at')
                     ->searchable()
                     ->toggleable()
-                    ->label('创建时间'),
+                    ->label(__('cat.ticket.created_at')),
                 Tables\Columns\TextColumn::make('user.name')
                     ->searchable()
                     ->toggleable()
-                    ->label('提交人'),
+                    ->label(__('cat.ticket.user')),
                 Tables\Columns\TextColumn::make('assignee.name')
                     ->searchable()
                     ->toggleable()
-                    ->label('处理人'),
-                Tables\Columns\TextColumn::make('deleted_at')
+                    ->label(__('cat.ticket.assignee')),
+                Tables\Columns\TextColumn::make('status')
                     ->searchable()
                     ->toggleable()
-                    ->formatStateUsing(function (string $state) {
-                        return $state ? '已处理' : '处理中';
+                    ->formatStateUsing(function ($state) {
+                        return TicketEnum::statusText($state);
                     })
                     ->badge()
-                    ->color(function (string $state) {
-                        return $state ? 'success' : 'warning';
+                    ->color(function ($state) {
+                        return TicketEnum::statusColor($state);
                     })
-                    ->label('状态'),
+                    ->label(__('cat.ticket.status')),
             ])
             ->filters([
 

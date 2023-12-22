@@ -45,7 +45,7 @@ class AssetNumberRuleResource extends Resource implements HasShieldPermissions
             Edit::class,
         ];
         $can_update_device = auth()->user()->can('update_asset::number::rule');
-        if (!$can_update_device) {
+        if (! $can_update_device) {
             unset($navigation_items[2]);
         }
 

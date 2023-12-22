@@ -34,6 +34,16 @@ class OrganizationResource extends Resource implements HasShieldPermissions
 
     protected static ?int $navigationSort = 2;
 
+    public static function getNavigationGroup(): ?string
+    {
+        return __('cat.security');
+    }
+
+    public static function getModelLabel(): string
+    {
+        return __('cat.organization');
+    }
+
     public static function getRecordSubNavigation(Page $page): array
     {
         $navigation_items = [
@@ -78,7 +88,7 @@ class OrganizationResource extends Resource implements HasShieldPermissions
                                 ->schema([
                                     Group::make([
                                         TextEntry::make('name')
-                                            ->label('名称'),
+                                            ->label(__('cat.resource.organization.name')),
                                     ]),
                                 ]),
                         ]),

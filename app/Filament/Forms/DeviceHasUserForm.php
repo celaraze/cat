@@ -19,21 +19,21 @@ class DeviceHasUserForm
         return [
             Radio::make('status')
                 ->options(DeviceHasUserEnum::allStatusText())
-                ->label(__('cat.status'))
+                ->label(__('cat.device_has_user.status'))
                 ->required(),
 
             Select::make('user_id')
-                ->label(__('cat.user'))
+                ->label(__('cat.device_has_user.user_id'))
                 ->options(UserService::pluckOptions())
                 ->searchable()
                 ->required(),
 
             TextInput::make('comment')
-                ->label(__('cat.comment'))
+                ->label(__('cat.device_has_user.comment'))
                 ->required(),
 
             DatePicker::make('expired_at')
-                ->label(__('cat.expired_at')),
+                ->label(__('cat.device_has_user.expired_at')),
         ];
     }
 
@@ -44,7 +44,7 @@ class DeviceHasUserForm
     {
         return [
             TextInput::make('delete_comment')
-                ->label(__('cat.delete_comment'))
+                ->label(__('cat.device_has_user.delete_comment'))
                 ->required(),
         ];
     }

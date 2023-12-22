@@ -36,17 +36,17 @@ class SoftwareService
             ->mapWithKeys(function (Software $software) {
                 $title = '';
                 $title .= $software->getAttribute('asset_number');
-                $title .= ' | ' . $software->brand()->first()?->getAttribute('name') ?? ' | ' . __('cat.unknown_brand');
-                $title .= ' | ' . $software->getAttribute('name');
-                $title .= ' | ' . $software->getAttribute('specification');
-                $title .= ' | ' . $software->category()->first()?->getAttribute('name') ?? ' | ' . __('cat.unknown_category');
+                $title .= ' | '.$software->brand()->first()?->getAttribute('name') ?? ' | '.__('cat.unknown_brand');
+                $title .= ' | '.$software->getAttribute('name');
+                $title .= ' | '.$software->getAttribute('specification');
+                $title .= ' | '.$software->category()->first()?->getAttribute('name') ?? ' | '.__('cat.unknown_category');
                 if ($software->getAttribute('max_license_count') == 0) {
                     $title .= ' - 无限制';
                 } else {
                     if ($software->getAttribute('max_license_count') > $software->usedCount()) {
-                        $title .= ' | ' . $software->usedCount() . '/' . $software->getAttribute('max_license_count') . __('cat.used');
+                        $title .= ' | '.$software->usedCount().'/'.$software->getAttribute('max_license_count').__('cat.used');
                     } else {
-                        $title .= ' | ' . $software->usedCount() . '/' . $software->getAttribute('max_license_count') . __('cat.used') . ' | ' . __('cat.software_license_exhausted');
+                        $title .= ' | '.$software->usedCount().'/'.$software->getAttribute('max_license_count').__('cat.used').' | '.__('cat.software_license_exhausted');
                     }
                 }
 
@@ -150,11 +150,11 @@ class SoftwareService
         $flow_id = Setting::query()
             ->where('custom_key', 'software_retire_flow_id')
             ->value('custom_value');
-        if (!$flow_id) {
+        if (! $flow_id) {
             throw new Exception(__('cat.software_retire_flow_not_set'));
         }
         $flow = Flow::query()->where('id', $flow_id)->first();
-        if (!$flow) {
+        if (! $flow) {
             throw new Exception(__('cat.software_retire_flow_not_found'));
         }
 

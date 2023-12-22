@@ -36,7 +36,7 @@ class InventoryService
             DB::beginTransaction();
             $model = $data['class_name'];
             $model_ids = $data['model_ids'];
-            if (!count($model_ids)) {
+            if (! count($model_ids)) {
                 $model_ids = $model::query()->pluck('id')->toArray();
             }
             $this->model->setAttribute('name', $data['name']);

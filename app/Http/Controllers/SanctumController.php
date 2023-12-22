@@ -19,15 +19,15 @@ class SanctumController extends Controller
         $password = $request->get('password');
         if ($email === null || $password === null) {
             return response()->json([
-                'message' => __('cat.email_or_password_required'),
+                'message' => __('cat.auth.email_or_password_required'),
             ], 401);
         }
 
         $user = User::query()->where('email', $request->get('email'))->first();
 
-        if (!$user || !Hash::check($request->get('password'), $user->getAttribute('password'))) {
+        if (! $user || ! Hash::check($request->get('password'), $user->getAttribute('password'))) {
             return response()->json([
-                'message' => __('cat.password_does_not_match'),
+                'message' => __('cat.auth.password_does_not_match'),
             ], 401);
         }
 

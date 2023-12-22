@@ -38,10 +38,10 @@ class DeviceService
             ->mapWithKeys(function (Device $device) use ($key_column) {
                 $title = '';
                 $title .= $device->getAttribute('asset_number');
-                $title .= ' | ' . $device->getAttribute('name');
+                $title .= ' | '.$device->getAttribute('name');
                 $user = $device->users()->first();
                 $user_name = $user?->getAttribute('name') ?? __('cat.no_user');
-                $title .= ' | ' . $user_name;
+                $title .= ' | '.$user_name;
 
                 return [$device->getAttribute($key_column) => $title];
             });
@@ -156,13 +156,13 @@ class DeviceService
         $flow_id = Setting::query()
             ->where('custom_key', 'device_retire_flow_id')
             ->value('custom_value');
-        if (!$flow_id) {
+        if (! $flow_id) {
             throw new Exception(__('cat.device_retire_flow_not_set'));
         }
         $flow = Flow::query()
             ->where('id', $flow_id)
             ->first();
-        if (!$flow) {
+        if (! $flow) {
             throw new Exception(__('cat.device_retire_flow_not_found'));
         }
 

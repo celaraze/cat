@@ -9,8 +9,8 @@
         <tr>
             <th colspan="5" class="px-4 py-2 text-left text-sm font-medium uppercase tracking-wider">
                 {{ $device->name }}，
-                @if($device->users->first())
-                    {{ $device->users->first()->value('name') }} 使用中
+                @if($device->users()->first())
+                    {{ $device->users()->first()->getAttribute('name') }} 使用中
                 @else
                     无人使用
                 @endif

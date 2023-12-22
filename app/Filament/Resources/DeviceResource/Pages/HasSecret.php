@@ -24,18 +24,21 @@ class HasSecret extends ManageRelatedRecords
 
     protected static ?string $navigationIcon = 'heroicon-m-key';
 
-    protected static ?string $breadcrumb = '密钥';
-
     protected ?string $heading = ' ';
 
     public static function getNavigationLabel(): string
     {
-        return '密钥';
+        return __('cat.menu.secret');
     }
 
     public static function getNavigationBadge(): ?string
     {
         return self::queryRecord()->secrets()->count();
+    }
+
+    public function getBreadcrumb(): string
+    {
+        return __('cat.menu.secret');
     }
 
     public function table(Table $table): Table
@@ -47,11 +50,11 @@ class HasSecret extends ManageRelatedRecords
                     Tables\Columns\TextColumn::make('secret.name')
                         ->searchable()
                         ->toggleable()
-                        ->label('名称'),
+                        ->label(__('cat.secret.name')),
                     Tables\Columns\TextColumn::make('secret.username')
                         ->searchable()
                         ->toggleable()
-                        ->label('账户'),
+                        ->label(__('cat.secret.username')),
                     Tables\Columns\TextColumn::make('status')
                         ->toggleable()
                         ->badge()
@@ -61,15 +64,15 @@ class HasSecret extends ManageRelatedRecords
                         ->color(function ($state) {
                             return AssetEnum::relationOperationColor($state);
                         })
-                        ->label('状态'),
+                        ->label(__('cat.secret.status')),
                     Tables\Columns\TextColumn::make('updated_at')
                         ->searchable()
                         ->toggleable()
-                        ->label('操作时间'),
+                        ->label(__('cat.secret.updated_at')),
                     Tables\Columns\TextColumn::make('creator.name')
                         ->searchable()
                         ->toggleable()
-                        ->label('操作人'),
+                        ->label(__('cat.secret.creator')),
                 ]
             )
             ->filters([

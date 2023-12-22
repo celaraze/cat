@@ -34,36 +34,36 @@ class InventoryController extends Controller
         $asset_number = $request->get('asset_number');
         $check = $request->get('check');
         $user = $request->user();
-        if (!$user->can('check_inventory')) {
+        if (! $user->can('check_inventory')) {
             return response()
                 ->json([
                     'status' => 403,
-                    'message' => __('cat.unauthorized'),
+                    'message' => __('cat.auth.unauthorized'),
                 ]);
         }
         if ($check != 1 && $check != 2) {
             return response()
                 ->json([
                     'status' => 403,
-                    'message' => __('cat.unauthorized'),
+                    'message' => __('cat.auth.unauthorized'),
                 ]);
         }
         $inventory_has_tracks = InventoryHasTrack::query()
             ->where('inventory_id', $inventory_id)
             ->where('asset_number', $asset_number)
             ->first();
-        if (!$inventory_has_tracks) {
+        if (! $inventory_has_tracks) {
             return response()
                 ->json([
                     'status' => 404,
-                    'message' => __('cat.inventory_has_track_not_found'),
+                    'message' => __('cat.inventory_has_track.not_found'),
                 ]);
         }
         if ($inventory_has_tracks->getAttribute('check') != 0) {
             return Response()
                 ->json([
                     'status' => 404,
-                    'message' => __('cat.inventory_has_track_already_checked'),
+                    'message' => __('cat.inventory_has_track.checked'),
                 ]);
         }
         $inventory_has_tracks->setAttribute('check', $check);
@@ -72,7 +72,7 @@ class InventoryController extends Controller
             return response()
                 ->json([
                     'status' => 200,
-                    'message' => __('cat.inventory_has_track_check_success'),
+                    'message' => __('cat.inventory_has_track.check_success'),
                 ]);
         }
     }

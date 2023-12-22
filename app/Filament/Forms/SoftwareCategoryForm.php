@@ -14,7 +14,7 @@ class SoftwareCategoryForm
     {
         return [
             TextInput::make('name')
-                ->label(__('cat.name'))
+                ->label(__('cat.software_category.name'))
                 ->maxLength(255)
                 ->required(),
         ];
@@ -28,7 +28,7 @@ class SoftwareCategoryForm
         return [
             Shout::make('hint')
                 ->color('danger')
-                ->content(__('cat.form.delete_software_category_helper')),
+                ->content(__('cat.software_category.form.delete_helper')),
         ];
     }
 }

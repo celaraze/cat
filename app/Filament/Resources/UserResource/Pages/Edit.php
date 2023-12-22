@@ -18,7 +18,7 @@ class Edit extends EditRecord
 
     public static function getNavigationLabel(): string
     {
-        return '编辑';
+        return __('cat.action.edit');
     }
 
     /**
@@ -38,7 +38,7 @@ class Edit extends EditRecord
         if ($validator->fails()) {
             Notification::make()
                 ->danger()
-                ->title('验证失败')
+                ->title(__('cat.form.validate_failure'))
                 ->body($validator->errors()->first())
                 ->persistent()
                 ->send();

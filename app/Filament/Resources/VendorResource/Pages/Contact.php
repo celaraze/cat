@@ -18,13 +18,16 @@ class Contact extends ManageRelatedRecords
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
-    protected static ?string $breadcrumb = '联系人';
-
     protected ?string $heading = ' ';
 
     public static function getNavigationLabel(): string
     {
-        return '联系人';
+        return __('cat.menu.vendor_has_contact');
+    }
+
+    public function getBreadcrumb(): string
+    {
+        return __('cat.menu.vendor_has_contact');
     }
 
     public function form(Form $form): Form
@@ -41,15 +44,15 @@ class Contact extends ManageRelatedRecords
                 Tables\Columns\TextColumn::make('name')
                     ->searchable()
                     ->toggleable()
-                    ->label('名称'),
+                    ->label(__('cat.vendor_has_contact.name')),
                 Tables\Columns\TextColumn::make('phone_number')
                     ->searchable()
                     ->toggleable()
-                    ->label('电话'),
+                    ->label(__('cat.vendor_has_contact.phone_number')),
                 Tables\Columns\TextColumn::make('email')
                     ->searchable()
                     ->toggleable()
-                    ->label('邮箱'),
+                    ->label(__('cat.vendor_has_contact.email')),
             ])
             ->filters([
 

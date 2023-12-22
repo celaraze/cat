@@ -21,7 +21,7 @@ class TicketHasTrackMinutePie extends ApexChartWidget
     {
         $ticket_id = UrlUtil::getRecordId();
         $ticket_service = new TicketService();
-        $ticket_service->setTicketById((int)$ticket_id);
+        $ticket_service->setTicketById((int) $ticket_id);
         $data = $ticket_service->minutePie();
 
         return [

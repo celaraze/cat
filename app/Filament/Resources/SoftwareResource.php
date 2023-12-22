@@ -42,20 +42,26 @@ class SoftwareResource extends Resource implements HasShieldPermissions
 
     protected static ?string $slug = 'software';
 
-    protected static ?string $modelLabel = '软件';
-
     protected static ?int $navigationSort = 3;
 
-    protected static ?string $navigationGroup = '资产';
-
     protected static ?string $recordTitleAttribute = 'asset_number';
+
+    public static function getNavigationGroup(): ?string
+    {
+        return __('cat.menu.asset');
+    }
+
+    public static function getModelLabel(): string
+    {
+        return __('cat.menu.software');
+    }
 
     public static function getGlobalSearchResultDetails(Model $record): array
     {
         /* @var Software $record */
         return [
-            '设备' => $record->devices()->value('asset_number'),
-            '用户' => $record->devices()->first()?->users()->value('name'),
+            __('cat.device.name') => $record->devices()->value('asset_number'),
+            __('cat.user.name') => $record->devices()->first()?->users()->value('name'),
         ];
     }
 
@@ -111,37 +117,37 @@ class SoftwareResource extends Resource implements HasShieldPermissions
                     ->circular()
                     ->toggleable()
                     ->defaultImageUrl(('/images/default.jpg'))
-                    ->label('照片'),
+                    ->label(__('cat.software.images')),
                 Tables\Columns\TextColumn::make('asset_number')
                     ->searchable()
                     ->toggleable()
                     ->sortable()
-                    ->label('资产编号'),
+                    ->label(__('cat.software.asset_number')),
                 Tables\Columns\TextColumn::make('name')
                     ->searchable()
                     ->toggleable()
                     ->sortable()
-                    ->label('名称'),
+                    ->label(__('cat.software.name')),
                 Tables\Columns\TextColumn::make('brand.name')
                     ->searchable()
                     ->toggleable()
                     ->sortable()
-                    ->label('品牌'),
+                    ->label(__('cat.software.brand')),
                 Tables\Columns\TextColumn::make('category.name')
                     ->searchable()
                     ->toggleable()
                     ->sortable()
-                    ->label('分类'),
+                    ->label(__('cat.software.category')),
                 Tables\Columns\TextColumn::make('sn')
                     ->searchable()
                     ->toggleable()
                     ->sortable()
-                    ->label('sn'),
+                    ->label(__('cat.software.sn')),
                 Tables\Columns\TextColumn::make('specification')
                     ->searchable()
                     ->toggleable()
                     ->sortable()
-                    ->label('规格'),
+                    ->label(__('cat.software.specification')),
                 Tables\Columns\TextColumn::make('status')
                     ->toggleable()
                     ->badge()
@@ -152,21 +158,21 @@ class SoftwareResource extends Resource implements HasShieldPermissions
                     ->color(function ($state) {
                         return AssetEnum::statusColor($state);
                     })
-                    ->label('状态'),
+                    ->label(__('cat.software.status')),
             ])
             ->filters([
                 Tables\Filters\SelectFilter::make('category_id')
                     ->multiple()
                     ->options(SoftwareCategoryService::pluckOptions())
-                    ->label('分类'),
+                    ->label(__('cat.software.category')),
                 Tables\Filters\SelectFilter::make('brand_id')
                     ->multiple()
                     ->options(BrandService::pluckOptions())
-                    ->label('品牌'),
+                    ->label(__('cat.software.brand')),
                 Tables\Filters\SelectFilter::make('status')
                     ->multiple()
                     ->options(AssetEnum::allStatusText())
-                    ->label('状态'),
+                    ->label(__('cat.software.status')),
             ])
             ->actions([
                 Tables\Actions\ActionGroup::make([
@@ -193,13 +199,13 @@ class SoftwareResource extends Resource implements HasShieldPermissions
                     ->importer(SoftwareImporter::class)
                     ->icon('heroicon-o-arrow-up-tray')
                     ->color('primary')
-                    ->label('导入')
+                    ->label(__('cat.action.import'))
                     ->visible(function () {
                         return auth()->user()->can('import_software');
                     }),
                 // 导出
                 ExportAction::make()
-                    ->label('导出')
+                    ->label(__('cat.action.export'))
                     ->visible(function () {
                         return auth()->user()->can('export_software');
                     }),
@@ -227,11 +233,11 @@ class SoftwareResource extends Resource implements HasShieldPermissions
                             return auth()->user()->can('set_retire_flow_software');
                         }),
                 ])
-                    ->label('高级')
+                    ->label(__('cat.action.advance'))
                     ->icon('heroicon-m-cog-8-tooth')
                     ->button(),
             ])
-            ->heading('软件');
+            ->heading(__('cat.menu.software'));
     }
 
     public static function form(Form $form): Form
@@ -250,30 +256,30 @@ class SoftwareResource extends Resource implements HasShieldPermissions
                                 ->schema([
                                     Group::make([
                                         TextEntry::make('asset_number')
-                                            ->label('资产编号')
+                                            ->label(__('cat.software.asset_number'))
                                             ->badge()
                                             ->color('primary'),
                                         TextEntry::make('name')
-                                            ->label('名称'),
+                                            ->label(__('cat.software.name')),
                                         TextEntry::make('category.name')
-                                            ->label('分类'),
+                                            ->label(__('cat.software.category')),
                                         TextEntry::make('max_license_count')
-                                            ->label('授权总数'),
+                                            ->label(__('cat.software.max_license_count')),
                                     ]),
                                     Group::make([
                                         TextEntry::make('sn')
-                                            ->label('序列号'),
+                                            ->label(__('cat.software.sn')),
                                         TextEntry::make('brand.name')
-                                            ->label('品牌'),
+                                            ->label(__('cat.software.brand')),
                                         TextEntry::make('specification')
-                                            ->label('规格'),
+                                            ->label(__('cat.software.specification')),
                                     ]),
                                 ]),
                         ]),
                     ]),
                 Section::make()->schema([
                     TextEntry::make('description')
-                        ->label('说明'),
+                        ->label(__('cat.software.description')),
                 ]),
                 Section::make()->schema([
                     RepeatableEntry::make('additional')
@@ -287,7 +293,7 @@ class SoftwareResource extends Resource implements HasShieldPermissions
                         ])
                         ->grid()
                         ->columns()
-                        ->label('额外信息'),
+                        ->label(__('cat.software.additional')),
                 ]),
             ])->columnSpan(['lg' => 2]),
             Group::make()->schema([
@@ -297,7 +303,7 @@ class SoftwareResource extends Resource implements HasShieldPermissions
                             ->disk('public')
                             ->height(300)
                             ->defaultImageUrl(('/images/default.jpg'))
-                            ->label('照片'),
+                            ->label(__('cat.software.image')),
                     ]),
             ])->columnSpan(['lg' => 1]),
         ])->columns(3);

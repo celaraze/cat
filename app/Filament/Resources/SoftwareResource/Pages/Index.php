@@ -19,24 +19,24 @@ class Index extends ListRecords
 
     public static function getNavigationLabel(): string
     {
-        return '返回列表';
+        return __('cat.action.back');
     }
 
     public function getTabs(): array
     {
         return [
-            '全部' => Tab::make()
+            __('cat.software.status.all') => Tab::make()
                 ->badge(Software::query()->count())
                 ->badgeColor('success'),
-            '闲置' => Tab::make()
+            __('cat.software.status.idle') => Tab::make()
                 ->badge(Software::query()->where('status', 0)->count())
                 ->badgeColor(AssetEnum::statusColor(0))
                 ->modifyQueryUsing(fn (Builder $query) => $query->where('status', 0)),
-            '使用' => Tab::make()
+            __('cat.software.status.using') => Tab::make()
                 ->badge(Software::query()->where('status', 1)->count())
                 ->badgeColor(AssetEnum::statusColor(1))
                 ->modifyQueryUsing(fn (Builder $query) => $query->where('status', 1)),
-            '报废' => Tab::make()
+            __('cat.software.status.retired') => Tab::make()
                 ->badge(Software::query()->where('status', 3)->count())
                 ->badgeColor(AssetEnum::statusColor(3))
                 ->modifyQueryUsing(fn (Builder $query) => $query->where('status', 3)),

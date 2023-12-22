@@ -8,7 +8,7 @@ use Filament\Resources\Pages\ManageRelatedRecords;
 use Filament\Tables;
 use Filament\Tables\Table;
 
-class FailedImportRows extends ManageRelatedRecords
+class FailedImportRow extends ManageRelatedRecords
 {
     protected static string $resource = ImportResource::class;
 
@@ -16,13 +16,16 @@ class FailedImportRows extends ManageRelatedRecords
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
-    protected static ?string $breadcrumb = '失败行记录';
-
     protected ?string $heading = ' ';
 
     public static function getNavigationLabel(): string
     {
-        return '失败行记录';
+        return __('cat.menu.failed_import_row');
+    }
+
+    public function getBreadcrumb(): string
+    {
+        return __('cat.menu.failed_import_row');
     }
 
     public function form(Form $form): Form
@@ -41,15 +44,15 @@ class FailedImportRows extends ManageRelatedRecords
                 Tables\Columns\TextColumn::make('created_at')
                     ->searchable()
                     ->toggleable()
-                    ->label('创建时间'),
+                    ->label(__('cat.failed_import_row.created_at')),
                 Tables\Columns\TextColumn::make('data')
                     ->searchable()
                     ->toggleable()
-                    ->label('数据'),
+                    ->label(__('cat.failed_import_row.data')),
                 Tables\Columns\TextColumn::make('validation_error')
                     ->searchable()
                     ->toggleable()
-                    ->label('错误类型'),
+                    ->label(__('cat.failed_import_row.validation_error')),
             ])
             ->filters([
 

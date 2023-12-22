@@ -63,8 +63,8 @@ class DeviceResource extends Resource implements HasShieldPermissions
     {
         /* @var Device $record */
         return [
-            '名称' => $record->getAttribute('name'),
-            '用户' => $record->users()->value('name') ?? __('cat.none'),
+            __('cat.name') => $record->getAttribute('name'),
+            __('cat.user') => $record->users()->value('name') ?? __('cat.none'),
         ];
     }
 
@@ -82,7 +82,7 @@ class DeviceResource extends Resource implements HasShieldPermissions
         ];
         $device_service = $page->getWidgetData()['record']->service();
         $can_update_device = auth()->user()->can('update_device');
-        if ($device_service->isRetired() || !$can_update_device) {
+        if ($device_service->isRetired() || ! $can_update_device) {
             unset($navigation_items[2]);
         }
 
@@ -211,7 +211,7 @@ class DeviceResource extends Resource implements HasShieldPermissions
                         $can = auth()->user()->can('assign_user_device');
                         $is_retired = $device->service()->isRetired();
 
-                        return $can && !$is_retired && !$device->hasUsers()->count();
+                        return $can && ! $is_retired && ! $device->hasUsers()->count();
                     }),
                 Tables\Actions\ActionGroup::make([
                     // 创建工单
@@ -237,7 +237,7 @@ class DeviceResource extends Resource implements HasShieldPermissions
                         }),
                 ])
                     ->visible(function (Device $device) {
-                        return !$device->service()->isRetired();
+                        return ! $device->service()->isRetired();
                     }),
             ])
             ->bulkActions([

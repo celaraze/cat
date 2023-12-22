@@ -18,5 +18,5 @@ return [
 
     'action' => [
         'summary' => '总览',
-    ]
+    ],
 ];

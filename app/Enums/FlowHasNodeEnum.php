@@ -35,4 +35,12 @@ class FlowHasNodeEnum
             3 => 'danger'
         };
     }
+
+    public static function allTypeText(): array
+    {
+        return [
+            'user' => __('cat.menu.user'),
+            'role' => __('cat.menu.role'),
+        ];
+    }
 }
