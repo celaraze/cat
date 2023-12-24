@@ -79,23 +79,23 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('device_has_users', function (Blueprint $table) {
-            $table->dropColumn('operator_id');
+            $table->dropColumn('creator_id');
         });
 
         Schema::table('device_has_parts', function (Blueprint $table) {
-            $table->renameColumn('operator_id', 'user_id');
+            $table->renameColumn('creator_id', 'user_id');
         });
 
         Schema::table('device_has_software', function (Blueprint $table) {
-            $table->renameColumn('operator_id', 'user_id');
+            $table->renameColumn('creator_id', 'user_id');
         });
 
         Schema::table('inventories', function (Blueprint $table) {
-            $table->renameColumn('operator_id', 'user_id');
+            $table->renameColumn('creator_id', 'user_id');
         });
 
         Schema::table('inventory_has_tracks', function (Blueprint $table) {
-            $table->renameColumn('operator_id', 'user_id');
+            $table->renameColumn('creator_id', 'user_id');
         });
 
         Schema::table('devices', function (Blueprint $table) {

@@ -52,6 +52,7 @@ class DeviceHasPartAction
     public static function batchDelete(): BulkAction
     {
         return BulkAction::make(__('cat/device_has_part.action.batch_delete'))
+            ->slideOver()
             ->requiresConfirmation()
             ->color('danger')
             ->icon('heroicon-s-minus-circle')
@@ -72,6 +73,7 @@ class DeviceHasPartAction
     public static function delete(): Action
     {
         return Action::make(__('cat/device_has_part.action.delete'))
+            ->slideOver()
             ->icon('heroicon-s-minus-circle')
             ->requiresConfirmation()
             ->color('danger')

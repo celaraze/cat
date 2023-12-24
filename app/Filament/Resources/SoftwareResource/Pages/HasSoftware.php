@@ -53,7 +53,7 @@ class HasSoftware extends ManageRelatedRecords
                 Tables\Columns\TextColumn::make('device.category.name')
                     ->searchable()
                     ->toggleable()
-                    ->label(__('cat/device_category.name')),
+                    ->label(__('cat/device.category')),
                 Tables\Columns\TextColumn::make('device.name')
                     ->searchable()
                     ->toggleable()
@@ -75,7 +75,7 @@ class HasSoftware extends ManageRelatedRecords
                 Tables\Columns\TextColumn::make('user.name')
                     ->searchable()
                     ->toggleable()
-                    ->label(__('cat/user.name')),
+                    ->label(__('cat/device_has_software.user')),
             ])
             ->filters([
                 Tables\Filters\SelectFilter::make('status')

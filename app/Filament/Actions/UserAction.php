@@ -16,6 +16,7 @@ class UserAction
     public static function resetPassword(): Action
     {
         return Action::make(__('cat/user.action.reset_password'))
+            ->slideOver()
             ->color('warning')
             ->icon('heroicon-o-lock-open')
             ->requiresConfirmation()
@@ -100,6 +101,7 @@ class UserAction
     public static function delete(): Action
     {
         return Action::make(__('cat/user.action.delete'))
+            ->slideOver()
             ->color('danger')
             ->icon('heroicon-o-trash')
             ->requiresConfirmation()
@@ -119,12 +121,14 @@ class UserAction
                     LogUtil::error($exception);
                     NotificationUtil::make(false, $exception);
                 }
-            });
+            })
+            ->closeModalByClickingAway(false);
     }
 
     public static function forceDelete(): Action
     {
         return Action::make(__('cat/user.action.force_delete'))
+            ->slideOver()
             ->icon('heroicon-s-trash')
             ->color('danger')
             ->requiresConfirmation()

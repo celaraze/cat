@@ -150,21 +150,10 @@ class PartService
     }
 
     /**
-     * 是否报废.
+     * 是否废弃.
      */
     public function isRetired(): bool
     {
-        if ($this->model->getAttribute('status') == 3) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    public function setPartById(int $part_id): void
-    {
-        /* @var Part $part */
-        $part = Part::query()->where('id', $part_id)->first();
-        $this->model = $part;
+        return $this->model->getAttribute('status') == 3;
     }
 }

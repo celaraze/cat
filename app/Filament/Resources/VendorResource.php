@@ -68,6 +68,9 @@ class VendorResource extends Resource implements HasShieldPermissions
             'delete_any',
             'import',
             'export',
+            'create_has_contact',
+            'delete_has_contact',
+            'update_has_contact',
         ];
     }
 
@@ -94,12 +97,14 @@ class VendorResource extends Resource implements HasShieldPermissions
                     ->label(__('cat/vendor.public_phone_number')),
             ])
             ->filters([
-
+                Tables\Filters\TrashedFilter::make(),
             ])
             ->actions([
                 VendorAction::delete()
-                    ->visible(function () {
-                        return auth()->user()->can('delete_vendor');
+                    ->visible(function (Vendor $vendor) {
+                        $is_deleted = $vendor->service()->isDeleted();
+
+                        return ! $is_deleted && auth()->user()->can('delete_vendor');
                     }),
             ])
             ->bulkActions([

@@ -3,11 +3,8 @@
 namespace App\Filament\Actions;
 
 use App\Filament\Forms\FlowForm;
-use App\Filament\Forms\FlowHasFormForm;
 use App\Models\Flow;
-use App\Models\FlowHasForm;
 use App\Models\FlowHasNode;
-use App\Services\FlowHasFormService;
 use App\Utils\LogUtil;
 use App\Utils\NotificationUtil;
 use Exception;
@@ -19,14 +16,15 @@ class FlowAction
 {
     public static function delete(): Action
     {
-        return Action::make(__('cat/action.delete'))
+        return Action::make(__('cat/flow.action.delete'))
+            ->slideOver()
             ->requiresConfirmation()
             ->color('danger')
             ->icon('heroicon-s-trash')
             ->action(function (Flow $flow) {
                 try {
                     $flow->service()->delete();
-                    NotificationUtil::make(true, __('cat/action.delete_success'));
+                    NotificationUtil::make(true, __('cat/flow.action.delete_success'));
                 } catch (Exception $exception) {
                     LogUtil::error($exception);
                     NotificationUtil::make(false, $exception);
@@ -61,25 +59,6 @@ class FlowAction
                 } catch (Exception $exception) {
                     // 回滚事务
                     DB::rollBack();
-                    LogUtil::error($exception);
-                    NotificationUtil::make(false, $exception->getMessage());
-                }
-            })
-            ->closeModalByClickingAway(false);
-    }
-
-    public static function approve(): \Filament\Infolists\Components\Actions\Action
-    {
-        return \Filament\Infolists\Components\Actions\Action::make(__('cat/flow.action.approve'))
-            ->slideOver()
-            ->icon('heroicon-o-shield-exclamation')
-            ->form(FlowHasFormForm::approve())
-            ->action(function (array $data, FlowHasForm $flow_has_form) {
-                try {
-                    $flow_has_form_service = new FlowHasFormService($flow_has_form);
-                    $flow_has_form_service->approve($data['status'], $data['approve_comment']);
-                    NotificationUtil::make(true, __('cat/flow.action.approve_success'));
-                } catch (Exception $exception) {
                     LogUtil::error($exception);
                     NotificationUtil::make(false, $exception->getMessage());
                 }

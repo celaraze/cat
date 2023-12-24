@@ -2,7 +2,9 @@
 
 return [
     'asset_number' => '资产编号',
+    'category' => '分类',
     'category_id' => '分类',
+    'brand' => '品牌',
     'brand_id' => '品牌',
     'sn' => '序列号',
     'specification' => '规格',
@@ -14,9 +16,26 @@ return [
     'flow_id' => '流程',
     'asset_number_rule_id' => '资产编号生成规则',
     'is_auto' => '自动生成',
+    'status' => '状态',
+    'status.all' => '全部',
+    'status.idle' => '闲置',
+    'status.using' => '使用',
+    'status.retired' => '废弃',
 
     'form.retire_comment' => '废弃备注',
 
+    'action.create' => '创建',
+    'action.create_success' => '创建成功',
+    'action.retire' => '流程废弃',
+    'action.retire_success' => '创建流程废弃表单成功',
+    'action.force_retire' => '强制废弃',
+    'action.force_retire_success' => '强制废弃成功',
+    'action.set_asset_number_rule' => '设置资产编号自动生成规则',
+    'action.set_asset_number_rule_success' => '设置成功',
+    'action.reset_asset_number_rule' => '重置资产编号自动生成规则',
+    'action.reset_asset_number_rule_success' => '重置成功',
+    'action.set_retire_flow' => '设置废弃流程',
+    'action.set_retire_flow_success' => '设置成功',
     'action.asset_number.create_helper' => '资产编号已绑定自动生成，无需填写本字段',
 
     'widget.using' => ' 使用中',

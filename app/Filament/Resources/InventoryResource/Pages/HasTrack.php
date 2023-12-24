@@ -3,7 +3,7 @@
 namespace App\Filament\Resources\InventoryResource\Pages;
 
 use App\Enums\InventoryEnum;
-use App\Filament\Actions\InventoryAction;
+use App\Filament\Actions\InventoryHasTrackAction;
 use App\Filament\Resources\InventoryResource;
 use App\Models\InventoryHasTrack;
 use Filament\Resources\Pages\ManageRelatedRecords;
@@ -62,7 +62,7 @@ class HasTrack extends ManageRelatedRecords
 
             ])
             ->actions([
-                InventoryAction::check()
+                InventoryHasTrackAction::check()
                     ->visible(function (InventoryHasTrack $inventory_has_track) {
                         return ! $inventory_has_track->service()->isChecked();
                     }),

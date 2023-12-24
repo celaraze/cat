@@ -34,6 +34,7 @@ class BrandAction
     public static function delete(): Action
     {
         return Action::make(__('cat/brand.action.delete'))
+            ->slideOver()
             ->icon('heroicon-m-trash')
             ->color('danger')
             ->requiresConfirmation()

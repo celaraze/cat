@@ -15,7 +15,7 @@ class ChangeAvatar extends Widget implements HasActions, HasForms
     use InteractsWithActions;
     use InteractsWithForms;
 
-    protected static string $view = 'filament.resources.widgets.change-avatar';
+    protected static string $view = 'cat.widgets.change-avatar';
 
     protected static ?int $sort = 1;
 
@@ -26,6 +26,6 @@ class ChangeAvatar extends Widget implements HasActions, HasForms
 
     public function getDescription(): string
     {
-        return __('cat/widget.change_avatar_description');
+        return __('cat/profile.widget.change_avatar_description');
     }
 }

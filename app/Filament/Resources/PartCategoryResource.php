@@ -27,9 +27,11 @@ class PartCategoryResource extends Resource implements HasShieldPermissions
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
+    protected static ?string $recordTitleAttribute = 'name';
+
     public static function getModelLabel(): string
     {
-        return __('cat/part_category');
+        return __('cat/menu.part_category');
     }
 
     public static function getRecordSubNavigation(Page $page): array
@@ -74,7 +76,7 @@ class PartCategoryResource extends Resource implements HasShieldPermissions
                 Tables\Columns\TextColumn::make('name')
                     ->searchable()
                     ->toggleable()
-                    ->label(__('cat/resource.part_category.name')),
+                    ->label(__('cat/part_category.name')),
             ])
             ->filters([
                 Tables\Filters\TrashedFilter::make(),
@@ -82,8 +84,10 @@ class PartCategoryResource extends Resource implements HasShieldPermissions
             ->actions([
                 // 删除
                 PartCategoryAction::delete()
-                    ->visible(function () {
-                        return auth()->user()->can('delete_part::category');
+                    ->visible(function (PartCategory $part_category) {
+                        $is_deleted = $part_category->service()->isDeleted();
+
+                        return ! $is_deleted && auth()->user()->can('delete_part::category');
                     }),
             ])
             ->bulkActions([
@@ -112,7 +116,8 @@ class PartCategoryResource extends Resource implements HasShieldPermissions
                     }),
                 // 返回配件
                 PartCategoryAction::toPart(),
-            ]);
+            ])
+            ->heading(__('cat/menu.part_category'));
     }
 
     public static function getPages(): array

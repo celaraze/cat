@@ -7,7 +7,6 @@ use App\Filament\Resources\FootprintResource\Pages\Index;
 use App\Filament\Resources\FootprintResource\Pages\View;
 use App\Models\Footprint;
 use BezhanSalleh\FilamentShield\Contracts\HasShieldPermissions;
-use Filament\Forms\Form;
 use Filament\Infolists\Components\Grid;
 use Filament\Infolists\Components\Group;
 use Filament\Infolists\Components\Section;
@@ -65,14 +64,6 @@ class FootprintResource extends Resource implements HasShieldPermissions
         ];
     }
 
-    public static function form(Form $form): Form
-    {
-        return $form
-            ->schema([
-
-            ]);
-    }
-
     public static function table(Table $table): Table
     {
         return $table
@@ -86,7 +77,7 @@ class FootprintResource extends Resource implements HasShieldPermissions
                     ->toggleable()
                     ->badge()
                     ->color('gray')
-                    ->label(__('cat/creator')),
+                    ->label(__('cat/footprint.creator')),
                 TextColumn::make('action')
                     ->formatStateUsing(function ($state) {
                         return FootprintEnum::actionText($state);
@@ -95,24 +86,24 @@ class FootprintResource extends Resource implements HasShieldPermissions
                     ->color(function ($state) {
                         return FootprintEnum::actionColor($state);
                     })
-                    ->label(__('cat/action')),
+                    ->label(__('cat/footprint.action')),
                 TextColumn::make('model_class')
                     ->searchable()
                     ->toggleable()
-                    ->label(__('cat/model_class')),
+                    ->label(__('cat/footprint.model_class')),
                 TextColumn::make('model_id')
                     ->searchable()
                     ->toggleable()
-                    ->label(__('cat/model_id')),
+                    ->label(__('cat/footprint.model_id')),
                 TextColumn::make('created_at')
                     ->alignRight()
-                    ->label(__('cat/created_at')),
+                    ->label(__('cat/footprint.created_at')),
             ])
             ->filters([
                 SelectFilter::make('action')
                     ->multiple()
                     ->options(FootprintEnum::allActionText())
-                    ->label(__('cat/action')),
+                    ->label(__('cat/footprint.action')),
             ])
             ->actions([
 
@@ -133,12 +124,12 @@ class FootprintResource extends Resource implements HasShieldPermissions
                                 ->schema([
                                     Group::make([
                                         TextEntry::make('creator.name')
-                                            ->label(__('cat/creator'))
+                                            ->label(__('cat/footprint.creator'))
                                             ->badge(),
                                         TextEntry::make('model_class')
-                                            ->label(__('cat/model_class')),
+                                            ->label(__('cat/footprint.model_class')),
                                         TextEntry::make('created_at')
-                                            ->label(__('cat/created_at')),
+                                            ->label(__('cat/footprint.created_at')),
                                     ]),
                                     Group::make([
                                         TextEntry::make('action')
@@ -149,9 +140,9 @@ class FootprintResource extends Resource implements HasShieldPermissions
                                             ->color(function ($state) {
                                                 return FootprintEnum::actionColor($state);
                                             })
-                                            ->label(__('cat/action')),
+                                            ->label(__('cat/footprint.action')),
                                         TextEntry::make('model_id')
-                                            ->label(__('cat/model_id')),
+                                            ->label(__('cat/footprint.model_id')),
                                     ]),
                                 ]),
                         ]),
@@ -174,7 +165,7 @@ $state
 EOF;
                                         })
                                         ->markdown()
-                                        ->label(__('cat/before')),
+                                        ->label(__('cat/footprint.before')),
                                 ]),
                             ]),
                     ]),
@@ -197,7 +188,7 @@ $state
 EOF;
                                         })
                                         ->markdown()
-                                        ->label(__('cat/after'))]),
+                                        ->label(__('cat/footprint.after'))]),
                             ]),
                     ]),
             ])

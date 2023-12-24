@@ -615,6 +615,44 @@ return new class extends Migration
 
     public function down(): void
     {
-        Schema::dropAllTables();
+        Schema::dropIfExists('asset_number_rules');
+        Schema::dropIfExists('asset_number_tracks');
+        Schema::dropIfExists('brands');
+        Schema::dropIfExists('device_categories');
+        Schema::dropIfExists('device_has_parts');
+        Schema::dropIfExists('device_has_software');
+        Schema::dropIfExists('device_has_users');
+        Schema::dropIfExists('devices');
+        Schema::dropIfExists('failed_import_rows');
+        Schema::dropIfExists('failed_jobs');
+        Schema::dropIfExists('flow_has_forms');
+        Schema::dropIfExists('flow_has_nodes');
+        Schema::dropIfExists('flows');
+        Schema::dropIfExists('footprints');
+        Schema::dropIfExists('import_log');
+        Schema::dropIfExists('imports');
+        Schema::dropIfExists('inventories');
+        Schema::dropIfExists('inventory_has_tracks');
+        Schema::dropIfExists('job_batches');
+        Schema::dropIfExists('notifications');
+        Schema::dropIfExists('organizations');
+        Schema::dropIfExists('organization_has_users');
+        Schema::dropIfExists('part_categories');
+        Schema::dropIfExists('parts');
+        Schema::dropIfExists('role_has_permissions');
+        Schema::dropIfExists('settings');
+        Schema::dropIfExists('software');
+        Schema::dropIfExists('software_categories');
+        Schema::dropIfExists('ticket_categories');
+        Schema::dropIfExists('ticket_has_tracks');
+        Schema::dropIfExists('tickets');
+        Schema::dropIfExists('users');
+        Schema::dropIfExists('vendor_has_contacts');
+        Schema::dropIfExists('vendors');
+        $tableNames = config('permission.table_names');
+        Schema::dropIfExists($tableNames['model_has_permissions']);
+        Schema::dropIfExists($tableNames['model_has_roles']);
+        Schema::dropIfExists($tableNames['permissions']);
+        Schema::dropIfExists($tableNames['roles']);
     }
 };

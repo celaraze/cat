@@ -72,16 +72,16 @@ class InventoryResource extends Resource implements HasShieldPermissions
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('name')
-                    ->label(__('cat/name')),
+                    ->label(__('cat/inventory.name')),
                 Tables\Columns\TextColumn::make('class_name')
                     ->formatStateUsing(function (string $state) {
                         return AssetEnum::assetTypeText($state);
                     })
-                    ->label(__('cat/class_name')),
+                    ->label(__('cat/inventory.class_name')),
                 Tables\Columns\TextColumn::make('creator.name')
-                    ->label(__('cat/creator')),
+                    ->label(__('cat/inventory.creator')),
                 Tables\Columns\TextColumn::make('hasTracks.check')
-                    ->label(__('cat/resource.inventory.check'))
+                    ->label(__('cat/inventory.checked'))
                     ->formatStateUsing(function (string $state) {
                         $checks = explode(',', $state);
                         $array_filter = array_filter($checks, function ($value) {
@@ -91,7 +91,7 @@ class InventoryResource extends Resource implements HasShieldPermissions
                         return count($array_filter);
                     }),
                 Tables\Columns\TextColumn::make('hasTracks.asset_number')
-                    ->label(__('cat/resource.inventory.asset_number'))
+                    ->label(__('cat/inventory.count'))
                     ->formatStateUsing(function (string $state) {
                         $asset_numbers = explode(',', $state);
 
@@ -114,7 +114,7 @@ class InventoryResource extends Resource implements HasShieldPermissions
                         return auth()->user()->can('create_inventory');
                     }),
             ])
-            ->heading(__('cat/resource.inventory'));
+            ->heading(__('cat/menu.inventory'));
     }
 
     public static function infolist(Infolist $infolist): Infolist

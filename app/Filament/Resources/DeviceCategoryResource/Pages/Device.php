@@ -8,8 +8,6 @@ use Filament\Resources\Pages\ManageRelatedRecords;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Contracts\Support\Htmlable;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class Device extends ManageRelatedRecords
 {
@@ -18,6 +16,8 @@ class Device extends ManageRelatedRecords
     protected static string $relationship = 'devices';
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+
+    protected ?string $heading = ' ';
 
     public static function getNavigationLabel(): string
     {
@@ -40,7 +40,7 @@ class Device extends ManageRelatedRecords
                     ->label(__('cat/device.asset_number')),
             ])
             ->filters([
-                Tables\Filters\TrashedFilter::make(),
+
             ])
             ->headerActions([
 
@@ -51,9 +51,6 @@ class Device extends ManageRelatedRecords
             ])
             ->bulkActions([
 
-            ])
-            ->modifyQueryUsing(fn (Builder $query) => $query->withoutGlobalScopes([
-                SoftDeletingScope::class,
-            ]));
+            ]);
     }
 }

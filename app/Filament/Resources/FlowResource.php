@@ -78,9 +78,9 @@ class FlowResource extends Resource implements HasShieldPermissions
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('name')
-                    ->label(__('cat/name')),
+                    ->label(__('cat/flow.name')),
                 Tables\Columns\TextColumn::make('tag')
-                    ->label(__('cat/tag')),
+                    ->label(__('cat/flow.tag')),
             ])
             ->filters([
                 Tables\Filters\TrashedFilter::make(),
@@ -105,7 +105,7 @@ class FlowResource extends Resource implements HasShieldPermissions
                         return auth()->user()->can('create_flow');
                     }),
             ])
-            ->heading(__('cat/flow'));
+            ->heading(__('cat/menu.flow'));
     }
 
     public static function getPages(): array

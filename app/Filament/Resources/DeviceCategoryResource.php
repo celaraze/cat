@@ -27,6 +27,8 @@ class DeviceCategoryResource extends Resource implements HasShieldPermissions
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
+    protected static ?string $recordTitleAttribute = 'name';
+
     public static function getModelLabel(): string
     {
         return __('cat/menu.device_category');
@@ -77,8 +79,10 @@ class DeviceCategoryResource extends Resource implements HasShieldPermissions
             ->actions([
                 // 删除
                 DeviceCategoryAction::delete()
-                    ->visible(function () {
-                        return auth()->user()->can('delete_device::category');
+                    ->visible(function (DeviceCategory $device_category) {
+                        $is_deleted = $device_category->service()->isDelete();
+
+                        return ! $is_deleted && auth()->user()->can('delete_device::category');
                     }),
             ])
             ->bulkActions([
@@ -93,13 +97,13 @@ class DeviceCategoryResource extends Resource implements HasShieldPermissions
                     ->importer(DeviceCategoryImporter::class)
                     ->icon('heroicon-o-arrow-up-tray')
                     ->color('primary')
-                    ->label(__('cat/device_category.action.import'))
+                    ->label(__('cat/action.import'))
                     ->visible(function () {
                         return auth()->user()->can('import_device::category');
                     }),
                 // 导出
                 ExportAction::make()
-                    ->label(__('cat/device_category.action.export'))
+                    ->label(__('cat/action.export'))
                     ->visible(function () {
                         return auth()->user()->can('export_device::category');
                     }),
@@ -109,7 +113,8 @@ class DeviceCategoryResource extends Resource implements HasShieldPermissions
                         return auth()->user()->can('create_device::category');
                     }),
                 DeviceCategoryAction::toDevice(),
-            ]);
+            ])
+            ->heading(__('cat/menu.device_category'));
     }
 
     public static function form(Form $form): Form

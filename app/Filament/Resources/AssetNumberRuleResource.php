@@ -74,13 +74,13 @@ class AssetNumberRuleResource extends Resource implements HasShieldPermissions
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('name')
-                    ->label(__('cat/name')),
+                    ->label(__('cat/asset_number_rule.name')),
                 Tables\Columns\TextColumn::make('formula')
-                    ->label(__('cat/formula'))
+                    ->label(__('cat/asset_number_rule.formula'))
                     ->badge()
                     ->color('success'),
                 Tables\Columns\TextColumn::make('auto_increment_length')
-                    ->label(__('cat/auto_increment_length')),
+                    ->label(__('cat/asset_number_rule.auto_increment_length')),
             ])
             ->filters([
                 Tables\Filters\TrashedFilter::make(),
@@ -103,7 +103,7 @@ class AssetNumberRuleResource extends Resource implements HasShieldPermissions
                         return auth()->user()->can('create_asset::number::rule');
                     }),
             ])
-            ->heading(__('cat/asset_number_rule'));
+            ->heading(__('cat/menu.asset_number_rule'));
     }
 
     public static function getPages(): array

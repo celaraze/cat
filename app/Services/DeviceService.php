@@ -174,17 +174,6 @@ class DeviceService
      */
     public function isRetired(): bool
     {
-        if ($this->model->getAttribute('status') == 3) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    public function setDeviceById(int $device_id): void
-    {
-        /* @var Device $device */
-        $device = Device::query()->where('id', $device_id)->first();
-        $this->model = $device;
+        return $this->model->getAttribute('status') == 3;
     }
 }

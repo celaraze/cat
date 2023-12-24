@@ -15,6 +15,7 @@ class SecretAction
     public static function viewToken(): Action
     {
         return Action::make(__('cat/secret.action.view_token'))
+            ->slideOver()
             ->icon('heroicon-m-key')
             ->color('warning')
             ->requiresConfirmation()
@@ -31,7 +32,8 @@ class SecretAction
                     LogUtil::error($exception);
                     NotificationUtil::make(false, $exception);
                 }
-            });
+            })
+            ->closeModalByClickingAway(false);
     }
 
     public static function create(): Action
@@ -57,6 +59,7 @@ class SecretAction
     public static function retire(): Action
     {
         return Action::make(__('cat/secret.action.retire'))
+            ->slideOver()
             ->icon('heroicon-m-trash')
             ->color('danger')
             ->requiresConfirmation()
@@ -69,6 +72,7 @@ class SecretAction
                     LogUtil::error($exception);
                     NotificationUtil::make(false, $exception);
                 }
-            });
+            })
+            ->closeModalByClickingAway(false);
     }
 }

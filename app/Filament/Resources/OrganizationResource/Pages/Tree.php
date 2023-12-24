@@ -40,7 +40,7 @@ class Tree extends BasePage
             CreateAction::make()
                 ->slideOver()
                 ->icon('heroicon-m-plus')
-                ->label(__('cat/action.create'))
+                ->label(__('cat/organization.action.create'))
                 ->createAnother(false)
                 ->closeModalByClickingAway(false),
         ];
@@ -50,7 +50,7 @@ class Tree extends BasePage
     {
         return [
             // 查看成员
-            Action::make(__('cat/action.view_members'))
+            Action::make(__('cat/organization.action.view_member'))
                 ->icon('heroicon-m-eye')
                 ->color('info')
                 ->link()

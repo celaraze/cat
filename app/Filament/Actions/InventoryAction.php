@@ -5,7 +5,6 @@ namespace App\Filament\Actions;
 use App\Filament\Forms\InventoryForm;
 use App\Filament\Resources\InventoryResource;
 use App\Models\Inventory;
-use App\Models\InventoryHasTrack;
 use App\Services\InventoryService;
 use App\Utils\LogUtil;
 use App\Utils\NotificationUtil;
@@ -37,6 +36,7 @@ class InventoryAction
     public static function delete(): \Filament\Actions\Action
     {
         return \Filament\Actions\Action::make(__('cat/inventory.action.delete'))
+            ->slideOver()
             ->icon('heroicon-s-trash')
             ->color('danger')
             ->requiresConfirmation()
@@ -45,25 +45,6 @@ class InventoryAction
                     $inventory->service()->delete();
                     NotificationUtil::make(true, __('cat/inventory.action.delete_success'));
                     redirect(InventoryResource::getUrl('index'));
-                } catch (Exception $exception) {
-                    LogUtil::error($exception);
-                    NotificationUtil::make(false, $exception);
-                }
-            })
-            ->closeModalByClickingAway(false);
-    }
-
-    public static function check(): Action
-    {
-        return Action::make(__('cat/inventory.action.check'))
-            ->slideOver()
-            ->icon('heroicon-m-document-check')
-            ->form(InventoryForm::check())
-            ->action(function (array $data, InventoryHasTrack $inventory_has_track) {
-                try {
-                    $data['creator_id'] = auth()->id();
-                    $inventory_has_track->service()->check($data);
-                    NotificationUtil::make(true, __('cat/inventory.action.check_success'));
                 } catch (Exception $exception) {
                     LogUtil::error($exception);
                     NotificationUtil::make(false, $exception);

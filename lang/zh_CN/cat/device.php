@@ -28,12 +28,8 @@ return [
     'form.asset_number.create_helper' => '资产编号已自动生成',
     'form.retire_helper' => '此操作将同时报废所含配件（不包含软件）。',
     'form.force_retire_helper' => '此操作将同时报废所含配件（不包含软件）。',
-
-    'action.import' => '导入',
-    'action.export' => '导出',
     'action.create' => '创建',
     'action.create_success' => '创建成功',
-    'action.advance' => '高级',
     'action.summary' => '速览',
     'action.summary.helper' => '本速览仅用于快速查看设备附属资产，详请可单独前往设备资产查看。',
     'action.assign_user' => '分配用户',

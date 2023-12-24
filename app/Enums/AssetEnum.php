@@ -70,18 +70,18 @@ class AssetEnum
     public static function allAssetTypeText(): array
     {
         return [
-            Device::class => __('cat/device'),
-            Part::class => __('cat/part'),
-            Software::class => __('cat/software'),
+            Device::class => __('cat/menu.device'),
+            Part::class => __('cat/menu.part'),
+            Software::class => __('cat/menu.software'),
         ];
     }
 
     public static function assetTypeText(string $state): string
     {
         return match ($state) {
-            Device::class => __('cat/device'),
-            Part::class => __('cat/part'),
-            Software::class => __('cat/software'),
+            Device::class => __('cat/menu.device'),
+            Part::class => __('cat/menu.part'),
+            Software::class => __('cat/menu.software'),
         };
     }
 }

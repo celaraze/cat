@@ -3,8 +3,6 @@
 namespace App\Filament\Forms;
 
 use App\Enums\AssetEnum;
-use App\Enums\InventoryEnum;
-use Filament\Forms\Components\Radio;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 
@@ -38,21 +36,6 @@ class InventoryForm
                     return $model->service()->pluckOptions();
                 })
                 ->hint(__('cat/inventory.form.model_ids_helper')),
-        ];
-    }
-
-    /**
-     * 盘点.
-     */
-    public static function check(): array
-    {
-        return [
-            Radio::make('check')
-                ->options(InventoryEnum::allCheckText())
-                ->label(__('cat/inventory.check'))
-                ->required(),
-            TextInput::make('comment')
-                ->label(__('cat/inventory.comment')),
         ];
     }
 }

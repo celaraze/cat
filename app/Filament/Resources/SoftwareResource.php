@@ -113,11 +113,11 @@ class SoftwareResource extends Resource implements HasShieldPermissions
     {
         return $table
             ->columns([
-                Tables\Columns\ImageColumn::make('images')
+                Tables\Columns\ImageColumn::make('image')
                     ->circular()
                     ->toggleable()
                     ->defaultImageUrl(('/images/default.jpg'))
-                    ->label(__('cat/software.images')),
+                    ->label(__('cat/software.image')),
                 Tables\Columns\TextColumn::make('asset_number')
                     ->searchable()
                     ->toggleable()
@@ -164,11 +164,11 @@ class SoftwareResource extends Resource implements HasShieldPermissions
                 Tables\Filters\SelectFilter::make('category_id')
                     ->multiple()
                     ->options(SoftwareCategoryService::pluckOptions())
-                    ->label(__('cat/software.category')),
+                    ->label(__('cat/software.category_id')),
                 Tables\Filters\SelectFilter::make('brand_id')
                     ->multiple()
                     ->options(BrandService::pluckOptions())
-                    ->label(__('cat/software.brand')),
+                    ->label(__('cat/software.brand_id')),
                 Tables\Filters\SelectFilter::make('status')
                     ->multiple()
                     ->options(AssetEnum::allStatusText())

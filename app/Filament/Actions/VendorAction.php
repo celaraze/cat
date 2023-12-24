@@ -34,6 +34,7 @@ class VendorAction
     public static function delete(): Action
     {
         return Action::make(__('cat/vendor.action.delete'))
+            ->slideOver()
             ->icon('heroicon-m-trash')
             ->color('danger')
             ->requiresConfirmation()

@@ -50,6 +50,7 @@ class PartAction
     public static function resetAssetNumberRule(): Action
     {
         return Action::make(__('cat/part.action.reset_asset_number_rule'))
+            ->slideOver()
             ->requiresConfirmation()
             ->action(function () {
                 AssetNumberRuleService::resetAutoRule(Part::class);
@@ -61,6 +62,7 @@ class PartAction
     public static function forceRetire(): Action
     {
         return Action::make(__('cat/part.action.force_retire'))
+            ->slideOver()
             ->requiresConfirmation()
             ->icon('heroicon-m-archive-box-x-mark')
             ->action(function (Part $part) {

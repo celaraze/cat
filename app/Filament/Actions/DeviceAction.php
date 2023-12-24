@@ -59,12 +59,14 @@ class DeviceAction
             ->action(function () {
                 AssetNumberRuleService::resetAutoRule(Device::class);
                 NotificationUtil::make(true, __('cat/device.action.reset_asset_number_rule_success'));
-            });
+            })
+            ->closeModalByClickingAway(false);
     }
 
     public static function forceRetire(): Action
     {
         return Action::make(__('cat/device.action.force_retire'))
+            ->slideOver()
             ->requiresConfirmation()
             ->icon('heroicon-m-archive-box-x-mark')
             ->form(DeviceForm::forceRetire())
@@ -152,13 +154,15 @@ class DeviceAction
             ->link();
     }
 
+    // TODO 这个方法后面看看怎么和 SecretAction 中的合并到一起
     public static function viewToken(): Action
     {
-        return Action::make(__('cat/device.action.view_token'))
+        return Action::make(__('cat/secret.action.view_token'))
+            ->slideOver()
             ->icon('heroicon-m-key')
             ->color('warning')
             ->requiresConfirmation()
-            ->modalDescription(__('cat/device.action.view_token_helper'))
+            ->modalDescription(__('cat/secret.action.view_token_helper'))
             ->form(SecretForm::viewToken())
             ->action(function (array $data, DeviceHasSecret $device_has_secret) {
                 try {
@@ -166,12 +170,13 @@ class DeviceAction
                     if (auth()->attempt(['email' => auth()->user()->email, 'password' => $data['password']])) {
                         NotificationUtil::make(true, __('cat/secret.password').decrypt($secret->getAttribute('token')), true);
                     } else {
-                        NotificationUtil::make(false, __('cat/device.action.view_token_failure'));
+                        NotificationUtil::make(false, __('cat/secret.action.view_token_failure'));
                     }
                 } catch (Exception $exception) {
                     LogUtil::error($exception);
                     NotificationUtil::make(false, $exception);
                 }
-            });
+            })
+            ->closeModalByClickingAway(false);
     }
 }

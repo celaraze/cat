@@ -37,8 +37,8 @@ class FlowHasFormForm
                 ->label(__('cat/flow_has_form.flow_id'))
                 ->required(),
             TextInput::make('name')
-                ->label(__('cat/name'))
-                ->helperText(__('cat/flow_has_form.name_helper'))
+                ->label(__('cat/flow_has_form.name'))
+                ->helperText(__('cat/flow_has_form.form.name_helper'))
                 ->required(),
             TextInput::make('comment')
                 ->label(__('cat/flow_has_form.comment'))

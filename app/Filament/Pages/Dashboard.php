@@ -5,6 +5,7 @@ namespace App\Filament\Pages;
 use App\Filament\Widgets\AssetOverview;
 use App\Filament\Widgets\TicketOverview;
 use Filament\Pages\Page;
+use Illuminate\Contracts\Support\Htmlable;
 
 class Dashboard extends Page
 {
@@ -15,6 +16,11 @@ class Dashboard extends Page
     protected ?string $heading = '';
 
     public static function getNavigationLabel(): string
+    {
+        return __('cat/menu.dashboard');
+    }
+
+    public function getTitle(): string|Htmlable
     {
         return __('cat/menu.dashboard');
     }

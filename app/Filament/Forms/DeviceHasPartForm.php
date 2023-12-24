@@ -46,6 +46,6 @@ class DeviceHasPartForm
             ];
         }
 
-        throw new Exception('不正确的按钮传参方式。');
+        throw new Exception(__('cat/device_has_part.form.model_error'));
     }
 }

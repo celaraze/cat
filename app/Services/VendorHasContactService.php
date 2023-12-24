@@ -37,4 +37,9 @@ class VendorHasContactService
     {
         return $this->model->delete();
     }
+
+    public function isDeleted(): bool
+    {
+        return ! ($this->model->getAttribute('deleted_at') == null);
+    }
 }

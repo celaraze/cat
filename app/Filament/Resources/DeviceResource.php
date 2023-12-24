@@ -64,8 +64,8 @@ class DeviceResource extends Resource implements HasShieldPermissions
     {
         /* @var Device $record */
         return [
-            __('cat/name') => $record->getAttribute('name'),
-            __('cat/user') => $record->users()->value('name') ?? __('cat/none'),
+            __('cat/device.name') => $record->getAttribute('name'),
+            __('cat/device.user.name') => $record->users()->value('name') ?? __('cat/none'),
         ];
     }
 
@@ -251,11 +251,11 @@ class DeviceResource extends Resource implements HasShieldPermissions
                     ->importer(DeviceImporter::class)
                     ->icon('heroicon-o-arrow-up-tray')
                     ->color('primary')
-                    ->label(__('cat/device.action.import'))
+                    ->label(__('cat/action.import'))
                     ->visible(auth()->user()->can('import_device')),
                 // 导出
                 ExportAction::make()
-                    ->label(__('cat/device.action.export'))
+                    ->label(__('cat/action.export'))
                     ->visible(auth()->user()->can('export_device')),
                 // 创建
                 DeviceAction::create()
@@ -281,7 +281,7 @@ class DeviceResource extends Resource implements HasShieldPermissions
                             return auth()->user()->can('set_retire_flow_device');
                         }),
                 ])
-                    ->label(__('cat/device.action.advance'))
+                    ->label(__('cat/action.advance'))
                     ->icon('heroicon-m-cog-8-tooth')
                     ->button(),
             ])

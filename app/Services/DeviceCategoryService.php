@@ -46,4 +46,9 @@ class DeviceCategoryService
     {
         return $this->model->delete();
     }
+
+    public function isDelete(): bool
+    {
+        return ! ($this->model->getAttribute('deleted_at') == null);
+    }
 }

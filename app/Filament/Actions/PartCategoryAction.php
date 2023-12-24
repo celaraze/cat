@@ -36,6 +36,7 @@ class PartCategoryAction
     public static function delete(): Action
     {
         return Action::make(__('cat/part_category.action.delete'))
+            ->slideOver()
             ->icon('heroicon-s-trash')
             ->color('danger')
             ->requiresConfirmation()
@@ -48,7 +49,8 @@ class PartCategoryAction
                     LogUtil::error($exception);
                     NotificationUtil::make(false, $exception);
                 }
-            });
+            })
+            ->closeModalByClickingAway(false);
     }
 
     public static function toPart(): Action

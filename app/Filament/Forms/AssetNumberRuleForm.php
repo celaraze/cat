@@ -24,9 +24,8 @@ class AssetNumberRuleForm
                 ->label(__('cat/asset_number_rule.auto_increment_length'))
                 ->numeric()
                 ->required(),
-            Shout::make('description')
-                ->label(__('cat/asset_number_rule.description'))
-                ->content(__('cat/asset_number_rule.form.description_create_helper')),
+            Shout::make('')
+                ->content(__('cat/asset_number_rule.form.create_helper')),
         ];
     }
 }

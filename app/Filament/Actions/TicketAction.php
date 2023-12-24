@@ -47,6 +47,7 @@ class TicketAction
     {
         /* @var Ticket $ticket */
         return \Filament\Infolists\Components\Actions\Action::make(__('cat/ticket.action.finish'))
+            ->slideOver()
             ->color('success')
             ->icon('heroicon-o-check-circle')
             ->requiresConfirmation()
@@ -66,6 +67,7 @@ class TicketAction
     public static function setAssignee(): Action
     {
         return Action::make(__('cat/ticket.action.set_assignee'))
+            ->slideOver()
             ->icon('heroicon-o-hand-raised')
             ->color('success')
             ->requiresConfirmation()

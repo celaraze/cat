@@ -50,11 +50,13 @@ class FlowHasNodeAction
     {
         /* @var Flow $flow */
         return Action::make(__('cat/flow_has_node.action.delete_all'))
+            ->slideOver()
+            ->icon('heroicon-s-trash')
             ->color('danger')
             ->requiresConfirmation()
             ->action(function () use ($flow) {
                 if ($flow->activeForms()) {
-                    NotificationUtil::make(false, __('cat/flow_has_node.action.delete_all_failure_avtive_forms'));
+                    NotificationUtil::make(false, __('cat/flow_has_node.action.delete_all_failure_active_forms'));
                 } else {
                     $flow->nodes()->where('parent_node_id', '!=', 0)->delete();
                     NotificationUtil::make(true, __('cat/flow_has_node.action.delete_all_success'));
@@ -67,6 +69,7 @@ class FlowHasNodeAction
     {
         /* @var Flow $flow */
         return Action::make(__('cat/flow_has_node.action.delete'))
+            ->slideOver()
             ->color('danger')
             ->icon('heroicon-s-trash')
             ->requiresConfirmation()

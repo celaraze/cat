@@ -63,34 +63,34 @@ class HasUser extends ManageRelatedRecords
                             return 'success';
                         }
                     })
-                    ->label(__('cat/user.name')),
+                    ->label(__('cat/device_has_user.name')),
                 Tables\Columns\TextColumn::make('comment')
                     ->searchable()
                     ->toggleable()
-                    ->label(__('cat/user.comment')),
+                    ->label(__('cat/device_has_user.comment')),
                 Tables\Columns\TextColumn::make('delete_comment')
                     ->searchable()
                     ->toggleable()
-                    ->label(__('cat/user.delete_comment')),
+                    ->label(__('cat/device_has_user.delete_comment')),
                 Tables\Columns\TextColumn::make('expired_at')
                     ->searchable()
                     ->toggleable()
                     ->size(TextColumnSize::ExtraSmall)
-                    ->label(__('cat/user.expired_at')),
+                    ->label(__('cat/device_has_user.expired_at')),
                 Tables\Columns\TextColumn::make('created_at')
                     ->searchable()
                     ->toggleable()
                     ->size(TextColumnSize::ExtraSmall)
-                    ->label(__('cat/user.created_at')),
+                    ->label(__('cat/device_has_user.created_at')),
                 Tables\Columns\TextColumn::make('deleted_at')
                     ->searchable()
                     ->toggleable()
                     ->size(TextColumnSize::ExtraSmall)
-                    ->label(__('cat/user.deleted_at')),
+                    ->label(__('cat/device_has_user.deleted_at')),
                 Tables\Columns\TextColumn::make('creator.name')
                     ->searchable()
                     ->toggleable()
-                    ->label(__('cat/user.creator')),
+                    ->label(__('cat/device_has_user.creator')),
                 Tables\Columns\TextColumn::make('status')
                     ->toggleable()
                     ->badge()
@@ -100,7 +100,7 @@ class HasUser extends ManageRelatedRecords
                     ->color(function ($state) {
                         return AssetEnum::statusColor($state);
                     })
-                    ->label(__('cat/user.status')),
+                    ->label(__('cat/device_has_user.status')),
             ])
             ->filters([
 

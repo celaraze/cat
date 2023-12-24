@@ -28,10 +28,6 @@ class OrganizationResource extends Resource implements HasShieldPermissions
 
     protected static ?string $navigationIcon = 'heroicon-m-user-group';
 
-    protected static ?string $navigationGroup = '安全';
-
-    protected static ?string $modelLabel = '组织';
-
     protected static ?int $navigationSort = 2;
 
     public static function getNavigationGroup(): ?string
@@ -40,6 +36,11 @@ class OrganizationResource extends Resource implements HasShieldPermissions
     }
 
     public static function getModelLabel(): string
+    {
+        return __('cat/menu.organization');
+    }
+
+    public static function getNavigationLabel(): string
     {
         return __('cat/menu.organization');
     }
@@ -88,7 +89,7 @@ class OrganizationResource extends Resource implements HasShieldPermissions
                                 ->schema([
                                     Group::make([
                                         TextEntry::make('name')
-                                            ->label(__('cat/resource.organization.name')),
+                                            ->label(__('cat/organization.name')),
                                     ]),
                                 ]),
                         ]),

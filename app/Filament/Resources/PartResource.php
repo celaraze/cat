@@ -75,8 +75,8 @@ class PartResource extends Resource implements HasShieldPermissions
     {
         /* @var Part $record */
         return [
-            __('cat/device') => $record->devices()->value('asset_number'),
-            __('cat_user') => $record->devices()->first()?->users()->value('name'),
+            __('cat/device.asset_number') => $record->devices()->value('asset_number'),
+            __('cat/user.name') => $record->devices()->first()?->users()->value('name'),
         ];
     }
 
@@ -110,36 +110,36 @@ class PartResource extends Resource implements HasShieldPermissions
     {
         return $table
             ->columns([
-                Tables\Columns\ImageColumn::make('images')
+                Tables\Columns\ImageColumn::make('image')
                     ->circular()
                     ->toggleable()
                     ->defaultImageUrl(('/images/default.jpg'))
-                    ->label(__('cat/resource.part.images')),
+                    ->label(__('cat/part.image')),
                 Tables\Columns\TextColumn::make('asset_number')
                     ->searchable()
                     ->toggleable()
                     ->sortable()
-                    ->label(__('cat/resource.part.asset_number')),
+                    ->label(__('cat/part.asset_number')),
                 Tables\Columns\TextColumn::make('brand.name')
                     ->searchable()
                     ->toggleable()
                     ->sortable()
-                    ->label(__('cat/resource.part.brand')),
+                    ->label(__('cat/part.brand')),
                 Tables\Columns\TextColumn::make('category.name')
                     ->searchable()
                     ->toggleable()
                     ->sortable()
-                    ->label(__('cat/resource.part.category')),
+                    ->label(__('cat/part.category')),
                 Tables\Columns\TextColumn::make('sn')
                     ->searchable()
                     ->toggleable()
                     ->sortable()
-                    ->label(__('cat/resource.part.sn')),
+                    ->label(__('cat/part.sn')),
                 Tables\Columns\TextColumn::make('specification')
                     ->searchable()
                     ->toggleable()
                     ->sortable()
-                    ->label(__('cat/resource.part.specification')),
+                    ->label(__('cat/part.specification')),
                 Tables\Columns\TextColumn::make('status')
                     ->toggleable()
                     ->badge()
@@ -150,21 +150,21 @@ class PartResource extends Resource implements HasShieldPermissions
                     ->color(function ($state) {
                         return AssetEnum::statusColor($state);
                     })
-                    ->label(__('cat/resource.part.status')),
+                    ->label(__('cat/part.status')),
             ])
             ->filters([
                 Tables\Filters\SelectFilter::make('category_id')
                     ->multiple()
                     ->options(PartCategoryService::pluckOptions())
-                    ->label(__('cat/resource.part.category')),
+                    ->label(__('cat/part.category_id')),
                 Tables\Filters\SelectFilter::make('brand_id')
                     ->multiple()
                     ->options(BrandService::pluckOptions())
-                    ->label(__('cat/resource.part.brand')),
+                    ->label(__('cat/part.brand_id')),
                 Tables\Filters\SelectFilter::make('status')
                     ->multiple()
                     ->options(AssetEnum::allStatusText())
-                    ->label(__('cat/resource.part.status')),
+                    ->label(__('cat/part.status')),
             ])
             ->actions([
                 Tables\Actions\ActionGroup::make([
@@ -180,7 +180,10 @@ class PartResource extends Resource implements HasShieldPermissions
                         ->visible(function () {
                             return auth()->user()->can('force_retire_part');
                         }),
-                ]),
+                ])
+                    ->visible(function (Part $part) {
+                        return ! $part->service()->isRetired();
+                    }),
             ])
             ->bulkActions([
 
@@ -228,7 +231,7 @@ class PartResource extends Resource implements HasShieldPermissions
                     ->icon('heroicon-m-cog-8-tooth')
                     ->button(),
             ])
-            ->heading(__('cat/resource.part'));
+            ->heading(__('cat/menu.part'));
     }
 
     public static function form(Form $form): Form

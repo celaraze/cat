@@ -79,7 +79,7 @@ class BrandResource extends Resource implements HasShieldPermissions
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('name')
-                    ->label(__('cat/name')),
+                    ->label(__('cat/brand.name')),
             ])
             ->filters([
                 Tables\Filters\TrashedFilter::make(),
@@ -119,7 +119,7 @@ class BrandResource extends Resource implements HasShieldPermissions
                         return auth()->user()->can('create_brand');
                     }),
             ])
-            ->heading(__('cat/brand'));
+            ->heading(__('cat/menu.brand'));
     }
 
     public static function getPages(): array

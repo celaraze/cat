@@ -65,27 +65,27 @@ class ImportResource extends Resource
                 Tables\Columns\TextColumn::make('completed_at')
                     ->searchable()
                     ->toggleable()
-                    ->label(__('cat/completed_at')),
+                    ->label(__('cat/import.completed_at')),
                 Tables\Columns\TextColumn::make('file_name')
                     ->searchable()
                     ->toggleable()
-                    ->label(__('cat/file_name')),
+                    ->label(__('cat/import.file_name')),
                 Tables\Columns\TextColumn::make('processed_rows')
                     ->searchable()
                     ->toggleable()
-                    ->label(__('cat/processed_rows')),
+                    ->label(__('cat/import.processed_rows')),
                 Tables\Columns\TextColumn::make('total_rows')
                     ->searchable()
                     ->toggleable()
-                    ->label(__('cat/total_rows')),
+                    ->label(__('cat/import.total_rows')),
                 Tables\Columns\TextColumn::make('successful_rows')
                     ->searchable()
                     ->toggleable()
-                    ->label(__('cat/successful_rows')),
+                    ->label(__('cat/import.successful_rows')),
                 Tables\Columns\TextColumn::make('user_id')
                     ->searchable()
                     ->toggleable()
-                    ->label(__('cat/user_id')),
+                    ->label(__('cat/import.user_id')),
             ])
             ->filters([
 
@@ -96,7 +96,7 @@ class ImportResource extends Resource
             ->bulkActions([
 
             ])
-            ->heading(__('cat/import_log'));
+            ->heading(__('cat/menu.import_log'));
     }
 
     public static function infolist(Infolist $infolist): Infolist
@@ -110,25 +110,25 @@ class ImportResource extends Resource
                                 ->schema([
                                     Group::make([
                                         TextEntry::make('completed_at')
-                                            ->label(__('cat/completed_at'))
+                                            ->label(__('cat/import.completed_at'))
                                             ->badge()
                                             ->color('primary'),
                                         TextEntry::make('file_name')
-                                            ->label(__('cat/file_name')),
+                                            ->label(__('cat/import.file_name')),
                                         TextEntry::make('file_path')
-                                            ->label(__('cat/file_path')),
+                                            ->label(__('cat/import.file_path')),
                                         TextEntry::make('importer')
-                                            ->label(__('cat/importer')),
+                                            ->label(__('cat/import.importer')),
                                     ]),
                                     Group::make([
                                         TextEntry::make('user_id')
-                                            ->label(__('cat/user_id')),
+                                            ->label(__('cat/import.user_id')),
                                         TextEntry::make('total_rows')
-                                            ->label(__('cat/total_rows')),
+                                            ->label(__('cat/import.total_rows')),
                                         TextEntry::make('processed_rows')
-                                            ->label(__('cat/processed_rows')),
+                                            ->label(__('cat/import.processed_rows')),
                                         TextEntry::make('successful_rows')
-                                            ->label(__('cat/successful_rows')),
+                                            ->label(__('cat/import.successful_rows')),
                                     ]),
                                 ]),
                         ]),

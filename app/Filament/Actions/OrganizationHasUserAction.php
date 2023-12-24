@@ -38,6 +38,7 @@ class OrganizationHasUserAction
     public static function delete(): Action
     {
         return Action::make(__('cat/organization_has_user.action.delete'))
+            ->slideOver()
             ->requiresConfirmation()
             ->icon('heroicon-s-trash')
             ->color('danger')

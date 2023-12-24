@@ -19,6 +19,8 @@ class Part extends ManageRelatedRecords
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
+    protected ?string $heading = ' ';
+
     public static function getNavigationLabel(): string
     {
         return __('cat/menu.part');

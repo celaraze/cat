@@ -36,6 +36,7 @@ class SoftwareCategoryAction
     public static function delete(): Action
     {
         return Action::make(__('cat/software_category.action.delete'))
+            ->slideOver()
             ->icon('heroicon-s-trash')
             ->color('danger')
             ->requiresConfirmation()

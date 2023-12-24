@@ -15,7 +15,7 @@ class ChangePassword extends Widget implements HasActions, HasForms
     use InteractsWithActions;
     use InteractsWithForms;
 
-    protected static string $view = 'filament.resources.widgets.change-password';
+    protected static string $view = 'cat.widgets.change-password';
 
     protected static ?int $sort = 1;
 
@@ -28,6 +28,6 @@ class ChangePassword extends Widget implements HasActions, HasForms
 
     public function getDescription(): string
     {
-        return __('cat/widget.change_password_description');
+        return __('cat/profile.widget.change_password_description');
     }
 }

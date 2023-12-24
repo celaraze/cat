@@ -5,6 +5,7 @@ namespace App\Filament\Resources\VendorResource\Pages;
 use App\Filament\Actions\VendorHasContactAction;
 use App\Filament\Forms\VendorHasContactForm;
 use App\Filament\Resources\VendorResource;
+use App\Models\VendorHasContact;
 use Filament\Forms\Form;
 use Filament\Resources\Pages\ManageRelatedRecords;
 use Filament\Tables;
@@ -58,15 +59,28 @@ class Contact extends ManageRelatedRecords
 
             ])
             ->headerActions([
-                // 添加联系人
-                VendorHasContactAction::create($this->getOwnerRecord()),
+                // 创建
+                VendorHasContactAction::create($this->getOwnerRecord())
+                    ->visible(function () {
+                        return auth()->user()->can('create_has_contact_vendor');
+                    }),
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
-            ])
-            ->bulkActions([
+                // 编辑
+                Tables\Actions\EditAction::make()
+                    ->visible(function (VendorHasContact $vendor_has_contact) {
+                        $is_deleted = $vendor_has_contact->service()->isDeleted();
 
-            ]);
+                        return ! $is_deleted && auth()->user()->can('update_has_contact_vendor');
+                    }),
+                // 删除
+                VendorHasContactAction::delete()
+                    ->visible(function (VendorHasContact $vendor_has_contact) {
+                        $is_deleted = $vendor_has_contact->service()->isDeleted();
+
+                        return ! $is_deleted && auth()->user()->can('delete_has_contact_vendor');
+                    }),
+            ])
+            ->bulkActions([]);
     }
 }

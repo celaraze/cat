@@ -34,6 +34,7 @@ class TicketCategoryAction
     public static function delete(): Action
     {
         return Action::make(__('cat/ticket_category.action.delete'))
+            ->slideOver()
             ->icon('heroicon-s-trash')
             ->color('danger')
             ->requiresConfirmation()

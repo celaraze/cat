@@ -50,6 +50,7 @@ class SoftwareAction
     public static function resetAssetNumberRule(): Action
     {
         return Action::make(__('cat/software.action.reset_asset_number_rule'))
+            ->slideOver()
             ->requiresConfirmation()
             ->action(function () {
                 AssetNumberRuleService::resetAutoRule(Software::class);
@@ -61,6 +62,7 @@ class SoftwareAction
     public static function forceRetire(): Action
     {
         return Action::make(__('cat/software.action.force_retire'))
+            ->slideOver()
             ->requiresConfirmation()
             ->icon('heroicon-m-archive-box-x-mark')
             ->action(function (Software $software) {

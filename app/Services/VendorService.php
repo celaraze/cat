@@ -56,4 +56,9 @@ class VendorService
             throw $exception;
         }
     }
+
+    public function isDeleted(): bool
+    {
+        return ! ($this->model->getAttribute('deleted_at') == null);
+    }
 }

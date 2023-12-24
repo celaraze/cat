@@ -35,7 +35,7 @@ class UserForm
                 ->preload(),
             Shout::make('')
                 ->color('warning')
-                ->content(__('cat/user.form.create_shout_helper')),
+                ->content(__('cat/user.form.create_helper')),
         ];
     }
 
@@ -97,7 +97,7 @@ class UserForm
     {
         return [
             FileUpload::make('avatar')
-                ->label(__('cat/user.image'))
+                ->label(__('cat/user.avatar'))
                 ->directory('avatars')
                 ->getUploadedFileNameForStorageUsing(
                     function (TemporaryUploadedFile $file) {
