@@ -3,15 +3,10 @@
 namespace App\Services;
 
 use App\Models\InventoryHasTrack;
-use App\Traits\Services\HasFootprint;
 use JetBrains\PhpStorm\ArrayShape;
 
-class InventoryHasTrackService
+class InventoryHasTrackService extends Service
 {
-    use HasFootprint;
-
-    public InventoryHasTrack $model;
-
     public function __construct(?InventoryHasTrack $inventory_has_track = null)
     {
         $this->model = $inventory_has_track ?? new InventoryHasTrack();

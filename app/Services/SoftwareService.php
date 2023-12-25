@@ -6,7 +6,6 @@ use App\Models\AssetNumberRule;
 use App\Models\Flow;
 use App\Models\Setting;
 use App\Models\Software;
-use App\Traits\Services\HasFootprint;
 use Exception;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
@@ -14,12 +13,8 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use JetBrains\PhpStorm\ArrayShape;
 
-class SoftwareService
+class SoftwareService extends Service
 {
-    use HasFootprint;
-
-    public Software $model;
-
     public function __construct(?Software $software = null)
     {
         $this->model = $software ?? new Software();
@@ -36,17 +31,17 @@ class SoftwareService
             ->mapWithKeys(function (Software $software) {
                 $title = '';
                 $title .= $software->getAttribute('asset_number');
-                $title .= ' | '.$software->brand()->first()?->getAttribute('name') ?? ' | '.__('cat/unknown_brand');
+                $title .= ' | '.$software->brand()->first()?->getAttribute('name') ?? ' | '.__('cat/software.unknown_brand');
                 $title .= ' | '.$software->getAttribute('name');
                 $title .= ' | '.$software->getAttribute('specification');
-                $title .= ' | '.$software->category()->first()?->getAttribute('name') ?? ' | '.__('cat/unknown_category');
+                $title .= ' | '.$software->category()->first()?->getAttribute('name') ?? ' | '.__('cat/software.unknown_category');
                 if ($software->getAttribute('max_license_count') == 0) {
                     $title .= ' - 无限制';
                 } else {
                     if ($software->getAttribute('max_license_count') > $software->usedCount()) {
                         $title .= ' | '.$software->usedCount().'/'.$software->getAttribute('max_license_count').__('cat/used');
                     } else {
-                        $title .= ' | '.$software->usedCount().'/'.$software->getAttribute('max_license_count').__('cat/used').' | '.__('cat/software_license_exhausted');
+                        $title .= ' | '.$software->usedCount().'/'.$software->getAttribute('max_license_count').__('cat/used').' | '.__('cat/software.license_exhausted');
                     }
                 }
 
@@ -62,7 +57,6 @@ class SoftwareService
         return Setting::query()
             ->where('custom_key', 'software_retire_flow_id')
             ->count();
-
     }
 
     /**
@@ -151,11 +145,11 @@ class SoftwareService
             ->where('custom_key', 'software_retire_flow_id')
             ->value('custom_value');
         if (! $flow_id) {
-            throw new Exception(__('cat/software_retire_flow_not_set'));
+            throw new Exception(__('cat/software.retire_flow_not_set'));
         }
         $flow = Flow::query()->where('id', $flow_id)->first();
         if (! $flow) {
-            throw new Exception(__('cat/software_retire_flow_not_found'));
+            throw new Exception(__('cat/software.retire_flow_not_found'));
         }
 
         return $flow;
@@ -171,12 +165,5 @@ class SoftwareService
         } else {
             return false;
         }
-    }
-
-    public function setSoftwareById(int $software_id): void
-    {
-        /* @var Software $software */
-        $software = Software::query()->where('id', $software_id)->first();
-        $this->model = $software;
     }
 }

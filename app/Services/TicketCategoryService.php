@@ -3,15 +3,10 @@
 namespace App\Services;
 
 use App\Models\TicketCategory;
-use App\Traits\Services\HasFootprint;
 use Illuminate\Support\Collection;
 
-class TicketCategoryService
+class TicketCategoryService extends Service
 {
-    use HasFootprint;
-
-    public TicketCategory $model;
-
     public function __construct(?TicketCategory $ticket_category = null)
     {
         $this->model = $ticket_category ?? new TicketCategory();

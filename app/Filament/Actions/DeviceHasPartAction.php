@@ -35,8 +35,6 @@ class DeviceHasPartAction
                     }
                     foreach ($data['part_ids'] as $part_id) {
                         $data['part_id'] = $part_id;
-                        $data['creator_id'] = auth()->id();
-                        $data['status'] = 0;
                         $device_has_part_service = new DeviceHasPartService();
                         $device_has_part_service->create($data);
                     }

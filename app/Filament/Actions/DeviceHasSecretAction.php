@@ -79,8 +79,6 @@ class DeviceHasSecretAction
                     }
                     foreach ($data['secret_ids'] as $secret_id) {
                         $data['secret_id'] = $secret_id;
-                        $data['creator_id'] = auth()->id();
-                        $data['status'] = 0;
                         $device_has_secret_service = new DeviceHasSecretService();
                         $device_has_secret_service->create($data);
                     }

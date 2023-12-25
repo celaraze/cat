@@ -3,16 +3,11 @@
 namespace App\Services;
 
 use App\Models\PartCategory;
-use App\Traits\Services\HasFootprint;
 use Illuminate\Support\Collection;
 use JetBrains\PhpStorm\ArrayShape;
 
-class PartCategoryService
+class PartCategoryService extends Service
 {
-    use HasFootprint;
-
-    public PartCategory $model;
-
     public function __construct(?PartCategory $part_category = null)
     {
         $this->model = $part_category ?? new PartCategory();
@@ -44,10 +39,5 @@ class PartCategoryService
     public function delete(): ?bool
     {
         return $this->model->delete();
-    }
-
-    public function isDeleted(): bool
-    {
-        return ! ($this->model->getAttribute('deleted_at') == null);
     }
 }

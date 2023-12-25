@@ -5,17 +5,12 @@ namespace App\Services;
 use App\Models\DeviceHasSoftware;
 use App\Models\Part;
 use App\Models\Software;
-use App\Traits\Services\HasFootprint;
 use Exception;
 use Illuminate\Support\Facades\DB;
 use JetBrains\PhpStorm\ArrayShape;
 
-class DeviceHasSoftwareService
+class DeviceHasSoftwareService extends Service
 {
-    use HasFootprint;
-
-    public DeviceHasSoftware $model;
-
     public function __construct(?DeviceHasSoftware $device_has_software = null)
     {
         $this->model = $device_has_software ?? new DeviceHasSoftware();
@@ -51,18 +46,6 @@ class DeviceHasSoftwareService
                 throw $exception;
             }
         }
-    }
-
-    /**
-     * 判断是否已经删除的记录.
-     */
-    public function isDeleted(): bool
-    {
-        if ($this->model->getAttribute('deleted_at')) {
-            return true;
-        }
-
-        return false;
     }
 
     /**

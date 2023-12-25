@@ -3,17 +3,12 @@
 namespace App\Services;
 
 use App\Models\Flow;
-use App\Traits\Services\HasFootprint;
 use Exception;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 
-class FlowService
+class FlowService extends Service
 {
-    use HasFootprint;
-
-    public Flow $model;
-
     public function __construct(Flow|string|null $flow_or_id = null)
     {
         if ($flow_or_id) {

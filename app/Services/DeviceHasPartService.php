@@ -4,32 +4,15 @@ namespace App\Services;
 
 use App\Models\DeviceHasPart;
 use App\Models\Part;
-use App\Traits\Services\HasFootprint;
 use Exception;
 use Illuminate\Support\Facades\DB;
 use JetBrains\PhpStorm\ArrayShape;
 
-class DeviceHasPartService
+class DeviceHasPartService extends Service
 {
-    use HasFootprint;
-
-    public DeviceHasPart $model;
-
     public function __construct(?DeviceHasPart $device_has_part = null)
     {
         $this->model = $device_has_part ?? new DeviceHasPart();
-    }
-
-    /**
-     * 判断是否已经删除的记录.
-     */
-    public function isDeleted(): bool
-    {
-        if ($this->model->getAttribute('deleted_at')) {
-            return true;
-        }
-
-        return false;
     }
 
     /**

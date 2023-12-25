@@ -3,14 +3,9 @@
 namespace App\Services;
 
 use App\Models\Setting;
-use App\Traits\Services\HasFootprint;
 
-class SettingService
+class SettingService extends Service
 {
-    use HasFootprint;
-
-    public Setting $model;
-
     public function __construct(?Setting $setting = null)
     {
         $this->model = $setting ?? new Setting();

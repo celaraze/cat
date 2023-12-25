@@ -4,17 +4,12 @@ namespace App\Services;
 
 use App\Models\DeviceHasSecret;
 use App\Models\Secret;
-use App\Traits\Services\HasFootprint;
 use Exception;
 use Illuminate\Support\Facades\DB;
 use JetBrains\PhpStorm\ArrayShape;
 
-class DeviceHasSecretService
+class DeviceHasSecretService extends Service
 {
-    use HasFootprint;
-
-    public DeviceHasSecret $model;
-
     public function __construct(?DeviceHasSecret $device_has_secret = null)
     {
         return $this->model = $device_has_secret ?? new DeviceHasSecret;
@@ -91,17 +86,5 @@ class DeviceHasSecretService
             DB::rollBack();
             throw $exception;
         }
-    }
-
-    /**
-     * 判断是否已经删除的记录.
-     */
-    public function isDeleted(): bool
-    {
-        if ($this->model->getAttribute('deleted_at')) {
-            return true;
-        }
-
-        return false;
     }
 }

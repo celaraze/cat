@@ -3,14 +3,9 @@
 namespace App\Services;
 
 use App\Models\VendorHasContact;
-use App\Traits\Services\HasFootprint;
 
-class VendorHasContactService
+class VendorHasContactService extends Service
 {
-    use HasFootprint;
-
-    public VendorHasContact $model;
-
     public function __construct(?VendorHasContact $vendor_has_contact = null)
     {
         $this->model = $vendor_has_contact ?? new VendorHasContact();
@@ -36,10 +31,5 @@ class VendorHasContactService
     public function delete(): ?bool
     {
         return $this->model->delete();
-    }
-
-    public function isDeleted(): bool
-    {
-        return ! ($this->model->getAttribute('deleted_at') == null);
     }
 }

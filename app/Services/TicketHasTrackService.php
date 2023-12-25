@@ -3,15 +3,10 @@
 namespace App\Services;
 
 use App\Models\TicketHasTrack;
-use App\Traits\Services\HasFootprint;
 use JetBrains\PhpStorm\ArrayShape;
 
-class TicketHasTrackService
+class TicketHasTrackService extends Service
 {
-    use HasFootprint;
-
-    public TicketHasTrack $model;
-
     public function __construct(?TicketHasTrack $ticket_has_track = null)
     {
         return $this->model = $ticket_has_track ?? new TicketHasTrack();

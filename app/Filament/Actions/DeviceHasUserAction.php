@@ -26,7 +26,6 @@ class DeviceHasUserAction
                         $device = $out_device;
                     }
                     $data['device_id'] = $device->getKey();
-                    $data['creator_id'] = auth()->id();
                     $device_has_user_service = new DeviceHasUserService();
                     $device_has_user_service->create($data);
                     NotificationUtil::make(true, __('cat/device_has_user.action.create_success'));

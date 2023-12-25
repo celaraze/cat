@@ -21,7 +21,6 @@ class InventoryAction
             ->form(InventoryForm::create())
             ->action(function (array $data) {
                 try {
-                    $data['creator_id'] = auth()->id();
                     $inventory_service = new InventoryService();
                     $inventory_service->create($data);
                     NotificationUtil::make(true, __('cat/inventory.action.create_success'));

@@ -47,8 +47,9 @@ class BrandResource extends Resource implements HasShieldPermissions
             View::class,
             Edit::class,
         ];
+        $brand_service = $page->getWidgetData()['record']->service();
         $can_update_brand = auth()->user()->can('update_brand');
-        if (! $can_update_brand) {
+        if ($brand_service->isDeleted() || ! $can_update_brand) {
             unset($navigation[2]);
         }
 
@@ -87,8 +88,10 @@ class BrandResource extends Resource implements HasShieldPermissions
             ->actions([
                 // 删除
                 BrandAction::delete()
-                    ->visible(function () {
-                        return auth()->user()->can('delete_brand');
+                    ->visible(function (Brand $brand) {
+                        $is_deleted = $brand->service()->isDeleted();
+
+                        return ! $is_deleted && auth()->user()->can('delete_brand');
                     }),
             ])
             ->bulkActions([

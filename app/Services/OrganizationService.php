@@ -3,19 +3,12 @@
 namespace App\Services;
 
 use App\Models\Organization;
-use App\Models\OrganizationHasUser;
-use App\Traits\Services\HasFootprint;
 use Exception;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 use JetBrains\PhpStorm\ArrayShape;
 
-class OrganizationService
+class OrganizationService extends Service
 {
-    use HasFootprint;
-
-    public Organization $model;
-
     public function __construct(?Organization $organization = null)
     {
         $this->model = $organization ?? new Organization();
@@ -47,50 +40,6 @@ class OrganizationService
             DB::rollBack();
             throw $exception;
         }
-    }
-
-    /**
-     * 批量创建组织用户记录.
-     *
-     * @throws Exception
-     */
-    #[ArrayShape(['organization_id' => 'int', 'user_ids' => 'array'])]
-    public function createManyHasUsers(array $data): void
-    {
-        try {
-            DB::beginTransaction();
-            $user_ids = $data['user_ids'];
-            foreach ($user_ids as $user_id) {
-                $data = [
-                    'organization_id' => $data['organization_id'],
-                    'user_id' => $user_id,
-                ];
-                $this->createHasUser($data);
-            }
-            DB::commit();
-        } catch (Exception $exception) {
-            DB::rollBack();
-            throw $exception;
-        }
-    }
-
-    /**
-     * 新增组织用户记录.
-     *
-     * @throws Exception
-     */
-    #[ArrayShape(['organization_id' => 'int', 'user_id' => 'int'])]
-    public function createHasUser(array $data): Model
-    {
-        $organization_has_user = OrganizationHasUser::query()
-            ->where('organization_id', $data['organization_id'])
-            ->where('user_id', $data['user_id'])
-            ->count();
-        if ($organization_has_user) {
-            throw new Exception(__('cat/organization_has_user_exists'));
-        }
-
-        return $this->model->hasUsers()->create($data);
     }
 
     /**

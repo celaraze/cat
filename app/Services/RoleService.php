@@ -4,15 +4,10 @@ namespace App\Services;
 
 use App\Models\Role;
 use App\Models\User;
-use App\Traits\Services\HasFootprint;
 use Illuminate\Support\Collection;
 
-class RoleService
+class RoleService extends Service
 {
-    use HasFootprint;
-
-    public Role $model;
-
     public function __construct(?Role $role = null)
     {
         return $this->model = $role ?? new Role();

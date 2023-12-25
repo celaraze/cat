@@ -6,7 +6,6 @@ use App\Models\AssetNumberRule;
 use App\Models\Flow;
 use App\Models\Part;
 use App\Models\Setting;
-use App\Traits\Services\HasFootprint;
 use Exception;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
@@ -14,12 +13,8 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use JetBrains\PhpStorm\ArrayShape;
 
-class PartService
+class PartService extends Service
 {
-    use HasFootprint;
-
-    public Part $model;
-
     public function __construct(?Part $part = null)
     {
         $this->model = $part ?? new Part();
@@ -37,9 +32,9 @@ class PartService
             ->mapWithKeys(function (Part $part) {
                 $title = '';
                 $title .= $part->getAttribute('asset_number');
-                $title .= ' | '.$part->brand()->first()?->getAttribute('name') ?? __('cat/unknown_brand');
+                $title .= ' | '.$part->brand()->first()?->getAttribute('name') ?? __('cat/part.unknown_brand');
                 $title .= ' | '.$part->getAttribute('specification');
-                $title .= ' | '.$part->category()->first()?->getAttribute('name') ?? __('cat/unknown_category');
+                $title .= ' | '.$part->category()->first()?->getAttribute('name') ?? __('cat/part.unknown_category');
 
                 return [$part->getKey() => $title];
             });
@@ -137,13 +132,13 @@ class PartService
             ->where('custom_key', 'part_retire_flow_id')
             ->value('custom_value');
         if (! $flow_id) {
-            throw new Exception(__('cat/part_retire_flow_not_set'));
+            throw new Exception(__('cat/part.retire_flow_not_set'));
         }
         $flow = Flow::query()
             ->where('id', $flow_id)
             ->first();
         if (! $flow) {
-            throw new Exception(__('cat/part_retire_flow_not_found'));
+            throw new Exception(__('cat/part.retire_flow_not_found'));
         }
 
         return $flow;

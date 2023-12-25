@@ -4,6 +4,7 @@ namespace App\Filament\Forms;
 
 use Awcodes\Shout\Components\Shout;
 use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\TextInput;
 
 class SecretForm
@@ -14,6 +15,8 @@ class SecretForm
     public static function createOrEdit(): array
     {
         return [
+            Hidden::make('creator_id')
+                ->default(auth()->id()),
             TextInput::make('name')
                 ->required()
                 ->label(__('cat/secret.name')),

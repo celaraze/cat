@@ -4,17 +4,12 @@ namespace App\Services;
 
 use App\Models\Device;
 use App\Models\DeviceHasUser;
-use App\Traits\Services\HasFootprint;
 use Exception;
 use Illuminate\Support\Facades\DB;
 use JetBrains\PhpStorm\ArrayShape;
 
-class DeviceHasUserService
+class DeviceHasUserService extends Service
 {
-    use HasFootprint;
-
-    public DeviceHasUser $model;
-
     public function __construct(?DeviceHasUser $device_has_user = null)
     {
         $this->model = $device_has_user ?? new DeviceHasUser();

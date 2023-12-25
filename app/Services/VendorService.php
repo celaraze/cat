@@ -3,17 +3,12 @@
 namespace App\Services;
 
 use App\Models\Vendor;
-use App\Traits\Services\HasFootprint;
 use Exception;
 use Illuminate\Support\Facades\DB;
 use JetBrains\PhpStorm\ArrayShape;
 
-class VendorService
+class VendorService extends Service
 {
-    use HasFootprint;
-
-    public Vendor $model;
-
     public function __construct(?Vendor $vendor = null)
     {
         $this->model = $vendor ?? new Vendor();
@@ -55,10 +50,5 @@ class VendorService
             DB::rollBack();
             throw $exception;
         }
-    }
-
-    public function isDeleted(): bool
-    {
-        return ! ($this->model->getAttribute('deleted_at') == null);
     }
 }

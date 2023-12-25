@@ -4,18 +4,13 @@ namespace App\Services;
 
 use App\Models\OrganizationHasUser;
 use App\Models\User;
-use App\Traits\Services\HasFootprint;
 use Exception;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use JetBrains\PhpStorm\ArrayShape;
 
-class UserService
+class UserService extends Service
 {
-    use HasFootprint;
-
-    public User $model;
-
     public function __construct(?User $user = null)
     {
         $this->model = $user ?? new User();
@@ -136,18 +131,6 @@ class UserService
         }
 
         return $this->model->forceDelete();
-    }
-
-    /**
-     * 是否删除.
-     */
-    public function isDeleted(): bool
-    {
-        if ($this->model->getAttribute('deleted_at') != null) {
-            return true;
-        } else {
-            return false;
-        }
     }
 
     /**

@@ -3,14 +3,9 @@
 namespace App\Services;
 
 use App\Models\Ticket;
-use App\Traits\Services\HasFootprint;
 
-class TicketService
+class TicketService extends Service
 {
-    use HasFootprint;
-
-    public Ticket $model;
-
     public function __construct(?Ticket $ticket = null)
     {
         $this->model = $ticket ?? new Ticket();

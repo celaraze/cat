@@ -7,6 +7,7 @@ use App\Models\Software;
 use App\Services\DeviceService;
 use App\Services\SoftwareService;
 use Exception;
+use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\Select;
 
 class DeviceHasSoftwareForm
@@ -20,6 +21,10 @@ class DeviceHasSoftwareForm
     {
         if ($model instanceof Device) {
             return [
+                Hidden::make('creator_id')
+                    ->default(auth()->id()),
+                Hidden::make('status')
+                    ->default(0),
                 Select::make('software_ids')
                     ->options(SoftwareService::pluckOptions())
                     ->multiple()
@@ -33,6 +38,10 @@ class DeviceHasSoftwareForm
             $device_ids = $model->hasSoftware()->pluck('device_id')->toArray();
 
             return [
+                Hidden::make('creator_id')
+                    ->default(auth()->id()),
+                Hidden::make('status')
+                    ->default(0),
                 Select::make('device_ids')
                     ->options(DeviceService::pluckOptions('id', $device_ids))
                     ->multiple()

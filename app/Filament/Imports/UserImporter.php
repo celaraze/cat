@@ -17,21 +17,21 @@ class UserImporter extends Importer
         return [
             ImportColumn::make('name')
                 ->requiredMapping()
-                ->example(__('cat/example_user_name'))
-                ->label(__('cat/name')),
+                ->example(__('cat/user.importer.name_example'))
+                ->label(__('cat/user.name')),
             ImportColumn::make('email')
                 ->requiredMapping()
-                ->example(__('cat/example_user_email'))
-                ->label(__('cat/email')),
+                ->example(__('cat/user.importer.email_example'))
+                ->label(__('cat/user.email')),
         ];
     }
 
     public static function getCompletedNotificationBody(Import $import): string
     {
-        $body = __('cat/import.user_success', ['success_count' => number_format($import->successful_rows)]);
+        $body = __('cat/user.importer.import_success', ['success_count' => number_format($import->successful_rows)]);
 
         if ($failedRowsCount = $import->getFailedRowsCount()) {
-            $body .= ' '.__('cat/import.user_failure', ['failure_count' => number_format($failedRowsCount)]);
+            $body .= ' '.__('cat/user.importer.import_failure', ['failure_count' => number_format($failedRowsCount)]);
         }
 
         return $body;
@@ -42,7 +42,7 @@ class UserImporter extends Importer
         return [
             Shout::make('')
                 ->color('warning')
-                ->content(__('cat/import.user_shout_helper')),
+                ->content(__('cat/user.importer.import_helper')),
         ];
     }
 

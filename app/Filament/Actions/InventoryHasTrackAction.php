@@ -19,7 +19,6 @@ class InventoryHasTrackAction
             ->form(InventoryHasTrackForm::check())
             ->action(function (array $data, InventoryHasTrack $inventory_has_track) {
                 try {
-                    $data['creator_id'] = auth()->id();
                     $inventory_has_track->service()->check($data);
                     NotificationUtil::make(true, __('cat/inventory_has_track.action.check_success'));
                 } catch (Exception $exception) {

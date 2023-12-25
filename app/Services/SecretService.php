@@ -3,18 +3,13 @@
 namespace App\Services;
 
 use App\Models\Secret;
-use App\Traits\Services\HasFootprint;
 use Exception;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use JetBrains\PhpStorm\ArrayShape;
 
-class SecretService
+class SecretService extends Service
 {
-    use HasFootprint;
-
-    public Secret $model;
-
     public function __construct(?Secret $secret = null)
     {
         return $this->model = $secret ?? new Secret;

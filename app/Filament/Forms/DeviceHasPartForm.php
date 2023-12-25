@@ -8,6 +8,7 @@ use App\Models\Part;
 use App\Services\DeviceService;
 use App\Services\PartService;
 use Exception;
+use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\Select;
 
 class DeviceHasPartForm
@@ -25,6 +26,10 @@ class DeviceHasPartForm
             $part_ids = array_unique($part_ids);
 
             return [
+                Hidden::make('creator_id')
+                    ->default(auth()->id()),
+                Hidden::make('status')
+                    ->default(0),
                 Select::make('part_ids')
                     ->options(PartService::pluckOptions('id', $part_ids))
                     ->multiple()
@@ -39,6 +44,10 @@ class DeviceHasPartForm
             $device_ids = $model->hasParts()->pluck('device_id')->toArray();
 
             return [
+                Hidden::make('creator_id')
+                    ->default(auth()->id()),
+                Hidden::make('status')
+                    ->default(0),
                 Select::make('device_id')
                     ->options(DeviceService::pluckOptions('id', $device_ids))
                     ->searchable()

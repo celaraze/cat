@@ -5,6 +5,7 @@ namespace App\Filament\Forms;
 use App\Enums\DeviceHasUserEnum;
 use App\Services\UserService;
 use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\Radio;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
@@ -17,6 +18,8 @@ class DeviceHasUserForm
     public static function create(): array
     {
         return [
+            Hidden::make('creator_id')
+                ->default(auth()->id()),
             Radio::make('status')
                 ->options(DeviceHasUserEnum::allStatusText())
                 ->label(__('cat/device_has_user.status'))

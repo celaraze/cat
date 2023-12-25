@@ -41,4 +41,8 @@ return [
     'github' => 'GitHub',
     'docs' => '官方文档',
     'community' => '官方社区',
+    'consumable' => '耗材',
+    'consumable_category' => '耗材分类',
+    'consumable_unit' => '耗材单位',
+    'consumable_has_track' => '变动记录',
 ];

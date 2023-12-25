@@ -79,8 +79,6 @@ class DeviceHasSoftwareAction
                     }
                     foreach ($data['software_ids'] as $software_id) {
                         $data['software_id'] = $software_id;
-                        $data['creator_id'] = auth()->id();
-                        $data['status'] = 0;
                         $device_has_software_service = new DeviceHasSoftwareService();
                         $device_has_software_service->create($data);
                     }

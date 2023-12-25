@@ -16,27 +16,27 @@ class VendorImporter extends Importer
         return [
             ImportColumn::make('name')
                 ->requiredMapping()
-                ->example(__('cat/example_vendor_name'))
-                ->label(__('cat/name')),
+                ->example(__('cat/vendor.importer.name_example'))
+                ->label(__('cat/vendor.name')),
             ImportColumn::make('address')
                 ->requiredMapping()
-                ->example(__('cat/example_vendor_address'))
-                ->label(__('cat/address')),
+                ->example(__('cat/vendor.importer.address_example'))
+                ->label(__('cat/vendor.address')),
             ImportColumn::make('public_phone_number')
-                ->example(__('cat/example_vendor_public_phone_number'))
-                ->label(__('cat/public_phone_number')),
+                ->example(__('cat/user.importer.public_phone_number_example'))
+                ->label(__('cat/vendor.public_phone_number')),
             ImportColumn::make('referrer')
-                ->example(__('cat/example_vendor_referrer'))
-                ->label(__('cat/referrer')),
+                ->example(__('cat/user.importer.referrer_example'))
+                ->label(__('cat/user.referrer')),
         ];
     }
 
     public static function getCompletedNotificationBody(Import $import): string
     {
-        $body = __('cat/import.vendor_success', ['success_count' => number_format($import->successful_rows)]);
+        $body = __('cat/user.importer.import_success', ['success_count' => number_format($import->successful_rows)]);
 
         if ($failedRowsCount = $import->getFailedRowsCount()) {
-            $body .= ' '.__('cat/import.vendor_failure', ['failure_count' => number_format($failedRowsCount)]);
+            $body .= ' '.__('cat/user.importer.import_failure', ['failure_count' => number_format($failedRowsCount)]);
         }
 
         return $body;

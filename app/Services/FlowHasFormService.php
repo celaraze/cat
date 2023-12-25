@@ -9,18 +9,13 @@ use App\Models\FlowHasNode;
 use App\Models\Part;
 use App\Models\Setting;
 use App\Models\Software;
-use App\Traits\Services\HasFootprint;
 use Exception;
 use Illuminate\Support\Facades\DB;
 use JetBrains\PhpStorm\ArrayShape;
 use Ramsey\Uuid\Uuid;
 
-class FlowHasFormService
+class FlowHasFormService extends Service
 {
-    use HasFootprint;
-
-    public FlowHasForm $model;
-
     public function __construct(?FlowHasForm $flow_has_form = null)
     {
         $this->model = $flow_has_form ?? new FlowHasForm();

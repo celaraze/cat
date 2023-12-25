@@ -5,6 +5,7 @@ namespace App\Filament\Actions;
 use App\Filament\Forms\OrganizationHasUserForm;
 use App\Models\Organization;
 use App\Models\OrganizationHasUser;
+use App\Services\OrganizationHasUserService;
 use App\Utils\LogUtil;
 use App\Utils\NotificationUtil;
 use Exception;
@@ -25,7 +26,8 @@ class OrganizationHasUserAction
                         $organization = $out_organization;
                     }
                     $data['organization_id'] = $organization->getKey();
-                    $organization->service()->createManyHasUsers($data);
+                    $organization_has_user = new OrganizationHasUserService();
+                    $organization_has_user->batchCreate($data);
                     NotificationUtil::make(true, __('cat/organization_has_user.action.create_success'));
                 } catch (Exception $exception) {
                     LogUtil::error($exception);

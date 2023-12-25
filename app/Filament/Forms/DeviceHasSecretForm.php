@@ -8,6 +8,7 @@ use App\Models\Secret;
 use App\Services\DeviceService;
 use App\Services\SecretService;
 use Exception;
+use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\Select;
 
 class DeviceHasSecretForm
@@ -25,6 +26,10 @@ class DeviceHasSecretForm
             $secret_ids = array_unique($secret_ids);
 
             return [
+                Hidden::make('creator_id')
+                    ->default(auth()->id()),
+                Hidden::make('status')
+                    ->default(0),
                 Select::make('secret_ids')
                     ->options(SecretService::pluckOptions('id', $secret_ids))
                     ->multiple()
@@ -39,6 +44,10 @@ class DeviceHasSecretForm
             $device_ids = $model->hasSecrets()->pluck('device_id')->toArray();
 
             return [
+                Hidden::make('creator_id')
+                    ->default(auth()->id()),
+                Hidden::make('status')
+                    ->default(0),
                 Select::make('device_id')
                     ->options(DeviceService::pluckOptions('id', $device_ids))
                     ->searchable()

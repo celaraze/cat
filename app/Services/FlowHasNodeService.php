@@ -3,15 +3,10 @@
 namespace App\Services;
 
 use App\Models\FlowHasNode;
-use App\Traits\Services\HasFootprint;
 use JetBrains\PhpStorm\ArrayShape;
 
-class FlowHasNodeService
+class FlowHasNodeService extends Service
 {
-    use HasFootprint;
-
-    public FlowHasNode $model;
-
     public function __construct(?FlowHasNode $flow_has_node = null)
     {
         $this->model = $flow_has_node ?? new FlowHasNode();

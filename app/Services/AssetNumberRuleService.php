@@ -3,19 +3,14 @@
 namespace App\Services;
 
 use App\Models\AssetNumberRule;
-use App\Traits\Services\HasFootprint;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
 use JetBrains\PhpStorm\ArrayShape;
 
-class AssetNumberRuleService
+class AssetNumberRuleService extends Service
 {
-    use HasFootprint;
-
-    public AssetNumberRule $model;
-
     public function __construct(?AssetNumberRule $asset_number_rule = null)
     {
         $this->model = $asset_number_rule ?? new AssetNumberRule();
@@ -86,6 +81,11 @@ class AssetNumberRuleService
         $this->model->save();
 
         return $this->model;
+    }
+
+    public function delete(): ?bool
+    {
+        return $this->model->delete();
     }
 
     /**

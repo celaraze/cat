@@ -3,6 +3,7 @@
 namespace App\Filament\Forms;
 
 use App\Enums\AssetEnum;
+use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 
@@ -14,6 +15,8 @@ class InventoryForm
     public static function create(): array
     {
         return [
+            Hidden::make('creator_id')
+                ->default(auth()->id()),
             TextInput::make('name')
                 ->label(__('cat/inventory.name'))
                 ->required(),

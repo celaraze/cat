@@ -8,7 +8,7 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create('consumable', function (Blueprint $table) {
+        Schema::create('consumables', function (Blueprint $table) {
             $table->comment('耗材');
             $table->id();
             $table->string('name')
@@ -26,8 +26,10 @@ return new class extends Migration
                 ->comment('说明');
             $table->string('image')->nullable()
                 ->comment('照片');
-            $table->smallInteger('status')
+            $table->smallInteger('status')->default(0)
                 ->comment('状态');
+            $table->json('additional')->nullable()
+                ->comment('额外信息');
             $table->integer('creator_id')
                 ->comment('创建人');
             $table->softDeletes();
@@ -105,7 +107,7 @@ return new class extends Migration
 
     public function down(): void
     {
-        Schema::dropIfExists('consumable');
+        Schema::dropIfExists('consumables');
         Schema::dropIfExists('consumable_categories');
         Schema::dropIfExists('consumable_units');
 

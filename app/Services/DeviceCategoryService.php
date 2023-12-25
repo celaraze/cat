@@ -3,16 +3,11 @@
 namespace App\Services;
 
 use App\Models\DeviceCategory;
-use App\Traits\Services\HasFootprint;
 use Illuminate\Support\Collection;
 use JetBrains\PhpStorm\ArrayShape;
 
-class DeviceCategoryService
+class DeviceCategoryService extends Service
 {
-    use HasFootprint;
-
-    public DeviceCategory $model;
-
     public function __construct(?DeviceCategory $device_category = null)
     {
         $this->model = $device_category ?? new DeviceCategory();
@@ -45,10 +40,5 @@ class DeviceCategoryService
     public function delete(): ?bool
     {
         return $this->model->delete();
-    }
-
-    public function isDelete(): bool
-    {
-        return ! ($this->model->getAttribute('deleted_at') == null);
     }
 }

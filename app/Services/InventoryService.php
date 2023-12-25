@@ -3,17 +3,12 @@
 namespace App\Services;
 
 use App\Models\Inventory;
-use App\Traits\Services\HasFootprint;
 use Exception;
 use Illuminate\Support\Facades\DB;
 use JetBrains\PhpStorm\ArrayShape;
 
-class InventoryService
+class InventoryService extends Service
 {
-    use HasFootprint;
-
-    public Inventory $model;
-
     public function __construct(?Inventory $inventory = null)
     {
         $this->model = $inventory ?? new Inventory();

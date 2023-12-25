@@ -3,16 +3,11 @@
 namespace App\Services;
 
 use App\Models\SoftwareCategory;
-use App\Traits\Services\HasFootprint;
 use Illuminate\Support\Collection;
 use JetBrains\PhpStorm\ArrayShape;
 
-class SoftwareCategoryService
+class SoftwareCategoryService extends Service
 {
-    use HasFootprint;
-
-    public SoftwareCategory $model;
-
     public function __construct(?SoftwareCategory $software_category = null)
     {
         $this->model = $software_category ?? new SoftwareCategory();

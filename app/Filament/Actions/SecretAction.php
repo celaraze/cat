@@ -44,7 +44,6 @@ class SecretAction
             ->form(SecretForm::createOrEdit())
             ->action(function (array $data) {
                 try {
-                    $data['creator_id'] = auth()->id();
                     $secret_service = new SecretService();
                     $secret_service->create($data);
                     NotificationUtil::make(true, __('cat/secret.action.create_success'));

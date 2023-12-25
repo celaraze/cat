@@ -7,7 +7,6 @@ use App\Models\Device;
 use App\Models\Flow;
 use App\Models\Part;
 use App\Models\Setting;
-use App\Traits\Services\HasFootprint;
 use Exception;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
@@ -15,12 +14,8 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use JetBrains\PhpStorm\ArrayShape;
 
-class DeviceService
+class DeviceService extends Service
 {
-    use HasFootprint;
-
-    public Model $model;
-
     public function __construct(?Model $device = null)
     {
         $this->model = $device ?? new Device();
@@ -40,7 +35,7 @@ class DeviceService
                 $title .= $device->getAttribute('asset_number');
                 $title .= ' | '.$device->getAttribute('name');
                 $user = $device->users()->first();
-                $user_name = $user?->getAttribute('name') ?? __('cat/no_user');
+                $user_name = $user?->getAttribute('name') ?? __('cat/device.no_user');
                 $title .= ' | '.$user_name;
 
                 return [$device->getAttribute($key_column) => $title];
@@ -157,13 +152,13 @@ class DeviceService
             ->where('custom_key', 'device_retire_flow_id')
             ->value('custom_value');
         if (! $flow_id) {
-            throw new Exception(__('cat/device_retire_flow_not_set'));
+            throw new Exception(__('cat/device.retire_flow_not_set'));
         }
         $flow = Flow::query()
             ->where('id', $flow_id)
             ->first();
         if (! $flow) {
-            throw new Exception(__('cat/device_retire_flow_not_found'));
+            throw new Exception(__('cat/device.retire_flow_not_found'));
         }
 
         return $flow;
