@@ -19,7 +19,12 @@ return [
     'status.normal' => '正常',
     'status.retired' => '废弃',
     'quantity' => '数量',
+    'flow_id' => '流程',
 
     'action.create' => '创建',
     'action.create_success' => '创建成功',
+    'action.force_retire' => '强制废弃',
+    'action.retire' => '流程废弃',
+    'retire_flow_name' => '耗材废弃单',
+    'action.set_retire_flow' => '配置废弃流程',
 ];

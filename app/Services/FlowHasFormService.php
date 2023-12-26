@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\Consumable;
 use App\Models\Device;
 use App\Models\Flow;
 use App\Models\FlowHasForm;
@@ -33,7 +34,7 @@ class FlowHasFormService extends Service
         DB::beginTransaction();
         // 先判断表单状态是否是已驳回状态
         if ($this->model->getAttribute('status') == 3) {
-            throw new Exception(__('cat/flow_has_form_has_been_rejected'));
+            throw new Exception(__('cat/flow_has_form.has_been_rejected'));
         }
         // 无论如何，生成一条新记录，同时表单顺序计数+1，然后删除旧记录
         $new_form = $this->model->replicate();
@@ -64,7 +65,7 @@ class FlowHasFormService extends Service
             if (! $this->model->getAttribute('node_id')) {
                 // 数据库事务回滚
                 DB::rollBack();
-                throw new Exception(__('cat/flow_has_form_in_start'));
+                throw new Exception(__('cat/flow_has_form.in_start'));
             }
             $current_node = FlowHasNode::query()
                 ->where('id', $this->model->getAttribute('node_id'))
@@ -75,7 +76,7 @@ class FlowHasFormService extends Service
             if (! $next_node) {
                 // 数据库事务回滚
                 DB::rollBack();
-                throw new Exception(__('cat/flow_has_form_can_not_be_rejected'));
+                throw new Exception(__('cat/flow_has_form.can_not_be_rejected'));
             }
         }
         // 排除流程已经结束的表单，即通过和驳回的
@@ -121,7 +122,7 @@ class FlowHasFormService extends Service
                         ->where('asset_number', $this->model->getAttribute('payload'))
                         ->first();
                     if (! $device) {
-                        throw new Exception(__('cat/flow_has_form_payload_device_not_found'));
+                        throw new Exception(__('cat/flow_has_form.payload_device_not_found'));
                     }
                     $device->service()->retire();
                 }
@@ -135,7 +136,7 @@ class FlowHasFormService extends Service
                         ->where('asset_number', $this->model->getAttribute('payload'))
                         ->first();
                     if (! $part) {
-                        throw new Exception(__('cat/flow_has_form_payload_part_not_found'));
+                        throw new Exception(__('cat/flow_has_form.payload_part_not_found'));
                     }
                     $part->service()->retire();
                 }
@@ -149,9 +150,23 @@ class FlowHasFormService extends Service
                         ->where('asset_number', $this->model->getAttribute('payload'))
                         ->first();
                     if (! $software) {
-                        throw new Exception(__('cat/flow_has_form_payload_software_not_found'));
+                        throw new Exception(__('cat/flow_has_form.payload_software_not_found'));
                     }
                     $software->service()->retire();
+                }
+                // 耗材
+                $consumable_delete_flow_id = Setting::query()
+                    ->where('custom_key', 'consumable_retire_flow_id')
+                    ->value('custom_value');
+                if ($consumable_delete_flow_id == $flow->getKey()) {
+                    /* @var  Consumable $consumable */
+                    $consumable = Consumable::query()
+                        ->where('id', $this->model->getAttribute('payload'))
+                        ->first();
+                    if (! $consumable) {
+                        throw new Exception(__('cat/flow_has_form.payload_software_not_found'));
+                    }
+                    $consumable->service()->retire();
                 }
             }
         }

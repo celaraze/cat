@@ -25,7 +25,7 @@ class ConsumableHasTrackAction
                     $data['consumable_id'] = $consumable->getKey();
                     $consumable_has_track = new ConsumableHasTrack();
                     $consumable_has_track->service()->create($data);
-                    NotificationUtil::make(true, 'cat/consumable_has_track.action.create_success');
+                    NotificationUtil::make(true, __('cat/consumable_has_track.action.create_success'));
                 } catch (Exception $exception) {
                     LogUtil::error($exception);
                     NotificationUtil::make(false, $exception);

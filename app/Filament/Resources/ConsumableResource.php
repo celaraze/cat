@@ -86,6 +86,7 @@ class ConsumableResource extends Resource implements HasShieldPermissions
             'export',
             'retire',
             'force_retire',
+            'set_retire_flow',
         ];
     }
 
@@ -104,10 +105,6 @@ class ConsumableResource extends Resource implements HasShieldPermissions
                     ->circular()
                     ->defaultImageUrl(('/images/default.jpg'))
                     ->label(__('cat/consumable.image')),
-                Tables\Columns\TextColumn::make('name')
-                    ->searchable()
-                    ->toggleable()
-                    ->label(__('cat/consumable.name')),
                 Tables\Columns\TextColumn::make('name')
                     ->searchable()
                     ->toggleable()
@@ -139,6 +136,9 @@ class ConsumableResource extends Resource implements HasShieldPermissions
                     ->searchable()
                     ->toggleable()
                     ->badge()
+                    ->color(function ($state) {
+                        return $state > 0 ? 'primary' : 'danger';
+                    })
                     ->label(__('cat/consumable.quantity')),
             ])
             ->filters([
@@ -187,6 +187,11 @@ class ConsumableResource extends Resource implements HasShieldPermissions
                     // 前往分类
                     ConsumableAction::toCategory(),
                     ConsumableAction::toUnit(),
+                    // 配置设备报废流程
+                    ConsumableAction::setRetireFlow()
+                        ->visible(function () {
+                            return auth()->user()->can('set_retire_flow_consumable');
+                        }),
                 ])
                     ->label(__('cat/action.advance'))
                     ->icon('heroicon-m-cog-8-tooth')

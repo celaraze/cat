@@ -61,7 +61,7 @@ class ConsumableAction
                     $consumable_id = $consumable->getKey();
                     $flow_has_form_service = new FlowHasFormService();
                     $data['flow_id'] = $consumable_retire_flow->getKey();
-                    $data['name'] = __('cat/device.action.retire_flow_name').' - '.$consumable_id;
+                    $data['name'] = __('cat/consumable.action.retire_flow_name').' - '.$consumable_id;
                     $data['payload'] = $consumable_id;
                     $flow_has_form_service->create($data);
                     NotificationUtil::make(true, __('cat/consumable.action.retire_success'));
