@@ -21,9 +21,6 @@ class DeviceService extends Service
         $this->model = $device ?? new Device();
     }
 
-    /**
-     * 选单.
-     */
     public static function pluckOptions(string $key_column = 'id', array $exclude_ids = []): Collection
     {
         return Device::query()
@@ -42,9 +39,6 @@ class DeviceService extends Service
             });
     }
 
-    /**
-     * 判断是否配置报废流程.
-     */
     public static function isSetRetireFlow(): bool
     {
         return Setting::query()
@@ -53,17 +47,12 @@ class DeviceService extends Service
 
     }
 
-    /**
-     * 判断设备分配记录是否存在.
-     */
     public function isExistHasUser(): bool
     {
         return $this->model->hasUsers()->count();
     }
 
     /**
-     * 新增设备.
-     *
      * @throws Exception
      */
     #[ArrayShape([
@@ -74,6 +63,9 @@ class DeviceService extends Service
         'sn' => 'string',
         'specification' => 'string',
         'image' => 'string',
+        'description' => 'string',
+        'additional' => 'string',
+        'user_id' => 'int',
     ])]
     public function create(array $data): void
     {
@@ -102,6 +94,7 @@ class DeviceService extends Service
             $this->model->setAttribute('image', $data['image']);
             $this->model->setAttribute('description', $data['description']);
             $this->model->setAttribute('additional', json_encode($data['additional']));
+            $this->model->setAttribute('user_id', $data['user_id']);
             $this->model->save();
             $this->model->assetNumberTrack()
                 ->create(['asset_number' => $asset_number]);
@@ -115,8 +108,6 @@ class DeviceService extends Service
     }
 
     /**
-     * 报废设备.
-     *
      * @throws Exception
      */
     public function retire(): void
@@ -142,8 +133,6 @@ class DeviceService extends Service
     }
 
     /**
-     * 获取已配置的设备报废流程.
-     *
      * @throws Exception
      */
     public function getRetireFlow(): Builder|Model
@@ -164,9 +153,6 @@ class DeviceService extends Service
         return $flow;
     }
 
-    /**
-     * 是否报废.
-     */
     public function isRetired(): bool
     {
         return $this->model->getAttribute('status') == 3;

@@ -16,8 +16,6 @@ class DeviceHasUserService extends Service
     }
 
     /**
-     * 创建.
-     *
      * @throws Exception
      */
     #[ArrayShape([
@@ -53,8 +51,6 @@ class DeviceHasUserService extends Service
     }
 
     /**
-     * 删除.
-     *
      * @throws Exception
      */
     #[ArrayShape([

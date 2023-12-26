@@ -15,9 +15,6 @@ class SecretService extends Service
         return $this->model = $secret ?? new Secret;
     }
 
-    /**
-     * 选单.
-     */
     public static function pluckOptions(string $key_column = 'id', array $exclude_ids = []): Collection
     {
         return Secret::query()
@@ -35,9 +32,6 @@ class SecretService extends Service
             });
     }
 
-    /**
-     * 创建.
-     */
     #[ArrayShape([
         'name' => 'string',
         'username' => 'string',
@@ -63,8 +57,6 @@ class SecretService extends Service
     }
 
     /**
-     * 删除.
-     *
      * @throws Exception
      */
     public function retire(): void
@@ -81,15 +73,8 @@ class SecretService extends Service
         }
     }
 
-    /**
-     * 是否弃用.
-     */
     public function isRetired(): bool
     {
-        if ($this->model->getAttribute('status') == 5) {
-            return true;
-        } else {
-            return false;
-        }
+        return $this->model->getAttribute('status') == 5;
     }
 }

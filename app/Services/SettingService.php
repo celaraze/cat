@@ -11,12 +11,9 @@ class SettingService extends Service
         $this->model = $setting ?? new Setting();
     }
 
-    /**
-     * 写入配置.
-     */
     public function set(string $key, string $value): void
     {
-        /* @var Setting $exist  */
+        /* @var Setting $exist */
         $exist = Setting::query()->where('custom_key', $key)->first();
         if ($exist) {
             $this->model = $exist;

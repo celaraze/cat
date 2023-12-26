@@ -16,8 +16,6 @@ class DeviceHasPartService extends Service
     }
 
     /**
-     * 删除配件管理记录.
-     *
      * @throws Exception
      */
     #[ArrayShape(['creator_id' => 'int', 'status' => 'int'])]
@@ -46,8 +44,6 @@ class DeviceHasPartService extends Service
     }
 
     /**
-     * 设备附属配件.
-     *
      * @throws Exception
      */
     #[ArrayShape([

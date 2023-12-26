@@ -24,7 +24,6 @@ class TicketAction
                     if ($model instanceof Device) {
                         $data['asset_number'] = $model->getAttribute('asset_number');
                     }
-                    $data['user_id'] = auth()->id();
                     $ticket_service = new TicketService();
                     $ticket_service->create($data);
                     NotificationUtil::make(true, __('cat/ticket.action.create_success'));

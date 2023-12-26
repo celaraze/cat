@@ -2,7 +2,9 @@
 
 namespace App\Filament\Forms;
 
+use App\Services\OrganizationHasUserService;
 use App\Services\UserService;
+use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\Select;
 
 class OrganizationHasUserForm
@@ -13,9 +15,11 @@ class OrganizationHasUserForm
     public static function create(): array
     {
         return [
+            Hidden::make('creator_id')
+                ->default(auth()->id()),
             Select::make('user_ids')
                 ->label(__('cat/organization_has_user.user_ids'))
-                ->options(UserService::pluckOptions('id', UserService::existOrganizationHasUserIds()))
+                ->options(UserService::pluckOptions('id', OrganizationHasUserService::existUserIds()))
                 ->multiple()
                 ->searchable(),
         ];

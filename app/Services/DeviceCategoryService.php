@@ -13,30 +13,22 @@ class DeviceCategoryService extends Service
         $this->model = $device_category ?? new DeviceCategory();
     }
 
-    /**
-     * 选单.
-     */
     public static function pluckOptions(): Collection
     {
         return DeviceCategory::query()
             ->pluck('name', 'id');
     }
 
-    /**
-     * 创建设备分类.
-     */
-    #[ArrayShape(['name' => 'string'])]
+    #[ArrayShape(['name' => 'string', 'creator_id' => 'int'])]
     public function create(array $data): DeviceCategory
     {
         $this->model->setAttribute('name', $data['name']);
+        $this->model->setAttribute('creator_id', $data['creator_id']);
         $this->model->save();
 
         return $this->model;
     }
 
-    /**
-     * 删除设备分类.
-     */
     public function delete(): ?bool
     {
         return $this->model->delete();

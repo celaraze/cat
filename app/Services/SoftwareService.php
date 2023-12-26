@@ -20,9 +20,6 @@ class SoftwareService extends Service
         $this->model = $software ?? new Software();
     }
 
-    /**
-     * 选单.
-     */
     public static function pluckOptions(): Collection
     {
         return Software::query()
@@ -49,9 +46,6 @@ class SoftwareService extends Service
             });
     }
 
-    /**
-     * 判断是否配置报废流程.
-     */
     public static function isSetRetireFlow(): bool
     {
         return Setting::query()
@@ -60,8 +54,6 @@ class SoftwareService extends Service
     }
 
     /**
-     * 新增软件.
-     *
      * @throws Exception
      */
     #[ArrayShape([
@@ -73,6 +65,9 @@ class SoftwareService extends Service
         'specification' => 'string',
         'image' => 'string',
         'max_license_count' => 'int',
+        'description' => 'string',
+        'additional' => 'string',
+        'creator_id' => 'int',
     ])]
     public function create(array $data): void
     {
@@ -103,6 +98,7 @@ class SoftwareService extends Service
             $this->model->setAttribute('description', $data['description']);
             $this->model->setAttribute('additional', json_encode($data['additional']));
             $this->model->setAttribute('status', 4);
+            $this->model->setAttribute('creator_id', $data['creator_id']);
             $this->model->save();
             $this->model->assetNumberTrack()
                 ->create(['asset_number' => $asset_number]);
@@ -116,8 +112,6 @@ class SoftwareService extends Service
     }
 
     /**
-     * 软件报废.
-     *
      * @throws Exception
      */
     public function retire(): void
@@ -135,8 +129,6 @@ class SoftwareService extends Service
     }
 
     /**
-     * 获取已配置的软件报废流程.
-     *
      * @throws Exception
      */
     public function getRetireFlow(): Builder|Model
@@ -155,15 +147,8 @@ class SoftwareService extends Service
         return $flow;
     }
 
-    /**
-     * 是否报废.
-     */
     public function isRetired(): bool
     {
-        if ($this->model->getAttribute('status') == 3) {
-            return true;
-        } else {
-            return false;
-        }
+        return $this->model->getAttribute('status') == 3;
     }
 }

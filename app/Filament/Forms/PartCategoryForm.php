@@ -3,6 +3,7 @@
 namespace App\Filament\Forms;
 
 use Awcodes\Shout\Components\Shout;
+use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\TextInput;
 
 class PartCategoryForm
@@ -13,6 +14,8 @@ class PartCategoryForm
     public static function createOrEdit(): array
     {
         return [
+            Hidden::make('creator_id')
+                ->default(auth()->id()),
             TextInput::make('name')
                 ->label(__('cat/part_category.name'))
                 ->maxLength(255)

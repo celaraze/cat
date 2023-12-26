@@ -13,21 +13,8 @@ class AssetNumberTrackService extends Service
 
     }
 
-    /**
-     * 选单.
-     */
     public static function pluckOptions(): Collection
     {
         return AssetNumberTrack::query()->pluck('asset_number', 'asset_number');
-    }
-
-    public function create(array $data)
-    {
-
-    }
-
-    public function delete()
-    {
-
     }
 }

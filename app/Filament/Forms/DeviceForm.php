@@ -9,6 +9,7 @@ use Awcodes\Shout\Components\Shout;
 use Filament\Forms\Components\Actions\Action;
 use Filament\Forms\Components\Checkbox;
 use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
@@ -24,6 +25,8 @@ class DeviceForm
     public static function createOrEdit(): array
     {
         return [
+            Hidden::make('creator_id')
+                ->default(auth()->id()),
             TextInput::make('asset_number')
                 ->maxLength(255)
                 ->label(__('cat/device.asset_number'))

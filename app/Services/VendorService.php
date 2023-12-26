@@ -14,14 +14,12 @@ class VendorService extends Service
         $this->model = $vendor ?? new Vendor();
     }
 
-    /**
-     * 创建厂商.
-     */
     #[ArrayShape([
         'name' => 'string',
         'address' => 'string',
         'public_phone_number' => 'string',
         'referrer' => 'string',
+        'creator_id' => 'int',
     ])]
     public function create(array $data): Vendor
     {
@@ -29,14 +27,13 @@ class VendorService extends Service
         $this->model->setAttribute('address', $data['address']);
         $this->model->setAttribute('public_phone_number', $data['public_phone_number']);
         $this->model->setAttribute('referrer', $data['referrer']);
+        $this->model->setAttribute('creator_id', $data['creator_id']);
         $this->model->save();
 
         return $this->model;
     }
 
     /**
-     * 删除.
-     *
      * @throws Exception
      */
     public function delete(): void

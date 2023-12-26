@@ -15,12 +15,19 @@ class OrganizationHasUserService extends Service
         $this->model = $organization_has_user ?? new OrganizationHasUser();
     }
 
+    public static function existUserIds(): array
+    {
+        return OrganizationHasUser::query()->pluck('user_id')->toArray();
+    }
+
     /**
-     * 批量创建组织用户记录.
-     *
      * @throws Exception
      */
-    #[ArrayShape(['organization_id' => 'int', 'user_ids' => 'array'])]
+    #[ArrayShape([
+        'organization_id' => 'int',
+        'user_ids' => 'array',
+        'creator_id' => 'int',
+    ])]
     public function batchCreate(array $data): void
     {
         try {
@@ -30,6 +37,7 @@ class OrganizationHasUserService extends Service
                 $data = [
                     'organization_id' => $data['organization_id'],
                     'user_id' => $user_id,
+                    'creator_id' => $data['creator_id'],
                 ];
                 $this->create($data);
             }
@@ -41,8 +49,6 @@ class OrganizationHasUserService extends Service
     }
 
     /**
-     * 新增组织用户记录.
-     *
      * @throws Exception
      */
     #[ArrayShape(['organization_id' => 'int', 'user_id' => 'int'])]
@@ -53,18 +59,16 @@ class OrganizationHasUserService extends Service
             ->where('user_id', $data['user_id'])
             ->count();
         if ($organization_has_user) {
-            throw new Exception(__('cat/organization_has_user_exists'));
+            throw new Exception(__('cat/organization_has_user.exist'));
         }
 
         $this->model->setAttribute('organization_id', $data['organization_id']);
         $this->model->setAttribute('user_id', $data['user_id']);
+        $this->model->setAttribute('creator_id', $data['creator_id']);
 
         return $this->model;
     }
 
-    /**
-     * 删除组织用户记录.
-     */
     public function delete(): void
     {
         $this->model->delete();

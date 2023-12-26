@@ -13,19 +13,13 @@ class ConsumableUnitService extends Service
         $this->model = $consumable_unit ?? new ConsumableUnit();
     }
 
-    /**
-     * 选单.
-     */
     public static function pluckOptions(): Collection
     {
         return ConsumableUnit::query()
             ->pluck('name', 'id');
     }
 
-    /**
-     * 创建耗材单位.
-     */
-    #[ArrayShape(['name' => 'string'])]
+    #[ArrayShape(['name' => 'string', 'creator_id' => 'int'])]
     public function create(array $data): ConsumableUnit
     {
         $this->model->setAttribute('name', $data['name']);
@@ -35,9 +29,6 @@ class ConsumableUnitService extends Service
         return $this->model;
     }
 
-    /**
-     * 删除耗材单位.
-     */
     public function delete(): ?bool
     {
         return $this->model->delete();

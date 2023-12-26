@@ -23,7 +23,6 @@ class TicketHasTrackAction
             ->action(function (array $data) use ($ticket) {
                 try {
                     $data['ticket_id'] = $ticket->getAttribute('id');
-                    $data['user_id'] = auth()->id();
                     $ticket_has_track_service = new TicketHasTrackService();
                     $ticket_has_track_service->create($data);
                     NotificationUtil::make(true, __('cat/ticket_has_track.action.create_success'));

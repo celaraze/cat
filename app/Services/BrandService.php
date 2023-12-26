@@ -13,29 +13,21 @@ class BrandService extends Service
         $this->model = $brand ?? new Brand();
     }
 
-    /**
-     * 选单.
-     */
     public static function pluckOptions(): Collection
     {
         return Brand::query()->pluck('name', 'id');
     }
 
-    /**
-     * 创建.
-     */
-    #[ArrayShape(['name' => 'string'])]
+    #[ArrayShape(['name' => 'string', 'creator_id' => 'int'])]
     public function create(array $data): Brand
     {
         $this->model->setAttribute('name', $data['name']);
+        $this->model->setAttribute('creator_id', $data['creator_id']);
         $this->model->save();
 
         return $this->model;
     }
 
-    /**
-     * 删除.
-     */
     public function delete(): void
     {
         $this->model->delete();

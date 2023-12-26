@@ -13,9 +13,6 @@ class RoleService extends Service
         return $this->model = $role ?? new Role();
     }
 
-    /**
-     * 选单.
-     */
     public static function pluckOptions(): Collection
     {
         $roles = Role::query();

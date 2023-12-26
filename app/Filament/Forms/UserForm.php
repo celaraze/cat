@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Services\RoleService;
 use Awcodes\Shout\Components\Shout;
 use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Illuminate\Database\Eloquent\Builder;
@@ -20,6 +21,8 @@ class UserForm
     public static function create(): array
     {
         return [
+            Hidden::make('creator_id')
+                ->default(auth()->id()),
             TextInput::make('name')
                 ->label(__('cat/user.name'))
                 ->required(),

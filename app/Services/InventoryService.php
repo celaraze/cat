@@ -15,8 +15,6 @@ class InventoryService extends Service
     }
 
     /**
-     * 创建盘点.
-     *
      * @throws Exception
      */
     #[ArrayShape([
@@ -43,7 +41,7 @@ class InventoryService extends Service
                 $data = [
                     'asset_number' => $model->getAttribute('asset_number'),
                     'inventory_id' => $this->model->getKey(),
-                    'creator_id' => auth()->id(),
+                    'creator_id' => $data['creator_id'],
                 ];
                 $this->model->hasTracks()->create($data);
             }
@@ -55,8 +53,6 @@ class InventoryService extends Service
     }
 
     /**
-     * 删除盘点及所有追踪.
-     *
      * @throws Exception
      */
     public function delete(): void

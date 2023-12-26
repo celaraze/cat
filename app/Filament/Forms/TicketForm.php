@@ -6,6 +6,7 @@ use App\Enums\TicketEnum;
 use App\Models\Device;
 use App\Services\DeviceService;
 use App\Services\TicketCategoryService;
+use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
@@ -18,6 +19,8 @@ class TicketForm
     public static function create($model = null): array
     {
         $form = [
+            Hidden::make('creator_id')
+                ->default(auth()->id()),
             TextInput::make('subject')
                 ->label(__('cat/ticket.subject'))
                 ->required(),

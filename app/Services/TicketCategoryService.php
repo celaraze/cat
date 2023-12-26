@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\TicketCategory;
 use Illuminate\Support\Collection;
+use JetBrains\PhpStorm\ArrayShape;
 
 class TicketCategoryService extends Service
 {
@@ -12,28 +13,21 @@ class TicketCategoryService extends Service
         $this->model = $ticket_category ?? new TicketCategory();
     }
 
-    /**
-     * 选单.
-     */
     public static function pluckOptions(): Collection
     {
         return TicketCategory::query()->pluck('name', 'id');
     }
 
-    /**
-     * 创建.
-     */
+    #[ArrayShape(['name' => 'string', 'creator_id' => 'int'])]
     public function create(array $data): TicketCategory
     {
         $this->model->setAttribute('name', $data['name']);
+        $this->model->setAttribute('creator_id', $data['creator_id']);
         $this->model->save();
 
         return $this->model;
     }
 
-    /**
-     * 删除工单分类.
-     */
     public function delete(): ?bool
     {
         return $this->model->delete();

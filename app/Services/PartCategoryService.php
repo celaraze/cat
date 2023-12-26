@@ -13,29 +13,21 @@ class PartCategoryService extends Service
         $this->model = $part_category ?? new PartCategory();
     }
 
-    /**
-     * 选单.
-     */
     public static function pluckOptions(): Collection
     {
         return PartCategory::query()->pluck('name', 'id');
     }
 
-    /**
-     * 新增配件分类.
-     */
-    #[ArrayShape(['name' => 'string'])]
+    #[ArrayShape(['name' => 'string', 'creator_id' => 'int'])]
     public function create(array $data): PartCategory
     {
         $this->model->setAttribute('name', $data['name']);
+        $this->model->setAttribute('creator_id', $data['creator_id']);
         $this->model->save();
 
         return $this->model;
     }
 
-    /**
-     * 删除配件分类.
-     */
     public function delete(): ?bool
     {
         return $this->model->delete();

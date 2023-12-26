@@ -3,6 +3,7 @@
 namespace App\Filament\Forms;
 
 use Awcodes\Shout\Components\Shout;
+use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\TextInput;
 
 class DeviceCategoryForm
@@ -15,6 +16,8 @@ class DeviceCategoryForm
     public static function createOrEdit(): array
     {
         return [
+            Hidden::make('creator_id')
+                ->default(auth()->id()),
             TextInput::make('name')
                 ->label(__('cat/device_category.name'))
                 ->maxLength(255)

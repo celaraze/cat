@@ -20,9 +20,6 @@ class PartService extends Service
         $this->model = $part ?? new Part();
     }
 
-    /**
-     * 选单.
-     */
     public static function pluckOptions(string $key_column = 'id', array $exclude_ids = []): Collection
     {
         return Part::query()
@@ -40,9 +37,6 @@ class PartService extends Service
             });
     }
 
-    /**
-     * 判断是否配置报废流程.
-     */
     public static function isSetRetireFlow(): bool
     {
         return Setting::query()
@@ -52,8 +46,6 @@ class PartService extends Service
     }
 
     /**
-     * 新增配件.
-     *
      * @throws Exception
      */
     #[ArrayShape([
@@ -63,6 +55,9 @@ class PartService extends Service
         'sn' => 'string',
         'specification' => 'string',
         'image' => 'string',
+        'description' => 'string',
+        'additional' => 'string',
+        'creator_id' => 'int',
     ])]
     public function create(array $data): void
     {
@@ -90,6 +85,7 @@ class PartService extends Service
             $this->model->setAttribute('image', $data['image']);
             $this->model->setAttribute('description', $data['description']);
             $this->model->setAttribute('additional', json_encode($data['additional']));
+            $this->model->setAttribute('creator_id', $data['creator_id']);
             $this->model->save();
             $this->model->assetNumberTrack()
                 ->create(['asset_number' => $asset_number]);
@@ -103,8 +99,6 @@ class PartService extends Service
     }
 
     /**
-     * 配件报废.
-     *
      * @throws Exception
      */
     public function retire(): void
@@ -122,8 +116,6 @@ class PartService extends Service
     }
 
     /**
-     * 获取已配置的配件报废流程.
-     *
      * @throws Exception
      */
     public function getRetireFlow(): Builder|Model
@@ -144,9 +136,6 @@ class PartService extends Service
         return $flow;
     }
 
-    /**
-     * 是否废弃.
-     */
     public function isRetired(): bool
     {
         return $this->model->getAttribute('status') == 3;

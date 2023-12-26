@@ -45,6 +45,9 @@ class DeviceImporter extends Importer
             ImportColumn::make('description')
                 ->example(__('cat/device.importer.description_example'))
                 ->label(__('cat/device.description')),
+            ImportColumn::make('parts')
+                ->example(__('cat/device.importer.parts_example'))
+                ->label(__('cat/device.parts')),
         ];
     }
 

@@ -24,7 +24,10 @@ return [
     'action.create' => '创建',
     'action.create_success' => '创建成功',
     'action.force_retire' => '强制废弃',
+    'action.force_retire_success' => '废弃成功',
     'action.retire' => '流程废弃',
     'retire_flow_name' => '耗材废弃单',
     'action.set_retire_flow' => '配置废弃流程',
+
+    'form.force_retire_helper' => '废弃此耗材，将同时废弃所有关联的耗材跟踪记录。',
 ];

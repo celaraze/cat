@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\VendorHasContact;
+use JetBrains\PhpStorm\ArrayShape;
 
 class VendorHasContactService extends Service
 {
@@ -11,9 +12,14 @@ class VendorHasContactService extends Service
         $this->model = $vendor_has_contact ?? new VendorHasContact();
     }
 
-    /**
-     * 创建.
-     */
+    #[ArrayShape([
+        'vendor_id' => 'int',
+        'name' => 'string',
+        'phone_number' => 'string',
+        'email' => 'string',
+        'additional' => 'array',
+        'creator_id' => 'int',
+    ])]
     public function create(array $data): bool
     {
         $this->model->setAttribute('vendor_id', $data['vendor_id']);
@@ -21,13 +27,11 @@ class VendorHasContactService extends Service
         $this->model->setAttribute('phone_number', $data['phone_number']);
         $this->model->setAttribute('email', $data['email']);
         $this->model->setAttribute('additional', json_encode($data['additional']));
+        $this->model->setAttribute('creator_id', $data['creator_id']);
 
         return $this->model->save();
     }
 
-    /**
-     * 删除.
-     */
     public function delete(): ?bool
     {
         return $this->model->delete();

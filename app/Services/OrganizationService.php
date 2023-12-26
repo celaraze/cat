@@ -14,9 +14,6 @@ class OrganizationService extends Service
         $this->model = $organization ?? new Organization();
     }
 
-    /**
-     * 编辑组织.
-     */
     #[ArrayShape(['name' => 'string'])]
     public function update(array $data): Organization
     {
@@ -26,8 +23,6 @@ class OrganizationService extends Service
     }
 
     /**
-     * 删除组织.
-     *
      * @throws Exception
      */
     public function delete(): void
@@ -42,13 +37,11 @@ class OrganizationService extends Service
         }
     }
 
-    /**
-     * 创建组织.
-     */
-    #[ArrayShape(['name' => 'string'])]
+    #[ArrayShape(['name' => 'string', 'creator_id' => 'int'])]
     public function create(array $data): Organization
     {
         $this->model->setAttribute('name', $data['name']);
+        $this->model->setAttribute('creator_id', $data['creator_id']);
         $this->model->save();
 
         return $this->model;

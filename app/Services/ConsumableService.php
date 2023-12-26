@@ -18,9 +18,6 @@ class ConsumableService extends Service
         $this->model = $consumable ?? new Consumable();
     }
 
-    /**
-     * 判断是否配置报废流程.
-     */
     public static function isSetRetireFlow(): bool
     {
         return Setting::query()
@@ -29,8 +26,6 @@ class ConsumableService extends Service
     }
 
     /**
-     * 新增耗材.
-     *
      * @throws Exception
      */
     #[ArrayShape([
@@ -42,6 +37,8 @@ class ConsumableService extends Service
         'description' => 'string',
         'image' => 'string',
         'additional' => 'string',
+        'status' => 'int',
+        'creator_id' => 'int',
     ])]
     public function create(array $data): void
     {
@@ -56,8 +53,8 @@ class ConsumableService extends Service
             $this->model->setAttribute('description', $data['description']);
             $this->model->setAttribute('image', $data['image']);
             $this->model->setAttribute('additional', json_encode($data['additional']));
-            $this->model->setAttribute('creator_id', $data['creator_id']);
             $this->model->setAttribute('status', $data['status']);
+            $this->model->setAttribute('creator_id', $data['creator_id']);
             $this->model->save();
             // 写入事务
             DB::commit();
@@ -69,8 +66,6 @@ class ConsumableService extends Service
     }
 
     /**
-     * 废弃.
-     *
      * @throws Exception
      */
     public function retire(): void
@@ -86,17 +81,12 @@ class ConsumableService extends Service
         }
     }
 
-    /**
-     * 是否报废.
-     */
     public function isRetired(): bool
     {
         return $this->model->getAttribute('status') == 3;
     }
 
     /**
-     * 获取已配置的设备报废流程.
-     *
      * @throws Exception
      */
     public function getRetireFlow(): Builder|Model

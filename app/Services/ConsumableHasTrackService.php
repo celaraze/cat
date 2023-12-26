@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\Consumable;
 use App\Models\ConsumableHasTrack;
 use Exception;
+use JetBrains\PhpStorm\ArrayShape;
 
 class ConsumableHasTrackService extends Service
 {
@@ -16,6 +17,12 @@ class ConsumableHasTrackService extends Service
     /**
      * @throws Exception
      */
+    #[ArrayShape([
+        'consumable_id' => 'int',
+        'quantity' => 'int',
+        'comment' => 'string',
+        'creator_id' => 'int',
+    ])]
     public function create(array $data): ConsumableHasTrack
     {
         $consumable = Consumable::query()->where('id', $data['consumable_id'])->first();

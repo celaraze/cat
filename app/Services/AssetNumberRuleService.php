@@ -16,9 +16,6 @@ class AssetNumberRuleService extends Service
         $this->model = $asset_number_rule ?? new AssetNumberRule();
     }
 
-    /**
-     * 获取资产是否启用自动生成编号.
-     */
     public static function isAuto(string $class_name): mixed
     {
         return AssetNumberRule::query()
@@ -26,9 +23,6 @@ class AssetNumberRuleService extends Service
             ->value('is_auto');
     }
 
-    /**
-     * 获取资产对应的资产编号自动生成规则.
-     */
     public static function getAutoRule(string $class_name): Model|null|Builder
     {
         return AssetNumberRule::query()
@@ -36,9 +30,6 @@ class AssetNumberRuleService extends Service
             ->first();
     }
 
-    /**
-     * 绑定资产编号自动生成规则.
-     */
     #[ArrayShape(['class_name' => 'string', 'is_auto' => 'bool'])]
     public static function setAutoRule(array $data): bool
     {
@@ -51,9 +42,6 @@ class AssetNumberRuleService extends Service
         return $asset_number_rule->save();
     }
 
-    /**
-     * 解除资产编号自动生成规则.
-     */
     public static function resetAutoRule(string $class_name): int
     {
         return AssetNumberRule::query()
@@ -61,23 +49,23 @@ class AssetNumberRuleService extends Service
             ->update(['class_name' => null]);
     }
 
-    /**
-     * 选单.
-     */
     public static function pluckOptions(): Collection
     {
         return AssetNumberRule::query()->pluck('name', 'id');
     }
 
-    /**
-     * 新增资产编号生成规则.
-     */
-    #[ArrayShape(['name' => 'string', 'formula' => 'string', 'auto_increment_length' => 'int'])]
+    #[ArrayShape([
+        'name' => 'string',
+        'formula' => 'string',
+        'auto_increment_length' => 'int',
+        'creator_id' => 'int',
+    ])]
     public function create(array $data): AssetNumberRule
     {
         $this->model->setAttribute('name', $data['name']);
         $this->model->setAttribute('formula', $data['formula']);
         $this->model->setAttribute('auto_increment_length', $data['auto_increment_length']);
+        $this->model->setAttribute('creator_id', $data['creator_id']);
         $this->model->save();
 
         return $this->model;
@@ -88,9 +76,6 @@ class AssetNumberRuleService extends Service
         return $this->model->delete();
     }
 
-    /**
-     * 按照规则自动生成资产编号.
-     */
     public function generate(): string
     {
         $formula = $this->model->getAttribute('formula');
@@ -101,9 +86,6 @@ class AssetNumberRuleService extends Service
         return $formula;
     }
 
-    /**
-     * 资产编号生成规则定义.
-     */
     protected function formula(): array
     {
         $auto_increment_length = $this->model->getAttribute('auto_increment_length');
@@ -120,9 +102,6 @@ class AssetNumberRuleService extends Service
         ];
     }
 
-    /**
-     * 规则自增计数+1.
-     */
     public function addAutoIncrementCount(): void
     {
         $auto_increment_count = (int) $this->model->getAttribute('auto_increment_count');

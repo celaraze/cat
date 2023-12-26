@@ -13,29 +13,21 @@ class SoftwareCategoryService extends Service
         $this->model = $software_category ?? new SoftwareCategory();
     }
 
-    /**
-     * 选单.
-     */
     public static function pluckOptions(): Collection
     {
         return SoftwareCategory::query()->pluck('name', 'id');
     }
 
-    /**
-     * 创建设备分类.
-     */
-    #[ArrayShape(['name' => 'string'])]
+    #[ArrayShape(['name' => 'string', 'creator_id' => 'int'])]
     public function create(array $data): SoftwareCategory
     {
         $this->model->setAttribute('name', $data['name']);
+        $this->model->setAttribute('creator_id', $data['creator_id']);
         $this->model->save();
 
         return $this->model;
     }
 
-    /**
-     * 删除软件分类.
-     */
     public function delete(): ?bool
     {
         return $this->model->delete();

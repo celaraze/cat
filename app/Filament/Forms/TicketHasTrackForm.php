@@ -2,6 +2,7 @@
 
 namespace App\Filament\Forms;
 
+use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\TextInput;
 
@@ -13,6 +14,8 @@ class TicketHasTrackForm
     public static function create(): array
     {
         return [
+            Hidden::make('creator_id')
+                ->default(auth()->id()),
             RichEditor::make('comment')
                 ->required()
                 ->label(__('cat/ticket_has_track.comment')),

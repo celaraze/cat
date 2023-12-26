@@ -97,5 +97,8 @@ return [
         'batch_delete_has_part' => '批量脱离配件',
         'batch_delete_has_software' => '批量脱离软件',
         'batch_delete_has_secret' => '批量脱离密钥',
+        'create_has_contact' => '创建联系人',
+        'delete_has_contact' => '删除联系人',
+        'update_has_contact' => '编辑联系人',
     ],
 ];

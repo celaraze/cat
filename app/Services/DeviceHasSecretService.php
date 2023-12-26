@@ -16,8 +16,6 @@ class DeviceHasSecretService extends Service
     }
 
     /**
-     * 设备附属密钥.
-     *
      * @throws Exception
      */
     #[ArrayShape([
@@ -49,8 +47,6 @@ class DeviceHasSecretService extends Service
     }
 
     /**
-     * 设备附属密钥.
-     *
      * @throws Exception
      */
     #[ArrayShape([
@@ -66,7 +62,7 @@ class DeviceHasSecretService extends Service
             ->where('secret_id', $data['secret_id'])
             ->count();
         if ($exist) {
-            throw new Exception(__('cat/device_has_secret_exist'));
+            throw new Exception(__('cat/device_has_secret.exist'));
         }
         try {
             DB::beginTransaction();

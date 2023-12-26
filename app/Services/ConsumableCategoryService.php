@@ -13,19 +13,13 @@ class ConsumableCategoryService extends Service
         $this->model = $consumable_category ?? new ConsumableCategory();
     }
 
-    /**
-     * 选单.
-     */
     public static function pluckOptions(): Collection
     {
         return ConsumableCategory::query()
             ->pluck('name', 'id');
     }
 
-    /**
-     * 创建耗材分类.
-     */
-    #[ArrayShape(['name' => 'string'])]
+    #[ArrayShape(['name' => 'string', 'creator_id' => 'int'])]
     public function create(array $data): ConsumableCategory
     {
         $this->model->setAttribute('name', $data['name']);
@@ -35,9 +29,6 @@ class ConsumableCategoryService extends Service
         return $this->model;
     }
 
-    /**
-     * 删除设备分类.
-     */
     public function delete(): ?bool
     {
         return $this->model->delete();

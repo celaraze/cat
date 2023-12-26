@@ -8,6 +8,7 @@ use App\Services\FlowService;
 use Filament\Forms\Components\Actions\Action;
 use Filament\Forms\Components\Checkbox;
 use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
@@ -23,6 +24,8 @@ class PartForm
     public static function createOrEdit(): array
     {
         return [
+            Hidden::make('creator_id')
+                ->default(auth()->id()),
             TextInput::make('asset_number')
                 ->maxLength(255)
                 ->label(__('cat/part.asset_number'))

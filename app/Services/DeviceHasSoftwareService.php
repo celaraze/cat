@@ -17,8 +17,6 @@ class DeviceHasSoftwareService extends Service
     }
 
     /**
-     * 删除软件管理记录.
-     *
      * @throws Exception
      */
     #[ArrayShape(['creator_id' => 'int', 'status' => 'string'])]
@@ -49,8 +47,6 @@ class DeviceHasSoftwareService extends Service
     }
 
     /**
-     * 设备附属软件.
-     *
      * @throws Exception
      */
     #[ArrayShape([
@@ -66,16 +62,16 @@ class DeviceHasSoftwareService extends Service
             ->where('software_id', $data['software_id'])
             ->count();
         if ($exist) {
-            throw new Exception(__('cat/device_has_software_exist'));
+            throw new Exception(__('cat/device_has_software.exist'));
         }
         $software = Software::query()->where('id', $data['software_id'])->first();
         if (! $software) {
-            throw new Exception(__('cat/software_not_found'));
+            throw new Exception(__('cat/device_has_software.software_not_found'));
         }
         /* @var Software $software */
         $max_license_count = $software->getAttribute('max_license_count');
         if ($max_license_count != 0 && $software->usedCount() >= $max_license_count) {
-            throw new Exception(__('cat/software_license_exhausted'));
+            throw new Exception(__('cat/device_has_software.software_license_exhausted'));
         }
 
         try {
