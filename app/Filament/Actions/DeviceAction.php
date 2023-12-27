@@ -33,7 +33,7 @@ class DeviceAction
                     $flow = DeviceService::getRetireFlow();
                     if (! $flow) {
                         $flow_data['name'] = __('cat/device.action.retire_flow_name');
-                        $flow_data['slug'] = 'device_retire_flow';
+                        $flow_data['slug'] = 'retire_flow';
                         $flow_data['model_name'] = Device::class;
                         $flow_data['creator_id'] = 0;
                         $flow_service = new FlowService();

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Services\FlowHasFormService;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -24,5 +25,10 @@ class FlowHasForm extends Model
     public function node(): belongsTo
     {
         return $this->belongsTo(FlowHasNode::class, 'flow_has_node_id', 'id');
+    }
+
+    public function service(): FlowHasFormService
+    {
+        return new FlowHasFormService($this);
     }
 }

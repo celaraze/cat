@@ -70,7 +70,9 @@ return [
 
         ],
 
-        'resources' => [],
+        'resources' => [
+
+        ],
     ],
 
     'discovery' => [

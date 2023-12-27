@@ -2,9 +2,11 @@
 
 namespace App\Services;
 
-use App\Models\Flow;
 use App\Models\FlowHasForm;
+use App\Models\FlowHasNode;
 use Exception;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 use Ramsey\Uuid\Uuid;
 
 class FlowHasFormService extends Service
@@ -29,25 +31,75 @@ class FlowHasFormService extends Service
     }
 
     /**
+     * 流程结束为 true，流程未结束为 false.
+     *
      * @throws Exception
      */
-    public function approve(array $data): bool
+    public function process(array $data): bool
     {
-        $this->model->setAttribute('approver_id', $data['approver_id']);
-        $this->model->setAttribute('creator_id', $data['creator_id']);
-        $this->model->setAttribute('comment', $data['comment']);
-        $this->model->setAttribute('status', $data['status']);
-        $this->model->save();
-        if ($this->model->node->next()) {
-            $new_model = $this->model->replicate();
-            $new_model->setAttribute('flow_has_node_id', $data['flow_has_node_id']);
-            $new_model->setAttribute('approver_id', null);
-            $new_model->setAttribute('comment', null);
-            $new_model->save();
+        DB::beginTransaction();
+        try {
+            $this->model->setAttribute('approver_id', $data['approver_id']);
+            $this->model->setAttribute('creator_id', $data['creator_id']);
+            $this->model->setAttribute('comment', $data['comment']);
+            $this->model->setAttribute('status', $data['status']);
+            $this->model->save();
+            /* @var FlowHasNode $flow_has_node */
+            $flow_has_node = $this->model->node()->first();
+            switch ($data['status']) {
+                // 如果审批同意
+                case 1:
+                    if ($flow_has_node->next()) {
+                        $new_model = $this->model->replicate();
+                        $new_model->setAttribute('flow_has_node_id', $flow_has_node->next()->getKey());
+                        $new_model->setAttribute('approver_id', 0);
+                        $new_model->setAttribute('comment', null);
+                        $new_model->setAttribute('status', 0);
+                        $new_model->save();
+                        DB::commit();
 
-            return false;
-        } else {
-            return true;
+                        return false;
+                    } else {
+                        // 正常审批流程结束
+                        // 资产废弃钩子
+                        if ($this->model->node->flow->slug == 'retire_flow') {
+                            /* @var Model $model_name */
+                            $model_name = $this->model->getAttribute('model_name');
+                            $model = $model_name::query()->where('id', $this->model->getAttribute('model_id'))->first();
+                            $model->service()->retire();
+                        }
+                        DB::commit();
+
+                        return true;
+                    }
+                    // 如果审批退回
+                case 2:
+                    if ($flow_has_node->previous()) {
+                        $new_model = $this->model->replicate();
+                        $new_model->setAttribute('flow_has_node_id', $flow_has_node->previous()->getKey());
+                        $new_model->setAttribute('approver_id', 0);
+                        $new_model->setAttribute('comment', null);
+                        $new_model->setAttribute('status', 0);
+                        $new_model->save();
+                        DB::commit();
+
+                        return false;
+                    } else {
+                        DB::rollBack();
+                        throw new Exception('表单已经在最初节点');
+                    }
+                    // 如果审批驳回
+                case 3:
+                    DB::commit();
+
+                    return true;
+                default:
+                    DB::rollBack();
+                    throw new Exception('审批状态错误');
+            }
+        } catch (Exception $exception) {
+            DB::rollBack();
+            throw $exception;
         }
     }
 
@@ -56,19 +108,21 @@ class FlowHasFormService extends Service
     // 二十所有的表单记录中，没有剩余的表单节点并且满足条件一
     public function isCompleted(): bool
     {
-        $flow_has_forms = Flow::query()
-            ->where('slug', 'device_retire_flow')
-            ->first()
-            ->forms
-            ->where('model_id', $this->model->getAttribute('model_id'));
+        $flow_has_forms = FlowHasForm::query()
+            ->where('uuid', $this->model->getAttribute('uuid'));
         if ($flow_has_forms->where('status', 3)->count()) {
             return true;
         } else {
-            if ($flow_has_forms->node->next()) {
+            if ($this->model->node->next()) {
                 return false;
             } else {
                 return true;
             }
         }
+    }
+
+    public function isProcessed(): bool
+    {
+        return $this->model->getAttribute('status') != 0;
     }
 }

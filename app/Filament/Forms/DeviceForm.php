@@ -114,7 +114,7 @@ class DeviceForm
             Hidden::make('name')
                 ->default('device_retire_flow'),
             Hidden::make('slug')
-                ->default('device_retire_flow'),
+                ->default('retire_flow'),
             Hidden::make('model_name')
                 ->default(Device::class),
             Shout::make('')

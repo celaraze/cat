@@ -5,6 +5,7 @@ namespace App\Filament\Resources\DeviceResource\Pages;
 use App\Enums\FlowHasFormEnum;
 use App\Filament\Actions\FlowHasFormAction;
 use App\Filament\Resources\DeviceResource;
+use App\Models\FlowHasForm;
 use App\Traits\ManageRelatedRecords\QueryRecordByUrl;
 use Filament\Resources\Pages\ManageRelatedRecords;
 use Filament\Tables;
@@ -31,7 +32,7 @@ class Form extends ManageRelatedRecords
 
     public static function getNavigationBadge(): ?string
     {
-        return self::queryRecord()->forms()->count();
+        return self::queryRecord()->forms()->select('uuid')->distinct()->get()->count();
     }
 
     public function getBreadcrumb(): string
@@ -44,14 +45,14 @@ class Form extends ManageRelatedRecords
         return $table
             ->recordTitleAttribute('name')
             ->columns([
-                Tables\Columns\TextColumn::make('node.flow.name')
-                    ->searchable()
-                    ->toggleable()
-                    ->label(__('cat/flow_has_form.name')),
                 Tables\Columns\TextColumn::make('created_at')
                     ->searchable()
                     ->toggleable()
                     ->label(__('cat/flow_has_form.created_at')),
+                Tables\Columns\TextColumn::make('node.flow.name')
+                    ->searchable()
+                    ->toggleable()
+                    ->label(__('cat/flow_has_form.name')),
                 Tables\Columns\TextColumn::make('applicant.name')
                     ->searchable()
                     ->toggleable()
@@ -75,6 +76,9 @@ class Form extends ManageRelatedRecords
                         return FlowHasFormEnum::statusText($state);
                     })
                     ->badge()
+                    ->icon(function ($state) {
+                        return FlowHasFormEnum::statusIcons($state);
+                    })
                     ->color(function ($state) {
                         return FlowHasFormEnum::statusColor($state);
                     })
@@ -88,16 +92,22 @@ class Form extends ManageRelatedRecords
             ])
             ->actions([
                 FlowHasFormAction::approve()
-                    ->visible(function () {
-                        return true;
+                    ->visible(function (FlowHasForm $flow_has_form) {
+                        $is_completed = $flow_has_form->service()->isCompleted();
+                        $is_processed = $flow_has_form->service()->isProcessed();
+                        $can = auth()->user()->can('process_flow_has_form_device');
+
+                        return !$is_completed && !$is_processed && $can;
                     }),
             ])
             ->bulkActions([
 
             ])
-            ->modifyQueryUsing(fn (Builder $query) => $query->orderByDesc('created_at')
+            ->modifyQueryUsing(fn(Builder $query) => $query->orderByDesc('created_at')
                 ->withoutGlobalScopes([
                     SoftDeletingScope::class,
-                ]));
+                ])
+            )
+            ->defaultGroup('uuid');
     }
 }

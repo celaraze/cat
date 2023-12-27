@@ -14,6 +14,8 @@ class FlowHasFormForm
         return [
             Hidden::make('creator_id')
                 ->default(auth()->id()),
+            Hidden::make('approver_id')
+                ->default(auth()->id()),
             TextInput::make('comment')
                 ->label(__('cat/flow_has_form.comment')),
             Radio::make('status')

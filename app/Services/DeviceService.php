@@ -48,7 +48,10 @@ class DeviceService extends Service
 
     public static function getRetireFlow(): Builder|Model|null
     {
-        return Flow::query()->where('slug', 'device_retire_flow')->first();
+        return Flow::query()
+            ->where('slug', 'retire_flow')
+            ->where('model_name', Device::class)
+            ->first();
     }
 
     public function isExistHasUser(): bool

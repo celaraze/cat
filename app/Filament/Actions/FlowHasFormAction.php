@@ -4,6 +4,7 @@ namespace App\Filament\Actions;
 
 use App\Filament\Forms\DeviceForm;
 use App\Filament\Forms\FlowHasFormForm;
+use App\Models\FlowHasForm;
 use App\Services\FlowHasFormService;
 use App\Utils\LogUtil;
 use App\Utils\NotificationUtil;
@@ -30,16 +31,15 @@ class FlowHasFormAction
             });
     }
 
-    public static function approve()
+    public static function approve(): Action
     {
         return Action::make(__('cat/flow_has_form.action.approve'))
             ->requiresConfirmation()
             ->slideOver()
             ->form(FlowHasFormForm::approve())
-            ->action(function (array $data) {
+            ->action(function (array $data, FlowHasForm $flow_has_form) {
                 try {
-                    $flow_has_form_service = new FlowHasFormService();
-                    $flow_has_form_service->approve($data);
+                    $flow_has_form->service()->process($data);
                     NotificationUtil::make(true, __('cat/flow_has_form.action.approve_success'));
                 } catch (Exception $exception) {
                     LogUtil::error($exception);
