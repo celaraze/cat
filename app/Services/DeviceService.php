@@ -6,7 +6,6 @@ use App\Models\AssetNumberRule;
 use App\Models\Device;
 use App\Models\Flow;
 use App\Models\Part;
-use App\Models\Setting;
 use Exception;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
@@ -41,10 +40,15 @@ class DeviceService extends Service
 
     public static function isSetRetireFlow(): bool
     {
-        return Setting::query()
-            ->where('custom_key', 'device_retire_flow_id')
-            ->count();
+        /* @var Flow $flow */
+        $flow = self::getRetireFlow();
 
+        return $flow?->nodes()->count() ?? false;
+    }
+
+    public static function getRetireFlow(): Builder|Model|null
+    {
+        return Flow::query()->where('slug', 'device_retire_flow')->first();
     }
 
     public function isExistHasUser(): bool
@@ -130,27 +134,6 @@ class DeviceService extends Service
             DB::rollBack();
             throw $exception;
         }
-    }
-
-    /**
-     * @throws Exception
-     */
-    public function getRetireFlow(): Builder|Model
-    {
-        $flow_id = Setting::query()
-            ->where('custom_key', 'device_retire_flow_id')
-            ->value('custom_value');
-        if (! $flow_id) {
-            throw new Exception(__('cat/device.retire_flow_not_set'));
-        }
-        $flow = Flow::query()
-            ->where('id', $flow_id)
-            ->first();
-        if (! $flow) {
-            throw new Exception(__('cat/device.retire_flow_not_found'));
-        }
-
-        return $flow;
     }
 
     public function isRetired(): bool

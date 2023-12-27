@@ -2,8 +2,11 @@
 
 namespace App\Services;
 
+use App\Models\Flow;
 use App\Models\FlowHasNode;
-use JetBrains\PhpStorm\ArrayShape;
+use Exception;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class FlowHasNodeService extends Service
 {
@@ -13,56 +16,40 @@ class FlowHasNodeService extends Service
     }
 
     /**
-     * 是否有父节点.
+     * @throws Exception
      */
-    public function isExistParentNode(): bool
+    public function batchCreate(array $data): void
     {
-        return $this->model->parentNode()->count();
+        DB::beginTransaction();
+        $flow = DeviceService::getRetireFlow();
+        /* @var Flow $flow */
+        $flow->nodes()->delete();
+        try {
+            foreach ($data['nodes'] as $key => $node) {
+                $data['order'] = $key;
+                $data['role_id'] = $node;
+                $this->model = new FlowHasNode();
+                $this->create($data);
+            }
+            DB::commit();
+        } catch (Exception $exception) {
+            DB::rollBack();
+            throw $exception;
+        }
     }
 
-    /**
-     * 是否是第一个节点.
-     */
-    public function isFirstNode(): bool
+    public function delete(): ?bool
     {
-        return ! $this->model->getAttribute('parent_node_id');
+        return $this->model->delete();
     }
 
-    /**
-     * 是否有子节点.
-     */
-    public function isExistChildNode(): bool
+    public function create(array $data): Model|FlowHasNode
     {
-        return $this->model->childNode()->count();
-    }
-
-    /**
-     * 是否是最后一个节点.
-     */
-    public function isLastNode(): bool
-    {
-        return ! FlowHasNode::query()
-            ->where('parent_node_id', $this->model->getKey())
-            ->count();
-    }
-
-    /**
-     * 创建节点.
-     */
-    #[ArrayShape([
-        'name' => 'string',
-        'flow_id' => 'int',
-        'user_id' => 'int',
-        'role_id' => 'int',
-        'parent_node_id' => 'int',
-    ])]
-    public function create(array $data): FlowHasNode
-    {
-        $this->model->setAttribute('name', $data['name']);
+        $this->model = new FlowHasNode();
         $this->model->setAttribute('flow_id', $data['flow_id']);
-        $this->model->setAttribute('user_id', $data['user_id'] ?? 0);
-        $this->model->setAttribute('role_id', $data['role_id'] ?? 0);
-        $this->model->setAttribute('parent_node_id', $data['parent_node_id']);
+        $this->model->setAttribute('order', $data['order']);
+        $this->model->setAttribute('role_id', $data['role_id']);
+        $this->model->setAttribute('creator_id', $data['creator_id']);
         $this->model->save();
 
         return $this->model;

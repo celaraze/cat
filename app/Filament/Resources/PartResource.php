@@ -169,12 +169,12 @@ class PartResource extends Resource implements HasShieldPermissions
             ->actions([
                 Tables\Actions\ActionGroup::make([
                     // 流程报废
-                    PartAction::retire()
-                        ->visible(function () {
-                            $can = auth()->user()->can('retire_part');
-
-                            return $can && PartService::isSetRetireFlow();
-                        }),
+                    //                    PartAction::retire()
+                    //                        ->visible(function () {
+                    //                            $can = auth()->user()->can('retire_part');
+                    //
+                    //                            return $can && PartService::isSetRetireFlow();
+                    //                        }),
                     // 强制报废
                     PartAction::forceRetire()
                         ->visible(function () {
@@ -222,10 +222,10 @@ class PartResource extends Resource implements HasShieldPermissions
                             return auth()->user()->can('reset_auto_asset_number_rule_part');
                         }),
                     // 配置配件报废流程
-                    PartAction::setRetireFlow()
-                        ->visible(function () {
-                            return auth()->user()->can('set_retire_flow_part');
-                        }),
+                    //                    PartAction::setRetireFlow()
+                    //                        ->visible(function () {
+                    //                            return auth()->user()->can('set_retire_flow_part');
+                    //                        }),
                 ])
                     ->label(__('cat/action.advance'))
                     ->icon('heroicon-m-cog-8-tooth')

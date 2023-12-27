@@ -2,63 +2,27 @@
 
 namespace App\Models;
 
-use App\Services\FlowHasFormService;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class FlowHasForm extends Model
 {
     use HasFactory, SoftDeletes;
 
-    /**
-     * 一对一，表单有一个工作流.
-     */
-    public function flow(): BelongsTo
+    public function applicant(): BelongsTo
     {
-        return $this->belongsTo(Flow::class, 'flow_id', 'id');
+        return $this->belongsTo(User::class, 'applicant_id', 'id');
     }
 
-    /**
-     * 一对一，表单有一个申请人.
-     */
-    public function applicantUser(): BelongsTo
+    public function approver(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'applicant_user_id', 'id');
+        return $this->belongsTo(User::class, 'approver_id', 'id');
     }
 
-    /**
-     * 一对一，表单有一个审批人.
-     */
-    public function approveUser(): BelongsTo
+    public function node(): belongsTo
     {
-        return $this->belongsTo(User::class, 'approve_user_id', 'id');
-    }
-
-    /**
-     * 一对多，表单所有历史记录.
-     */
-    public function forms(): HasMany
-    {
-        return $this->hasMany($this, 'uuid', 'uuid');
-    }
-
-    /**
-     * 一对一，表单有一个流程节点.
-     */
-    public function node(): HasOne
-    {
-        return $this->hasOne(FlowHasNode::class, 'id', 'node_id');
-    }
-
-    /**
-     * 模型到服务.
-     */
-    public function service(): FlowHasFormService
-    {
-        return new FlowHasFormService($this);
+        return $this->belongsTo(FlowHasNode::class, 'flow_has_node_id', 'id');
     }
 }

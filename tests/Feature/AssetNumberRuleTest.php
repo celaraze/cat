@@ -21,6 +21,7 @@ class AssetNumberRuleTest extends TestCase
         $data = $asset_number_rule->toArray();
         $asset_number_rule->forceDelete();
         $asset_number_rule_service = new AssetNumberRuleService();
+        $data['creator_id'] = 1;
         $asset_number_rule = $asset_number_rule_service->create($data);
         $this->assertModelExists($asset_number_rule);
     }

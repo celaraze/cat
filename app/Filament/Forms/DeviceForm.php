@@ -3,8 +3,9 @@
 namespace App\Filament\Forms;
 
 use App\Models\Device;
+use App\Models\Flow;
 use App\Services\AssetNumberRuleService;
-use App\Services\FlowService;
+use App\Services\RoleService;
 use Awcodes\Shout\Components\Shout;
 use Filament\Forms\Components\Actions\Action;
 use Filament\Forms\Components\Checkbox;
@@ -108,10 +109,33 @@ class DeviceForm
     public static function setRetireFlow(): array
     {
         return [
-            Select::make('flow_id')
-                ->options(FlowService::pluckOptions())
-                ->required()
-                ->label(__('cat/device.flow_id')),
+            Hidden::make('creator_id')
+                ->default(auth()->id()),
+            Hidden::make('name')
+                ->default('device_retire_flow'),
+            Hidden::make('slug')
+                ->default('device_retire_flow'),
+            Hidden::make('model_name')
+                ->default(Device::class),
+            Shout::make('')
+                ->color('info')
+                ->content(__('cat/device.form.set_retire_flow_helper')),
+            Repeater::make('nodes')
+                ->simple(
+                    Select::make('role_id')
+                        ->options(RoleService::pluckOptions())
+                        ->required()
+                        ->label(__('cat/flow.role_id')),
+                )
+                ->default(function () {
+                    return Flow::query()
+                        ->where('slug', 'device_retire_flow')
+                        ->first()
+                        ?->nodes
+                        ->pluck('role_id')
+                        ->toArray() ?? [];
+                })
+                ->hiddenLabel(),
         ];
     }
 
@@ -138,6 +162,10 @@ class DeviceForm
     public static function retire(): array
     {
         return [
+            Hidden::make('applicant_id')
+                ->default(auth()->id()),
+            Hidden::make('creator_id')
+                ->default(auth()->id()),
             Shout::make('')
                 ->color('danger')
                 ->content(__('cat/device.form.retire_helper')),

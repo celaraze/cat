@@ -8,7 +8,8 @@ class FlowHasFormEnum
     {
         return match ($state) {
             0 => __('cat/flow_has_form.status.draft'),
-            1, 2 => __('cat/flow_has_form.status.processing'),
+            1 => __('cat/flow_has_form.status.processing'),
+            2 => __('cat/flow_has_form.status.back'),
             3 => __('cat/flow_has_form.status.rejected'),
             4 => __('cat/flow_has_form.status.approved'),
         };

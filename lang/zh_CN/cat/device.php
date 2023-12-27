@@ -66,6 +66,7 @@ return [
     'action.view_token' => '查看密钥',
     'action.view_token_helper' => '请验证您的身份，通过后密码将以通知形式展示在右上角。您可以查看并复制密码，并自行关闭消息。',
     'action.view_token_failure' => '查看密钥失败',
+    'action.retire_flow_name' => '设备废弃单',
 
     'widget.using' => ' 使用中',
 ];

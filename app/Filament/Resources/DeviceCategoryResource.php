@@ -80,7 +80,7 @@ class DeviceCategoryResource extends Resource implements HasShieldPermissions
                 // 删除
                 DeviceCategoryAction::delete()
                     ->visible(function (DeviceCategory $device_category) {
-                        $is_deleted = $device_category->service()->isDelete();
+                        $is_deleted = $device_category->service()->isDeleted();
 
                         return ! $is_deleted && auth()->user()->can('delete_device::category');
                     }),

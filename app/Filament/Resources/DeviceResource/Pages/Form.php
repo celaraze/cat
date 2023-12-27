@@ -2,11 +2,9 @@
 
 namespace App\Filament\Resources\DeviceResource\Pages;
 
-use App\Enums\TicketEnum;
-use App\Filament\Actions\DeviceAction;
-use App\Filament\Actions\TicketAction;
+use App\Enums\FlowHasFormEnum;
+use App\Filament\Actions\FlowHasFormAction;
 use App\Filament\Resources\DeviceResource;
-use App\Models\Device;
 use App\Traits\ManageRelatedRecords\QueryRecordByUrl;
 use Filament\Resources\Pages\ManageRelatedRecords;
 use Filament\Tables;
@@ -14,13 +12,13 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class Ticket extends ManageRelatedRecords
+class Form extends ManageRelatedRecords
 {
     use QueryRecordByUrl;
 
     protected static string $resource = DeviceResource::class;
 
-    protected static string $relationship = 'tickets';
+    protected static string $relationship = 'forms';
 
     protected static ?string $navigationIcon = 'heroicon-o-document-text';
 
@@ -28,17 +26,17 @@ class Ticket extends ManageRelatedRecords
 
     public static function getNavigationLabel(): string
     {
-        return __('cat/menu.ticket');
+        return __('cat/menu.flow_has_form');
     }
 
     public static function getNavigationBadge(): ?string
     {
-        return self::queryRecord()->tickets()->count();
+        return self::queryRecord()->forms()->count();
     }
 
     public function getBreadcrumb(): string
     {
-        return __('cat/menu.ticket');
+        return __('cat/menu.flow_has_form');
     }
 
     public function table(Table $table): Table
@@ -46,50 +44,53 @@ class Ticket extends ManageRelatedRecords
         return $table
             ->recordTitleAttribute('name')
             ->columns([
-                Tables\Columns\TextColumn::make('subject')
+                Tables\Columns\TextColumn::make('node.flow.name')
                     ->searchable()
                     ->toggleable()
-                    ->label(__('cat/ticket.subject')),
+                    ->label(__('cat/flow_has_form.name')),
                 Tables\Columns\TextColumn::make('created_at')
                     ->searchable()
                     ->toggleable()
-                    ->label(__('cat/ticket.created_at')),
-                Tables\Columns\TextColumn::make('user.name')
+                    ->label(__('cat/flow_has_form.created_at')),
+                Tables\Columns\TextColumn::make('applicant.name')
                     ->searchable()
                     ->toggleable()
-                    ->label(__('cat/ticket.user')),
-                Tables\Columns\TextColumn::make('assignee.name')
+                    ->label(__('cat/flow_has_form.applicant')),
+                Tables\Columns\TextColumn::make('node.role.name')
                     ->searchable()
                     ->toggleable()
-                    ->label(__('cat/ticket.assignee')),
+                    ->label(__('cat/flow_has_form.current_approver_role_id')),
+                Tables\Columns\TextColumn::make('approver.name')
+                    ->searchable()
+                    ->toggleable()
+                    ->label(__('cat/flow_has_form.approver')),
+                Tables\Columns\TextColumn::make('comment')
+                    ->searchable()
+                    ->toggleable()
+                    ->label(__('cat/flow_has_form.comment')),
                 Tables\Columns\TextColumn::make('status')
                     ->searchable()
                     ->toggleable()
                     ->formatStateUsing(function ($state) {
-                        return TicketEnum::statusText($state);
+                        return FlowHasFormEnum::statusText($state);
                     })
                     ->badge()
                     ->color(function ($state) {
-                        return TicketEnum::statusColor($state);
+                        return FlowHasFormEnum::statusColor($state);
                     })
-                    ->label(__('cat/ticket.status')),
+                    ->label(__('cat/flow_has_form.status')),
             ])
             ->filters([
 
             ])
             ->headerActions([
-                // 创建
-                TicketAction::create($this->getOwnerRecord())
-                    ->visible(function () {
-                        /* @var Device $device */
-                        $device = $this->getOwnerRecord();
 
-                        return ! $device->service()->isRetired();
-                    }),
             ])
             ->actions([
-                // 前往工单
-                DeviceAction::toTicket(),
+                FlowHasFormAction::approve()
+                    ->visible(function () {
+                        return true;
+                    }),
             ])
             ->bulkActions([
 

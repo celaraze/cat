@@ -84,7 +84,6 @@ return [
         'force_retire' => '强制报废',
         'set_auto_asset_number_rule' => '配置资产编号自动生成规则',
         'reset_auto_asset_number_rule' => '重置资产编号自动生成规则',
-        'set_retire_flow' => '配置报废流程',
         'create_has_part' => '附加配件',
         'delete_has_part' => '脱离配件',
         'create_has_software' => '附加软件',

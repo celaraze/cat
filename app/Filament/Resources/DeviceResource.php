@@ -80,6 +80,7 @@ class DeviceResource extends Resource implements HasShieldPermissions
             HasSoftware::class,
             Ticket::class,
             HasSecret::class,
+            DeviceResource\Pages\Form::class,
         ];
         $device_service = $page->getWidgetData()['record']->service();
         $can_update_device = auth()->user()->can('update_device');
@@ -366,6 +367,7 @@ class DeviceResource extends Resource implements HasShieldPermissions
             'software' => HasSoftware::route('{record}/has_software'),
             'tickets' => Ticket::route('/{record}/has_tickets'),
             'secrets' => HasSecret::route('/{record}/has_secrets'),
+            'forms' => DeviceResource\Pages\Form::route('/{record}/forms'),
         ];
     }
 
