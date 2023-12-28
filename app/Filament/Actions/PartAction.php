@@ -4,11 +4,13 @@ namespace App\Filament\Actions;
 
 use App\Filament\Forms\PartForm;
 use App\Filament\Resources\PartCategoryResource;
+use App\Models\Flow;
 use App\Models\Part;
 use App\Services\AssetNumberRuleService;
 use App\Services\FlowHasFormService;
+use App\Services\FlowHasNodeService;
+use App\Services\FlowService;
 use App\Services\PartService;
-use App\Services\SettingService;
 use App\Utils\LogUtil;
 use App\Utils\NotificationUtil;
 use Exception;
@@ -23,9 +25,39 @@ class PartAction
             ->form(PartForm::setRetireFlow())
             ->action(function (array $data) {
                 try {
-                    $setting_service = new SettingService();
-                    $setting_service->set('part_retire_flow_id', $data['flow_id']);
+                    /* @var Flow $flow */
+                    $flow = PartService::getRetireFlow();
+                    if (! $flow) {
+                        $flow_data['name'] = __('cat/part.action.retire_flow_name');
+                        $flow_data['slug'] = 'retire_flow';
+                        $flow_data['model_name'] = Part::class;
+                        $flow_data['creator_id'] = 0;
+                        $flow_service = new FlowService();
+                        $flow = $flow_service->create($flow_data);
+                    }
+                    $data['flow_id'] = $flow->getKey();
+                    $flow_has_node_service = new FlowHasNodeService();
+                    $flow_has_node_service->batchCreate($data);
                     NotificationUtil::make(true, __('cat/part.action.set_retire_flow_success'));
+                } catch (Exception $exception) {
+                    LogUtil::error($exception);
+                    NotificationUtil::make(false, $exception);
+                }
+            })
+            ->closeModalByClickingAway(false);
+    }
+
+    public static function create(): Action
+    {
+        return Action::make(__('cat/part.action.create'))
+            ->slideOver()
+            ->icon('heroicon-m-plus')
+            ->form(PartForm::createOrEdit())
+            ->action(function (array $data) {
+                try {
+                    $device_service = new PartService();
+                    $device_service->create($data);
+                    NotificationUtil::make(true, __('cat/part.action.create_success'));
                 } catch (Exception $exception) {
                     LogUtil::error($exception);
                     NotificationUtil::make(false, $exception);
@@ -85,33 +117,19 @@ class PartAction
             ->form(PartForm::retire())
             ->action(function (array $data, Part $part) {
                 try {
-                    $part_retire_flow = $part->service()->getRetireFlow();
+                    /* @var Flow $flow */
+                    $flow = PartService::getRetireFlow();
+                    if (! $flow->nodes()->count()) {
+                        throw new Exception('cat/part.action.retire_flow_not_set');
+                    }
+                    $data['flow_has_node_id'] = $flow->nodes()->where('order', 0)->first()->getKey();
                     $asset_number = $part->getAttribute('asset_number');
-                    $flow_has_form_service = new FlowHasFormService();
-                    $data['flow_id'] = $part_retire_flow->getKey();
                     $data['name'] = __('cat/part.action.retire_flow_name').' - '.$asset_number;
-                    $data['payload'] = $asset_number;
+                    $data['model_name'] = Part::class;
+                    $data['model_id'] = $part->getKey();
+                    $flow_has_form_service = new FlowHasFormService();
                     $flow_has_form_service->create($data);
                     NotificationUtil::make(true, __('cat/part.action.retire_success'));
-                } catch (Exception $exception) {
-                    LogUtil::error($exception);
-                    NotificationUtil::make(false, $exception);
-                }
-            })
-            ->closeModalByClickingAway(false);
-    }
-
-    public static function create(): Action
-    {
-        return Action::make(__('cat/part.action.create'))
-            ->slideOver()
-            ->icon('heroicon-m-plus')
-            ->form(PartForm::createOrEdit())
-            ->action(function (array $data) {
-                try {
-                    $device_service = new PartService();
-                    $device_service->create($data);
-                    NotificationUtil::make(true, __('cat/part.action.create_success'));
                 } catch (Exception $exception) {
                     LogUtil::error($exception);
                     NotificationUtil::make(false, $exception);

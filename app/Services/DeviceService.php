@@ -72,7 +72,7 @@ class DeviceService extends Service
         'image' => 'string',
         'description' => 'string',
         'additional' => 'string',
-        'user_id' => 'int',
+        'creator_id' => 'int',
     ])]
     public function create(array $data): void
     {
@@ -101,7 +101,7 @@ class DeviceService extends Service
             $this->model->setAttribute('image', $data['image']);
             $this->model->setAttribute('description', $data['description']);
             $this->model->setAttribute('additional', json_encode($data['additional']));
-            $this->model->setAttribute('user_id', $data['user_id']);
+            $this->model->setAttribute('creator_id', $data['creator_id']);
             $this->model->save();
             $this->model->assetNumberTrack()
                 ->create(['asset_number' => $asset_number]);

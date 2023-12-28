@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Filament\Resources\DeviceResource\Pages;
+namespace App\Filament\Resources\ConsumableResource\Pages;
 
 use App\Enums\FlowHasFormEnum;
 use App\Filament\Actions\FlowHasFormAction;
-use App\Filament\Resources\DeviceResource;
+use App\Filament\Resources\ConsumableResource;
 use App\Models\FlowHasForm;
 use App\Traits\ManageRelatedRecords\QueryRecordByUrl;
 use Filament\Resources\Pages\ManageRelatedRecords;
@@ -17,7 +17,7 @@ class Form extends ManageRelatedRecords
 {
     use QueryRecordByUrl;
 
-    protected static string $resource = DeviceResource::class;
+    protected static string $resource = ConsumableResource::class;
 
     protected static string $relationship = 'forms';
 

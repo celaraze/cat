@@ -124,6 +124,6 @@ class Device extends Model
     public function forms(): HasMany
     {
         return $this->hasMany(FlowHasForm::class, 'model_id', 'id')
-            ->where('model_class', self::class);
+            ->where('model_name', self::class);
     }
 }

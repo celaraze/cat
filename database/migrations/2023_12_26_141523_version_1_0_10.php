@@ -45,7 +45,7 @@ return new class extends Migration
                 ->comment('唯一编码');
             $table->integer('flow_has_node_id')
                 ->comment('节点 ID');
-            $table->string('model_class')
+            $table->string('model_name')
                 ->comment('模型名称');
             $table->integer('model_id')
                 ->comment('模型 ID');

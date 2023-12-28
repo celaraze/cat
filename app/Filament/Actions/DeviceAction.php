@@ -130,7 +130,7 @@ class DeviceAction
                     $data['flow_has_node_id'] = $flow->nodes()->where('order', 0)->first()->getKey();
                     $asset_number = $device->getAttribute('asset_number');
                     $data['name'] = __('cat/device.action.retire_flow_name').' - '.$asset_number;
-                    $data['model_class'] = Device::class;
+                    $data['model_name'] = Device::class;
                     $data['model_id'] = $device->getKey();
                     $flow_has_form_service = new FlowHasFormService();
                     $flow_has_form_service->create($data);

@@ -2,7 +2,9 @@
 
 namespace App\Filament\Forms;
 
-use App\Services\FlowService;
+use App\Models\Consumable;
+use App\Services\ConsumableService;
+use App\Services\RoleService;
 use Awcodes\Shout\Components\Shout;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Hidden;
@@ -95,10 +97,31 @@ class ConsumableForm
     public static function setRetireFlow(): array
     {
         return [
-            Select::make('flow_id')
-                ->options(FlowService::pluckOptions())
-                ->required()
-                ->label(__('cat/consumable.flow_id')),
+            Hidden::make('creator_id')
+                ->default(auth()->id()),
+            Hidden::make('name')
+                ->default('consumable_retire_flow'),
+            Hidden::make('slug')
+                ->default('retire_flow'),
+            Hidden::make('model_name')
+                ->default(Consumable::class),
+            Shout::make('')
+                ->color('info')
+                ->content(__('cat/consumable.form.set_retire_flow_helper')),
+            Repeater::make('nodes')
+                ->simple(
+                    Select::make('role_id')
+                        ->options(RoleService::pluckOptions())
+                        ->required()
+                        ->label(__('cat/flow.role_id')),
+                )
+                ->default(function () {
+                    return ConsumableService::getRetireFlow()
+                        ?->nodes
+                        ->pluck('role_id')
+                        ->toArray() ?? [];
+                })
+                ->hiddenLabel(),
         ];
     }
 
@@ -108,6 +131,10 @@ class ConsumableForm
     public static function retire(): array
     {
         return [
+            Hidden::make('applicant_id')
+                ->default(auth()->id()),
+            Hidden::make('creator_id')
+                ->default(auth()->id()),
             Shout::make('')
                 ->color('danger')
                 ->content(__('cat/consumable.form.retire_helper')),

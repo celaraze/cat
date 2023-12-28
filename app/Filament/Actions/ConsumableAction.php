@@ -6,9 +6,11 @@ use App\Filament\Forms\ConsumableForm;
 use App\Filament\Resources\ConsumableCategoryResource;
 use App\Filament\Resources\ConsumableUnitResource;
 use App\Models\Consumable;
+use App\Models\Flow;
 use App\Services\ConsumableService;
 use App\Services\FlowHasFormService;
-use App\Services\SettingService;
+use App\Services\FlowHasNodeService;
+use App\Services\FlowService;
 use App\Utils\LogUtil;
 use App\Utils\NotificationUtil;
 use Exception;
@@ -57,12 +59,17 @@ class ConsumableAction
             ->form(ConsumableForm::retire())
             ->action(function (array $data, Consumable $consumable) {
                 try {
-                    $consumable_retire_flow = $consumable->service()->getRetireFlow();
-                    $consumable_id = $consumable->getKey();
+                    /* @var Flow $flow */
+                    $flow = ConsumableService::getRetireFlow();
+                    if (! $flow->nodes()->count()) {
+                        throw new Exception('cat/consumable.action.retire_flow_not_set');
+                    }
+                    $data['flow_has_node_id'] = $flow->nodes()->where('order', 0)->first()->getKey();
+                    $asset_number = $consumable->getAttribute('asset_number');
+                    $data['name'] = __('cat/consumable.action.retire_flow_name').' - '.$asset_number;
+                    $data['model_name'] = Consumable::class;
+                    $data['model_id'] = $consumable->getKey();
                     $flow_has_form_service = new FlowHasFormService();
-                    $data['flow_id'] = $consumable_retire_flow->getKey();
-                    $data['name'] = __('cat/consumable.action.retire_flow_name').' - '.$consumable_id;
-                    $data['payload'] = $consumable_id;
                     $flow_has_form_service->create($data);
                     NotificationUtil::make(true, __('cat/consumable.action.retire_success'));
                 } catch (Exception $exception) {
@@ -99,8 +106,19 @@ class ConsumableAction
             ->form(ConsumableForm::setRetireFlow())
             ->action(function (array $data) {
                 try {
-                    $setting_service = new SettingService();
-                    $setting_service->set('consumable_retire_flow_id', $data['flow_id']);
+                    /* @var Flow $flow */
+                    $flow = ConsumableService::getRetireFlow();
+                    if (! $flow) {
+                        $flow_data['name'] = __('cat/consumable.action.retire_flow_name');
+                        $flow_data['slug'] = 'retire_flow';
+                        $flow_data['model_name'] = Consumable::class;
+                        $flow_data['creator_id'] = 0;
+                        $flow_service = new FlowService();
+                        $flow = $flow_service->create($flow_data);
+                    }
+                    $data['flow_id'] = $flow->getKey();
+                    $flow_has_node_service = new FlowHasNodeService();
+                    $flow_has_node_service->batchCreate($data);
                     NotificationUtil::make(true, __('cat/consumable.action.set_retire_flow_success'));
                 } catch (Exception $exception) {
                     LogUtil::error($exception);

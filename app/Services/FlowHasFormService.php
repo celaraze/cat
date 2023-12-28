@@ -20,7 +20,7 @@ class FlowHasFormService extends Service
     {
         $this->model->setAttribute('uuid', Uuid::uuid4());
         $this->model->setAttribute('flow_has_node_id', $data['flow_has_node_id']);
-        $this->model->setAttribute('model_class', $data['model_class']);
+        $this->model->setAttribute('model_name', $data['model_name']);
         $this->model->setAttribute('model_id', $data['model_id']);
         $this->model->setAttribute('applicant_id', $data['applicant_id']);
         $this->model->setAttribute('creator_id', $data['creator_id']);
@@ -60,6 +60,8 @@ class FlowHasFormService extends Service
 
                         return false;
                     } else {
+                        $this->model->setAttribute('status', 4);
+                        $this->model->save();
                         // 正常审批流程结束
                         // 资产废弃钩子
                         if ($this->model->node->flow->slug == 'retire_flow') {
@@ -105,24 +107,23 @@ class FlowHasFormService extends Service
 
     // 两种情况可以认定是完成了
     // 一是所有的表单记录中，有状态为 3 即驳回
-    // 二十所有的表单记录中，没有剩余的表单节点并且满足条件一
+    // 二是所有的表单记录中，没有剩余的表单节点并且满足条件一
     public function isCompleted(): bool
     {
-        $flow_has_forms = FlowHasForm::query()
-            ->where('uuid', $this->model->getAttribute('uuid'));
+        $flow_has_forms = $this->model->forms();
         if ($flow_has_forms->where('status', 3)->count()) {
             return true;
-        } else {
-            if ($this->model->node->next()) {
-                return false;
-            } else {
-                return true;
-            }
         }
+
+        if (! $this->model->node->next() && $this->model->getAttribute('status')) {
+            return true;
+        }
+
+        return false;
     }
 
     public function isProcessed(): bool
     {
-        return $this->model->getAttribute('status') != 0;
+        return $this->model->getAttribute('status');
     }
 }

@@ -3,8 +3,8 @@
 namespace App\Filament\Forms;
 
 use App\Models\Device;
-use App\Models\Flow;
 use App\Services\AssetNumberRuleService;
+use App\Services\DeviceService;
 use App\Services\RoleService;
 use Awcodes\Shout\Components\Shout;
 use Filament\Forms\Components\Actions\Action;
@@ -128,9 +128,7 @@ class DeviceForm
                         ->label(__('cat/flow.role_id')),
                 )
                 ->default(function () {
-                    return Flow::query()
-                        ->where('slug', 'device_retire_flow')
-                        ->first()
+                    return DeviceService::getRetireFlow()
                         ?->nodes
                         ->pluck('role_id')
                         ->toArray() ?? [];

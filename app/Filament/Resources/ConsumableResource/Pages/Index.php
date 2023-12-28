@@ -31,7 +31,7 @@ class Index extends ListRecords
             __('cat/consumable.status.normal') => Tab::make()
                 ->badge(Consumable::query()->where('status', 4)->count())
                 ->badgeColor(AssetEnum::statusColor(4))
-                ->modifyQueryUsing(fn (Builder $query) => $query->where('status', 1)),
+                ->modifyQueryUsing(fn (Builder $query) => $query->where('status', 4)),
             __('cat/consumable.status.retired') => Tab::make()
                 ->badge(Consumable::query()->where('status', 3)->count())
                 ->badgeColor(AssetEnum::statusColor(3))

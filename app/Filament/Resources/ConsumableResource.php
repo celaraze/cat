@@ -12,6 +12,7 @@ use App\Filament\Resources\ConsumableResource\Pages\Track;
 use App\Filament\Resources\ConsumableResource\Pages\View;
 use App\Models\Consumable;
 use App\Models\Device;
+use App\Services\ConsumableService;
 use BezhanSalleh\FilamentShield\Contracts\HasShieldPermissions;
 use Filament\Forms\Form;
 use Filament\Resources\Pages\Page;
@@ -57,6 +58,7 @@ class ConsumableResource extends Resource implements HasShieldPermissions
             View::class,
             Edit::class,
             Track::class,
+            ConsumableResource\Pages\Form::class,
         ];
         $consumable_service = $page->getWidgetData()['record']->service();
         $can_update_consumable = auth()->user()->can('update_consumable');
@@ -146,12 +148,12 @@ class ConsumableResource extends Resource implements HasShieldPermissions
             ->actions([
                 Tables\Actions\ActionGroup::make([
                     // 流程报废
-                    //                    ConsumableAction::retire()
-                    //                        ->visible(function () {
-                    //                            $can = auth()->user()->can('retire_consumable');
-                    //
-                    //                            return $can && ConsumableService::isSetRetireFlow();
-                    //                        }),
+                    ConsumableAction::retire()
+                        ->visible(function () {
+                            $can = auth()->user()->can('retire_consumable');
+
+                            return $can && ConsumableService::isSetRetireFlow();
+                        }),
                     // 强制报废
                     ConsumableAction::forceRetire()
                         ->visible(function () {
@@ -187,10 +189,10 @@ class ConsumableResource extends Resource implements HasShieldPermissions
                     ConsumableAction::toCategory(),
                     ConsumableAction::toUnit(),
                     // 配置设备报废流程
-                    //                    ConsumableAction::setRetireFlow()
-                    //                        ->visible(function () {
-                    //                            return auth()->user()->can('set_retire_flow_consumable');
-                    //                        }),
+                    ConsumableAction::setRetireFlow()
+                        ->visible(function () {
+                            return auth()->user()->can('set_retire_flow_consumable');
+                        }),
                 ])
                     ->label(__('cat/action.advance'))
                     ->icon('heroicon-m-cog-8-tooth')
@@ -205,7 +207,8 @@ class ConsumableResource extends Resource implements HasShieldPermissions
             'index' => Index::route('/'),
             'view' => View::route('/{record}'),
             'edit' => Edit::route('/{record}/edit'),
-            'track' => Track::route('/{record}/tracks'),
+            'tracks' => Track::route('/{record}/tracks'),
+            'forms' => ConsumableResource\Pages\Form::route('/{record}/forms'),
         ];
     }
 

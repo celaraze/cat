@@ -4,7 +4,9 @@ namespace App\Filament\Forms;
 
 use App\Models\Software;
 use App\Services\AssetNumberRuleService;
-use App\Services\FlowService;
+use App\Services\RoleService;
+use App\Services\SoftwareService;
+use Awcodes\Shout\Components\Shout;
 use Filament\Forms\Components\Actions\Action;
 use Filament\Forms\Components\Checkbox;
 use Filament\Forms\Components\FileUpload;
@@ -93,15 +95,36 @@ class SoftwareForm
     }
 
     /**
-     * 配置废弃流程.
+     * 配置软件废弃流程.
      */
     public static function setRetireFlow(): array
     {
         return [
-            Select::make('flow_id')
-                ->options(FlowService::pluckOptions())
-                ->required()
-                ->label(__('cat/software.flow_id')),
+            Hidden::make('creator_id')
+                ->default(auth()->id()),
+            Hidden::make('name')
+                ->default('software_retire_flow'),
+            Hidden::make('slug')
+                ->default('retire_flow'),
+            Hidden::make('model_name')
+                ->default(Software::class),
+            Shout::make('')
+                ->color('info')
+                ->content(__('cat/software.form.set_retire_flow_helper')),
+            Repeater::make('nodes')
+                ->simple(
+                    Select::make('role_id')
+                        ->options(RoleService::pluckOptions())
+                        ->required()
+                        ->label(__('cat/flow.role_id')),
+                )
+                ->default(function () {
+                    return SoftwareService::getRetireFlow()
+                        ?->nodes
+                        ->pluck('role_id')
+                        ->toArray() ?? [];
+                })
+                ->hiddenLabel(),
         ];
     }
 
@@ -128,6 +151,13 @@ class SoftwareForm
     public static function retire(): array
     {
         return [
+            Hidden::make('applicant_id')
+                ->default(auth()->id()),
+            Hidden::make('creator_id')
+                ->default(auth()->id()),
+            Shout::make('')
+                ->color('danger')
+                ->content(__('cat/software.form.retire_helper')),
             TextInput::make('comment')
                 ->label(__('cat/software.form.retire_comment'))
                 ->required(),

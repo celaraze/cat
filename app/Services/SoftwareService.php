@@ -4,7 +4,6 @@ namespace App\Services;
 
 use App\Models\AssetNumberRule;
 use App\Models\Flow;
-use App\Models\Setting;
 use App\Models\Software;
 use Exception;
 use Illuminate\Database\Eloquent\Builder;
@@ -48,9 +47,18 @@ class SoftwareService extends Service
 
     public static function isSetRetireFlow(): bool
     {
-        return Setting::query()
-            ->where('custom_key', 'software_retire_flow_id')
-            ->count();
+        /* @var Flow $flow */
+        $flow = self::getRetireFlow();
+
+        return $flow?->nodes()->count() ?? false;
+    }
+
+    public static function getRetireFlow(): Builder|Model|null
+    {
+        return Flow::query()
+            ->where('slug', 'retire_flow')
+            ->where('model_name', Software::class)
+            ->first();
     }
 
     /**
@@ -126,25 +134,6 @@ class SoftwareService extends Service
             DB::rollBack();
             throw $exception;
         }
-    }
-
-    /**
-     * @throws Exception
-     */
-    public function getRetireFlow(): Builder|Model
-    {
-        $flow_id = Setting::query()
-            ->where('custom_key', 'software_retire_flow_id')
-            ->value('custom_value');
-        if (! $flow_id) {
-            throw new Exception(__('cat/software.retire_flow_not_set'));
-        }
-        $flow = Flow::query()->where('id', $flow_id)->first();
-        if (! $flow) {
-            throw new Exception(__('cat/software.retire_flow_not_found'));
-        }
-
-        return $flow;
     }
 
     public function isRetired(): bool

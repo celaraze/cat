@@ -5,7 +5,6 @@ namespace App\Services;
 use App\Models\AssetNumberRule;
 use App\Models\Flow;
 use App\Models\Part;
-use App\Models\Setting;
 use Exception;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
@@ -39,10 +38,18 @@ class PartService extends Service
 
     public static function isSetRetireFlow(): bool
     {
-        return Setting::query()
-            ->where('custom_key', 'part_retire_flow_id')
-            ->count();
+        /* @var Flow $flow */
+        $flow = self::getRetireFlow();
 
+        return $flow?->nodes()->count() ?? false;
+    }
+
+    public static function getRetireFlow(): Builder|Model|null
+    {
+        return Flow::query()
+            ->where('slug', 'retire_flow')
+            ->where('model_name', Part::class)
+            ->first();
     }
 
     /**
@@ -113,27 +120,6 @@ class PartService extends Service
             DB::rollBack();
             throw $exception;
         }
-    }
-
-    /**
-     * @throws Exception
-     */
-    public function getRetireFlow(): Builder|Model
-    {
-        $flow_id = Setting::query()
-            ->where('custom_key', 'part_retire_flow_id')
-            ->value('custom_value');
-        if (! $flow_id) {
-            throw new Exception(__('cat/part.retire_flow_not_set'));
-        }
-        $flow = Flow::query()
-            ->where('id', $flow_id)
-            ->first();
-        if (! $flow) {
-            throw new Exception(__('cat/part.retire_flow_not_found'));
-        }
-
-        return $flow;
     }
 
     public function isRetired(): bool

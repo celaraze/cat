@@ -77,6 +77,7 @@ class SoftwareResource extends Resource implements HasShieldPermissions
             View::class,
             Edit::class,
             HasSoftware::class,
+            SoftwareResource\Pages\Form::class,
         ];
         $software_service = $page->getWidgetData()['record']->service();
         $can_update_software = auth()->user()->can('update_software');
@@ -177,12 +178,12 @@ class SoftwareResource extends Resource implements HasShieldPermissions
             ->actions([
                 Tables\Actions\ActionGroup::make([
                     // 流程报废
-                    //                    SoftwareAction::retire()
-                    //                        ->visible(function () {
-                    //                            $can = auth()->user()->can('retire_software');
-                    //
-                    //                            return $can && SoftwareService::isSetRetireFlow();
-                    //                        }),
+                    SoftwareAction::retire()
+                        ->visible(function () {
+                            $can = auth()->user()->can('retire_software');
+
+                            return $can && SoftwareService::isSetRetireFlow();
+                        }),
                     // 强制报废
                     SoftwareAction::forceRetire()
                         ->visible(function () {
@@ -228,10 +229,10 @@ class SoftwareResource extends Resource implements HasShieldPermissions
                             return auth()->user()->can('reset_auto_asset_number_rule_software');
                         }),
                     // 配置软件报废流程
-                    //                    SoftwareAction::setRetireFlow()
-                    //                        ->visible(function () {
-                    //                            return auth()->user()->can('set_retire_flow_software');
-                    //                        }),
+                    SoftwareAction::setRetireFlow()
+                        ->visible(function () {
+                            return auth()->user()->can('set_retire_flow_software');
+                        }),
                 ])
                     ->label(__('cat/action.advance'))
                     ->icon('heroicon-m-cog-8-tooth')
@@ -316,6 +317,7 @@ class SoftwareResource extends Resource implements HasShieldPermissions
             'edit' => Edit::route('/{record}/edit'),
             'view' => View::route('/{record}'),
             'software' => HasSoftware::route('/{record}/has_software'),
+            'forms' => SoftwareResource\Pages\Form::route('/{record}/forms'),
         ];
     }
 

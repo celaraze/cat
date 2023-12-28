@@ -90,4 +90,10 @@ class Software extends Model
             get: fn (?string $value) => json_decode($value, true),
         );
     }
+
+    public function forms(): HasMany
+    {
+        return $this->hasMany(FlowHasForm::class, 'model_id', 'id')
+            ->where('model_name', self::class);
+    }
 }

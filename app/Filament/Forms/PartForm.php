@@ -4,7 +4,9 @@ namespace App\Filament\Forms;
 
 use App\Models\Part;
 use App\Services\AssetNumberRuleService;
-use App\Services\FlowService;
+use App\Services\PartService;
+use App\Services\RoleService;
+use Awcodes\Shout\Components\Shout;
 use Filament\Forms\Components\Actions\Action;
 use Filament\Forms\Components\Checkbox;
 use Filament\Forms\Components\FileUpload;
@@ -90,10 +92,31 @@ class PartForm
     public static function setRetireFlow(): array
     {
         return [
-            Select::make('flow_id')
-                ->options(FlowService::pluckOptions())
-                ->required()
-                ->label(__('cat/part.flow_id')),
+            Hidden::make('creator_id')
+                ->default(auth()->id()),
+            Hidden::make('name')
+                ->default('part_retire_flow'),
+            Hidden::make('slug')
+                ->default('retire_flow'),
+            Hidden::make('model_name')
+                ->default(Part::class),
+            Shout::make('')
+                ->color('info')
+                ->content(__('cat/part.form.set_retire_flow_helper')),
+            Repeater::make('nodes')
+                ->simple(
+                    Select::make('role_id')
+                        ->options(RoleService::pluckOptions())
+                        ->required()
+                        ->label(__('cat/flow.role_id')),
+                )
+                ->default(function () {
+                    return PartService::getRetireFlow()
+                        ?->nodes
+                        ->pluck('role_id')
+                        ->toArray() ?? [];
+                })
+                ->hiddenLabel(),
         ];
     }
 
@@ -120,6 +143,13 @@ class PartForm
     public static function retire(): array
     {
         return [
+            Hidden::make('applicant_id')
+                ->default(auth()->id()),
+            Hidden::make('creator_id')
+                ->default(auth()->id()),
+            Shout::make('')
+                ->color('danger')
+                ->content(__('cat/part.form.retire_helper')),
             TextInput::make('comment')
                 ->label(__('cat/part.form.retire_comment'))
                 ->required(),
