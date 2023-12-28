@@ -116,6 +116,7 @@ class PartForm
                         ->pluck('role_id')
                         ->toArray() ?? [];
                 })
+                ->addActionLabel(__('cat/part.action.add_node'))
                 ->hiddenLabel(),
         ];
     }

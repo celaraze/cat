@@ -124,6 +124,7 @@ class SoftwareForm
                         ->pluck('role_id')
                         ->toArray() ?? [];
                 })
+                ->addActionLabel(__('cat/software.action.add_node'))
                 ->hiddenLabel(),
         ];
     }

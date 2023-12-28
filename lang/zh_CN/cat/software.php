@@ -25,8 +25,10 @@ return [
     'is_auto' => '自动生成',
 
     'form.retire_comment' => '废弃备注',
+    'form.set_retire_flow_helper' => '流程节点可拖拽排序，自上而下。',
 
     'action.create' => '创建',
+    'action.create_success' => '创建成功',
     'action.retire' => '流程报废',
     'action.force_retire' => '强制报废',
     'action.set_asset_number_rule' => '设置资产编号自动生成规则',
@@ -36,6 +38,8 @@ return [
     'action.set_retire_flow' => '设置废弃流程',
     'action.set_retire_flow_success' => '设置成功',
     'action.asset_number.create_helper' => '资产编号已绑定自动生成，无需填写本字段',
+    'action.add_node' => '添加节点',
+    'action.retire_flow_name' => '软件废弃单',
 
     'widget.using' => ' 使用中',
 ];

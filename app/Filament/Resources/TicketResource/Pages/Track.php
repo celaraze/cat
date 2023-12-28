@@ -64,7 +64,10 @@ class Track extends ManageRelatedRecords
                 // 创建
                 TicketHasTrackAction::create($this->getOwnerRecord())
                     ->visible(function () {
-                        return auth()->user()->can('create_track_ticket');
+                        $is_completed = $this->getOwnerRecord()->service()->isCompleted();
+                        $can = auth()->user()->can('create_track_ticket');
+
+                        return ! $is_completed && $can;
                     }),
             ])
             ->actions([

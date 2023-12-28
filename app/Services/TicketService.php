@@ -81,4 +81,9 @@ class TicketService extends Service
         $ticket = Ticket::query()->where('id', $ticket_id)->first();
         $this->model = $ticket;
     }
+
+    public function isCompleted(): bool
+    {
+        return $this->model->getAttribute('status') == 2;
+    }
 }

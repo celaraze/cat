@@ -47,7 +47,8 @@ class TicketCategoryAction
                     LogUtil::error($exception);
                     NotificationUtil::make(false, $exception);
                 }
-            });
+            })
+            ->closeModalByClickingAway(false);
     }
 
     public static function toTicket(): Action

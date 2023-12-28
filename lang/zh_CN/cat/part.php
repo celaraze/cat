@@ -23,6 +23,7 @@ return [
     'status.retired' => '废弃',
 
     'form.retire_comment' => '废弃备注',
+    'form.set_retire_flow_helper' => '流程节点可拖拽排序，自上而下。',
 
     'action.create' => '创建',
     'action.create_success' => '创建成功',
@@ -37,6 +38,7 @@ return [
     'action.set_retire_flow' => '设置废弃流程',
     'action.set_retire_flow_success' => '设置成功',
     'action.asset_number.create_helper' => '资产编号已绑定自动生成，无需填写本字段',
+    'action.add_node' => '添加节点',
 
     'widget.using' => ' 使用中',
 ];

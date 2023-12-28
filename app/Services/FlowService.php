@@ -39,4 +39,9 @@ class FlowService extends Service
             throw $exception;
         }
     }
+
+    public function hasActiveForm(): bool
+    {
+        return $this->model->forms()->where('status', 0)->exists();
+    }
 }

@@ -20,9 +20,13 @@ class FlowHasNodeService extends Service
      */
     public function batchCreate(array $data): void
     {
+
         DB::beginTransaction();
-        $flow = DeviceService::getRetireFlow();
         /* @var Flow $flow */
+        $flow = DeviceService::getRetireFlow();
+        if ($flow->service()->hasActiveForm()) {
+            throw new Exception(__('flow.has_active_form'));
+        }
         $flow->nodes()->delete();
         try {
             foreach ($data['nodes'] as $key => $node) {

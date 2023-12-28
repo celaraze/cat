@@ -115,7 +115,13 @@ class FlowHasFormService extends Service
             return true;
         }
 
-        if (! $this->model->node->next() && $this->model->getAttribute('status')) {
+        // 流程节点未知，直接返回 true
+        $flow_has_node = $this->model->node()->withTrashed()->first();
+        if (! $flow_has_node) {
+            return true;
+        }
+
+        if (! $flow_has_node->next() && $this->model->getAttribute('status')) {
             return true;
         }
 

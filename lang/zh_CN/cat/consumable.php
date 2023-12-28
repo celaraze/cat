@@ -28,6 +28,8 @@ return [
     'action.retire' => '流程废弃',
     'retire_flow_name' => '耗材废弃单',
     'action.set_retire_flow' => '配置废弃流程',
+    'action.add_node' => '添加节点',
 
     'form.force_retire_helper' => '废弃此耗材，将同时废弃所有关联的耗材跟踪记录。',
+    'form.set_retire_flow_helper' => '流程节点可拖拽排序，自上而下。',
 ];

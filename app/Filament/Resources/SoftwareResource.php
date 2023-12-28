@@ -10,7 +10,6 @@ use App\Filament\Resources\SoftwareResource\Pages\Edit;
 use App\Filament\Resources\SoftwareResource\Pages\HasSoftware;
 use App\Filament\Resources\SoftwareResource\Pages\Index;
 use App\Filament\Resources\SoftwareResource\Pages\View;
-use App\Models\Part;
 use App\Models\Software;
 use App\Services\BrandService;
 use App\Services\SoftwareCategoryService;
@@ -192,8 +191,8 @@ class SoftwareResource extends Resource implements HasShieldPermissions
                             return auth()->user()->can('force_retire_software');
                         }),
                 ])
-                    ->visible(function (Part $part) {
-                        return ! $part->service()->isRetired();
+                    ->visible(function (Software $software) {
+                        return ! $software->service()->isRetired();
                     }),
             ])
             ->bulkActions([

@@ -6,6 +6,7 @@ use App\Enums\FlowHasFormEnum;
 use App\Filament\Actions\FlowHasFormAction;
 use App\Filament\Resources\DeviceResource;
 use App\Models\FlowHasForm;
+use App\Models\FlowHasNode;
 use App\Traits\ManageRelatedRecords\QueryRecordByUrl;
 use Filament\Resources\Pages\ManageRelatedRecords;
 use Filament\Tables;
@@ -95,7 +96,10 @@ class Form extends ManageRelatedRecords
                     ->visible(function (FlowHasForm $flow_has_form) {
                         $is_completed = $flow_has_form->service()->isCompleted();
                         $is_processed = $flow_has_form->service()->isProcessed();
-                        $has_role = auth()->user()->hasRole($flow_has_form->node->role_id);
+                        /* @var FlowHasNode $flow_has_node */
+                        // 加入 withTrashed() 是为了防止节点被修改删除后无法正确显示
+                        $flow_has_node = $flow_has_form->node()->withTrashed()->first();
+                        $has_role = auth()->user()->hasRole($flow_has_node->getAttribute('role_id'));
                         $can = auth()->user()->can('process_flow_has_form_device');
 
                         return ! $is_completed && ! $is_processed && $has_role && $can;

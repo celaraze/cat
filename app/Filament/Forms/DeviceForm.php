@@ -133,6 +133,7 @@ class DeviceForm
                         ->pluck('role_id')
                         ->toArray() ?? [];
                 })
+                ->addActionLabel(__('cat/device.action.add_node'))
                 ->hiddenLabel(),
         ];
     }

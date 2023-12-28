@@ -108,5 +108,6 @@ return [
         'delete_has_user' => '删除成员',
         'set_assignee' => '配置处理人',
         'create_track' => '创建跟踪记录',
+        'create_ticket' => '创建工单',
     ],
 ];

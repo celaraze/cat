@@ -16,6 +16,8 @@ class TicketHasTrackForm
         return [
             Hidden::make('creator_id')
                 ->default(auth()->id()),
+            Hidden::make('user_id')
+                ->default(auth()->id()),
             RichEditor::make('comment')
                 ->required()
                 ->label(__('cat/ticket_has_track.comment')),

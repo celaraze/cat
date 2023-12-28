@@ -121,6 +121,7 @@ class ConsumableForm
                         ->pluck('role_id')
                         ->toArray() ?? [];
                 })
+                ->addActionLabel(__('cat/consumable.action.add_node'))
                 ->hiddenLabel(),
         ];
     }

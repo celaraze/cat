@@ -24,10 +24,13 @@ return [
     'additional' => '额外信息',
     'additional.name' => '名称',
     'additional.text' => '文本',
+    'nodes' => '节点',
 
     'form.asset_number.create_helper' => '资产编号已自动生成',
     'form.retire_helper' => '此操作将同时报废所含配件（不包含软件）。',
     'form.force_retire_helper' => '此操作将同时报废所含配件（不包含软件）。',
+    'form.set_retire_flow_helper' => '流程节点可拖拽排序，自上而下。',
+
     'action.create' => '创建',
     'action.create_success' => '创建成功',
     'action.summary' => '速览',
@@ -67,6 +70,7 @@ return [
     'action.view_token_helper' => '请验证您的身份，通过后密码将以通知形式展示在右上角。您可以查看并复制密码，并自行关闭消息。',
     'action.view_token_failure' => '查看密钥失败',
     'action.retire_flow_name' => '设备废弃单',
+    'action.add_node' => '添加节点',
 
     'widget.using' => ' 使用中',
 ];
