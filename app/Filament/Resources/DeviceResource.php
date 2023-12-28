@@ -120,6 +120,7 @@ class DeviceResource extends Resource implements HasShieldPermissions
             'delete_has_software',
             'create_has_secret',
             'delete_has_secret',
+            'create_ticket',
             'batch_delete_has_part',
             'batch_delete_has_software',
             'batch_delete_has_secret',

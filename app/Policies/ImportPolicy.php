@@ -31,7 +31,7 @@ class ImportPolicy
      */
     public function create(User $user): bool
     {
-        return $user->can('create_import');
+        return $user->can('{{ Create }}');
     }
 
     /**
@@ -39,7 +39,7 @@ class ImportPolicy
      */
     public function update(User $user, Import $import): bool
     {
-        return $user->can('update_import');
+        return $user->can('{{ Update }}');
     }
 
     /**
@@ -47,7 +47,7 @@ class ImportPolicy
      */
     public function delete(User $user, Import $import): bool
     {
-        return $user->can('delete_import');
+        return $user->can('{{ Delete }}');
     }
 
     /**
@@ -55,7 +55,7 @@ class ImportPolicy
      */
     public function deleteAny(User $user): bool
     {
-        return $user->can('delete_any_import');
+        return $user->can('{{ DeleteAny }}');
     }
 
     /**
@@ -63,7 +63,7 @@ class ImportPolicy
      */
     public function forceDelete(User $user, Import $import): bool
     {
-        return $user->can('force_delete_import');
+        return $user->can('{{ ForceDelete }}');
     }
 
     /**
@@ -71,7 +71,7 @@ class ImportPolicy
      */
     public function forceDeleteAny(User $user): bool
     {
-        return $user->can('force_delete_any_import');
+        return $user->can('{{ ForceDeleteAny }}');
     }
 
     /**
@@ -79,7 +79,7 @@ class ImportPolicy
      */
     public function restore(User $user, Import $import): bool
     {
-        return $user->can('restore_import');
+        return $user->can('{{ Restore }}');
     }
 
     /**
@@ -87,7 +87,7 @@ class ImportPolicy
      */
     public function restoreAny(User $user): bool
     {
-        return $user->can('restore_any_import');
+        return $user->can('{{ RestoreAny }}');
     }
 
     /**
@@ -95,7 +95,7 @@ class ImportPolicy
      */
     public function replicate(User $user, Import $import): bool
     {
-        return $user->can('replicate_import');
+        return $user->can('{{ Replicate }}');
     }
 
     /**
@@ -103,6 +103,6 @@ class ImportPolicy
      */
     public function reorder(User $user): bool
     {
-        return $user->can('reorder_import');
+        return $user->can('{{ Reorder }}');
     }
 }

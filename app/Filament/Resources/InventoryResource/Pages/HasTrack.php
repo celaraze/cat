@@ -64,7 +64,9 @@ class HasTrack extends ManageRelatedRecords
             ->actions([
                 InventoryHasTrackAction::check()
                     ->visible(function (InventoryHasTrack $inventory_has_track) {
-                        return ! $inventory_has_track->service()->isChecked();
+                        $can = auth()->user()->can('check_inventory');
+
+                        return $can && ! $inventory_has_track->service()->isChecked();
                     }),
             ])
             ->bulkActions([

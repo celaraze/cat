@@ -3,7 +3,6 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Forms\OrganizationForm;
-use App\Filament\Resources\OrganizationResource\Pages\Create;
 use App\Filament\Resources\OrganizationResource\Pages\Edit;
 use App\Filament\Resources\OrganizationResource\Pages\HasUser;
 use App\Filament\Resources\OrganizationResource\Pages\Tree;
@@ -57,6 +56,10 @@ class OrganizationResource extends Resource implements HasShieldPermissions
         if (! $can_update_organization) {
             unset($navigation_items[2]);
         }
+        $can_update_organization_has_user = auth()->user()->can('update_has_user_organization');
+        if (! $can_update_organization_has_user) {
+            unset($navigation_items[3]);
+        }
 
         return $page->generateNavigationItems($navigation_items);
     }
@@ -70,6 +73,10 @@ class OrganizationResource extends Resource implements HasShieldPermissions
             'update',
             'delete',
             'delete_any',
+            'view_has_user',
+            'create_has_user',
+            'delete_has_user',
+            'update_has_user',
         ];
     }
 
@@ -102,7 +109,6 @@ class OrganizationResource extends Resource implements HasShieldPermissions
     {
         return [
             'index' => Tree::route('/'),
-            'create' => Create::route('/create'),
             'edit' => Edit::route('/{record}/edit'),
             'view' => View::route('/{record}'),
             'users' => HasUser::route('/{record}/has_users'),

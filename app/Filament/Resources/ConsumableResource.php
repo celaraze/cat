@@ -88,6 +88,8 @@ class ConsumableResource extends Resource implements HasShieldPermissions
             'retire',
             'force_retire',
             'set_retire_flow',
+            'process_flow_has_form',
+            'create_has_track',
         ];
     }
 

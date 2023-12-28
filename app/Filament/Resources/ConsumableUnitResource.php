@@ -87,8 +87,9 @@ class ConsumableUnitResource extends Resource implements HasShieldPermissions
                 ConsumableUnitAction::delete()
                     ->visible(function (ConsumableUnit $consumable_unit) {
                         $is_deleted = $consumable_unit->service()->isDeleted();
+                        $can = auth()->user()->can('delete_consumable::unit');
 
-                        return ! $is_deleted && auth()->user()->can('delete_consumable::unit');
+                        return ! $is_deleted && $can;
                     }),
             ])
             ->bulkActions([

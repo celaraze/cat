@@ -104,6 +104,7 @@ class PartResource extends Resource implements HasShieldPermissions
             'set_retire_flow',
             'create_has_part',
             'delete_has_part',
+            'process_flow_has_form',
         ];
     }
 

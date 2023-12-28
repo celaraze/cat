@@ -96,7 +96,7 @@ class Form extends ManageRelatedRecords
                         $is_completed = $flow_has_form->service()->isCompleted();
                         $is_processed = $flow_has_form->service()->isProcessed();
                         $has_role = auth()->user()->hasRole($flow_has_form->node->role_id);
-                        $can = auth()->user()->can('process_flow_has_form_device');
+                        $can = auth()->user()->can('process_flow_has_form_part');
 
                         return ! $is_completed && ! $is_processed && $has_role && $can;
                     }),

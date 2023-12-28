@@ -55,9 +55,9 @@ class SecretAction
             ->closeModalByClickingAway(false);
     }
 
-    public static function retire(): Action
+    public static function forceRetire(): Action
     {
-        return Action::make(__('cat/secret.action.retire'))
+        return Action::make(__('cat/secret.action.force_retire'))
             ->slideOver()
             ->icon('heroicon-m-trash')
             ->color('danger')
@@ -66,7 +66,7 @@ class SecretAction
             ->action(function (Secret $secret) {
                 try {
                     $secret->service()->retire();
-                    NotificationUtil::make(true, __('cat/secret.action.retire_success'));
+                    NotificationUtil::make(true, __('cat/secret.action.force_retire_success'));
                 } catch (Exception $exception) {
                     LogUtil::error($exception);
                     NotificationUtil::make(false, $exception);

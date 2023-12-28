@@ -90,8 +90,9 @@ class BrandResource extends Resource implements HasShieldPermissions
                 BrandAction::delete()
                     ->visible(function (Brand $brand) {
                         $is_deleted = $brand->service()->isDeleted();
+                        $can = auth()->user()->can('delete_brand');
 
-                        return ! $is_deleted && auth()->user()->can('delete_brand');
+                        return ! $is_deleted && $can;
                     }),
             ])
             ->bulkActions([

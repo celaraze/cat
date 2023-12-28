@@ -83,8 +83,9 @@ class Ticket extends ManageRelatedRecords
                     ->visible(function () {
                         /* @var Device $device */
                         $device = $this->getOwnerRecord();
+                        $can = auth()->user()->can('create_ticket_device');
 
-                        return ! $device->service()->isRetired();
+                        return $can && ! $device->service()->isRetired();
                     }),
             ])
             ->actions([

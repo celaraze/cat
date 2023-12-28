@@ -87,8 +87,9 @@ class ConsumableCategoryResource extends Resource implements HasShieldPermission
                 ConsumableCategoryAction::delete()
                     ->visible(function (ConsumableCategory $consumable_category) {
                         $is_deleted = $consumable_category->service()->isDeleted();
+                        $can = auth()->user()->can('delete_consumable::category');
 
-                        return ! $is_deleted && auth()->user()->can('delete_consumable::category');
+                        return ! $is_deleted && $can;
                     }),
             ])
             ->bulkActions([
@@ -124,7 +125,6 @@ class ConsumableCategoryResource extends Resource implements HasShieldPermission
     {
         return [
             'index' => Pages\Index::route('/'),
-            'create' => Pages\Create::route('/create'),
             'view' => Pages\View::route('/{record}'),
             'edit' => Pages\Edit::route('/{record}/edit'),
         ];

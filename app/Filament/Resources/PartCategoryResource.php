@@ -86,8 +86,9 @@ class PartCategoryResource extends Resource implements HasShieldPermissions
                 PartCategoryAction::delete()
                     ->visible(function (PartCategory $part_category) {
                         $is_deleted = $part_category->service()->isDeleted();
+                        $can = auth()->user()->can('delete_part::category');
 
-                        return ! $is_deleted && auth()->user()->can('delete_part::category');
+                        return ! $is_deleted && $can;
                     }),
             ])
             ->bulkActions([

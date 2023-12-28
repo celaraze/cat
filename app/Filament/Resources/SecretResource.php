@@ -75,7 +75,7 @@ class SecretResource extends Resource implements HasShieldPermissions
             'delete_any',
             'import',
             'export',
-            'retire',
+            'force_retire',
             'create_has_secret',
             'delete_has_secret',
             'view_token',
@@ -133,10 +133,13 @@ class SecretResource extends Resource implements HasShieldPermissions
                     ->visible(function () {
                         return auth()->user()->can('view_token_secret');
                     }),
-                // 弃用
-                SecretAction::retire()
+                // 强制弃用
+                SecretAction::forceRetire()
                     ->visible(function (Secret $secret) {
-                        return ! $secret->service()->isRetired();
+                        $is_retired = $secret->service()->isRetired();
+                        $can = auth()->user()->can('force_retire_secret');
+
+                        return ! $is_retired && $can;
                     }),
             ])
             ->bulkActions([
@@ -144,7 +147,10 @@ class SecretResource extends Resource implements HasShieldPermissions
             ])
             ->headerActions([
                 // 新增
-                SecretAction::create(),
+                SecretAction::create()
+                    ->visible(function () {
+                        return auth()->user()->can('create_secret');
+                    }),
             ])
             ->heading(__('cat/menu.secret'));
     }

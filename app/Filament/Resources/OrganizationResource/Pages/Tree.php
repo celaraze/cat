@@ -42,7 +42,10 @@ class Tree extends BasePage
                 ->icon('heroicon-m-plus')
                 ->label(__('cat/organization.action.create'))
                 ->createAnother(false)
-                ->closeModalByClickingAway(false),
+                ->closeModalByClickingAway(false)
+                ->visible(function () {
+                    return auth()->user()->can('create_organization');
+                }),
         ];
     }
 
@@ -50,7 +53,7 @@ class Tree extends BasePage
     {
         return [
             // 查看成员
-            Action::make(__('cat/organization.action.view_member'))
+            Action::make(__('cat/organization.action.view'))
                 ->icon('heroicon-m-eye')
                 ->color('info')
                 ->link()

@@ -6,7 +6,7 @@ use App\Filament\Resources\ImportResource\Pages\FailedImportRow;
 use App\Filament\Resources\ImportResource\Pages\Index;
 use App\Filament\Resources\ImportResource\Pages\View;
 use App\Models\Import;
-use Filament\Forms\Form;
+use BezhanSalleh\FilamentShield\Contracts\HasShieldPermissions;
 use Filament\Infolists\Components\Grid;
 use Filament\Infolists\Components\Group;
 use Filament\Infolists\Components\Section;
@@ -19,7 +19,7 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Model;
 
-class ImportResource extends Resource
+class ImportResource extends Resource implements HasShieldPermissions
 {
     protected static ?string $model = Import::class;
 
@@ -50,12 +50,12 @@ class ImportResource extends Resource
         return $page->generateNavigationItems($navigation_items);
     }
 
-    public static function form(Form $form): Form
+    public static function getPermissionPrefixes(): array
     {
-        return $form
-            ->schema([
-
-            ]);
+        return [
+            'view',
+            'view_any',
+        ];
     }
 
     public static function table(Table $table): Table

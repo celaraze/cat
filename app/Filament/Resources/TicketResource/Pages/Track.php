@@ -62,7 +62,10 @@ class Track extends ManageRelatedRecords
             ])
             ->headerActions([
                 // 创建
-                TicketHasTrackAction::create($this->getOwnerRecord()),
+                TicketHasTrackAction::create($this->getOwnerRecord())
+                    ->visible(function () {
+                        return auth()->user()->can('create_track_ticket');
+                    }),
             ])
             ->actions([
 

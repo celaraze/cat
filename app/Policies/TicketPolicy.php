@@ -39,7 +39,7 @@ class TicketPolicy
      */
     public function update(User $user, Ticket $ticket): bool
     {
-        return $user->can('update_ticket');
+        return $user->can('{{ Update }}');
     }
 
     /**
@@ -47,7 +47,7 @@ class TicketPolicy
      */
     public function delete(User $user, Ticket $ticket): bool
     {
-        return $user->can('delete_ticket');
+        return $user->can('{{ Delete }}');
     }
 
     /**
@@ -55,7 +55,7 @@ class TicketPolicy
      */
     public function deleteAny(User $user): bool
     {
-        return $user->can('delete_any_ticket');
+        return $user->can('{{ DeleteAny }}');
     }
 
     /**
@@ -63,7 +63,7 @@ class TicketPolicy
      */
     public function forceDelete(User $user, Ticket $ticket): bool
     {
-        return $user->can('force_delete_ticket');
+        return $user->can('{{ ForceDelete }}');
     }
 
     /**
@@ -71,7 +71,7 @@ class TicketPolicy
      */
     public function forceDeleteAny(User $user): bool
     {
-        return $user->can('force_delete_any_ticket');
+        return $user->can('{{ ForceDeleteAny }}');
     }
 
     /**
@@ -79,7 +79,7 @@ class TicketPolicy
      */
     public function restore(User $user, Ticket $ticket): bool
     {
-        return $user->can('restore_ticket');
+        return $user->can('{{ Restore }}');
     }
 
     /**
@@ -87,7 +87,7 @@ class TicketPolicy
      */
     public function restoreAny(User $user): bool
     {
-        return $user->can('restore_any_ticket');
+        return $user->can('{{ RestoreAny }}');
     }
 
     /**
@@ -95,7 +95,7 @@ class TicketPolicy
      */
     public function replicate(User $user, Ticket $ticket): bool
     {
-        return $user->can('replicate_ticket');
+        return $user->can('{{ Replicate }}');
     }
 
     /**
@@ -103,6 +103,6 @@ class TicketPolicy
      */
     public function reorder(User $user): bool
     {
-        return $user->can('reorder_ticket');
+        return $user->can('{{ Reorder }}');
     }
 }

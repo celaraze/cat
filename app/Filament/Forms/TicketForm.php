@@ -33,6 +33,8 @@ class TicketForm
                 ->searchable()
                 ->preload()
                 ->required(),
+            Hidden::make('user_id')
+                ->default(auth()->id()),
             Select::make('priority')
                 ->label(__('cat/ticket.priority'))
                 ->options(TicketEnum::allPriorityText())

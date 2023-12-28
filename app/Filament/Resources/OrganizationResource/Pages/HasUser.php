@@ -38,11 +38,17 @@ class HasUser extends ManageRelatedRecords
             ])
             ->headerActions([
                 // 新增成员
-                OrganizationHasUserAction::create($this->getOwnerRecord()),
+                OrganizationHasUserAction::create($this->getOwnerRecord())
+                    ->visible(function () {
+                        return auth()->user()->can('create_has_user_organization');
+                    }),
             ])
             ->actions([
                 // 删除成员
-                OrganizationHasUserAction::delete(),
+                OrganizationHasUserAction::delete()
+                    ->visible(function () {
+                        return auth()->user()->can('delete_has_user_organization');
+                    }),
             ])
             ->bulkActions([
 

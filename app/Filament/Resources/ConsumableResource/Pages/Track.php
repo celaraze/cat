@@ -69,7 +69,10 @@ class Track extends ManageRelatedRecords
             ])
             ->headerActions([
                 // 创建
-                ConsumableHasTrackAction::create($this->getOwnerRecord()),
+                ConsumableHasTrackAction::create($this->getOwnerRecord())
+                    ->visible(function () {
+                        return auth()->user()->can('create_has_track_consumable');
+                    }),
             ])
             ->actions([
 

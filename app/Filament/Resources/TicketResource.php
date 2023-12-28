@@ -4,12 +4,12 @@ namespace App\Filament\Resources;
 
 use App\Enums\TicketEnum;
 use App\Filament\Actions\TicketAction;
-use App\Filament\Resources\TicketResource\Pages\Edit;
 use App\Filament\Resources\TicketResource\Pages\Index;
 use App\Filament\Resources\TicketResource\Pages\Track;
 use App\Filament\Resources\TicketResource\Pages\View;
 use App\Models\Ticket;
 use App\Services\TicketCategoryService;
+use BezhanSalleh\FilamentShield\Contracts\HasShieldPermissions;
 use Filament\Infolists\Components\Grid;
 use Filament\Infolists\Components\Group;
 use Filament\Infolists\Components\Section;
@@ -26,7 +26,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class TicketResource extends Resource
+class TicketResource extends Resource implements HasShieldPermissions
 {
     protected static ?string $model = Ticket::class;
 
@@ -46,12 +46,22 @@ class TicketResource extends Resource
         return __('cat/menu.ticket');
     }
 
+    public static function getPermissionPrefixes(): array
+    {
+        return [
+            'view',
+            'view_any',
+            'create',
+            'set_assignee',
+            'create_track',
+        ];
+    }
+
     public static function getRecordSubNavigation(Page $page): array
     {
         $navigation_items = [
             Index::class,
             View::class,
-            Edit::class,
             Track::class,
         ];
 
@@ -126,7 +136,9 @@ class TicketResource extends Resource
                 // 抢单
                 TicketAction::setAssignee()
                     ->visible(function (Ticket $ticket) {
-                        return ! $ticket->service()->isSetAssignee();
+                        $can = auth()->user()->can('set_assignee_ticket');
+
+                        return $can && ! $ticket->service()->isSetAssignee();
                     }),
             ])
             ->bulkActions([
@@ -134,7 +146,10 @@ class TicketResource extends Resource
             ])
             ->headerActions([
                 // 创建
-                TicketAction::create(),
+                TicketAction::create()
+                    ->visible(function () {
+                        return auth()->user()->can('create_ticket');
+                    }),
                 ActionGroup::make([
                     // 前往分类
                     TicketAction::toCategory(),
