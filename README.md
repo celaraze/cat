@@ -28,7 +28,7 @@ IT 运维从业者打造的一站式解决方案平台，包含资产管理、�
 
 ### 快速开始
 
-通过访问 [在线演示](http://cat.celaraze.com:50080/) 站点来体验，登录信息 `cat@localhost.com / cat`，用于展示的站点会关闭部分敏感权限。
+通过访问 [在线演示](http://cat.celaraze.com:50080/) 站点来体验，登录信息 `admin@localhost.com / admin`，用于展示的站点会关闭部分敏感权限。
 
 通过访问 [官方文档](https://github.com/celaraze/cat/wiki) 来安装和查看更多信息。
 
