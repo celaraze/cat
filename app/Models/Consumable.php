@@ -56,6 +56,13 @@ class Consumable extends Model
         );
     }
 
+    public function isRetiring(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => $this->forms()->where('status', 0)->exists(),
+        );
+    }
+
     public function forms(): HasMany
     {
         return $this->hasMany(FlowHasForm::class, 'model_id', 'id')

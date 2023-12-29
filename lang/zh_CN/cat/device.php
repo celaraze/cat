@@ -27,6 +27,7 @@ return [
     'nodes' => '节点',
 
     'form.asset_number.create_helper' => '资产编号已自动生成',
+    'form.retire_comment' => '废弃备注',
     'form.retire_helper' => '此操作将同时报废所含配件（不包含软件）。',
     'form.force_retire_helper' => '此操作将同时报废所含配件（不包含软件）。',
     'form.set_retire_flow_helper' => '流程节点可拖拽排序，自上而下。',
@@ -71,6 +72,17 @@ return [
     'action.view_token_failure' => '查看密钥失败',
     'action.retire_flow_name' => '设备废弃单',
     'action.add_node' => '添加节点',
+
+    'importer.asset_number_example' => 'DEVICE-2022222',
+    'importer.category_example' => '服务器',
+    'importer.name_example' => '服务器 A 号',
+    'importer.sn_example' => 'SN123456',
+    'importer.specification_example' => '2U',
+    'importer.image_example' => 'https://example.com/image.jpg',
+    'importer.brand_example' => '华为 Huawei',
+    'importer.description_example' => '这是一台服务器',
+    'importer.import_success' => '成功导入 :success_count 条分类。',
+    'importer.import_failure' => '失败 :failure_count 条分类。',
 
     'widget.using' => ' 使用中',
 ];

@@ -151,15 +151,19 @@ class ConsumableResource extends Resource implements HasShieldPermissions
                 Tables\Actions\ActionGroup::make([
                     // 流程报废
                     ConsumableAction::retire()
-                        ->visible(function () {
+                        ->visible(function (Consumable $consumable) {
                             $can = auth()->user()->can('retire_consumable');
+                            $is_retiring = $consumable->service()->isRetiring();
 
-                            return $can && ConsumableService::isSetRetireFlow();
+                            return $can && ! $is_retiring && ConsumableService::isSetRetireFlow();
                         }),
                     // 强制报废
                     ConsumableAction::forceRetire()
-                        ->visible(function () {
-                            return auth()->user()->can('force_retire_consumable');
+                        ->visible(function (Consumable $consumable) {
+                            $can = auth()->user()->can('force_retire_consumable');
+                            $is_retiring = $consumable->service()->isRetiring();
+
+                            return $can && ! $is_retiring;
                         }),
                 ])
                     ->visible(function (Consumable $consumable) {

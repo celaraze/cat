@@ -106,14 +106,6 @@ class Device extends Model
         return $this->hasMany(DeviceHasSecret::class, 'device_id', 'id');
     }
 
-    public function service(): DeviceService
-    {
-        return new DeviceService($this);
-    }
-
-    /**
-     * 访问器，额外信息.
-     */
     public function additional(): Attribute
     {
         return Attribute::make(
@@ -121,9 +113,21 @@ class Device extends Model
         );
     }
 
+    public function isRetiring(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => $this->forms()->where('status', 0)->exists(),
+        );
+    }
+
     public function forms(): HasMany
     {
         return $this->hasMany(FlowHasForm::class, 'model_id', 'id')
             ->where('model_name', self::class);
+    }
+
+    public function service(): DeviceService
+    {
+        return new DeviceService($this);
     }
 }

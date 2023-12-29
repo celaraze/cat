@@ -227,15 +227,19 @@ class DeviceResource extends Resource implements HasShieldPermissions
                         }),
                     // 流程报废
                     DeviceAction::retire()
-                        ->visible(function () {
+                        ->visible(function (Device $device) {
                             $can = auth()->user()->can('retire_device');
+                            $is_retiring = $device->service()->isRetiring();
 
-                            return $can && DeviceService::isSetRetireFlow();
+                            return $can && ! $is_retiring && DeviceService::isSetRetireFlow();
                         }),
                     // 强制报废
                     DeviceAction::forceRetire()
-                        ->visible(function () {
-                            return auth()->user()->can('force_retire_device');
+                        ->visible(function (Device $device) {
+                            $can = auth()->user()->can('force_retire_device');
+                            $is_retiring = $device->service()->isRetiring();
+
+                            return $can && ! $is_retiring;
                         }),
                 ])
                     ->visible(function (Device $device) {

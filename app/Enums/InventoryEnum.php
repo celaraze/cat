@@ -13,12 +13,15 @@ class InventoryEnum
         };
     }
 
-    public static function allCheckText(): array
+    public static function allCheckText(?int $unset = null): array
     {
-        return [
+        $options = [
             0 => __('cat/inventory_has_track.uncheck'),
             1 => __('cat/inventory_has_track.in_stock'),
             2 => __('cat/inventory_has_track.not_in_stock'),
         ];
+        unset($options[$unset]);
+
+        return $options;
     }
 }

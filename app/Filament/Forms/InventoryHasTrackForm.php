@@ -18,7 +18,7 @@ class InventoryHasTrackForm
             Hidden::make('creator_id')
                 ->default(auth()->id()),
             Radio::make('check')
-                ->options(InventoryEnum::allCheckText())
+                ->options(InventoryEnum::allCheckText(0))
                 ->label(__('cat/inventory_has_track.check'))
                 ->required(),
             TextInput::make('comment')

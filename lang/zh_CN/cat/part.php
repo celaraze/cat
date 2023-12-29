@@ -40,5 +40,15 @@ return [
     'action.asset_number.create_helper' => '资产编号已绑定自动生成，无需填写本字段',
     'action.add_node' => '添加节点',
 
+    'importer.asset_number_example' => 'ZC202101010001',
+    'importer.name_example' => '网卡',
+    'importer.sn_example' => '1234567890',
+    'importer.specification_example' => '1Gbps',
+    'importer.image_example' => 'https://example.com/image.jpg',
+    'importer.brand_example' => '华为 Huawei',
+    'importer.description_example' => '这是一段描述',
+    'importer.import_success' => '成功导入 :success_count 条分类。',
+    'importer.import_failure' => '失败 :failure_count 条分类。',
+
     'widget.using' => ' 使用中',
 ];

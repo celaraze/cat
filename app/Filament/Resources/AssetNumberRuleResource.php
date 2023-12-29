@@ -88,6 +88,7 @@ class AssetNumberRuleResource extends Resource implements HasShieldPermissions
             ->actions([
                 // 删除
                 Tables\Actions\DeleteAction::make()
+                    ->slideOver()
                     ->closeModalByClickingAway(false)
                     ->visible(function () {
                         return auth()->user()->can('delete_asset::number::rule');

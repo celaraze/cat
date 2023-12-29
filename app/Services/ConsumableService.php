@@ -93,4 +93,9 @@ class ConsumableService extends Service
     {
         return $this->model->getAttribute('status') == 3;
     }
+
+    public function isRetiring()
+    {
+        return $this->model->getAttribute('isRetiring');
+    }
 }

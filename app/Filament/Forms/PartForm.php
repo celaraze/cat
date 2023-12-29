@@ -148,9 +148,6 @@ class PartForm
                 ->default(auth()->id()),
             Hidden::make('creator_id')
                 ->default(auth()->id()),
-            Shout::make('')
-                ->color('danger')
-                ->content(__('cat/part.form.retire_helper')),
             TextInput::make('comment')
                 ->label(__('cat/part.form.retire_comment'))
                 ->required(),

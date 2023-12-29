@@ -12,4 +12,5 @@ return [
     'not_in_stock' => '不在库',
 
     'action.check' => '盘点',
+    'action.check_success' => '盘点成功',
 ];

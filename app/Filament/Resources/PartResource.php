@@ -172,15 +172,19 @@ class PartResource extends Resource implements HasShieldPermissions
                 Tables\Actions\ActionGroup::make([
                     // 流程报废
                     PartAction::retire()
-                        ->visible(function () {
+                        ->visible(function (Part $part) {
                             $can = auth()->user()->can('retire_part');
+                            $is_retiring = $part->service()->isRetiring();
 
-                            return $can && PartService::isSetRetireFlow();
+                            return $can && ! $is_retiring && PartService::isSetRetireFlow();
                         }),
                     // 强制报废
                     PartAction::forceRetire()
-                        ->visible(function () {
-                            return auth()->user()->can('force_retire_part');
+                        ->visible(function (Part $part) {
+                            $can = auth()->user()->can('force_retire_part');
+                            $is_retiring = $part->service()->isRetiring();
+
+                            return $can && ! $is_retiring;
                         }),
                 ])
                     ->visible(function (Part $part) {
