@@ -140,13 +140,6 @@ class UserForm
 
                     return $icon.__('cat/user.form.delete_helper_4');
                 }),
-            Shout::make('')
-                ->color('warning')
-                ->content(function () use ($bool) {
-                    $icon = $bool['approve_nodes'] ? '✔' : '✖';
-
-                    return $icon.__('cat/user.form.delete_helper_5');
-                }),
         ];
     }
 

@@ -19,5 +19,4 @@ return [
     'form.delete_helper_2' => ' 此用户没有正在管理的设备',
     'form.delete_helper_3' => ' 此用户没有尚未结案的申请表单',
     'form.delete_helper_4' => ' 此用户没有尚未结案的审批表单',
-    'form.delete_helper_5' => ' 此用户没有正在审批的节点',
 ];

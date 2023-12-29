@@ -81,9 +81,6 @@ class UserService extends Service
      */
     public function delete(): ?bool
     {
-        if ($this->model->approvalNodes()->count()) {
-            throw new Exception(__('cat/user.delete_failure_approval_node'));
-        }
         if ($this->model->deviceHasUsers()->count()) {
             throw new Exception(__('cat/user.delete_failure_device_has_user'));
         }
@@ -105,7 +102,7 @@ class UserService extends Service
      */
     public function forceDelete(): ?bool
     {
-        if (! $this->model->service()->isDeleted()) {
+        if (!$this->model->service()->isDeleted()) {
             throw new Exception(__('cat/user.force_delete_failure_not_deleted'));
         }
 

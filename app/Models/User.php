@@ -67,7 +67,7 @@ class User extends Authenticatable implements FilamentUser, HasAvatar
      */
     public function applicantForms(): HasMany
     {
-        return $this->hasMany(FlowHasForm::class, 'applicant_user_id', 'id');
+        return $this->hasMany(FlowHasForm::class, 'applicant_id', 'id');
     }
 
     /**
@@ -75,15 +75,7 @@ class User extends Authenticatable implements FilamentUser, HasAvatar
      */
     public function approvalForms(): HasMany
     {
-        return $this->hasMany(FlowHasForm::class, 'approve_user_id', 'id');
-    }
-
-    /**
-     * 一对多，用户有很多需要审批的流程节点.
-     */
-    public function approvalNodes(): HasMany
-    {
-        return $this->hasMany(FlowHasNode::class, 'user_id', 'id');
+        return $this->hasMany(FlowHasForm::class, 'approver_id', 'id');
     }
 
     /**
