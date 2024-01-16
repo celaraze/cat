@@ -102,7 +102,7 @@ class UserService extends Service
      */
     public function forceDelete(): ?bool
     {
-        if (!$this->model->service()->isDeleted()) {
+        if (! $this->model->service()->isDeleted()) {
             throw new Exception(__('cat/user.force_delete_failure_not_deleted'));
         }
 
