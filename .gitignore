@@ -24,3 +24,5 @@ frankenphp
 frankenphp-worker.php
 
 /temp
+
+**/.DS_Store
