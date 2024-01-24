@@ -8,7 +8,7 @@ use Leandrocfe\FilamentApexCharts\Widgets\ApexChartWidget;
 
 class TicketHasTrackMinutePie extends ApexChartWidget
 {
-    protected static string $chartId = 'ticketHasTrackMinutePie';
+    protected static ?string $chartId = 'ticketHasTrackMinutePie';
 
     protected int|string|array $columnStart = 2;
 
