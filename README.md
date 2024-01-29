@@ -13,14 +13,14 @@ IT 运维从业者打造的一站式解决方案平台，包含资产管理、�
 
 ## 项目全貌
 
-| 名称                                                                                      | 说明                               | 发行        |
-|-----------------------------------------------------------------------------------------|----------------------------------|-----------|
-| CAT                                                                                     | CAT 一站式 IT 运维管理平台主服务端。           | ☕️正式版     |
-| [CAT Uniapp](https://github.com/celaraze/cat-uniapp)                                    | 配套移动端应用程序，覆盖了简单场景的功能。            | 💻开发版     |
-| [CAT 官方文档](https://github.com/celaraze/cat/wiki)                                        | CAT 官方文档。                        |           |
-| [CAT 演示站点](http://cat.celaraze.com:50080/)                                              | 登录信息 `cat@localhost.com / cat` 。 |           |
-| [docker.io/celaraze/cat](https://hub.docker.com/repository/docker/celaraze/cat/general) | CAT 官方发布的容器镜像。                   | 🤖自动化集成编译 |
-| [ghcr.io/celaraze/cat](https://github.com/celaraze/cat/pkgs/container/cat)              | CAT 官方发布的容器镜像，托管于Github。         | 🤖自动化集成编译 |
+| 名称                                                                                      | 说明                                   | 发行        |
+|-----------------------------------------------------------------------------------------|--------------------------------------|-----------|
+| CAT                                                                                     | CAT 一站式 IT 运维管理平台主服务端。               | ☕️正式版     |
+| [CAT Uniapp](https://github.com/celaraze/cat-uniapp)                                    | 配套移动端应用程序，覆盖了简单场景的功能。                | 💻开发版     |
+| [CAT 官方文档](https://github.com/celaraze/cat/wiki)                                        | CAT 官方文档。                            |           |
+| [CAT 演示站点](http://cat.celaraze.com:50080/)                                              | 登录信息 `admin@localhost.com / admin` 。 |           |
+| [docker.io/celaraze/cat](https://hub.docker.com/repository/docker/celaraze/cat/general) | CAT 官方发布的容器镜像。                       | 🤖自动化集成编译 |
+| [ghcr.io/celaraze/cat](https://github.com/celaraze/cat/pkgs/container/cat)              | CAT 官方发布的容器镜像，托管于Github。             | 🤖自动化集成编译 |
 
 > [!IMPORTANT]
 >
