@@ -71,7 +71,7 @@ class AdminPanelProvider extends PanelProvider
                 FilamentShieldPlugin::make(),
                 ThemesPlugin::make(),
                 FilamentBackgroundsPlugin::make(),
-                FilamentApexChartsPlugin::make()
+                FilamentApexChartsPlugin::make(),
             ])
             ->brandName('☕️ CAT')
             ->favicon(asset('images/logo.png'))

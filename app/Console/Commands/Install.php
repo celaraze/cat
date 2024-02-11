@@ -26,7 +26,6 @@ class Install extends Command
         $this->warn('正在同步刷新权限，请耐心等待');
         $this->call('shield:generate', ['--all' => null]);
         $this->call('shield:super-admin');
-        $this->call('cat:toc');
         $this->warn('安装完成！记得给作者点赞：✨ https://github.com/celaraze/cat.git ✨');
     }
 }
