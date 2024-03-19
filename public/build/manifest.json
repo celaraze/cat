@@ -1,11 +1,11 @@
 {
   "resources/css/app.css": {
-    "file": "assets/app-0129933d.css",
+    "file": "assets/app-92973b29.css",
     "isEntry": true,
     "src": "resources/css/app.css"
   },
   "resources/css/filament/admin/theme.css": {
-    "file": "assets/theme-bb128599.css",
+    "file": "assets/theme-e2df4804.css",
     "isEntry": true,
     "src": "resources/css/filament/admin/theme.css"
   },
