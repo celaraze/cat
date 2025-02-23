@@ -26,8 +26,8 @@ app = FastAPI(
         "email": "celaraze@qq.com",
     },
     license_info={
-        "name": "MIT",
-        "url": "https://opensource.org/licenses/MIT",
+        "name": "GPL-3.0",
+        "url": "https://www.gnu.org/licenses/gpl-3.0.txt",
     },
     openapi_tags=tags_metadata,
 )
@@ -40,7 +40,7 @@ async def home():
     body = {
         "message": "Welcome to Sebastian API.",
         "data": {
-            "version": "0.0.3-alpha",
+            "version": "1.0.0",
             "author": "celaraze",
             "github": "https://github.com/celaraze/sebastian.git",
         }
