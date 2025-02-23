@@ -172,7 +172,7 @@ memory_store:
   class: core.storage.llama_index_es_memory_store
   embedding_model: embedding_model
   index_name: memory_index
-  es_url: http://192.168.222.121:9200
+  es_url: http://localhost:9200
   retrieve_mode: dense
 
 monitor:
