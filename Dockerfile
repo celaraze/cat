@@ -24,5 +24,3 @@ EXPOSE 8000
 ENTRYPOINT ["/service/entrypoint.sh"]
 
 CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000", "--loop", "asyncio"]
-
-# todo 安装ffmpeg，whisper模型下载base
