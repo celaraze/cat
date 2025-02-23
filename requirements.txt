@@ -1,0 +1,10 @@
+fastapi
+uvicorn[standard]
+pytest
+sqlalchemy
+httpx[socks]
+pyyaml
+pydantic
+openai-whisper
+memoryscope
+python-multipart

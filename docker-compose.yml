@@ -1,0 +1,33 @@
+services:
+  app:
+    image: celaraze/sebastian:latest
+    container_name: sebastian-app
+    restart: always
+    environment:
+      - ES_URL=http://sebastian-elasticsearch:9200
+      # IMPORTANT! Replace with your own API key
+      # Visit https://help.aliyun.com/zh/model-studio/developer-reference/get-api-key
+      # Qwen2-max recommended.
+      - DASHSCOPE_API_KEY=
+    volumes:
+      - sebastian_app_config:/service/config
+    ports:
+      - "8000:8000/tcp"
+    depends_on:
+      - elasticsearch
+
+  elasticsearch:
+    image: elasticsearch:8.17.2
+    container_name: sebastian-elasticsearch
+    restart: always
+    environment:
+      - ES_JAVA_OPTS=-Xlog:disable -Xlog:gc=debug:stderr -Xms512m -Xmx512m
+      - ELASTIC_CONTAINER=true
+      - discovery.type=single-node
+      - xpack.security.enabled=false
+    volumes:
+      - sebastian_elasticsearch_data:/usr/share/elasticsearch/data
+
+volumes:
+  sebastian_app_config:
+  sebastian_elasticsearch_data:

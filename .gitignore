@@ -1,0 +1,15 @@
+.vscode/
+.idea/
+
+build/
+sebastian.egg-info/
+dist/
+
+.venv/
+**/__pycache__/
+
+**/.DS_Store
+
+config/env.yml
+config/memoryscope_config_zh.yaml
+log/
