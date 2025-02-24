@@ -122,16 +122,13 @@ curl --location --request POST 'http://127.0.0.1:8000/chat/audio' \
 感谢 Gitee AI 模力方舟提供大模型推理能力。
 
 <a href="#" target="_blank">
-    <img src="http://oss.celaraze.com:9999/projects/sebastian/badges/badge-inspired-cn-black.svg" width="200" alt="GiteeAI" />
-</a>
-<a href="#" target="_blank">
-    <img src="http://oss.celaraze.com:9999/projects/sebastian/badges/badge-powered-en-black.svg" width="200" alt="GiteeAI" />
+    <img src="https://img.picui.cn/free/2025/02/24/67bc321fc8383.png" width="200" alt="GiteeAI" />
 </a>
 
 感谢阿里云提供百炼大模型训练平台。
 
 <a href="#" target="_blank">
-    <img src="http://oss.celaraze.com:9999/projects/sebastian/badges/aliyun-bailian.png" width="200" alt="Aliyun" />
+    <img src="https://img.picui.cn/free/2025/02/24/67bc31c9574ec.png" width="200" alt="Aliyun" />
 </a>
 
 感谢 JetBrains 提供优秀的 IDE。
