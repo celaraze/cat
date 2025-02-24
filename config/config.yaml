@@ -177,3 +177,6 @@ memory_store:
 
 monitor:
   class: core.storage.dummy_monitor
+
+auth:
+  token: test
