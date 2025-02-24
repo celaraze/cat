@@ -10,5 +10,6 @@ dist/
 
 **/.DS_Store
 
-config/config.yaml
 log/
+
+docker-compose-dev.yml

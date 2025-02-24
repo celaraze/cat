@@ -9,8 +9,8 @@ services:
       # Visit https://help.aliyun.com/zh/model-studio/developer-reference/get-api-key
       # Qwen2-max recommended.
       - DASHSCOPE_API_KEY=
-    volumes:
-      - sebastian_app_config:/service/config
+      # Set by the user.
+      - TOKEN=
     ports:
       - "8000:8000/tcp"
     depends_on:
@@ -29,5 +29,4 @@ services:
       - sebastian_elasticsearch_data:/usr/share/elasticsearch/data
 
 volumes:
-  sebastian_app_config:
   sebastian_elasticsearch_data:

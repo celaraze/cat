@@ -13,8 +13,6 @@ WORKDIR /service
 
 ADD . /service
 
-RUN if [ -f /service/config/config.yml ]; then rm /service/config/config.yml; fi
-
 RUN pip install --no-cache-dir -r requirements.txt
 
 RUN chmod +x entrypoint.sh

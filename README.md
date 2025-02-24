@@ -24,7 +24,7 @@
 助手：我记住了。
 # 事件发生于 2025年某天
 用户：我的鼠标的按键有些使用故障，你知道如何处理吗？
-助手：您在 2012 年购买过一个黑色鼠标，现在即将到期，您可以联系售后服务。
+助手：您在 2022 年购买过一个黑色鼠标，现在即将到期，您可以联系售后服务。
 用户：我忘记了，什么鼠标？
 助手：一个黑色的鼠标，购买时间是 2012年X月X日。
 ```
@@ -44,16 +44,8 @@
 
 ## 快速开始
 
-我们建议使用阿里云百炼大模型平台来获取大模型能力，这不仅可以得到最新流行的大模型，还可以获得更好的性能。通过以下链接获取
-`api_key`：
-
-https://help.aliyun.com/zh/model-studio/developer-reference/get-api-key
-
-进入项目目录，执行 `docker-compose.yml` 中的参数，尤其是 `api_key`。
-
-执行 `docker-compose up -d` 启动应用。
-
-而后通过访问 `http://ip:8000/chat/text` 实现文字对话，访问 `http://ip:8000/chat/audio` 实现语音对话。
+这是一个纯服务端应用程序，推荐使用 Docker 环境部署，具体参考
+[使用手册](docs/使用手册.md)。
 
 ## 贡献
 
@@ -67,8 +59,23 @@ https://help.aliyun.com/zh/model-studio/developer-reference/get-api-key
 
 ## 鸣谢
 
+感谢 Gitee AI 模力方舟提供大模型推理能力。
+
+<a href="#" target="_blank">
+    <img src="http://oss.celaraze.com:9999/projects/sebastian/badges/badge-inspired-cn-black.svg" width="200" alt="GiteeAI" />
+</a>
+<a href="#" target="_blank">
+    <img src="http://oss.celaraze.com:9999/projects/sebastian/badges/badge-powered-en-black.svg" width="200" alt="GiteeAI" />
+</a>
+
+感谢阿里云提供百炼大模型训练平台。
+
+<a href="#" target="_blank">
+    <img src="http://oss.celaraze.com:9999/projects/sebastian/badges/aliyun-bailian.png" width="200" alt="Aliyun" />
+</a>
+
 感谢 JetBrains 提供优秀的 IDE。
 
 <a href="https://www.jetbrains.com/?from=cela" target="_blank">
-    <img src="https://www.jetbrains.com/company/brand/img/jetbrains_logo.png" width="100" alt="JetBrains" />
+    <img src="https://www.jetbrains.com/company/brand/img/jetbrains_logo.png" width="200" alt="JetBrains" />
 </a>
