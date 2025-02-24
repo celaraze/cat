@@ -1,6 +1,6 @@
 # 塞巴斯蒂安
 
-简体中文 | [English](README/README.en_US.md)
+> 目前仅支持简体中文对话 （Chinese Simplified Only）
 
 一个拥有永久记忆的大模型助手。想象一下，除了它能提供大模型的基本问答外，它能够记住你提起过的任何事情，并且在任何时间回忆起来有多么酷！
 
@@ -44,8 +44,68 @@
 
 ## 快速开始
 
-这是一个纯服务端应用程序，推荐使用 Docker 环境部署，具体参考
-[使用手册](docs/使用手册.md)。
+### 部署
+
+我们推荐使用 Docker Compose 进行部署，这会让整个安装和维护过程变得非常简单。
+
+首先，确保你的计算机上已经安装了 Docker 以及 Docker Compose 组件，具体操作方式参考 Docker 官方网站。
+
+即便现在本地部署大模型非常容易，但绝大多数用户无法承担起高性能大模型的成本，因此我们推荐使用云端大模型进行推理。
+
+第一步，从 https://help.aliyun.com/zh/model-studio/developer-reference/get-api-key 获取 API KEY。
+
+我们目前仅支持 Qwen2-Max 模型，后续会逐步推出基于 Ollama 的本地化部署。
+
+第二步，编辑项目目录中 `docker-compose.yml`：
+
+```yaml
+# ··· 尤其注意以下两个参数为必须修改。
+# 这是从第一步中获取的 API KEY，填写至此。
+- DASHSCOPE_API_KEY=
+# 这是由你决定的个人密钥，用于保护你的数据，后续接口访问的鉴权基于此。
+- TOKEN=
+# ···
+```
+
+第三步，执行 `docker compose up -d` 启动整个应用栈。
+
+至此安装完毕。
+
+### 调用接口
+
+将下列 cUrl 范例中 `--header 'Authorization: Bearer test'` 的 test 替换为上述自行设定的 TOKEN。
+
+文字对话：
+
+```shell
+curl --location --request POST 'http://127.0.0.1:8000/chat/text' \
+--header 'Content-Type: application/json' \
+--header 'Authorization: Bearer test' \
+--data-raw '{
+    "text": "你好，你是谁？"
+}'
+```
+
+语音对话：
+
+```shell
+curl --location --request POST 'http://127.0.0.1:8000/chat/audio' \
+--header 'Authorization: Bearer test' \
+--form 'file=@"C:\\Users\\test_user\\Downloads\\test.wav"'
+```
+
+响应体：
+
+`response` 是大模型正常对话返回的回答内容。
+
+`memory` 是此次对话中，大模型挖掘到的记忆信息变更。
+
+```json
+{
+  "response": "您好！您没有告诉我您的名字，所以我无法知道您是谁。您可以告诉我您的名字吗？",
+  "memory": null
+}
+```
 
 ## 贡献
 
