@@ -1,5 +1,7 @@
 # Sebastian
 
+English | [简体中文](docs/README.zh_CN.md)
+
 A LLM model assistant with permanent memory. Imagine how cool it would be if, in addition to providing basic Q&A
 services like other LLM, it could remember everything you've ever mentioned and recall it at any time!
 
