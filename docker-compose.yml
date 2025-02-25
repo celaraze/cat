@@ -4,12 +4,19 @@ services:
     container_name: sebastian-app
     restart: always
     environment:
+      # Set to en for English model, default for Chinese model.
+      - LANGUAGE=cn
       - ES_URL=http://sebastian-elasticsearch:9200
-      # IMPORTANT! Replace with your own API key
+
+      # [Required] Replace with your own API key below.
+
+      # DASHSCOPE_API_KEY or OPENAI_API_KEY only one is required.
+      # If you want to use zh_CN model(based on Qwen-max), you need to set DASHSCOPE_API_KEY.
       # Visit https://help.aliyun.com/zh/model-studio/developer-reference/get-api-key
-      # Qwen2-max recommended.
       - DASHSCOPE_API_KEY=
-      # Set by the user.
+      # If you want to use en_US model(based on gpt-4o), you need to set OPENAI_API_KEY.
+      - OPENAI_API_KEY=
+      # [Required] HTTP authorization bearer token for requesting WebAPI.
       - TOKEN=
     ports:
       - "8000:8000/tcp"

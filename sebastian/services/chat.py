@@ -1,6 +1,6 @@
 from memoryscope import MemoryScope, Arguments
 
-from app.utils import config
+from sebastian.utils import config
 
 
 def chat_and_remember(words: str):

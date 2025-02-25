@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 
-from app.controllers import (
+from sebastian.controllers import (
     chat_controller,
 )
 

@@ -3,6 +3,7 @@ FROM python:3.11-slim-buster
 ENV DEBIAN_FRONTEND=noninteractive
 
 RUN echo "DASHSCOPE_API_KEY=${api_key}" >> /etc/environment
+RUN echo "OPENAI_API_KEY=${api_key}" >> /etc/environment
 
 RUN apt-get update && \
     apt-get install -y ffmpeg && \

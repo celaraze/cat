@@ -1,6 +1,6 @@
 from fastapi import HTTPException
 
-from app.utils import config
+from sebastian.utils import config
 
 
 def auth(authorization: str):

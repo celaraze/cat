@@ -1,8 +1,8 @@
 from fastapi import APIRouter, File, Header
 
-from app.schemas import request_json
-from app.services import chat
-from app.utils import asr, auth
+from sebastian.schemas import request_json
+from sebastian.services import chat
+from sebastian.utils import asr, auth
 
 router = APIRouter(
     prefix="/chat",

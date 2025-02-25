@@ -1,92 +1,124 @@
-# 塞巴斯蒂安
+# Sebastian
 
-> 目前仅支持简体中文对话 （Chinese Simplified Only）
+A LLM model assistant with permanent memory. Imagine how cool it would be if, in addition to providing basic Q&A
+services like other LLM, it could remember everything you've ever mentioned and recall it at any time!
 
-一个拥有永久记忆的大模型助手。想象一下，除了它能提供大模型的基本问答外，它能够记住你提起过的任何事情，并且在任何时间回忆起来有多么酷！
+For Chinese conversations, it is based on the Qwen2-Max LLM, and for English conversations, it is based on the GPT-4o
+large language model. It uses RAG (Retrieval-Augmented Generation) and embeddings, instead of relying on carrying
+context tokens.
 
-这是一个真正的贾维斯，私有化部署，无身份识别，数据安全。如此之外，它还有以下有点：
+Compared with traditional LLM chat assistants, the most intuitive difference is that it breaks free from the constraints
+of the chat window. In the past, you had to start a separate conversation for a specific topic, but now there is only
+one entry point.
 
-1，突破大模型上下文限制，不再出现“鱼的七秒记忆”。
+No matter how many conversations you have with the assistant or how much information is generated during that process,
+it can remember the oldest information.
 
-2，记忆自动发掘，无需手动标记，交谈间助手将会自己发掘并记忆。
+This could be a real "Jarvis". It supports private deployment, has no identity recognition, and ensures data security.
+Besides, it has the following advantages:
 
-3，记忆迭代，助手会自动更新记忆，以适应新的对话，例如你的名字，喜欢的颜色。
+- **Permanent memory**: It breaks through the context limitations of LLM, eliminating the so - called "seven - second
+  memory of a fish".
 
-4：记忆关联，例如助手记住了你的生日，而后你告知你不喜欢自己的星座，根据关联计算出你的星座是X，助手将一并记忆你不喜欢X。
+- **Automatic memory discovery**: There is no need for manual tagging. During conversations, the assistant will
+  automatically discover and remember important information.
 
-基于 Qwen2-Max 大模型，使用 RAG 以及 embedding。并非通过携带上下文 tokens 实现，每一次对话都是一个 token。
+- **Memory iteration**: The assistant will automatically update its memory of changed important information. For
+  example, if you used to dislike a certain food but now you like it, the assistant will be aware of and remember this
+  change.
 
-场景1：
+- **Memory association**: For instance, if the assistant remembers your birthday and then you tell it that you don't
+  like your star sign, it can calculate your star sign based on the associated information and also remember your
+  dislike for it.
+
+- **Memory consolidation**: The assistant will periodically consolidate the important information it has remembered.
+  Reviewing old knowledge can help it respond more quickly the next time you ask a question.
+
+Regarding data security, we offer a private deployment solution. You can deploy this application on your own server, and
+all conversation data will remain on your server. Although we currently use online large language model inference
+services, these service providers also offer data security guarantees. To meet the privacy concerns of users, we will
+introduce a deployment mode for the local Ollama solution in the future.
+
+## Scenario Demonstration
+
+Scenario 1:
 
 ```shell
-# 事件发生于 2022年某天
-用户：我今天刚买了一个黑色的鼠标，它有三年的退换服务。
-助手：我记住了。
-# 事件发生于 2025年某天
-用户：我的鼠标的按键有些使用故障，你知道如何处理吗？
-助手：您在 2022 年购买过一个黑色鼠标，现在即将到期，您可以联系售后服务。
-用户：我忘记了，什么鼠标？
-助手：一个黑色的鼠标，购买时间是 2012年X月X日。
+# An event occurred on a certain day in 2022
+User: I just bought a black mouse today, and it has a three - year return and exchange service.
+Assistant: I've remembered that.
+# An event occurred on a certain day in 2025
+User: The buttons on my mouse are having some issues. Do you know how to deal with it?
+Assistant: You bought a black mouse in 2022, and the warranty is about to expire. You can contact the after - sales service.
+User: I forgot. What mouse are you talking about?
+Assistant: It's a black mouse, and the purchase date was X month X day, 2022.
 ```
 
-场景2：
+Scenario 2:
 
 ```shell
-# 事件发生于某天。
-用户：我是张三。
-助手：你好，张三。
-# 事件发生于几年后的某天，期间与助手经历过无数次对话，且助手应用时常关闭打开。
-用户：我是谁？
-助手：你是张三。
-用户：我改名了，现在叫李四。
-助手：好的，你的名字是李四。
+# An event occurred on a certain day.
+User: I'm Zhang San.
+Assistant: Hello, Zhang San.
+# An event occurred a few years later. During this period, there were countless conversations with the assistant, and the assistant application was frequently closed and reopened.
+User: Who am I?
+Assistant: You're Zhang San.
+User: I've changed my name. Now I'm Li Si.
+Assistant: Okay, your name is Li Si.
 ```
 
-## 快速开始
+## Quick Start
 
-### 部署
+### Deployment
 
-我们推荐使用 Docker Compose 进行部署，这会让整个安装和维护过程变得非常简单。
+We recommend using Docker Compose for deployment, as it simplifies the entire installation and maintenance process.
+First, make sure that Docker and Docker Compose components are installed on your computer. For specific operation
+methods, refer to the official Docker website.
 
-首先，确保你的计算机上已经安装了 Docker 以及 Docker Compose 组件，具体操作方式参考 Docker 官方网站。
+Even though local deployment of LLM is relatively easy now, most users cannot afford the cost of high - performance LLM.
+Therefore, we recommend using cloud - based LLM for inference.
 
-即便现在本地部署大模型非常容易，但绝大多数用户无法承担起高性能大模型的成本，因此我们推荐使用云端大模型进行推理。
+Currently, we only support the Qwen2-Max and GPT-4o models. In the future, we will gradually introduce local deployments
+based on Ollama.
 
-第一步，从 https://help.aliyun.com/zh/model-studio/developer-reference/get-api-key 获取 API KEY。
+- **Step 1**: If you want to use the Chinese model for conversation, obtain the API KEY
+  from https://help.aliyun.com/zh/model-studio/developer-reference/get-api-key. If you want to use the English model for
+  conversation, obtain the API KEY from OpenAI.
 
-我们目前仅支持 Qwen2-Max 模型，后续会逐步推出基于 Ollama 的本地化部署。
-
-第二步，编辑项目目录中 `docker-compose.yml`：
+- **Step 2**: Edit the `docker-compose.yml` in the project directory:
 
 ```yaml
-# ··· 尤其注意以下两个参数为必须修改。
-# 这是从第一步中获取的 API KEY，填写至此。
+# The language of the conversation model. Options: cn, en. The default is cn.
+- LANGUAGE=cn
+# ··· Pay special attention that you must choose one of the following two parameters.
+# This is the API KEY obtained in the first step. Fill it in here.
+# Fill this item when using the Chinese model.
 - DASHSCOPE_API_KEY=
-# 这是由你决定的个人密钥，用于保护你的数据，后续接口访问的鉴权基于此。
+# Fill this item when using the English model.
+- OPENAI_API_KEY=
+# This is a personal key determined by you to protect your data. Subsequent interface access authentication is based on this.
 - TOKEN=
 # ···
 ```
 
-第三步，执行 `docker compose up -d` 启动整个应用栈。
+**Step 3**: Execute `docker compose up -d` to start the entire application stack. The installation is now complete.
 
-至此安装完毕。
+### Invoking the Interface
 
-### 调用接口
+Replace `test` in `--header 'Authorization: Bearer test'` in the following cUrl examples with the TOKEN you set above.
 
-将下列 cUrl 范例中 `--header 'Authorization: Bearer test'` 的 test 替换为上述自行设定的 TOKEN。
-
-文字对话：
+**Text conversation**:
 
 ```shell
 curl --location --request POST 'http://127.0.0.1:8000/chat/text' \
 --header 'Content-Type: application/json' \
 --header 'Authorization: Bearer test' \
 --data-raw '{
-    "text": "你好，你是谁？"
+    "text": "Hello, I'm Zhang San, and I was born on January 16, 2000."
 }'
 ```
 
-语音对话：
+**Voice conversation**:
 
 ```shell
 curl --location --request POST 'http://127.0.0.1:8000/chat/audio' \
@@ -94,45 +126,44 @@ curl --location --request POST 'http://127.0.0.1:8000/chat/audio' \
 --form 'file=@"C:\\Users\\test_user\\Downloads\\test.wav"'
 ```
 
-响应体：
+**Response body**:
 
-`response` 是大模型正常对话返回的回答内容。
+`response` is the answer returned by the large language model during normal conversation.
 
-`memory` 是此次对话中，大模型挖掘到的记忆信息变更。
+`memory` is the change in memory information mined by the large language model during this conversation.
 
 ```json
 {
-  "response": "您好！您没有告诉我您的名字，所以我无法知道您是谁。您可以告诉我您的名字吗？",
-  "memory": null
+  "response": "Hello! Zhang San. Is there anything I can assist you with?",
+  "memory": "New memory: The user's name is Zhang San, and the user was born on January 16, 2000."
 }
 ```
 
-## 贡献
+## Contribution
 
-如果您有任何建议或发现任何错误，请随时提交问题或拉取请求。
+If you have any suggestions or find any errors, please feel free to submit issues or pull requests.
 
-## 赞助
+## Sponsorship
 
-`Afdian.net` 是一个为创作者提供支持的平台。如果你喜欢这个项目，可以在 `Afdian.net` 上支持我。
-
+`Afdian.net` is a platform that supports creators. If you like this project, you can support me on `Afdian.net`.
 [https://afdian.net/a/celaraze](https://afdian.net/a/celaraze)
 
-## 鸣谢
+## Acknowledgments
 
-感谢 Gitee AI 模力方舟提供大模型推理能力。
+Thanks to Gitee AI for providing large language model inference capabilities.
 
 <a href="#" target="_blank">
-    <img src="https://img.picui.cn/free/2025/02/24/67bc321fc8383.png" width="200" alt="GiteeAI" />
+    <img src="https://img.picui.cn/free/2025/02/25/67bd14a37b576.png" width="200" alt="GiteeAI" />
 </a>
 
-感谢阿里云提供百炼大模型训练平台。
+Thanks to Alibaba Cloud for providing the Bailian large language model training platform.
 
 <a href="#" target="_blank">
     <img src="https://img.picui.cn/free/2025/02/24/67bc31c9574ec.png" width="200" alt="Aliyun" />
 </a>
 
-感谢 JetBrains 提供优秀的 IDE。
+Thanks to JetBrains for providing excellent IDEs.
 
 <a href="https://www.jetbrains.com/?from=cela" target="_blank">
-    <img src="https://www.jetbrains.com/company/brand/img/jetbrains_logo.png" width="200" alt="JetBrains" />
+<img src="https://www.jetbrains.com/company/brand/img/jetbrains_logo.png" width="200" alt="JetBrains" />
 </a>

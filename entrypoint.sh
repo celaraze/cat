@@ -1,6 +1,10 @@
 #!/bin/sh
 
-CONFIG_FILE="/service/config/config.yaml"
+if [ "$LANGUAGE" = "en" ]; then
+  CONFIG_FILE="/service/config/config_en.yaml"
+else
+  CONFIG_FILE="/service/config/config_cn.yaml"
+fi
 
 if [ -f "$CONFIG_FILE" ]; then
   # 修改对应的键的值
