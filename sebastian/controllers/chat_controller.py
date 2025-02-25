@@ -29,7 +29,8 @@ async def chat_with_text(
             status_code=status.HTTP_404_NOT_FOUND,
             detail="Language required."
         )
-    print(memory.meta_data["memories"])
+    print(response)
+    print(memory)
     return {
         "response": response,
         "memory": memory
@@ -54,6 +55,8 @@ async def chat_with_audio(
             status_code=status.HTTP_404_NOT_FOUND,
             detail="Language required."
         )
+    print(response)
+    print(memory)
     return {
         "response": response,
         "memory": memory
