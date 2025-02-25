@@ -60,13 +60,13 @@ Scenario 2:
 
 ```shell
 # An event occurred on a certain day.
-User: I'm Zhang San.
-Assistant: Hello, Zhang San.
+User: I'm Tom.
+Assistant: Hello, Tom.
 # An event occurred a few years later. During this period, there were countless conversations with the assistant, and the assistant application was frequently closed and reopened.
 User: Who am I?
-Assistant: You're Zhang San.
-User: I've changed my name. Now I'm Li Si.
-Assistant: Okay, your name is Li Si.
+Assistant: You're Tom.
+User: I've changed my name. Now I'm Jack.
+Assistant: Okay, your name is Jack.
 ```
 
 ## Quick Start
@@ -105,7 +105,7 @@ based on Ollama.
 
 **Step 3**: Execute `docker compose up -d` to start the entire application stack. The installation is now complete.
 
-### Invoking the Interface
+### Invoking the Web API
 
 Replace `test` in `--header 'Authorization: Bearer test'` in the following cUrl examples with the TOKEN you set above.
 
@@ -116,7 +116,7 @@ curl --location --request POST 'http://127.0.0.1:8000/chat/text' \
 --header 'Content-Type: application/json' \
 --header 'Authorization: Bearer test' \
 --data-raw '{
-    "text": "Hello, I'm Zhang San, and I was born on January 16, 2000."
+    "text": "Hello, I'm Tom, and I was born on January 16, 2000."
 }'
 ```
 
@@ -136,8 +136,8 @@ curl --location --request POST 'http://127.0.0.1:8000/chat/audio' \
 
 ```json
 {
-  "response": "Hello! Zhang San. Is there anything I can assist you with?",
-  "memory": "New memory: The user's name is Zhang San, and the user was born on January 16, 2000."
+  "response": "Hello! Tom. Is there anything I can assist you with?",
+  "memory": "New memory: The user's name is Tom, and the user was born on January 16, 2000."
 }
 ```
 
