@@ -2,12 +2,11 @@
 
 English | [简体中文](docs/README.zh_CN.md)
 
-A LLM model assistant with permanent memory. Imagine how cool it would be if, in addition to providing basic Q&A
+A LLM assistant with permanent memory. Imagine how cool it would be if, in addition to providing basic Q&A
 services like other LLM, it could remember everything you've ever mentioned and recall it at any time!
 
 For Chinese conversations, it is based on the Qwen2-Max LLM, and for English conversations, it is based on the GPT-4o
-large language model. It uses RAG (Retrieval-Augmented Generation) and embeddings, instead of relying on carrying
-context tokens.
+LLM. It uses RAG and embeddings, instead of relying on carrying context tokens.
 
 Compared with traditional LLM chat assistants, the most intuitive difference is that it breaks free from the constraints
 of the chat window. In the past, you had to start a separate conversation for a specific topic, but now there is only
@@ -26,7 +25,7 @@ Besides, it has the following advantages:
   automatically discover and remember important information.
 
 - **Memory iteration**: The assistant will automatically update its memory of changed important information. For
-  example, if you used to dislike a certain food but now you like it, the assistant will be aware of and remember this
+  example, if you used to dislike a certain food, but now you like it, the assistant will be aware of and remember this
   change.
 
 - **Memory association**: For instance, if the assistant remembers your birthday and then you tell it that you don't

@@ -5,7 +5,7 @@ import yaml
 
 def get_config():
     try:
-        with open(get_config_path()) as f:
+        with open(get_config_path(), encoding="utf-8") as f:
             return yaml.safe_load(f)
     except Exception:
         raise
